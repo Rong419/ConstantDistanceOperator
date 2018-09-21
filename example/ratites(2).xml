@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="myoperator:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
 <!--
 This xml is used to test the 7 ratites by using bModelTest
 (1) without data
@@ -31,7 +31,7 @@ This xml is used to test the 7 ratites by using bModelTest
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="100000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="1000000" sampleFromPrior="true">
 <state id="state" storeEvery="5000">
     <tree spec="beast.util.TreeParser" id="Tree.t:ratites" name="stateNode" IsLabelledNewick="true" newick=
             "((RHEA:0.26095,(DIGI:0.0834,ANDI:0.0834):0.17755):0.00695,(OST:0.253277,((CASS:0.159,EMU:0.159):0.084604,KIWI:0.243604):0.009673):0.014623)" taxa="@ratites"/>

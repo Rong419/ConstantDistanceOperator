@@ -1,0 +1,33 @@
+<itsabeastystatewerein version='2.0' sample='1000000'>
+<statenode id='Tree.t:ratites'>(0:0.2467435460179428,((1:0.039915069308796944,2:0.039915069308796944)7:0.17997430288294536,(3:0.19909310229777355,((4:0.10690892336189392,5:0.10690892336189392)9:0.08272611756634407,6:0.189635040928238)10:0.009458061369535559)11:0.02079626989396874)8:0.026854173826200506)12:0.0</statenode>
+<statenode id='rates.c:ratites'>rates.c:ratites[12 1] (0.0,Infinity): 0.9495464846381372 0.9688626889463249 0.8110394064345348 1.2721535657281908 0.8922693644298839 0.9131687573873362 0.9035563104650107 0.9865297276104923 0.992602991401923 1.0226999947404765 1.0227254425686745 1.0373494915189747 </statenode>
+<statenode id='BDBirthRate.t:ratites'>BDBirthRate.t:ratites[1 1] (-Infinity,Infinity): 1.0720258649045022 </statenode>
+<statenode id='BDDeathRate.t:ratites'>BDDeathRate.t:ratites[1 1] (0.0,1.0): 0.4113552768537259 </statenode>
+<statenode id='gammaShape.s:dna'>gammaShape.s:dna[1 1] (-Infinity,Infinity): 1.0 </statenode>
+<statenode id='ucldStdev.c:ratites'>ucldStdev.c:ratites[1 1] (-Infinity,Infinity): 0.1 </statenode>
+<statenode id='BMT_ModelIndicator.s:ratites'>BMT_ModelIndicator.s:ratites[1 1] (0,5): 19 </statenode>
+<statenode id='BMT_Rates.s:ratites'>BMT_Rates.s:ratites[6 1] (0.01,100.0): 1.5472361867245166 1.018067777523706 0.38778937447543127 1.6410495092772108 1.3400151717881637 0.2101744645684248 </statenode>
+<statenode id='BMT_gammaShape.s:ratites'>BMT_gammaShape.s:ratites[1 1] (0.001,1000.0): 0.33888180631831966 </statenode>
+<statenode id='BMT_ProportionInvariable.s:ratites'>BMT_ProportionInvariable.s:ratites[1 1] (0.0,1.0): 0.09721056405784766 </statenode>
+<statenode id='hasInvariableSites.s:ratites'>hasInvariableSites.s:ratites[1 1] (-2147483647,2147483646): 1 </statenode>
+<statenode id='hasGammaRates.s:ratites'>hasGammaRates.s:ratites[1 1] (-2147483647,2147483646): 1 </statenode>
+<statenode id='hasEqualFreqs.s:ratites'>hasEqualFreqs.s:ratites[1 1] (null,true): true </statenode>
+<statenode id='BMT_frequencies.s:ratites'>BMT_frequencies.s:ratites[4 1] (-Infinity,Infinity): 0.8593331621563937 0.09873213831220334 0.0054813137958117375 0.03645338573559159 </statenode>
+</itsabeastystatewerein>
+<!--
+{"operators":[
+{"id":"InternalnodesOperator.c:dna","p":0.0202848567836746,"accept":44555,"reject":208892,"acceptFC":43757,"rejectFC":206119,"rejectIv":30508,"rejectOp":30508},
+{"id":"RootOperator1.c:dna","p":0.002139924568370967,"accept":262,"reject":253574,"acceptFC":260,"rejectFC":250026,"rejectIv":118267,"rejectOp":118180},
+{"id":"RootOperator.c:dna","p":"NaN","accept":367,"reject":253849,"acceptFC":367,"rejectFC":250183,"rejectIv":172587,"rejectOp":172587},
+{"id":"BirthRateScaler.t:ratites","p":0.20952459032567164,"accept":22585,"reject":53725,"acceptFC":21707,"rejectFC":53546,"rejectIv":0,"rejectOp":0},
+{"id":"DeathRateScaler.t:ratites","p":0.15851719582863438,"accept":20765,"reject":55427,"acceptFC":19867,"rejectFC":55253,"rejectIv":38086,"rejectOp":38086},
+{"id":"BMT_ModelTestOperator.s:ratites","p":"NaN","accept":13319,"reject":11955,"acceptFC":13156,"rejectFC":11780,"rejectIv":1072,"rejectOp":1072},
+{"id":"BMT_Ratescaler.s:ratites","p":3.8635023644941824,"accept":6293,"reject":19063,"acceptFC":5992,"rejectFC":19024,"rejectIv":17485,"rejectOp":17485},
+{"id":"BMT_gammaShapeScaler.s:ratites","p":0.2276739162578553,"accept":2357,"reject":10249,"acceptFC":2283,"rejectFC":10123,"rejectIv":6513,"rejectOp":6513},
+{"id":"BMT_ProportionInvariableScaler.s:ratites","p":0.22236245238082786,"accept":2501,"reject":10157,"acceptFC":2422,"rejectFC":10047,"rejectIv":6962,"rejectOp":6962},
+{"id":"BMT_hasGammaRatesFlipper.s:ratites","p":"NaN","accept":1264,"reject":1283,"acceptFC":1240,"rejectFC":1266,"rejectIv":1283,"rejectOp":1283},
+{"id":"BMT_hasInvariableSitesFlipper.s:ratites","p":"NaN","accept":1260,"reject":1241,"acceptFC":1238,"rejectFC":1226,"rejectIv":1241,"rejectOp":1241},
+{"id":"BMT_FreqsFlipOperator.s:ratites","p":"NaN","accept":2523,"reject":0,"acceptFC":2479,"rejectFC":0,"rejectIv":0,"rejectOp":0},
+{"id":"BMT_FrequenciesExchanger.s:ratites","p":0.7646694388392145,"accept":1123,"reject":1412,"acceptFC":1100,"rejectFC":1412,"rejectIv":0,"rejectOp":0}
+]}
+-->
