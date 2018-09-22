@@ -31,7 +31,7 @@ This xml is used to test the 7 ratites by using bModelTest
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="1000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
 <state id="state" storeEvery="5000">
     <tree spec="beast.util.TreeParser" id="Tree.t:ratites" name="stateNode" IsLabelledNewick="true" newick=
             "((RHEA:0.26095,(DIGI:0.0834,ANDI:0.0834):0.17755):0.00695,(OST:0.253277,((CASS:0.159,EMU:0.159):0.084604,KIWI:0.243604):0.009673):0.014623)" taxa="@ratites"/>
@@ -105,31 +105,38 @@ This xml is used to test the 7 ratites by using bModelTest
     </distribution>
 
     <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
-              twindowSize="0.017"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
+              twindowSize="0.017"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="30"/>
 
     <operator id="RootOperator1.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
-              twindowSize="0.017" dwindowSize="0.004" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
+              twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
 
-    <operator id="RootOperator.c:dna" spec="SmallPulleyV2" branchRateModel="@RelaxedClock.c:ratites"
-              twindowSize="0.5" dwindowSize="0.1" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
+    <operator id="RootOperator2.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
+              twindowSize="0.055" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
+<!--
+    <operator id="RootOperator3.c:dna" spec="SmallPulleyV2" branchRateModel="@RelaxedClock.c:ratites"
+              twindowSize="0.5" dwindowSize="0.038" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
+-->
 
-    <operator id="BirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDBirthRate.t:ratites" scaleFactor="0.75" weight="3.0"/>
+    <operator id="RootOperator3.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
+              dwindowSize="0.038" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
 
-    <operator id="DeathRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDDeathRate.t:ratites" scaleFactor="0.75" weight="3.0"/>
+    <operator id="BirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDBirthRate.t:ratites" scaleFactor="0.75" weight="0.2"/>
 
-    <operator id="BMT_ModelTestOperator.s:ratites" spec="BMTMergeSplitOperator" modelIndicator="@BMT_ModelIndicator.s:ratites" rates="@BMT_Rates.s:ratites" substModel="@RevJump.s:ratites" weight="1.0"/>
+    <operator id="DeathRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDDeathRate.t:ratites" scaleFactor="0.75" weight="0.2"/>
 
-    <operator id="BMT_Ratescaler.s:ratites" spec="BMTExchangeOperator" delta="0.15" modelIndicator="@BMT_ModelIndicator.s:ratites" rates="@BMT_Rates.s:ratites" substModel="@RevJump.s:ratites" weight="1.0"/>
+    <operator id="BMT_ModelTestOperator.s:ratites" spec="BMTMergeSplitOperator" modelIndicator="@BMT_ModelIndicator.s:ratites" rates="@BMT_Rates.s:ratites" substModel="@RevJump.s:ratites" weight="0.4"/>
 
-    <operator id="BMT_gammaShapeScaler.s:ratites" spec="BMTScaleOperator" count="@hasGammaRates.s:ratites" parameter="@BMT_gammaShape.s:ratites" scaleFactor="0.5" weight="0.5"/>
+    <operator id="BMT_Ratescaler.s:ratites" spec="BMTExchangeOperator" delta="0.15" modelIndicator="@BMT_ModelIndicator.s:ratites" rates="@BMT_Rates.s:ratites" substModel="@RevJump.s:ratites" weight="0.4"/>
 
-    <operator id="BMT_ProportionInvariableScaler.s:ratites" spec="BMTScaleOperator" count="@hasInvariableSites.s:ratites" parameter="@BMT_ProportionInvariable.s:ratites" scaleFactor="0.5" weight="0.5"/>
+    <operator id="BMT_gammaShapeScaler.s:ratites" spec="BMTScaleOperator" count="@hasGammaRates.s:ratites" parameter="@BMT_gammaShape.s:ratites" scaleFactor="0.5" weight="0.01"/>
 
-    <operator id="BMT_hasGammaRatesFlipper.s:ratites" spec="BMTBirthDeathOperator" count="@hasGammaRates.s:ratites" rates="@BMT_gammaShape.s:ratites" weight="0.1"/>
+    <operator id="BMT_ProportionInvariableScaler.s:ratites" spec="BMTScaleOperator" count="@hasInvariableSites.s:ratites" parameter="@BMT_ProportionInvariable.s:ratites" scaleFactor="0.5" weight="0.01"/>
 
-    <operator id="BMT_hasInvariableSitesFlipper.s:ratites" spec="BMTBirthDeathOperator" count="@hasInvariableSites.s:ratites" rates="@BMT_ProportionInvariable.s:ratites" weight="0.1"/>
+    <operator id="BMT_hasGammaRatesFlipper.s:ratites" spec="BMTBirthDeathOperator" count="@hasGammaRates.s:ratites" rates="@BMT_gammaShape.s:ratites" weight="0.01"/>
 
-    <operator id="BMT_FreqsFlipOperator.s:ratites" spec="BitFlipOperator" parameter="@hasEqualFreqs.s:ratites" weight="0.1"/>
+    <operator id="BMT_hasInvariableSitesFlipper.s:ratites" spec="BMTBirthDeathOperator" count="@hasInvariableSites.s:ratites" rates="@BMT_ProportionInvariable.s:ratites" weight="0.01"/>
+
+    <operator id="BMT_FreqsFlipOperator.s:ratites" spec="BitFlipOperator" parameter="@hasEqualFreqs.s:ratites" weight="0.005"/>
 
     <operator id="BMT_FrequenciesExchanger.s:ratites" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
         <parameter idref="BMT_frequencies.s:ratites"/>
@@ -141,13 +148,31 @@ This xml is used to test the 7 ratites by using bModelTest
         <log idref="prior"/>
         <log idref="treeLikelihood.ratites"/>
         <log id="TreeHeight.t:dna" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:ratites"/>
-        <log id="rate.c:dna" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
+    <log id="rate.c:ratites" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
         <log idref="gammaShape.s:dna"/>
-        <log idref="ucldStdev.c:ratites"/>
         <log idref="BirthDeath.t:ratites"/>
         <log idref="BDBirthRate.t:ratites"/>
         <log idref="BDDeathRate.t:ratites"/>
-        <log idref="rates.c:ratites"/>
+
+    <log idref="RevJump.s:ratites"/>
+    <log idref="BMT_ModelIndicator.s:ratites"/>
+    <log idref="BMT_Rates.s:ratites"/>
+    <log idref="BMT_gammaShape.s:ratites"/>
+    <log idref="BMT_ProportionInvariable.s:ratites"/>
+    <log idref="hasGammaRates.s:ratites"/>
+    <log idref="hasInvariableSites.s:ratites"/>
+    <log id="ActivePropInvariable.s:ratites" spec="beast.util.Script" argnames="BMT_ProportionInvariable hasInvariableSites" expression="BMT_ProportionInvariable * hasInvariableSites">
+        <x idref="BMT_ProportionInvariable.s:ratites"/>
+        <x idref="hasInvariableSites.s:ratites"/>
+    </log>
+    <log id="ActiveGammaShape.s:ratites" spec="beast.util.Script" argnames="BMT_gammaShape hasGammaRates" expression="BMT_gammaShape * hasGammaRates">
+        <x idref="BMT_gammaShape.s:ratites"/>
+        <x idref="hasGammaRates.s:ratites"/>
+    </log>
+    <log idref="hasEqualFreqs.s:ratites"/>
+    <log idref="BMT_frequencies.s:ratites"/>
+    <log idref="ucldStdev.c:ratites"/>
+
 </logger>
 
 <logger id="screenlog" logEvery="100000">

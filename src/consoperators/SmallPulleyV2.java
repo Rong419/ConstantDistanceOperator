@@ -14,19 +14,19 @@ import beast.evolution.tree.Node;
 import org.apache.commons.math.MathException;
 import beast.evolution.operators.TreeOperator;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Description("Small pulley version2: Propose a new genetic distance and a new root time")
 public class SmallPulleyV2 extends TreeOperator {
     //public final Input<Tree> treeInput = new Input<>("tree", "the rooted time tree for the operator to work on");
     public final Input<Double> twindowSizeInput =
-            new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
+            new Input<>("twindowSize", "the size of the window for proposing new node time", Input.Validate.REQUIRED);
     public final Input<Double> dwindowSizeInput =
-            new Input<>("dwindowSize", "the size of the window in Big Pulley");
+            new Input<>("dwindowSize", "the size of the window for proposing new genetic distance");
     public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
             "A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
-    final public Input<Boolean> tchangeInput = new Input<>("tchange", "Whether to change node time in Small Pulley (default true: version 1).");
 
     private double twindowSize;
     private double dwindowSize;
@@ -124,36 +124,54 @@ public class SmallPulleyV2 extends TreeOperator {
         rates.setValue(nodeN03, r_k_);
 
         return hastingsRatio = 0.0; //in log space
+    }
+    /**
+     * automatic parameter tuning *
+     */
+    @Override
+    public double getCoercableParameterValue() {
+        return dwindowSize;
+    }
 
+    @Override
+    public void setCoercableParameterValue(double value) {
+        dwindowSize = value;
+    }
 
+    /**
+     * called after every invocation of this operator to see whether
+     * a parameter can be optimised for better acceptance hence faster
+     * mixing
+     *
+     * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
+     */
+    @Override
+    public void optimize(double logAlpha) {
+        // must be overridden by operator implementation to have an effect
+        double delta = calcDelta(logAlpha);
 
-                /*
-                 * Strategy one: Simple Distance
-                 */
-        //node.setHeight(t_x_);
-        //Step 3: make changes on the rates
-        //r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j);
-        //r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k);
-                /*
-                 * Strategy two: Small Pulley
-                 */
+        delta += Math.log(dwindowSize);
+        dwindowSize = Math.exp(delta);
+    }
 
+    @Override
+    public final String getPerformanceSuggestion() {
+        double prob = m_nNrAccepted / (m_nNrAccepted + m_nNrRejected + 0.0);
+        double targetProb = getTargetAcceptanceProbability();
 
+        double ratio = prob / targetProb;
+        if (ratio > 2.0) ratio = 2.0;
+        if (ratio < 0.5) ratio = 0.5;
 
-        // if using Version 1, then the following code will be included
-        // set the proposed time for this chosen node
-        //if (usingtchange) {
+        // new scale factor
+        double newWindowSize = dwindowSize * ratio;
 
-
-
-        //}
-        // if using Version 2, then the following code will be included
-        //Step 3: make changes on the rates
-        //r_j_ = (D - d_) / (t_x - t_j);
-        //r_k_ = d_ / (t_x - t_k);
-
-
-
+        DecimalFormat formatter = new DecimalFormat("#.###");
+        if (prob < 0.10) {
+            return "Try setting window size to about " + formatter.format(newWindowSize);
+        } else if (prob > 0.40) {
+            return "Try setting window size to about " + formatter.format(newWindowSize);
+        } else return "";
     }
 }
 

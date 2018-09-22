@@ -15,7 +15,7 @@ import java.util.List;
 @Description("SimpleDistance: Propose a new root time")
 public class SimpleDistance extends TreeOperator {
     public final Input<Double> twindowSizeInput =
-            new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
+            new Input<>("twindowSize", "the size of the window for proposing new node time", Input.Validate.REQUIRED);
     public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
             "A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
