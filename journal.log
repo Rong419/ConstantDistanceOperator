@@ -1,0 +1,80 @@
+#
+#model:
+#
+#<?xml version="1.0" encoding="UTF-8" standalone="no"?><input id="posterior" spec="beast.core.util.CompoundDistribution">
+#    <distribution id="prior" spec="beast.core.util.CompoundDistribution">
+#        <distribution id="BirthDeath.t:journal" spec="beast.evolution.speciation.BirthDeathGernhard08Model">
+#            <parameter id="BDDeathRate.t:journal" lower="0.0" name="relativeDeathRate" upper="1.0">0.5</parameter>
+#            <parameter id="BDBirthRate.t:journal" lower="0.0" name="birthDiffRate" upper="10000.0">1.0</parameter>
+#            <tree id="Tree.t:journal">
+#                <taxonset id="TaxonSet.journal" spec="beast.evolution.alignment.TaxonSet">
+#                </taxonset>
+#            </tree>
+#        </distribution>
+#        <prior id="BirthRatePrior.t:journal" name="distribution" x="@BDBirthRate.t:journal">
+#            <LogNormal id="LogNormalDistributionModel.0" meanInRealSpace="true" name="distr">
+#                <parameter estimate="false" id="parameter.hyperLogNormalDistributionModel-M-BirthRatePrior.t:journal" name="M">2.0</parameter>
+#                <parameter estimate="false" id="parameter.hyperLogNormalDistributionModel-S-BirthRatePrior.t:journal" lower="0.0" name="S" upper="5.0">1.0</parameter>
+#            </LogNormal>
+#        </prior>
+#        <prior id="DeathRatePrior.t:journal" name="distribution" x="@BDDeathRate.t:journal">
+#            <Uniform id="Uniform.5" name="distr"/>
+#        </prior>
+#        <distribution id="BMT_PropInvariablePrior.s:journal" spec="beast.math.distributions.BMTPrior">
+#            <count id="hasInvariableSites.s:journal" spec="beast.core.parameter.IntegerParameter">1</count>
+#            <parameter id="BMT_ProportionInvariable.s:journal" lower="0.0" name="x" upper="1.0">0.1</parameter>
+#            <Beta id="Beta.0" name="distr">
+#                <parameter id="RealParameter.1" lower="0.0" name="alpha" upper="0.0">1.0</parameter>
+#                <parameter id="RealParameter.2" lower="0.0" name="beta" upper="0.0">4.0</parameter>
+#            </Beta>
+#        </distribution>
+#        <distribution id="BMT_RatesPrior.s:journal" spec="beast.math.distributions.NucleotideRevJumpSubstModelRatePrior">
+#            <modelIndicator id="BMT_ModelIndicator.s:journal" lower="0" spec="beast.core.parameter.IntegerParameter" upper="5">5</modelIndicator>
+#            <substModel id="RevJump.s:journal" modelIndicator="@BMT_ModelIndicator.s:journal" spec="beast.evolution.substitutionmodel.NucleotideRevJumpSubstModel">
+#                <parameter dimension="6" id="BMT_Rates.s:journal" lower="0.01" name="rates" upper="100.0">1.0</parameter>
+#                <frequencies empirical="false" id="BMTfreqs.s:journal" spec="beast.evolution.substitutionmodel.ModelFrequencies">
+#                    <hasEqualFreqs id="hasEqualFreqs.s:journal" spec="beast.core.parameter.BooleanParameter">false</hasEqualFreqs>
+#                    <parameter dimension="4" id="BMT_frequencies.s:journal" name="frequencies">0.25 0.25 0.25 0.25</parameter>
+#                </frequencies>
+#            </substModel>
+#            <parameter idref="BMT_Rates.s:journal" name="x"/>
+#            <Exponential id="BMT_RatesPrior.s:journalx" name="distr"/>
+#        </distribution>
+#        <prior id="BMT_freqsPrior.s:journal" name="distribution" x="@BMT_frequencies.s:journal">
+#            <distr id="Dirichlet.0" spec="beast.math.distributions.Dirichlet">
+#                <parameter dimension="4" id="RealParameter.3" lower="0.0" name="alpha" upper="0.0">1.0 1.0 1.0 1.0</parameter>
+#            </distr>
+#        </prior>
+#        <distribution id="BMT_GammaShapePrior.s:journal" spec="beast.math.distributions.BMTPrior">
+#            <count id="hasGammaRates.s:journal" spec="beast.core.parameter.IntegerParameter">1</count>
+#            <parameter id="BMT_gammaShape.s:journal" name="x">1.0</parameter>
+#            <Exponential id="Exponential.0" name="distr">
+#                <parameter estimate="false" id="RealParameter.0" name="mean">1.0</parameter>
+#            </Exponential>
+#        </distribution>
+#        <prior id="RatePriorDistrbution.t:dna" name="distribution">
+#            <parameter dimension="164" id="rates.c:journal" lower="0.0" name="x" upper="10.0">1.0</parameter>
+#            <LogNormal id="LogNormalDistribution.c:dna" meanInRealSpace="true" name="distr">
+#                <parameter id="RealParameter" lower="0.0" name="M" upper="0.0">1.0</parameter>
+#                <parameter id="ucldStdev.c:journal" lower="0.0" name="S">0.2</parameter>
+#            </LogNormal>
+#        </prior>
+#    </distribution>
+#    <distribution id="likelihood" spec="beast.core.util.CompoundDistribution" useThreads="true">
+#        <distribution data="@journal" id="treeLikelihood.journal" spec="beast.evolution.likelihood.ThreadedTreeLikelihood" tree="@Tree.t:journal">
+#            <siteModel gammaCategoryCount="4" hasGammaRates="@hasGammaRates.s:journal" hasInvariantSites="@hasInvariableSites.s:journal" id="BEASTModelTest.s:journal" proportionInvariant="@BMT_ProportionInvariable.s:journal" shape="@BMT_gammaShape.s:journal" spec="beast.evolution.sitemodel.BEASTModelTestSiteModel" substModel="@RevJump.s:journal">
+#                <parameter estimate="false" id="BMT_mutationRate.s:journal" name="mutationRate">1.0</parameter>
+#            </siteModel>
+#            <branchRateModel id="RelaxedClock.c:journal" rates="@rates.c:journal" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@Tree.t:journal">
+#                <LogNormal S="@ucldStdev.c:journal" id="LogNormalDistributionModel.c:journal" meanInRealSpace="true" name="distr">
+#                    <parameter estimate="false" id="RealParameter.4" lower="0.0" name="M" upper="1.0">1.0</parameter>
+#                </LogNormal>
+#                <parameter estimate="false" id="ucldMean.c:journal" name="clock.rate">1.0</parameter>
+#            </branchRateModel>
+#        </distribution>
+#    </distribution>
+#</input>
+#
+Sample	posterior	likelihood	prior	treeLikelihood	TreeHeight	rateAC	rateAG	rateAT	rateCG	rateCT	rateGT	substmodel	BMT_ModelIndicator	BMT_Rates.1	BMT_Rates.2	BMT_Rates.3	BMT_Rates.4	BMT_Rates.5	BMT_Rates.6	BMT_gammaShape	BMT_ProportionInvariable	hasGammaRates	hasInvariableSites	ActivePropInvariable	ActiveGammaShape	hasEqualFreqs	BMT_frequencies.1	BMT_frequencies.2	BMT_frequencies.3	BMT_frequencies.4	ucldStdev	rate.mean	rate.variance	rate.coefficientOfVariation	BirthDeath	BDBirthRate	BDDeathRate
+0	-1302521.9121001423	-1292583.730831286	-9938.181268856291	-1292583.730831286	1.8749578364540227	1.0	1.0	1.0	1.0	1.0	1.0	121321	5	1.0	1.0	1.0	1.0	1.0	1.0	1.0	0.1	1	1	0.1	1.0	0	0.25	0.25	0.25	0.25	0.2	16.499149881445387	3027.37520542606	5.277455178292964	34.45722020967232	1.0	0.5
+2000	-788120.4269412811	-779883.9178825667	-8236.509058714322	-779883.9178825667	4.250020390798931	0.5656480113497465	0.5765961089613305	1.8666428011680456	0.3176185218174049	1.6929897977717998	0.9805047589316728	123456	30	0.5656480113497465	0.5765961089613305	1.8666428011680456	0.3176185218174049	1.6929897977717998	0.9805047589316728	0.572340125627315	0.30235579642955807	1	1	0.30235579642955807	0.572340125627315	0	0.25755384916629903	0.3479444259946397	0.14896516596662715	0.24553655887243414	0.2	54.95250344001718	3025.767660669304	5.2579220883534274	3.2002904848273204	1.0282491851079132	0.8440209615151878

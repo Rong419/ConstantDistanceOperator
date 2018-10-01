@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ConstantDistanceOperator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ConstantDistanceOperator_jar</output-path>
+    <root id="archive" name="ConstantDistanceOperator.jar">
+      <element id="module-output" name="bModelTest" />
+      <element id="module-output" name="beast2" />
+      <element id="module-output" name="BEASTLabs" />
+      <element id="module-output" name="ConstantDistanceOperator" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../BEASTLabs/lib/junit-4.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/release/common/tools/DensiTree.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/antlr-runtime-4.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/fest-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/debug-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/jam.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/fest.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/beagle.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/commons-math3-3.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/junit-4.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../beast2/lib/colt.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

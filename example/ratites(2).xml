@@ -31,7 +31,7 @@ This xml is used to test the 7 ratites by using bModelTest
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="5000000" sampleFromPrior="true">
 <state id="state" storeEvery="5000">
     <tree spec="beast.util.TreeParser" id="Tree.t:ratites" name="stateNode" IsLabelledNewick="true" newick=
             "((RHEA:0.26095,(DIGI:0.0834,ANDI:0.0834):0.17755):0.00695,(OST:0.253277,((CASS:0.159,EMU:0.159):0.084604,KIWI:0.243604):0.009673):0.014623)" taxa="@ratites"/>
@@ -105,20 +105,21 @@ This xml is used to test the 7 ratites by using bModelTest
     </distribution>
 
     <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
-              twindowSize="0.017"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="30"/>
-
-    <operator id="RootOperator1.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
-              twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
+              twindowSize="0.017"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="3"/>
 
     <operator id="RootOperator2.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
-              twindowSize="0.055" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
+              twindowSize="0.055" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="1"/>
+
+    <operator id="RootOperator3.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
+              dwindowSize="0.038" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="1"/>
+
+    <operator id="RootOperator1.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
+              twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="1"/>
+
 <!--
     <operator id="RootOperator3.c:dna" spec="SmallPulleyV2" branchRateModel="@RelaxedClock.c:ratites"
               twindowSize="0.5" dwindowSize="0.038" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
 -->
-
-    <operator id="RootOperator3.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
-              dwindowSize="0.038" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="10"/>
 
     <operator id="BirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDBirthRate.t:ratites" scaleFactor="0.75" weight="0.2"/>
 
@@ -142,7 +143,7 @@ This xml is used to test the 7 ratites by using bModelTest
         <parameter idref="BMT_frequencies.s:ratites"/>
     </operator>
 
-<logger id="tracelog" fileName="dna.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+<logger id="tracelog" fileName="dna.log" logEvery="500" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -183,7 +184,7 @@ This xml is used to test the 7 ratites by using bModelTest
 </logger>
 
 
-<logger id="treelog.t:dna" fileName="$(tree).trees" logEvery="100" mode="tree">
+<logger id="treelog.t:dna" fileName="$(tree).trees" logEvery="2000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
 </logger>
 <!--
