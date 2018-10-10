@@ -148,7 +148,7 @@ This xml uses rates directly without using constant distance operator
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:ratites" fileName="$(tree).trees" logEvery="1000" mode="tree">
+    <logger id="treelog.t:ratites" fileName="$(tree).trees" logEvery="2000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:ratites" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
     </logger>
 

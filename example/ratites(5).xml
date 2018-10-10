@@ -149,7 +149,7 @@ This xml uses rate quantiles
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:ratites" fileName="$(tree).trees" logEvery="1000" mode="tree">
+    <logger id="treelog.t:ratites" fileName="$(tree).trees" logEvery="2000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:ratites" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
     </logger>
 
