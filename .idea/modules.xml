@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../BEASTLabs/BEASTLabs.iml" filepath="$PROJECT_DIR$/../BEASTLabs/BEASTLabs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../BEASTLabs/BEASTLabs.iml" filepath="$PROJECT_DIR$/../BEASTLabs/BEASTLabs.iml" />
       <module fileurl="file://$PROJECT_DIR$/ConstantDistanceOperator.iml" filepath="$PROJECT_DIR$/ConstantDistanceOperator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../bModelTest/bModelTest.iml" filepath="$PROJECT_DIR$/../bModelTest/bModelTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/../bModelTest/bModelTest.iml" filepath="$PROJECT_DIR$/../bModelTest/bModelTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/../beast2/beast2.iml" filepath="$PROJECT_DIR$/../beast2/beast2.iml" />
     </modules>

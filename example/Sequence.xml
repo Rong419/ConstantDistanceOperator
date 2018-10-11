@@ -11,12 +11,14 @@
         <sequence taxon="siamang">?</sequence>
     </data>
 
-
-
     <tree id='tree' spec='beast.util.TreeParser' IsLabelledNewick='true' newick='((((human:0.02096625515232275,(chimp:0.014857143159686462,bonobo:0.014857143159686462):0.0061091119926362895):0.012862878672687175,gorilla:0.033829133825009926):0.029471223948245952,orangutan:0.06330035777325588):0.0031773962188650223,siamang:0.0664777539921209)' taxa='@alignment'/>
 
 
     <run spec="beast.app.seqgen.SequenceSimulator" id="seqgen" data='@alignment' tree='@tree' sequencelength='3000'>
+        <!--
+        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+        <distribution id="treeLikelihood" spec="ThreadedTreeLikelihood" data="@alignment" tree="@tree">
+        -->
 	    <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
 			<substModel spec='HKY' id='hky'>
 			    <parameter name='kappa' id="hky.kappa" value="5.0" lower="0.0"/>
@@ -27,9 +29,18 @@
 	    </siteModel>
         <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
             <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
+            <!--
             <LogNormal id="LogNormalDistributionModel" S="0.1" M="1" meanInRealSpace="true" name="distr"></LogNormal>
-            <parameter id="branchrates" name="ratecategories" spec="parameter.IntegerParameter" dimension="10">1</parameter>
-
+            -->
+            <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="10">1</parameter>
+            <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel">
+                <parameter name='M' id='M' value="1"/>
+                <parameter name='S' id='ucld.stdev' value="0.1"/>
+            </distr>
         </branchRateModel>
+        <!--
+        </distribution>
+        </distribution>
+        -->
 	</run>
 </beast>

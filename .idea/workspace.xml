@@ -9,16 +9,13 @@
     <list default="true" id="1d0a7ee5-1100-42f7-84b5-1b151cb71570" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../BEASTLabs/BEASTLabs.iml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../bModelTest/bModelTest.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../beast2/src/META-INF/MANIFEST.MF" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/ConstantDistanceOperator_jar.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/beast2/META-INF/MANIFEST.MF" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/beast2/beast/evolution/branchratemodel/UCRelaxedClockModel.class" afterPath="$PROJECT_DIR$/out/production/beast2/beast/evolution/branchratemodel/UCRelaxedClockModel.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/ratites(1).xml" afterPath="$PROJECT_DIR$/example/ratites(1).xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/ratites(3).xml" afterPath="$PROJECT_DIR$/example/ratites(3).xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/ratites(4).xml" afterPath="$PROJECT_DIR$/example/ratites(4).xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/ratites(5).xml" afterPath="$PROJECT_DIR$/example/ratites(5).xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ratites.log" afterPath="$PROJECT_DIR$/ratites.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ratites.trees" afterPath="$PROJECT_DIR$/ratites.trees" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../beast2/src/beast/app/seqgen/SequenceSimulator.java" afterPath="$PROJECT_DIR$/../beast2/src/beast/app/seqgen/SequenceSimulator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java" afterPath="$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ConstantDistanceOperator.iml" afterPath="$PROJECT_DIR$/ConstantDistanceOperator.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/Sequence.xml" afterPath="$PROJECT_DIR$/example/Sequence.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,12 +26,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
       <file leaf-file-name="SequenceSimulator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../beast2/src/beast/app/seqgen/SequenceSimulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3118">
-              <caret line="40" column="94" lean-forward="true" selection-start-line="40" selection-start-column="94" selection-end-line="40" selection-end-column="94" />
+            <state relative-caret-position="502">
+              <caret line="302" column="28" lean-forward="false" selection-start-line="302" selection-start-column="19" selection-end-line="302" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -42,31 +39,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sequence.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Sequence.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/Sequence.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+            <state relative-caret-position="658">
+              <caret line="43" column="11" lean-forward="false" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testSeqGen.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="testSeqGen.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../beast2/examples/testSeqGen.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-764">
-              <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UCRelaxedClockModel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2660">
-              <caret line="154" column="3" lean-forward="false" selection-start-line="154" selection-start-column="3" selection-end-line="154" selection-end-column="3" />
+            <state relative-caret-position="3239">
+              <caret line="79" column="30" lean-forward="true" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -75,8 +62,18 @@
       <file leaf-file-name="ratites(3).xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/ratites(3).xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="385" />
+            <state relative-caret-position="4428">
+              <caret line="75" column="96" lean-forward="false" selection-start-line="75" selection-start-column="96" selection-end-line="75" selection-end-column="96" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UCRelaxedClockModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="470">
+              <caret line="28" column="13" lean-forward="false" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -101,7 +98,7 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../beast2" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -142,11 +139,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="220" />
-    <option name="y" value="23" />
-    <option name="width" value="1721" />
-    <option name="height" value="979" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="109" />
+    <option name="y" value="119" />
+    <option name="width" value="3033" />
+    <option name="height" value="1491" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -168,36 +165,6 @@
           <expand>
             <path>
               <item name="ConstantDistanceOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="beast2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ConstantDistanceOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="beast2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ConstantDistanceOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="beast2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="beast" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ConstantDistanceOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="beast2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="beast" type="462c0819:PsiDirectoryNode" />
-              <item name="evolution" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ConstantDistanceOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="beast2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="beast" type="462c0819:PsiDirectoryNode" />
-              <item name="evolution" type="462c0819:PsiDirectoryNode" />
-              <item name="branchratemodel" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ConstantDistanceOperator" type="b2602c69:ProjectViewProjectNode" />
               <item name="ConstantDistanceOperator" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -209,19 +176,19 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.21034482" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/example/ratites(3).xml" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="SearchEverywhereHistoryKey" value="S&#9;FILE&#9;file:///Users/rzha419/Workspace/beast2/src/beast/app/seqgen/SequenceSimulator.java&#10;Se&#9;FILE&#9;file:///Users/rzha419/Workspace/beast2/src/beast/app/seqgen/SequenceSimulator.java&#10;seqg&#9;FILE&#9;file:///Users/rzha419/Workspace/beast2/examples/testSeqGen.xml&#10;musculus&#9;null&#9;null" />
   </component>
@@ -237,12 +204,12 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.BeastMain">
+  <component name="RunManager" selected="Application.SeqGen">
     <configuration name="BeastMain" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="beast.app.beastapp.BeastMain" />
       <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PROGRAM_PARAMETERS" value="-overwrite $PROJECT_DIR$/example/Sequence.xml" />
+      <option name="PROGRAM_PARAMETERS" value="-overwriteC:\UOA Learning\ConstantDistanceOperator\example\ratites(3).xml" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -250,6 +217,20 @@
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="ConstantDistanceOperator" />
+      <envs />
+    </configuration>
+    <configuration name="SeqGen" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="beast.app.seqgen.SequenceSimulator" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;C:\UOA Learning\ConstantDistanceOperator\example\Sequence.xml&quot; 1" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="beast2" />
       <envs />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
@@ -333,23 +314,9 @@
       <properties />
       <listeners />
     </configuration>
-    <configuration name="bModelTest" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="beast.app.beastapp.BeastMain" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PROGRAM_PARAMETERS" value="-overwrite $PROJECT_DIR$/example/primates2.xml" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="bModelTest" />
-      <envs />
-    </configuration>
     <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Application.BeastMain" />
-      <item index="1" class="java.lang.String" itemvalue="Application.bModelTest" />
+      <item index="0" class="java.lang.String" itemvalue="Application.SeqGen" />
+      <item index="1" class="java.lang.String" itemvalue="Application.BeastMain" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -377,42 +344,45 @@
       <workItem from="1538425100587" duration="3273000" />
       <workItem from="1538535376455" duration="612000" />
       <workItem from="1539031546761" duration="8989000" />
+      <workItem from="1539209875855" duration="1460000" />
+      <workItem from="1539225466292" duration="537000" />
+      <workItem from="1539226092230" duration="5174000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133096000" />
+    <option name="totallyTimeSpent" value="140267000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="220" y="23" width="1721" height="979" extended-state="0" />
+    <frame x="-14" y="-14" width="3228" height="1738" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32855567" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32825944" sideWeight="0.49875" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46525478" sideWeight="0.31" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2712238" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36863005" sideWeight="0.69" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17722255" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958305" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39973527" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -422,11 +392,12 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="4" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/InConstantDistanceOperator.java" />
     <entry file="file://$PROJECT_DIR$/src/SimpleDistance.java" />
     <entry file="file://$PROJECT_DIR$/src/SmallPulleyV1.java" />
     <entry file="file://$PROJECT_DIR$/src/SmallPulleyV2.java" />
@@ -474,20 +445,8 @@
     <entry file="file://$PROJECT_DIR$/../withcons/primates2.xml" />
     <entry file="file://$PROJECT_DIR$/../categories/primates1.xml" />
     <entry file="file://$USER_HOME$/Desktop/Untitled.xml" />
-    <entry file="file://$PROJECT_DIR$/../primates/withcons/2/primates2.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-142531">
-          <caret line="11" column="8611" lean-forward="false" selection-start-line="11" selection-start-column="8611" selection-end-line="11" selection-end-column="8611" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../primates/withoutcons/2/primates3.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="204" column="23" lean-forward="false" selection-start-line="204" selection-start-column="23" selection-end-line="204" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../primates/withcons/2/primates2.xml" />
+    <entry file="file://$PROJECT_DIR$/../primates/withoutcons/2/primates3.xml" />
     <entry file="file://$PROJECT_DIR$/../beast2/src/beast/core/Input.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1796">
@@ -636,14 +595,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home/src.zip!/java/lang/NumberFormatException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="64" column="0" lean-forward="false" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_151.jdk/Contents/Home/src.zip!/java/lang/NumberFormatException.java" />
     <entry file="file://$PROJECT_DIR$/example/ratites(4).xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
@@ -653,14 +605,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/ratites(5).xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="385" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/ratites(3).xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="385" />
@@ -686,24 +630,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2660">
-          <caret line="154" column="3" lean-forward="false" selection-start-line="154" selection-start-column="3" selection-end-line="154" selection-end-column="3" />
+        <state relative-caret-position="470">
+          <caret line="28" column="13" lean-forward="false" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../beast2/examples/testSeqGen.xml">
+    <entry file="file://$PROJECT_DIR$/example/ratites(3).xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-764">
-          <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+        <state relative-caret-position="4428">
+          <caret line="75" column="96" lean-forward="false" selection-start-line="75" selection-start-column="96" selection-end-line="75" selection-end-column="96" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/examples/testRelaxedClock.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="535">
+          <caret line="71" column="34" lean-forward="true" selection-start-line="71" selection-start-column="19" selection-end-line="71" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../beast2/src/beast/app/seqgen/SequenceSimulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3118">
-          <caret line="40" column="94" lean-forward="true" selection-start-line="40" selection-start-column="94" selection-end-line="40" selection-end-column="94" />
+        <state relative-caret-position="502">
+          <caret line="302" column="28" lean-forward="false" selection-start-line="302" selection-start-column="19" selection-end-line="302" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -712,8 +664,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/example/Sequence.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+        <state relative-caret-position="658">
+          <caret line="43" column="11" lean-forward="false" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/examples/testSeqGen.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3239">
+          <caret line="79" column="30" lean-forward="true" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -729,7 +689,6 @@
             <option name="proportions">
               <list>
                 <option value="0.21034482" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -772,11 +731,12 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>ConstantDistanceOperator</last-edited>
+          <last-edited>beast2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.21034482" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
