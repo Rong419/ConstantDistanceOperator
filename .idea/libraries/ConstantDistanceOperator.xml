@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ConstantDistanceOperator">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/ConstantDistanceOperator_jar/ConstantDistanceOperator.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

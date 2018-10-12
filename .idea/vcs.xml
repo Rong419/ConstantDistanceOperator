@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../BEASTLabs" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../bModelTest" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../beast2" vcs="Git" />
   </component>
 </project>
