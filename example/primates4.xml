@@ -184,11 +184,12 @@
                 </Gamma>
             </prior>
             -->
+            <!--
             <prior id="RatePriorDistrbution.t:dna" name="distribution" x="@rates.c:journal">
                 <LogNormal id="LogNormalDistribution.c:dna" S="@ucldStdev.c:journal"  M="1" meanInRealSpace="true" name="distr">
                 </LogNormal>
             </prior>
-
+            -->
         </distribution>
         <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
             <distribution id="treeLikelihood.journal" spec="ThreadedTreeLikelihood" data="@journal" tree="@Tree.t:journal">

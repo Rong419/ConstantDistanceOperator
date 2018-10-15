@@ -3,24 +3,37 @@
 
 
     <data id="alignment" dataType="nucleotide">
-        <sequence taxon="RHEA">?</sequence>
-        <sequence taxon="DIGI">?</sequence>
+
         <sequence taxon="ANDI">?</sequence>
-        <sequence taxon="OST">?</sequence>
+        <sequence taxon="DIGI">?</sequence>
+        <sequence taxon="KIWI">?</sequence>
         <sequence taxon="CASS">?</sequence>
         <sequence taxon="EMU">?</sequence>
-        <sequence taxon="KIWI">?</sequence>
+        <sequence taxon="OST">?</sequence>
+        <sequence taxon="RHEA">?</sequence>
+
+
+        <!--
+        <sequence taxon="A">?</sequence>
+        <sequence taxon="B">?</sequence>
+        <sequence taxon="C">?</sequence>
+        <sequence taxon="D">?</sequence>
+        -->
     </data>
 
 
-
+<!--
     <tree id='tree' spec='beast.util.TreeParser' IsLabelledNewick='true' newick='((RHEA:0.26095,(DIGI:0.0834,ANDI:0.0834):0.17755):0.00695,(OST:0.253277,((CASS:0.159,EMU:0.159):0.084604,KIWI:0.243604):0.009673):0.014623)' taxa='@alignment'/>
     <distribution id="likelihood" spec="TreeLikelihood" data="@alignment" tree="@tree" siteModel="@siteModel" />
+
+    <tree id='tree' spec='beast.util.TreeParser' IsLabelledNewick='true' newick='((A:0.8047913400514007,B:0.8047913400514007):0.27957849048117434,(C:0.805612423315074,D:0.805612423315074):0.2787574072175011)' taxa='@alignment'/>
+    -->
+    <tree id='tree' spec='beast.util.TreeParser' IsLabelledNewick='true' newick='((((ANDI:0.02952586728396713,DIGI:0.02952586728396713):0.07984421865926189,KIWI:0.10937008594322901):0.012472116328202151,(CASS:0.0705347451037815,EMU:0.0705347451037815):0.05130745716764967):0.0069649269476606546,(OST:0.1186519114220907,RHEA:0.1186519114220907):0.010155217797001126)' taxa='@alignment'/>
 
     <run spec="beast.app.seqgen.SequenceSimulator" id="seqgen" data='@alignment' tree='@tree' sequencelength='3000'>
         <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
         <substModel spec='HKY' id='hky'>
-            <parameter name='kappa' id="hky.kappa" value="5.0" lower="0.0"/>
+            <parameter name='kappa' id="hky.kappa" value="5" lower="0.0"/>
             <frequencies id='freqs' spec='Frequencies'>
                 <data idref='alignment'/>
             </frequencies>
@@ -28,7 +41,7 @@
         </siteModel>
         <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
             <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
-            <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="10">1</parameter>
+            <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="12">1</parameter>
             <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel">
                 <parameter name='M' id='M' value="1"/>
                 <parameter name='S' id='ucld.stdev' value="0.1"/>
