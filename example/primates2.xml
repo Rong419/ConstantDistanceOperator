@@ -177,18 +177,19 @@
                     <parameter id="RealParameter.0" estimate="false" name="mean">1.0</parameter>
                 </Exponential>
             </distribution>
-            <!--
+
+            <prior id="RatePriorDistrbution.t:dna" name="distribution" x="@rates.c:journal">
+                <LogNormal id="LogNormalDistribution.c:dna" S="@ucldStdev.c:journal"  M="1" meanInRealSpace="true" name="distr">
+                </LogNormal>
+            </prior>
+
             <prior id="ucldStdevPrior.c:journal" name="distribution" x="@ucldStdev.c:journal">
                 <Gamma id="Gamma.0" name="distr">
                     <parameter id="RealParameter.5" estimate="false" name="alpha">0.5396</parameter>
                     <parameter id="RealParameter.6" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
             </prior>
-            -->
-            <prior id="RatePriorDistrbution.t:dna" name="distribution" x="@rates.c:journal">
-                <LogNormal id="LogNormalDistribution.c:dna" S="@ucldStdev.c:journal"  M="1" meanInRealSpace="true" name="distr">
-                </LogNormal>
-            </prior>
+
 
         </distribution>
         <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
@@ -235,15 +236,15 @@
     <operator id="BMT_FrequenciesExchanger.s:journal" spec="DeltaExchangeOperator" delta="0.01" weight="5.0">
         <parameter idref="BMT_frequencies.s:journal"/>
     </operator>
-<!--
-    <operator id="ucldStdevScaler.c:journal" spec="ScaleOperator" parameter="@ucldStdev.c:journal" scaleFactor="0.5" weight="3.0"/>
--->
+
+    <operator id="ucldStdevScaler.c:journal" spec="ScaleOperator" parameter="@ucldStdev.c:journal" scaleFactor="0.5" weight="10.0"/>
+
     <operator id="RatesRandomWalk.c:journal" spec="RealRandomWalkOperator" parameter="@rates.c:journal" windowSize="1" weight="10.0"/>
 
     <operator id="RatesSwapOperator.c:journal" spec="SwapOperator" parameter="@rates.c:journal" weight="10.0"/>
-
+<!--
     <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:journal" distr="@LogNormalDistribution.c:dna" weight="10.0"/>
-
+-->
 <!--
     <operator id="RatesUniform.c:journal" spec="UniformOperator" parameter="@rates.c:journal" weight="10.0"/>
 -->

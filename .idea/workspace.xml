@@ -1,299 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ConstantDistanceOperator:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="09ef0064-27cc-4c7e-b7b6-3528b1a6b078" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../BEASTLabs/BEASTLabs.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/ConstantDistanceOperator_jar.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../bModelTest/bModelTest.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dna.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dna.trees" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/C/BEER.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/C/BEER.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/C/BeerLikelihoodCoreNative.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/C/Makefile" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/C/beast_evolution_likelihood_BeerLikelihoodCoreNative.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/C/config.h" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beast1to2/BEAST1SAXHandler.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beast1to2/Beast1To2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beast1to2/XMLUtil.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beast1to2/beast1To2.xsl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/DistributionViewer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/FileInputEditor$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/FileInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/LogFileInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/MultiMonophyleticConstraintInputEditor$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/MultiMonophyleticConstraintInputEditor$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/MultiMonophyleticConstraintInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/OutFileInputEditor$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/OutFileInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/TreeFileInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/beauti/XMLFileInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$10.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$11.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$12.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$13.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$14.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$15.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$16.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$17.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$18.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$19.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$20.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$21.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$22.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$23.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$24.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$25.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$26.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$27.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$28.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$29.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$3.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$30.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$31.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$32.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$33.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$34.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$35.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$4.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$5.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$6.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$7.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$8.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$9.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$CellBorder.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$CellFormat.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$FormulaCell.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$MyTableCellRenderer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$RowHeightListener.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet$UndoAction.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/SpreadSheet.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor$3.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor$4.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor$5.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor$TreeTransferHandler$NodesTransferable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor$TreeTransferHandler.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/draw/TaxonSetInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/images/utility.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/TreeSetAnalyser$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/TreeSetAnalyser$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/TreeSetAnalyser$TSAConsoleApp.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/TreeSetAnalyser.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/TreeSetAnalyserDialog$1$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/TreeSetAnalyserDialog$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/TreeSetAnalyserDialog.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/tools/treesetanalyser.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/Application.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/ConsoleApp$BOAS.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/ConsoleApp$Message.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/ConsoleApp.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/LogFile.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/OutFile.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/TreeFile.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/app/util/XMLFile.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/DataNode.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/FilteredValuable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/Likelihood.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/MCMC2$OperatorSet.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/MCMC2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/Posterior.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/Prior.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/util/LoggableSum$Mode.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/util/LoggableSum.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/util/ParameterConstrainer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/util/Slice.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/core/util/TrimLineReader.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/alignment/PrunedAlignment.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/branchratemodel/PrunedRelaxedClockModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/AncestralStateLogger.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreCached.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreCached4.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreCnG.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreCnG4.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreCnG4Padded.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreJava.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreJava4.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreNative.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreSimple.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/BeerLikelihoodCoreSimple4.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/ExpBeerLikelihoodCore$CoreRunnable.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/ExpBeerLikelihoodCore.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/ExpBeerLikelihoodCore4.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/ExperimentalLikelihoodCore.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/ExperimentalTreeLikelihood.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/SupertreeLikelihood.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/likelihood/TraitedTreeLikelihood.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/AttachAndUniformOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/AttachOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/CladeInternalAttachOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/CombinedOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/CompoundOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/DistanceProvider$1$Data1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/DistanceProvider$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/DistanceProvider$Data.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/DistanceProvider.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/MonoCladesMapping.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/MultiCladeAttachOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/NNI.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/RestrictedSubtreeSlide.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/RootHeightScaleOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/SPR.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/TreeWithMetaDataRandomWalker.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/UniformOperatorSelective.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/operators/UniformSelective.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/speciation/RandomLocalYuleModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/speciation/UltrametricSpeciationModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/CladeSubstitutionModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/ColtEigenSystem.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/ComplexColtEigenSystem.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/ComplexSubstitutionModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/EpochSubstitutionModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/GeneralLazySubstitutionModel$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/GeneralLazySubstitutionModel$RelaxationMode.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/GeneralLazySubstitutionModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/LazyHKY$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/LazyHKY$RelaxationMode.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/substitutionmodel/LazyHKY.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/taxonomy/Taxon.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/BranchScoreMetric.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/Clade.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/ConstrainedClusterTree$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/ConstrainedClusterTree$NodeX.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/ConstrainedClusterTree$Tuple.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/ConstrainedClusterTree$TupleComparator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/ConstrainedClusterTree$Type.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/ConstrainedClusterTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/ConstrainedRandomTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/InitParamFromTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/JEBLTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/MonophyleticConstraint.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/PrunedTree$MyInt.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/PrunedTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/RootedTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/RootedTreeUtils.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/RootedTreeWrapper.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/SimpleConstrainedRandomTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/SimpleRandomTree$Bound.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/SimpleRandomTree$ConstraintViolatedException.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/SimpleRandomTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/TreeAnnotation.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/TreeMetric.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/coalescent/CauchyPlusConstant.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/coalescent/ExponentialGrowthPlusConstant.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/coalescent/StructuredCoalescentTree$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/coalescent/StructuredCoalescentTree$EventType.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/coalescent/StructuredCoalescentTree$SCEvent.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/evolution/tree/coalescent/StructuredCoalescentTree.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/HeatedMCMC$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/HeatedMCMC.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MCMCMC$HeatedChainThread.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MCMCMC.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MCMCParticle$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MCMCParticle.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MCMCParticleAsync.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/ML.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MultiMCMC$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MultiMCMC$LogWatcherThread.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/MultiMCMC.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/ParticleFilter.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/ParticleLauncher.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/ParticleLauncherByFile.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/inference/SimulatedAnnealing.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/LogTricks.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/ExcludablePrior.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/GammaOneP.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/MRCAPriorWithRogues.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/MixtureDistribution.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/MonoPoints.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/MultiMRCAPriors.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/MultiMonophyleticConstraint.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/distributions/SingleParamGamma.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/CholeskyDecomposition.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/IllegalDimension.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/LUPDecomposition.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/LinearEquations.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/Matrix.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/NonSymmetricComponents.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/RobustEigenDecomposition.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/RobustSingularValueDecomposition.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/SymmetricMatrix.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/matrixalgebra/Vector.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/math/util/MathUtils.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/AddOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/DelOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/MoveOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/PrevalenceLikelihood$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/PrevalenceLikelihood.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/PrevalenceList$Action.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/PrevalenceList$Item.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/PrevalenceList.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/SubtreeSlide.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/TreeForPrevalenceLikelihood$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/TreeForPrevalenceLikelihood.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/TreeOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/TreeScaleOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/Uniform.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/prevalence/WilsonBalding.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/util/LogAnalyserAdv.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/util/ReplaceSequenceInXML.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/util/Script$Engine.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/util/Script.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/util/TimeLogger$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/util/TimeLogger$reportUnits.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/beast/util/TimeLogger.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/core/FilteredValuableTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/evolution/likelihood/ExperimentalTreeLikelihoodTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/evolution/likelihood/ThreadedTreeLikelihoodTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/evolution/likelihood/TreeLikelihoodRLCTestDraft.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/evolution/likelihood/TreeLikelihoodTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/evolution/operators/CompoundOperatorTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/evolution/operators/RestrictedSubtreeSlideTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/evolution/tree/MonophyleticConstraintTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/BEASTLabs/test/beast/math/distributions/MultiMonophyleticConstraintTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/app/beauti/BEASTModelTestInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/app/beauti/NucleotideRevJumpSubstModelRatePriorInputEditor.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/app/tools/BModelAnalyser.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/app/tools/WebViewer$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/app/tools/WebViewer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/operators/BMTBirthDeathOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/operators/BMTExchangeOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/operators/BMTMergeSplitOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/operators/BMTScaleOperator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/sitemodel/BEASTModelTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/sitemodel/BEASTModelTestSiteModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/substitutionmodel/CorrelatedEvolution.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/substitutionmodel/ModelFrequencies.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/substitutionmodel/NucleotideRevJumpSubstModel$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/substitutionmodel/NucleotideRevJumpSubstModel$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/substitutionmodel/NucleotideRevJumpSubstModel$ModelSet.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/evolution/substitutionmodel/NucleotideRevJumpSubstModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/math/distributions/BMTPrior.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/math/distributions/ModelSetPrior$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/math/distributions/ModelSetPrior$PriorType.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/math/distributions/ModelSetPrior.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/math/distributions/NucleotideRevJumpSubstModelRatePrior$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/math/distributions/NucleotideRevJumpSubstModelRatePrior$BMTPriorType.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/beast/math/distributions/NucleotideRevJumpSubstModelRatePrior.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/test/beast/evolution/operators/ExchangeOperatorTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/test/beast/evolution/operators/MergeSplitOperatorTest$GroupCountLogger.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/test/beast/evolution/operators/MergeSplitOperatorTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/test/beast/evolution/substitutionmodel/NucleotideRevJumpSubstModelTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/test/beast/math/distributions/ModelSetPriorTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/bModelTest/test/beast/util/MyLogAnalyser.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/ConstantDistanceOperator_jar/ConstantDistanceOperator.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/testSequence.xml.state" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/ConstantDistanceOperator/consoperators/IndependentOperator.class" afterPath="$PROJECT_DIR$/production/ConstantDistanceOperator/consoperators/IndependentOperator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/beast2/beast/evolution/branchratemodel/UCRelaxedClockModel$1.class" afterPath="$PROJECT_DIR$/production/beast2/beast/evolution/branchratemodel/UCRelaxedClockModel$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/beast2/beast/evolution/branchratemodel/UCRelaxedClockModel.class" afterPath="$PROJECT_DIR$/production/beast2/beast/evolution/branchratemodel/UCRelaxedClockModel.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ConstantDistanceOperator.iml" afterPath="$PROJECT_DIR$/ConstantDistanceOperator.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YuleTree.xml.state" afterPath="$PROJECT_DIR$/YuleTree.xml.state" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/Sequence.xml" afterPath="$PROJECT_DIR$/example/Sequence.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/primates4.xml" afterPath="$PROJECT_DIR$/example/primates4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/YuleTree.xml" afterPath="$PROJECT_DIR$/example/YuleTree.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/primates2.xml" afterPath="$PROJECT_DIR$/example/primates2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/ratites(1).xml" afterPath="$PROJECT_DIR$/example/ratites(1).xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/ratites(3).xml" afterPath="$PROJECT_DIR$/example/ratites(3).xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/testSequence.xml" afterPath="$PROJECT_DIR$/example/testSequence.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/journal.log" afterPath="$PROJECT_DIR$/journal.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/journal.trees" afterPath="$PROJECT_DIR$/journal.trees" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/primates2.xml.state" afterPath="$PROJECT_DIR$/primates2.xml.state" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ratites(1).xml.state" afterPath="$PROJECT_DIR$/ratites(1).xml.state" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ratites(3).xml.state" afterPath="$PROJECT_DIR$/ratites(3).xml.state" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ratites.log" afterPath="$PROJECT_DIR$/ratites.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ratites.trees" afterPath="$PROJECT_DIR$/ratites.trees" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testSequence.xml.state" afterPath="$PROJECT_DIR$/testSequence.xml.state" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/consoperators/IndependentOperator.java" afterPath="$PROJECT_DIR$/src/consoperators/IndependentOperator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../beast2/src/beast/app/seqgen/SequenceSimulator.java" afterPath="$PROJECT_DIR$/../beast2/src/beast/app/seqgen/SequenceSimulator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java" afterPath="$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java" />
     </list>
@@ -307,31 +44,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Sequence.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example/Sequence.xml">
+      <file leaf-file-name="ratites(3).xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/example/ratites(3).xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="378">
+              <caret line="167" column="12" lean-forward="true" selection-start-line="167" selection-start-column="12" selection-end-line="167" selection-end-column="12" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testSequence.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example/testSequence.xml">
+      <file leaf-file-name="dna.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Desktop/dna.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="59" column="107" lean-forward="false" selection-start-line="59" selection-start-column="107" selection-end-line="59" selection-end-column="107" />
+            <state relative-caret-position="556">
+              <caret line="69" column="39" lean-forward="false" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="YuleTree.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/example/YuleTree.xml">
+      <file leaf-file-name="UCRelaxedClockModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="84" column="23" lean-forward="true" selection-start-line="84" selection-start-column="23" selection-end-line="84" selection-end-column="23" />
+            <state relative-caret-position="846">
+              <caret line="68" column="35" lean-forward="false" selection-start-line="68" selection-start-column="35" selection-end-line="68" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -354,21 +91,30 @@
         <option value="$PROJECT_DIR$/example/tsetSequence.xml" />
         <option value="$USER_HOME$/Desktop/YuleTree.xml" />
         <option value="$PROJECT_DIR$/../beast2/examples/testSimulatedAlignment.xml" />
-        <option value="$PROJECT_DIR$/example/YuleTree.xml" />
         <option value="$USER_HOME$/Desktop/using real data/test2/YuleTree.xml" />
-        <option value="$PROJECT_DIR$/example/Sequence.xml" />
         <option value="$USER_HOME$/Desktop/using real data/test2/Sequence.xml" />
-        <option value="$PROJECT_DIR$/example/testSequence.xml" />
         <option value="$PROJECT_DIR$/../primates/categories/5/primates1.xml" />
         <option value="$PROJECT_DIR$/../primates/withcons/5/primates2.xml" />
         <option value="$PROJECT_DIR$/../primates/withoutcons/5/primates3.xml" />
         <option value="$PROJECT_DIR$/../primates/quantitles/5/primates4.xml" />
         <option value="$PROJECT_DIR$/example/primates4.xml" />
-        <option value="$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java" />
         <option value="$PROJECT_DIR$/../primates/withcons/Full/primates2.xml" />
         <option value="$PROJECT_DIR$/../primates/categories/Full/primates1.xml" />
         <option value="$PROJECT_DIR$/../primates/withoutcons/Full/primates3.xml" />
         <option value="$PROJECT_DIR$/../primates/quantitles/Full/primates4.xml" />
+        <option value="$PROJECT_DIR$/example/primates2.xml" />
+        <option value="$USER_HOME$/Desktop/Untitled.xml" />
+        <option value="$USER_HOME$/Desktop/Untitled1.xml" />
+        <option value="$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java" />
+        <option value="$PROJECT_DIR$/src/consoperators/IndependentOperator.java" />
+        <option value="$PROJECT_DIR$/example/YuleTree.xml" />
+        <option value="$PROJECT_DIR$/example/Sequence.xml" />
+        <option value="$PROJECT_DIR$/../Sequence/testSequence.xml" />
+        <option value="$PROJECT_DIR$/example/testSequence.xml" />
+        <option value="$PROJECT_DIR$/example/ratites(1).xml" />
+        <option value="$PROJECT_DIR$/../ratites/categories/test3_sample ucld/ratites1.xml" />
+        <option value="$PROJECT_DIR$/../ratites/withcons/test3_sample ucld/ratites3.xml" />
+        <option value="$PROJECT_DIR$/example/ratites(3).xml" />
       </list>
     </option>
   </component>
@@ -378,11 +124,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="107" />
-    <option name="y" value="40" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="182" />
+    <option name="y" value="43" />
     <option name="width" value="1794" />
-    <option name="height" value="981" />
+    <option name="height" value="1020" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -415,16 +161,16 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
-      <pane id="AndroidView" />
       <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="SearchEverywhereHistoryKey" value="Seq&#9;PSI&#9;JAVA://beast.app.seqgen.SequenceSimulator" />
@@ -446,7 +192,7 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="beast.app.beastapp.BeastMain" />
       <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PROGRAM_PARAMETERS" value="-overwrite $PROJECT_DIR$/example/primates4.xml" />
+      <option name="PROGRAM_PARAMETERS" value="-overwrite $PROJECT_DIR$/example/ratites(3).xml" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -570,16 +316,16 @@
       <option name="presentableId" value="Default" />
       <updated>1539296337322</updated>
       <workItem from="1539296338588" duration="9270000" />
-      <workItem from="1539547203327" duration="18631000" />
+      <workItem from="1539547203327" duration="38336000" />
+      <workItem from="1540693960481" duration="18217000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27901000" />
+    <option name="totallyTimeSpent" value="65823000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="107" y="40" width="1794" height="981" extended-state="1" />
-    <editor active="true" />
+    <frame x="182" y="43" width="1794" height="1020" extended-state="0" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -589,8 +335,8 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35313532" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.56329113" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -600,8 +346,8 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -621,110 +367,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/app/seqgen/SequenceSimulator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5168">
-          <caret line="296" column="53" lean-forward="false" selection-start-line="296" selection-start-column="53" selection-end-line="296" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/core/BEASTInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="40" column="17" lean-forward="false" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../beast2/examples/testSeqGen.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1558">
-          <caret line="82" column="20" lean-forward="false" selection-start-line="82" selection-start-column="20" selection-end-line="82" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/Sequence.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1121">
-          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/testSequence.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="26" column="69" lean-forward="false" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/Untitled.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1843">
-          <caret line="97" column="3" lean-forward="false" selection-start-line="97" selection-start-column="3" selection-end-line="97" selection-end-column="128" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/ratites(2).xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="16" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../beast2/examples/testSimulatedAlignment.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="27" lean-forward="true" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/likelihood/TreeLikelihood.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="50" column="13" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/ratites(3).xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="75" column="66" lean-forward="false" selection-start-line="75" selection-start-column="66" selection-end-line="75" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/tsetSequence.xml" />
-    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/core/BEASTInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="40" column="17" lean-forward="false" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/Untitled.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1843">
-          <caret line="97" column="3" lean-forward="false" selection-start-line="97" selection-start-column="3" selection-end-line="97" selection-end-column="128" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/YuleTree.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="27" column="60" lean-forward="true" selection-start-line="27" selection-start-column="60" selection-end-line="27" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/example/ratites(2).xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="521">
@@ -737,31 +379,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="741">
           <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="40" selection-end-column="72" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/using real data/test2/YuleTree.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/using real data/test2/Sequence.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Desktop/using real data/test2/YuleTree.xml" />
+    <entry file="file://$USER_HOME$/Desktop/using real data/test2/Sequence.xml" />
     <entry file="file://$PROJECT_DIR$/../primates/withcons/4/primates2.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-133195">
           <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -769,7 +395,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
           <caret line="14" column="57" lean-forward="true" selection-start-line="14" selection-start-column="48" selection-end-line="14" selection-end-column="57" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -777,7 +402,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="610">
           <caret line="82" column="20" lean-forward="false" selection-start-line="82" selection-start-column="20" selection-end-line="82" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -785,23 +409,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="296" column="53" lean-forward="false" selection-start-line="296" selection-start-column="53" selection-end-line="296" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/ratites(5).xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="103" column="3" lean-forward="true" selection-start-line="103" selection-start-column="3" selection-end-line="103" selection-end-column="108" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/primates1.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="182" column="15" lean-forward="true" selection-start-line="182" selection-start-column="15" selection-end-line="182" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -817,7 +424,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2032">
           <caret line="93" column="4" lean-forward="false" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -825,7 +431,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1053">
           <caret line="196" column="34" lean-forward="true" selection-start-line="196" selection-start-column="34" selection-end-line="196" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -833,15 +438,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1924">
           <caret line="178" column="4" lean-forward="false" selection-start-line="178" selection-start-column="4" selection-end-line="178" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="33" column="165" lean-forward="false" selection-start-line="33" selection-start-column="165" selection-end-line="33" selection-end-column="165" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -857,15 +453,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="37">
           <caret line="178" column="0" lean-forward="false" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/primates2.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="248" column="3" lean-forward="true" selection-start-line="248" selection-start-column="3" selection-end-line="248" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -873,7 +460,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-521">
           <caret line="245" column="4" lean-forward="false" selection-start-line="245" selection-start-column="4" selection-end-line="245" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -881,7 +467,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1570">
           <caret line="175" column="9" lean-forward="false" selection-start-line="175" selection-start-column="9" selection-end-line="175" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -889,7 +474,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1042">
           <caret line="178" column="11" lean-forward="false" selection-start-line="178" selection-start-column="11" selection-end-line="178" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -897,30 +481,265 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-925">
           <caret line="133" column="109" lean-forward="false" selection-start-line="133" selection-start-column="109" selection-end-line="133" selection-end-column="109" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/primates1.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="182" column="15" lean-forward="true" selection-start-line="182" selection-start-column="15" selection-end-line="182" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/util/Randomizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="707">
+          <caret line="393" column="26" lean-forward="false" selection-start-line="393" selection-start-column="26" selection-end-line="393" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/primates2.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="246" column="0" lean-forward="false" selection-start-line="246" selection-start-column="0" selection-end-line="246" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/tree/TreeStatLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="21" column="46" lean-forward="true" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/Untitled.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="78" column="20" lean-forward="true" selection-start-line="73" selection-start-column="26" selection-end-line="78" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/tree/TreeHeightLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/consoperators/SmallPulleyV1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="39" column="15" lean-forward="false" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/consoperators/InConstantDistanceOperator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="59" column="12" lean-forward="true" selection-start-line="59" selection-start-column="12" selection-end-line="59" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/tree/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="24" column="8" lean-forward="true" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/consoperators/SmallPulleyV2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="114" column="44" lean-forward="true" selection-start-line="114" selection-start-column="19" selection-end-line="114" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/operators/SubtreeSlide.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="241" column="0" lean-forward="false" selection-start-line="241" selection-start-column="0" selection-end-line="241" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/Untitled1.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="819">
+          <caret line="49" column="8" lean-forward="false" selection-start-line="49" selection-start-column="8" selection-end-line="52" selection-end-column="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/consoperators/SimpleDistance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="59" column="30" lean-forward="true" selection-start-line="59" selection-start-column="30" selection-end-line="59" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/ratites(6).xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/ratites(5).xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1717">
+          <caret line="103" column="3" lean-forward="true" selection-start-line="103" selection-start-column="3" selection-end-line="103" selection-end-column="108" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/ratites(4).xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="102" column="2" lean-forward="false" selection-start-line="102" selection-start-column="2" selection-end-line="102" selection-end-column="109" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Sequence/testSequence.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2663">
+          <caret line="146" column="42" lean-forward="true" selection-start-line="146" selection-start-column="42" selection-end-line="146" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/YuleTree.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="65" column="11" lean-forward="true" selection-start-line="65" selection-start-column="11" selection-end-line="65" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/Sequence.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state relative-caret-position="209">
+          <caret line="32" column="111" lean-forward="false" selection-start-line="32" selection-start-column="111" selection-end-line="32" selection-end-column="111" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/UoA 1 Learning/2018.10/SequenceSimulation/3.testSequnce/testSequence.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="798">
+          <caret line="42" column="57" lean-forward="true" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/UoA 1 Learning/2018.10/SequenceSimulation/2.Sequence/Sequence.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="21" column="11" lean-forward="false" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/UoA 1 Learning/2018.10/SequenceSimulation/1.YuleTree/YuleTree.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="12" column="11" lean-forward="true" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/consoperators/IndependentOperator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="32" column="30" lean-forward="true" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/YuleTree.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="27" column="60" lean-forward="true" selection-start-line="27" selection-start-column="60" selection-end-line="27" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ratites/categories/test2/ratites1.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1551">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/ratites(1).xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1000">
+          <caret line="77" column="33" lean-forward="true" selection-start-line="77" selection-start-column="33" selection-end-line="77" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../beast2/src/beast/evolution/branchratemodel/UCRelaxedClockModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="846">
+          <caret line="68" column="35" lean-forward="false" selection-start-line="68" selection-start-column="35" selection-end-line="68" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/dna.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-30">
+          <caret line="93" column="14" lean-forward="true" selection-start-line="93" selection-start-column="14" selection-end-line="95" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ratites/withcons/test3_sample ucld/ratites3.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="172" column="0" lean-forward="true" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/dna.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="556">
+          <caret line="69" column="39" lean-forward="false" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/testSequence.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="59" column="107" lean-forward="false" selection-start-line="59" selection-start-column="107" selection-end-line="59" selection-end-column="107" />
+        <state relative-caret-position="272">
+          <caret line="169" column="66" lean-forward="false" selection-start-line="169" selection-start-column="66" selection-end-line="169" selection-end-column="80" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example/YuleTree.xml">
+    <entry file="file://$PROJECT_DIR$/../ratites/categories/test3_sample ucld/ratites1.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="84" column="23" lean-forward="true" selection-start-line="84" selection-start-column="23" selection-end-line="84" selection-end-column="23" />
+        <state relative-caret-position="281">
+          <caret line="127" column="67" lean-forward="false" selection-start-line="127" selection-start-column="67" selection-end-line="127" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/ratites(3).xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="167" column="12" lean-forward="true" selection-start-line="167" selection-start-column="12" selection-end-line="167" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -931,10 +750,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>ConstantDistanceOperator:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

@@ -52,14 +52,14 @@ This xml use categories
             <prior id="DeathRatePrior.t:ratites" name="distribution" x="@BDDeathRate.t:ratites">
                 <Uniform id="Uniform.5" name="distr"/>
             </prior>
-            <!--
+<!--
             <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
                 <Gamma id="Gamma.0" name="distr">
-                    <parameter id="RealParameter.5" estimate="false" name="alpha">0.5396</parameter>
-                    <parameter id="RealParameter.6" estimate="false" name="beta">0.3819</parameter>
+                    <parameter id="RealParameter.5" estimate="false" name="alpha">1.0</parameter>
+                    <parameter id="RealParameter.6" estimate="false" name="beta">0.1</parameter>
                 </Gamma>
             </prior>
-            -->
+-->
             <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
                 <LogNormal id="LogNormalDistributionModel.0" name="distr">
                     <parameter id="RealParameter.13" estimate="false" name="M">1.0</parameter>
@@ -87,21 +87,21 @@ This xml use categories
     </distribution>
 
 <!--
-    <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="3.0"/>
+    <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="5.0"/>
 -->
-    <operator id="CategoriesRandomWalk.c:ratites" spec="IntRandomWalkOperator" parameter="@rateCategories.c:ratites" weight="5.0" windowSize="1"/>
+    <operator id="CategoriesRandomWalk.c:ratites" spec="IntRandomWalkOperator" parameter="@rateCategories.c:ratites" weight="10.0" windowSize="1"/>
 
-    <operator id="CategoriesSwapOperator.c:ratites" spec="SwapOperator" intparameter="@rateCategories.c:ratites" weight="5.0"/>
+    <operator id="CategoriesSwapOperator.c:ratites" spec="SwapOperator" intparameter="@rateCategories.c:ratites" weight="10.0"/>
 
-    <operator id="CategoriesUniform.c:ratites" spec="UniformOperator" parameter="@rateCategories.c:ratites" weight="5.0"/>
+    <operator id="CategoriesUniform.c:ratites" spec="UniformOperator" parameter="@rateCategories.c:ratites" weight="10.0"/>
 
-    <operator id="BirthDeathTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="5.0"/>
+    <operator id="BirthDeathTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="10.0"/>
 
-    <operator id="BirthDeathTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="5.0"/>
+    <operator id="BirthDeathTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="10.0"/>
 
-    <operator id="BirthDeathUniformOperator.t:ratites" spec="Uniform" tree="@Tree.t:ratites" weight="5.0"/>
+    <operator id="BirthDeathUniformOperator.t:ratites" spec="Uniform" tree="@Tree.t:ratites" weight="8.0"/>
 
-    <operator id="BirthDeathSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="5.0"/>
+    <operator id="BirthDeathSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="8.0"/>
 
     <operator id="BirthDeathNarrow.t:ratites" spec="Exchange" tree="@Tree.t:ratites" weight="5.0"/>
 
@@ -115,7 +115,7 @@ This xml use categories
 
     <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="0.5"/>
 
-    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
+    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.2">
         <parameter idref="freqParameter.t:ratites"/>
     </operator>
 
