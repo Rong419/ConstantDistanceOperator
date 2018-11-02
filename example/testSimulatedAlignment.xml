@@ -85,7 +85,7 @@
                 </prior>
 
                 <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
-                    <LogNormal id="LogNormalDistribution0" S="1.25"  M="1.0" meanInRealSpace="true"  name="distr"/>
+                    <LogNormal id="LogNormalDistribution0" S="1.25"  M="5.0" meanInRealSpace="true"  name="distr"/>
                 </prior>
 
                 <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">

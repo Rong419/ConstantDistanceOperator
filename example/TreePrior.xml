@@ -59,7 +59,7 @@ This xml is used to get samples from the prior distribution
             </prior>
 
             <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
-                <LogNormal id="LogNormalDistribution0" S="1.25"  M="1.0" meanInRealSpace="true"  name="distr"/>
+                <LogNormal id="LogNormalDistribution0" S="1.25"  M="5.0" meanInRealSpace="true"  name="distr"/>
             </prior>
 
             <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
@@ -141,7 +141,11 @@ This xml is used to get samples from the prior distribution
     </logger>
 
     <logger id="treelog.t:dna" fileName="$(tree).trees" logEvery="1000" mode="tree">
+        
+        <log idref="Tree.t:ratites"/>
+        <!--
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
+        -->
     </logger>
 
 </run>
