@@ -21,6 +21,7 @@ public class IndependentOperator extends TreeOperator {
     ParametricDistribution distribution; //the distribution of the rates
     RealParameter rates;
     private Tree tree;
+    double M;double S;boolean MeanInRealSpace;
 
     @Override
     public void initAndValidate() {
@@ -31,18 +32,27 @@ public class IndependentOperator extends TreeOperator {
 
     @Override
     public double proposal() {
+        LogNormalDistributionModel L=(LogNormalDistributionModel)distribution;
+        M = L.MParameterInput.get().getValue();
+        S = L.SParameterInput.get().getValue();
+        MeanInRealSpace = L.hasMeanInRealSpaceInput.get();
+        //System.out.println("mean"+M+"std"+S);
         int index = Randomizer.nextInt(rates.getDimension());
         Node node = tree.getNode(index);
         if (node == tree.getRoot()){
             return Double.NEGATIVE_INFINITY;
-        }
-        LogNormalDistributionModel L=(LogNormalDistributionModel)distribution;
-        double M = L.MParameterInput.get().getValue();
-        double S = L.SParameterInput.get().getValue();
-        boolean MeanInRealSpace = L.hasMeanInRealSpaceInput.get();
+       }
+        //System.out.println("original rates ="+rates);
+        double lower = rates.getLower();
+        double upper = rates.getUpper();
         //double r = Randomizer.uniform(lower,upper);
         double r = Randomizer.nextLogNormal(M,S,MeanInRealSpace);
+        if (r <= lower || r >= upper){
+            return Double.NEGATIVE_INFINITY;
+        }
+        //System.out.println("proposed rate"+r);
         rates.setValue(index, r);
+        //System.out.println("new rates ="+rates);
     return  0.0;
     }
 

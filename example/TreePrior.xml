@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
+
+<!--
+This xml is used to get samples from the prior distribution
+
+-->
+    <data id="ratites" name="alignment">
+        <sequence id="seq_ANDI" taxon="ANDI" totalcount="4" value="?"/>
+        <sequence id="seq_CASS" taxon="CASS" totalcount="4" value="?"/>
+        <sequence id="seq_DIGI" taxon="DIGI" totalcount="4" value="?"/>
+        <sequence id="seq_EMU" taxon="EMU" totalcount="4" value="?"/>
+        <sequence id="seq_KIWI" taxon="KIWI" totalcount="4" value="?"/>
+        <sequence id="seq_OST" taxon="OST" totalcount="4" value="?"/>
+        <sequence id="seq_RHEA" taxon="RHEA" totalcount="4" value="?"/>
+    </data>
+
+<map name="Uniform" >beast.math.distributions.Uniform</map>
+<map name="Exponential" >beast.math.distributions.Exponential</map>
+<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal" >beast.math.distributions.Normal</map>
+<map name="Beta" >beast.math.distributions.Beta</map>
+<map name="Gamma" >beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+<map name="prior" >beast.math.distributions.Prior</map>
+<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+<map name="OneOnX" >beast.math.distributions.OneOnX</map>
+<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
+
+<run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="TRUE">
+    <state id="state" storeEvery="5000">
+        <tree id="Tree.t:ratites" name="stateNode">
+            <taxonset id="TaxonSet.ratites" spec="TaxonSet">
+                <alignment idref="ratites"/>
+            </taxonset>
+        </tree>
+        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" lower="0.0" upper ="5" dimension="12">1</stateNode>
+        <parameter id="BirthRate.t:ratites" name="stateNode">1.0</parameter>
+        <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
+        <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
+    </state>
+
+    <init id="RandomTree.t:dna" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:ratites" taxa="@ratites">
+        <populationModel id="ConstantPopulation0.t:dna" spec="ConstantPopulation">
+            <parameter id="randomPopSize.t:dna" name="popSize">1.0</parameter>
+        </populationModel>
+    </init>
+
+    <distribution id="posterior" spec="util.CompoundDistribution">
+        <distribution id="prior" spec="util.CompoundDistribution">
+            <distribution id="YuleModel.t:ratites" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
+            <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BirthRate.t:ratites">
+                <LogNormal id="LogNormalDistribution1" S="1"  M="2" meanInRealSpace="true" name="distr">
+                </LogNormal>
+            </prior>
+
+            <prior id="FrequencyPrior.t:ratites" name="distribution" x="@freqParameter.t:ratites">
+                <Dirichlet id="Dirichlet1" alpha="1 1 1 1" name="distr"/>
+            </prior>
+
+            <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
+                <LogNormal id="LogNormalDistribution0" S="1.25"  M="1.0" meanInRealSpace="true"  name="distr"/>
+            </prior>
+
+            <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
+                <LogNormal id="LogNormalDistribution2" S="0.1"  M="1" meanInRealSpace="true" name="distr"/>
+            </prior>
+
+            <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
+                <LogNormal id="LogNormalDistribution3" S="0.1"  M="0.1" meanInRealSpace="true" name="distr"/>
+            </prior>
+        </distribution>
+
+        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+            <distribution id="treeLikelihood.dna" spec="ThreadedTreeLikelihood" data="@ratites" tree="@Tree.t:ratites">
+                <siteModel id="SiteModel.s:dna" spec="SiteModel">
+                    <parameter id="mutationRate.s:dna" estimate="false" name="mutationRate">1.0</parameter>
+                    <parameter id="gammaShape.s:dna" estimate="false" name="shape">1.0</parameter>
+                    <parameter id="proportionInvariant.s:dna" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                    <substModel id="hky.s:dna" spec="HKY" kappa="@kappa.t:ratites">
+                        <frequencies id="estimatedFreqs.s:dna" spec="Frequencies" frequencies="@freqParameter.t:ratites"/>
+                    </substModel>
+                </siteModel>
+                <branchRateModel id="RelaxedClock.c:ratites" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
+                                 rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2">
+                    <parameter id="ucldMean.c:ratites" estimate="false" name="clock.rate">1.0</parameter>
+                </branchRateModel>
+            </distribution>
+        </distribution>
+    </distribution>
+
+    <operator id="RatesRandomWalk.c:ratites" spec="RealRandomWalkOperator" parameter="@rates.c:ratites" weight="20.0" windowSize="0.1"/>
+
+    <operator id="RatesSwapOperator.c:ratites" spec="SwapOperator" parameter="@rates.c:ratites" weight="20.0"/>
+
+    <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2" weight="20.0"/>
+
+    <operator id="YuleTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="20.0"/>
+
+    <operator id="YuleTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="10.0"/>
+
+    <operator id="YuleBirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BirthRate.t:ratites" scaleFactor="0.75" weight="15.0"/>
+
+    <operator id="YuleModelUniformOperator.t:ratites" spec="Uniform" tree="@Tree.t:ratites" weight="10.0"/>
+
+    <operator id="YuleModelSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="10.0"/>
+
+    <operator id="YuleModelhNarrow.t:ratites" spec="Exchange" tree="@Tree.t:ratites" weight="10.0"/>
+
+    <operator id="YuleModelWide.t:ratites" spec="Exchange" isNarrow="false" tree="@Tree.t:ratites" weight="10.0"/>
+
+    <operator id="YuleModelWilsonBalding.t:ratites" spec="WilsonBalding" tree="@Tree.t:ratites" weight="10.0"/>
+
+    <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="2.0"/>
+
+    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
+        <parameter idref="freqParameter.t:ratites"/>
+    </operator>
+
+    <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="10.0"/>
+
+    <logger id="tracelog" fileName="dna.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+        <log idref="treeLikelihood.dna"/>
+        <log id="TreeLength.t:ratites" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:ratites"/>
+        <log idref="YuleModel.t:ratites"/>
+        <log idref="BirthRate.t:ratites"/>
+        <log idref="kappa.t:ratites"/>
+        <log idref="ucldStdev.c:ratites"/>
+        <log id="rate.c:ratites" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
+        <log idref="freqParameter.t:ratites"/>
+    </logger>
+
+    <logger id="screenlog" logEvery="10000">
+        <log idref="posterior"/>
+        <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <logger id="treelog.t:dna" fileName="$(tree).trees" logEvery="1000" mode="tree">
+        <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
+    </logger>
+
+</run>
+
+</beast>

@@ -23,6 +23,7 @@ this xml uses rates directly and include constant distance operator
 <map name="prior" >beast.math.distributions.Prior</map>
 <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
+<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
 
 <run id="mcmc" spec="MCMC" chainLength="10000000" >
@@ -32,11 +33,8 @@ this xml uses rates directly and include constant distance operator
                 <alignment idref="ratites"/>
             </taxonset>
         </tree>
-        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.1</parameter>
-        <!--
-        <parameter id="Stdev.c:ratites" lower="0.0" name="stateNode">0.1</parameter>
-        -->
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" lower="0.0" upper ="5" dimension="12">1</stateNode>
+        <parameter id="ucldStdev.c:ratites" name="stateNode">0.1</parameter>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" lower="0.0" upper ="5.0" dimension="12">1</stateNode>
         <parameter id="BDBirthRate.t:ratites" name="stateNode">6.8</parameter>
         <parameter id="BDDeathRate.t:ratites" name="stateNode" lower="0.0" upper="1.0">0.3</parameter>
         <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
@@ -49,37 +47,32 @@ this xml uses rates directly and include constant distance operator
         <distribution id="prior" spec="util.CompoundDistribution">
             <distribution id="BirthDeath.t:ratites" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:ratites" relativeDeathRate="@BDDeathRate.t:ratites" tree="@Tree.t:ratites"/>
             <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BDBirthRate.t:ratites">
-                <LogNormal id="LogNormalDistribution1" S="1"  M="2" meanInRealSpace="true" name="distr">
-                </LogNormal>
+                <LogNormal id="LogNormalDistribution1" S="1"  M="2" meanInRealSpace="true" name="distr"/>
             </prior>
             <prior id="DeathRatePrior.t:ratites" name="distribution" x="@BDDeathRate.t:ratites">
                 <Uniform id="Uniform.5" name="distr"/>
             </prior>
 
-            <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
-                <LogNormal id="LogNormalDistributionModel.0" name="distr">
-                    <parameter id="RealParameter.13" estimate="false" name="M">1.0</parameter>
-                    <parameter id="RealParameter.14" estimate="false" name="S">1.25</parameter>
-                </LogNormal>
-            </prior>
-<!--
-            <prior id="RatePriorDistrbution.t:dna" name="distribution" x="@rates.c:ratites">
-                <LogNormal id="LogNormalDistribution.c:dna" S="@Stdev.c:ratites"  M="1" meanInRealSpace="true" name="distr">
-                </LogNormal>
+            <prior id="FrequencyPrior.t:ratites" name="distribution" x="@freqParameter.t:ratites">
+                <Dirichlet id="Dirichlet1" alpha="0.1 0.1 0.1 0.1" name="distr"/>
             </prior>
 
-            <prior id="HyperPrior.S" name="distribution" x="@Stdev.c:ratites">
-                <Gamma id="Gamma.0" name="distr">
-                    <parameter id="RealParameter.3" estimate="false" name="alpha">1.0</parameter>
-                    <parameter id="RealParameter.4" estimate="false" name="beta">0.1</parameter>
-                </Gamma>
+            <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
+                <LogNormal id="LogNormalDistribution0" S="1.25"  M="1.0" meanInRealSpace="true"  name="distr"/>
             </prior>
--->
+
+            <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
+                <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:ratites"  M="1" meanInRealSpace="true" name="distr"/>
+            </prior>
+
             <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
+                <LogNormal id="LogNormalDistribution3" S="0.1"  M="0.1" meanInRealSpace="true" name="distr"/>
+                <!--
                 <Gamma id="Gamma.1" name="distr">
-                    <parameter id="RealParameter.5" estimate="false" name="alpha">1.0</parameter>
-                    <parameter id="RealParameter.6" estimate="false" name="beta">0.1</parameter>
+                    <parameter id="RealParameter.1" estimate="false" name="alpha">1.0</parameter>
+                    <parameter id="RealParameter.2" estimate="false" name="beta">0.1</parameter>
                 </Gamma>
+                -->
             </prior>
 
         </distribution>
@@ -94,10 +87,7 @@ this xml uses rates directly and include constant distance operator
                     </substModel>
                 </siteModel>
                 <branchRateModel id="RelaxedClock.c:ratites" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
-                                 rates="@rates.c:ratites" tree="@Tree.t:ratites">
-                    <LogNormal id="LogNormalDistributionModel.c:ratites" S="@ucldStdev.c:ratites" meanInRealSpace="true" name="distr">
-                        <parameter id="RealParameter.1" estimate="false" lower="0.0" name="M" upper="1.0">1.0</parameter>
-                    </LogNormal>
+                                 rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2">
                     <parameter id="ucldMean.c:ratites" estimate="false" name="clock.rate">1.0</parameter>
                 </branchRateModel>
             </distribution>
@@ -124,9 +114,8 @@ this xml uses rates directly and include constant distance operator
     <operator id="RatesRandomWalk.c:ratites" spec="RealRandomWalkOperator" parameter="@rates.c:ratites" weight="10.0" windowSize="0.1"/>
 
     <operator id="RatesSwapOperator.c:ratites" spec="SwapOperator" parameter="@rates.c:ratites" weight="10.0"/>
-<!--
-    <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" distr="@LogNormalDistribution.c:dna" tree="@Tree.t:ratites" weight="10.0"/>
--->
+
+    <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" distr="@LogNormalDistribution2" tree="@Tree.t:ratites" weight="10.0"/>
 
     <operator id="RatesUniform.c:ratites" spec="UniformOperator" parameter="@rates.c:ratites" weight="10.0"/>
 
@@ -135,26 +124,24 @@ this xml uses rates directly and include constant distance operator
     <operator id="BirthDeathTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="5.0"/>
 
 
-    <operator id="BirthDeathUniformOperator.t:ratites" spec="Uniform" tree="@Tree.t:ratites" weight="10.0"/>
+    <operator id="BirthDeathUniformOperator.t:ratites" spec="Uniform" tree="@Tree.t:ratites" weight="5.0"/>
 
-    <operator id="BirthDeathSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="10.0"/>
+    <operator id="BirthDeathSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="5.0"/>
 
-    <operator id="BirthDeathNarrow.t:ratites" spec="Exchange" tree="@Tree.t:ratites" weight="20.0"/>
+    <operator id="BirthDeathNarrow.t:ratites" spec="Exchange" tree="@Tree.t:ratites" weight="10.0"/>
 
-    <operator id="BirthDeathWide.t:ratites" spec="Exchange" isNarrow="false" tree="@Tree.t:ratites" weight="20.0"/>
+    <operator id="BirthDeathWide.t:ratites" spec="Exchange" isNarrow="false" tree="@Tree.t:ratites" weight="10.0"/>
 
-    <operator id="BirthDeathWilsonBalding.t:ratites" spec="WilsonBalding" tree="@Tree.t:ratites" weight="20.0"/>
+    <operator id="BirthDeathWilsonBalding.t:ratites" spec="WilsonBalding" tree="@Tree.t:ratites" weight="10.0"/>
 
-    <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="0.8"/>
+    <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="15.0"/>
 
-    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
+    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
         <parameter idref="freqParameter.t:ratites"/>
     </operator>
 
-    <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="5.0"/>
-    <!--
-    <operator id="StdevScaler.c:ratites" spec="ScaleOperator" parameter="@Stdev.c:ratites" scaleFactor="0.5" weight="5.0"/>
--->
+    <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="0.5"/>
+
     <logger id="tracelog" fileName="ratites.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
@@ -165,9 +152,6 @@ this xml uses rates directly and include constant distance operator
         <log idref="kappa.t:ratites"/>
         <log idref="freqParameter.t:ratites"/>
         <log idref="ucldStdev.c:ratites"/>
-        <!--
-        <log idref="Stdev.c:ratites"/>
-        -->
         <log idref="BirthDeath.t:ratites"/>
         <log idref="BDBirthRate.t:ratites"/>
         <log idref="BDDeathRate.t:ratites"/>
