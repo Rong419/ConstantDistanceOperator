@@ -119,7 +119,7 @@ This xml is used to get samples from the prior distribution
 
     <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="10.0"/>
 
-    <logger id="tracelog" fileName="dna.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="ratites.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -131,6 +131,7 @@ This xml is used to get samples from the prior distribution
         <log idref="ucldStdev.c:ratites"/>
         <log id="rate.c:ratites" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
         <log idref="freqParameter.t:ratites"/>
+        <log idref="rates.c:ratites"/>
     </logger>
 
     <logger id="screenlog" logEvery="10000">
@@ -140,13 +141,14 @@ This xml is used to get samples from the prior distribution
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:dna" fileName="$(tree).trees" logEvery="1000" mode="tree">
-        
+    <logger id="treelog1" fileName="TimeTree.trees" logEvery="1000" mode="tree">
         <log idref="Tree.t:ratites"/>
-        <!--
-        <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
-        -->
     </logger>
+
+    <logger id="treelog2" fileName="Tree.trees" logEvery="1000" mode="tree">
+        <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
+    </logger>
+
 
 </run>
 

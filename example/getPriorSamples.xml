@@ -65,10 +65,6 @@ i.e. frequencies and rates
                 <Dirichlet id="Dirichlet1" alpha="1 1 1 1" name="distr"/>
             </prior>
 
-            <prior id="FrequencyPrior1.t:ratites" name="distribution" x="@freqParameter.t:ratites">
-                <Uniform id="Dirichlet2" upper="1" lower="0" name="distr"/>
-            </prior>
-
             <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
                 <LogNormal id="LogNormalDistribution0" S="1.25"  M="1.0" meanInRealSpace="true"  name="distr"/>
             </prior>

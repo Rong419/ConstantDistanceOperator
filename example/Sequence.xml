@@ -22,14 +22,15 @@
         <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
         <substModel spec='HKY' id='hky'>
             <parameter name='kappa' id="hky.kappa" value="5.0"/>
-            <frequencies id='freqs' spec='Frequencies' frequencies="0.1 0.1 0.1 0.1">
-                <data idref='alignment'/>
-            </frequencies>
+            <frequencies id='freqs' spec='Frequencies' frequencies="0.25 0.25 0.25 0.25"/>
         </substModel>
         </siteModel>
         <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
             <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
-            <parameter id="branchrates" name="rates" spec="parameter.RealParameter" value="1 1 1 1 1 1 1 1 1 1 1 1"></parameter>
+            <!--
+<parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="12">1</parameter>
+-->
+            <parameter id="branchrates" name="rates" spec="parameter.RealParameter" value="0.9 0.8 1 1 1 1 1 1.1 0.9 0.8 0.7 1.2"/>
             <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
                 <parameter name='M' id='M' value="1.0"/>
                 <parameter name='S' id='ucld.stdev' value="0.2"/>
