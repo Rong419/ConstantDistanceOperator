@@ -5,11 +5,7 @@
                               :beast.evolution.speciation
                               :beast.core.util
                               :beast.core.parameter">
-<!--
-The problem is that for multi-dimensional parameters,
-only one value can be sampled.
-i.e. frequencies and rates
--->
+
     <map name="Uniform" >beast.math.distributions.Uniform</map>
     <map name="Exponential" >beast.math.distributions.Exponential</map>
     <map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
@@ -86,13 +82,6 @@ i.e. frequencies and rates
             <log id="rate.c:ratites" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
             <log id="TreeStat.t:ratites" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:ratites"/>
             <log idref="rates.c:ratites"/>
-        </logger>
-
-        <logger id="screenlog" logEvery="1000">
-            <log idref="kappa.t:ratites"/>
-            <log idref="freqParameter.t:ratites"/>
-            <log idref="ucldStdev.c:ratites"/>
-            <log idref="BirthRate.t:ratites"/>
         </logger>
 
         <logger id="treelog.t:ratites" fileName="$(tree).trees" logEvery="1000" mode="tree">
