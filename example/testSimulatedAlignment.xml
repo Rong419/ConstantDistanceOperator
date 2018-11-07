@@ -11,31 +11,44 @@
 
 
       <tree id='tree' spec='beast.util.TreeParser'
-	    newick="((((ANDI:0.030087877798038076,DIGI:0.030087877798038076):0.07826299311160571,KIWI:0.10835087090964379):0.015048086508534522,(CASS:0.07249889947902681,EMU:0.07249889947902681):0.050900057939151505):0.009462130815896627,(OST:0.11832057572512639,RHEA:0.11832057572512639):0.014540512508948555)"
+	    newick="(((((((((1:1.030018214427294,19:1.030018214427294):0.7683790995724777,11:1.7983973139997718):1.1402391211361318,9:2.9386364351359036):0.5245875757810512,(8:0.8307196906852363,10:0.8307196906852363):2.6325043202317184):0.29165557890258675,16:3.7548795898195415):0.2862838115074364,(5:1.6796210433712493,(12:0.3548910675690137,18:0.3548910675690137):1.3247299758022355):2.3615423579557286):0.6855743051874965,(6:0.7051354410715548,15:0.7051354410715548):4.02160226544292):1.3513263775200057,((2:0.8765717062415977,4:0.8765717062415977):4.240297484739964,13:5.116869190981562):0.9611948930529186):1.2140082128360268,((3:3.255531896280363,17:3.255531896280363):0.39569930524015984,(7:2.1188749346932307,(14:0.8968532555280082,20:0.8968532555280082):1.2220216791652225):1.5323562668272923):3.640841095349984)"
 	    IsLabelledNewick="true"/>
 
       <data spec='Alignment' id="input_alignment" dataType="nucleotide">
-          <sequence taxon="ANDI">?</sequence>
-          <sequence taxon="DIGI">?</sequence>
-          <sequence taxon="KIWI">?</sequence>
-          <sequence taxon="CASS">?</sequence>
-          <sequence taxon="EMU">?</sequence>
-          <sequence taxon="OST">?</sequence>
-          <sequence taxon="RHEA">?</sequence>
+          <sequence taxon="1">?</sequence>
+          <sequence taxon="2">?</sequence>
+          <sequence taxon="3">?</sequence>
+          <sequence taxon="4">?</sequence>
+          <sequence taxon="5">?</sequence>
+          <sequence taxon="6">?</sequence>
+          <sequence taxon="7">?</sequence>
+          <sequence taxon="8">?</sequence>
+          <sequence taxon="9">?</sequence>
+          <sequence taxon="10">?</sequence>
+          <sequence taxon="11">?</sequence>
+          <sequence taxon="12">?</sequence>
+          <sequence taxon="13">?</sequence>
+          <sequence taxon="14">?</sequence>
+          <sequence taxon="15">?</sequence>
+          <sequence taxon="16">?</sequence>
+          <sequence taxon="17">?</sequence>
+          <sequence taxon="18">?</sequence>
+          <sequence taxon="19">?</sequence>
+          <sequence taxon="20">?</sequence>
       </data>
 
       <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
       <substModel spec='HKY' id='hky'>
-      <parameter name='kappa' id="hky.kappa" value="5.0" lower="0.0"/>
-      <frequencies id='freqs' spec='Frequencies' frequencies="0.25 0.25 0.25 0.25"/>
+      <parameter name='kappa' id="hky.kappa" value="2.90976252559377" lower="0.0"/>
+      <frequencies id='freqs' spec='Frequencies' frequencies="0.1349109685063489 0.3699682092735705	0.27961562287289105	0.21550519934718956"/>
       </substModel>
       </siteModel>
       <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
       <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
-      <parameter id="branchrates" name="rates" spec="parameter.RealParameter" value="0.9 0.8 1 1 1 1 1 1.1 0.9 0.8 0.7 1.2"/>
+      <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="38">1.0</parameter>
           <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
       <parameter name='M' id='M' value="1.0"/>
-      <parameter name='S' id='ucld.stdev' value="0.1"/>
+      <parameter name='S' id='ucld.stdev' value="0.20322536236504316"/>
       </distr>
       </branchRateModel>
     </data>
@@ -60,7 +73,7 @@
                 </taxonset>
             </tree>
             <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
-            <stateNode id="rates.c:ratites" spec="parameter.RealParameter" lower="0.0" upper ="5" dimension="12">1</stateNode>
+            <stateNode id="rates.c:ratites" spec="parameter.RealParameter" lower="0.0" upper ="5" dimension="38">1</stateNode>
             <parameter id="BirthRate.t:ratites" name="stateNode">1.0</parameter>
             <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="freqParameter.t:ratites" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
@@ -81,7 +94,7 @@
                 </prior>
 
                 <prior id="FrequencyPrior.t:ratites" name="distribution" x="@freqParameter.t:ratites">
-                    <Dirichlet id="Dirichlet1" alpha="1 1 1 1" name="distr"/>
+                    <Dirichlet id="Dirichlet1" alpha="10 10 10 10" name="distr"/>
                 </prior>
 
                 <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
@@ -89,11 +102,11 @@
                 </prior>
 
                 <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
-                    <LogNormal id="LogNormalDistribution2" S="0.1"  M="1" meanInRealSpace="true" name="distr"/>
+                    <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:ratites"  M="1" meanInRealSpace="true" name="distr"/>
                 </prior>
 
                 <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                    <LogNormal id="LogNormalDistribution3" S="0.1"  M="0.1" meanInRealSpace="true" name="distr"/>
+                    <LogNormal id="LogNormalDistribution3" S="0.5"  M="0.2" meanInRealSpace="true" name="distr"/>
                 </prior>
 
             </distribution>

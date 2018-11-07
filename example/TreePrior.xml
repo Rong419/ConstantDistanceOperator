@@ -2,7 +2,7 @@
 
 <!--
 This xml is used to get samples from the prior distribution
-
+It is problemetic to sample the UcldStdev
 -->
     <data id="ratites" name="alignment">
         <sequence taxon="1">?</sequence>
@@ -35,6 +35,7 @@ This xml is used to get samples from the prior distribution
         <sequence taxon="28">?</sequence>
         <sequence taxon="29">?</sequence>
         <sequence taxon="30">?</sequence>
+        <!--
         <sequence taxon="31">?</sequence>
         <sequence taxon="32">?</sequence>
         <sequence taxon="33">?</sequence>
@@ -125,6 +126,7 @@ This xml is used to get samples from the prior distribution
         <sequence taxon="118">?</sequence>
         <sequence taxon="119">?</sequence>
         <sequence taxon="120">?</sequence>
+-->
     </data>
 
 <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -146,8 +148,8 @@ This xml is used to get samples from the prior distribution
                 <alignment idref="ratites"/>
             </taxonset>
         </tree>
-        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="236">1</stateNode>
+        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.1</parameter>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="78">1</stateNode>
         <parameter id="BirthRate.t:ratites" name="stateNode">1.0</parameter>
         <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
@@ -180,8 +182,9 @@ This xml is used to get samples from the prior distribution
             </prior>
 
             <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                <LogNormal id="LogNormalDistribution3" S="0.1"  M="0.1" meanInRealSpace="true" name="distr"/>
+                <LogNormal id="LogNormalDistribution3" S="0.5"  M="0.1" meanInRealSpace="true" name="distr"/>
             </prior>
+
         </distribution>
 
         <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
@@ -254,14 +257,14 @@ This xml is used to get samples from the prior distribution
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog1" fileName="TimeTree.trees" logEvery="1000" mode="tree">
+    <logger id="treelog1" fileName="ratites.trees" logEvery="1000" mode="tree">
         <log idref="Tree.t:ratites"/>
     </logger>
-
+<!--
     <logger id="treelog2" fileName="Tree.trees" logEvery="1000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
     </logger>
-
+-->
 
 </run>
 

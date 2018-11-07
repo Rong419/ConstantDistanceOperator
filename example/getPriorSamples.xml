@@ -5,6 +5,9 @@
                               :beast.evolution.speciation
                               :beast.core.util
                               :beast.core.parameter">
+    <!--
+    This xml is used to generate samples from the given prior distributions
+    -->
 
     <map name="Uniform" >beast.math.distributions.Uniform</map>
     <map name="Exponential" >beast.math.distributions.Exponential</map>
@@ -39,6 +42,7 @@
         <sequence taxon="18">?</sequence>
         <sequence taxon="19">?</sequence>
         <sequence taxon="20">?</sequence>
+        <!--
         <sequence taxon="21">?</sequence>
         <sequence taxon="22">?</sequence>
         <sequence taxon="23">?</sequence>
@@ -139,6 +143,7 @@
         <sequence taxon="118">?</sequence>
         <sequence taxon="119">?</sequence>
         <sequence taxon="120">?</sequence>
+        -->
     </data>
 
     <state id="state" storeEvery="5000">
@@ -147,10 +152,10 @@
                 <alignment idref="ratites"/>
             </taxonset>
         </tree>
-        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="236">1.0</stateNode>
-        <parameter id="BirthRate.t:ratites" name="stateNode">1.0</parameter>
-        <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
+        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.1</parameter>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="38">1.0</stateNode>
+        <parameter id="BirthRate.t:ratites" name="stateNode">2.0</parameter>
+        <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">5.0</parameter>
         <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
     </state>
 
@@ -183,7 +188,7 @@
             </prior>
 
             <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                <LogNormal id="LogNormalDistribution3" S="0.1"  M="0.1" meanInRealSpace="true" name="distr"/>
+                <LogNormal id="LogNormalDistribution3" S="0.5"  M="0.1" meanInRealSpace="true" name="distr"/>
             </prior>
         </distribution>
 
