@@ -100,7 +100,7 @@ public class InConstantDistanceOperator extends TreeOperator {
 
        return hastingsRatio = 0.0;
     }
-
+/*
 
     @Override
     public double getCoercableParameterValue() {
@@ -113,13 +113,13 @@ public class InConstantDistanceOperator extends TreeOperator {
         twindowSize = value;
     }
 
-    /**
+    *//**
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
      * mixing
      *
      * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
-     */
+     *//*
 
     @Override
     public void optimize(double logAlpha) {
@@ -148,7 +148,7 @@ public class InConstantDistanceOperator extends TreeOperator {
         } else if (prob > 0.40) {
             return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
-    }
+    }*/
 
 
 }

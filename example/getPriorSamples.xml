@@ -42,7 +42,6 @@
         <sequence taxon="18">?</sequence>
         <sequence taxon="19">?</sequence>
         <sequence taxon="20">?</sequence>
-        <!--
         <sequence taxon="21">?</sequence>
         <sequence taxon="22">?</sequence>
         <sequence taxon="23">?</sequence>
@@ -143,7 +142,6 @@
         <sequence taxon="118">?</sequence>
         <sequence taxon="119">?</sequence>
         <sequence taxon="120">?</sequence>
-        -->
     </data>
 
     <state id="state" storeEvery="5000">
@@ -153,7 +151,7 @@
             </taxonset>
         </tree>
         <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.1</parameter>
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="38">1.0</stateNode>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="238">1.0</stateNode>
         <parameter id="BirthRate.t:ratites" name="stateNode">2.0</parameter>
         <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">5.0</parameter>
         <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
@@ -170,9 +168,9 @@
         <distribution id="prior" spec="util.CompoundDistribution">
 
             <distribution id="YuleModel.t:ratites" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
-
             <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BirthRate.t:ratites">
-                <LogNormal id="LogNormalDistribution1" S="1"  M="2" meanInRealSpace="true" name="distr"/>
+                <LogNormal id="LogNormalDistribution1" S="0.2"  M="0.7" name="distr">
+                </LogNormal>
             </prior>
 
             <prior id="FrequencyPrior.t:ratites" name="distribution" x="@freqParameter.t:ratites">
@@ -180,15 +178,15 @@
             </prior>
 
             <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
-                <LogNormal id="LogNormalDistribution0" S="1.25"  M="5.0" meanInRealSpace="true"  name="distr"/>
+                <LogNormal id="LogNormalDistribution0" S="0.6"  M="-1"  name="distr"/>
             </prior>
 
-            <prior id="RatePrior.t:ratites" name="distribution" x="@rates.c:ratites">
+            <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
                 <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:ratites"  M="1" meanInRealSpace="true" name="distr"/>
             </prior>
 
             <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                <LogNormal id="LogNormalDistribution3" S="0.5"  M="0.1" meanInRealSpace="true" name="distr"/>
+                <LogNormal id="LogNormalDistribution3" S="0.1"  M="0.1" meanInRealSpace="true" name="distr"/>
             </prior>
         </distribution>
 

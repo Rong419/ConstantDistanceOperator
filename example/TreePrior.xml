@@ -35,7 +35,6 @@ It is problemetic to sample the UcldStdev
         <sequence taxon="28">?</sequence>
         <sequence taxon="29">?</sequence>
         <sequence taxon="30">?</sequence>
-        <!--
         <sequence taxon="31">?</sequence>
         <sequence taxon="32">?</sequence>
         <sequence taxon="33">?</sequence>
@@ -126,7 +125,6 @@ It is problemetic to sample the UcldStdev
         <sequence taxon="118">?</sequence>
         <sequence taxon="119">?</sequence>
         <sequence taxon="120">?</sequence>
--->
     </data>
 
 <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -148,9 +146,9 @@ It is problemetic to sample the UcldStdev
                 <alignment idref="ratites"/>
             </taxonset>
         </tree>
-        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.1</parameter>
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="78">1</stateNode>
-        <parameter id="BirthRate.t:ratites" name="stateNode">1.0</parameter>
+        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="238">1</stateNode>
+        <parameter id="BirthRate.t:ratites" name="stateNode">2.0</parameter>
         <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
     </state>
@@ -165,7 +163,7 @@ It is problemetic to sample the UcldStdev
         <distribution id="prior" spec="util.CompoundDistribution">
             <distribution id="YuleModel.t:ratites" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
             <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BirthRate.t:ratites">
-                <LogNormal id="LogNormalDistribution1" S="1"  M="2" meanInRealSpace="true" name="distr">
+                <LogNormal id="LogNormalDistribution1" S="0.2"  M="0.7" name="distr">
                 </LogNormal>
             </prior>
 
@@ -174,15 +172,15 @@ It is problemetic to sample the UcldStdev
             </prior>
 
             <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
-                <LogNormal id="LogNormalDistribution0" S="1.25"  M="5.0" meanInRealSpace="true"  name="distr"/>
+                <LogNormal id="LogNormalDistribution0" S="0.6"  M="-1"  name="distr"/>
             </prior>
 
             <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
-                <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:ratites"  M="1" meanInRealSpace="true" name="distr"/>
+                <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:ratites"  M="1.0" meanInRealSpace="true" name="distr"/>
             </prior>
 
             <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                <LogNormal id="LogNormalDistribution3" S="0.5"  M="0.1" meanInRealSpace="true" name="distr"/>
+                <LogNormal id="LogNormalDistribution3" S="0.4"  M="-2.3"  name="distr"/>
             </prior>
 
         </distribution>
@@ -198,7 +196,9 @@ It is problemetic to sample the UcldStdev
                     </substModel>
                 </siteModel>
                 <branchRateModel id="RelaxedClock.c:ratites" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
-                                 rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2">
+                                 rates="@rates.c:ratites" tree="@Tree.t:ratites">
+                    <LogNormal id="LogNormalDistributionModel.c:ratites" S="@ucldStdev.c:ratites" M="1.0" meanInRealSpace="true" name="distr">
+                    </LogNormal>
                     <parameter id="ucldMean.c:ratites" estimate="false" name="clock.rate">1.0</parameter>
                 </branchRateModel>
             </distribution>
@@ -208,9 +208,9 @@ It is problemetic to sample the UcldStdev
     <operator id="RatesRandomWalk.c:ratites" spec="RealRandomWalkOperator" parameter="@rates.c:ratites" weight="20.0" windowSize="0.1"/>
 
     <operator id="RatesSwapOperator.c:ratites" spec="SwapOperator" parameter="@rates.c:ratites" weight="20.0"/>
-
+<!--
     <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2" weight="20.0"/>
-
+-->
     <operator id="YuleTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="20.0"/>
 
     <operator id="YuleTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="10.0"/>
@@ -233,7 +233,7 @@ It is problemetic to sample the UcldStdev
         <parameter idref="freqParameter.t:ratites"/>
     </operator>
 
-    <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="10.0"/>
+    <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="20.0"/>
 
     <logger id="tracelog" fileName="ratites.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>

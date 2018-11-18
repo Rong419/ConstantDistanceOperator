@@ -43,6 +43,7 @@
       <frequencies id='freqs' spec='Frequencies' frequencies="0.1349109685063489 0.3699682092735705	0.27961562287289105	0.21550519934718956"/>
       </substModel>
       </siteModel>
+<!--
       <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
       <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
       <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="38">1.0</parameter>
@@ -51,6 +52,18 @@
       <parameter name='S' id='ucld.stdev' value="0.20322536236504316"/>
       </distr>
       </branchRateModel>
+-->
+        <!--
+        <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
+            <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
+            <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="38">1.0</parameter>
+            <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
+                <parameter name='M' id='M' value="1.0"/>
+                <parameter name='S' id='ucld.stdev' value="0.1"/>
+            </distr>
+        </branchRateModel>
+        -->
+
     </data>
 
     <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -65,7 +78,7 @@
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
     <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-    <run id="mcmc" spec="MCMC" chainLength="10000000"  >
+    <run id="mcmc" spec="MCMC" chainLength="10000000">
         <state id="state" storeEvery="5000">
             <tree id="Tree.t:ratites" name="stateNode">
                 <taxonset id="TaxonSet.ratites" spec="TaxonSet">
@@ -106,7 +119,7 @@
                 </prior>
 
                 <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                    <LogNormal id="LogNormalDistribution3" S="0.5"  M="0.2" meanInRealSpace="true" name="distr"/>
+                    <LogNormal id="LogNormalDistribution3" S="0.6"  M="0.2" meanInRealSpace="true" name="distr"/>
                 </prior>
 
             </distribution>
