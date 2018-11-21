@@ -77,7 +77,6 @@ public class BigPulley extends TreeOperator {
 
 
         //Step 1: randomly select a node, denoted by node x
-
         node = tree.getRoot();
 
         t_x = node.getHeight();//get the time of this node
@@ -104,9 +103,6 @@ public class BigPulley extends TreeOperator {
         t_x_ = t_x + a;
 
 
-        //rootonly = true
-        //if(rootOnlyInput.get()) {
-        if (node.isRoot()) {
             if (t_j > t_k) {
                 ParaA = 0.5;
                 ParaB = 1.0;
@@ -310,7 +306,6 @@ public class BigPulley extends TreeOperator {
                     return Double.NEGATIVE_INFINITY;
                 }
             }
-        }
 
         return hastingsRatio;
     }
