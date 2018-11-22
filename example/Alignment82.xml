@@ -211,11 +211,15 @@
 
         </distribution>
 
-<!--
+
         <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" distr="@LogNormalDistribution2" weight="20.0"/>
--->
+
+        <!--
         <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
                                  twindowSize="0.1"  tree="@Tree.t:ratites" rates="@rates.c:ratites" weight="20.0"/>
+        -->
+        <operator id="InternalnodesOperator.c:dna" spec="InternalNode" twindowSize="0.1"  tree="@Tree.t:ratites" rates="@rates.c:ratites" weight="20.0"/>
+
 <!--
         <operator id="RootOperator2.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
                                  dwindowSize="0.1" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
@@ -225,7 +229,7 @@
 
         <operator id="RootOperator3.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
                                  twindowSize="0.1" dwindowSize="0.12" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
-        -->
+
         <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="2.0"/>
 
 
