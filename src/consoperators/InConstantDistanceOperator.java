@@ -115,9 +115,52 @@ public class InConstantDistanceOperator extends TreeOperator {
        rates.setValue(son.getNr(), r_i_);
        rates.setValue(daughter.getNr(), r_k_);
 
+       double [][] J = new double[4][4];
+       J[0][0] = 1.0;
+       //J[1][0] = ;
+
+       double Det = Determinat(J,3);
+
+
+
        return 0.0;
     }
-/*
+    public static double Determinat(double[][] Matrix, int N)
+    {
+        int T0;
+        int T1;
+        int T2;
+        double Num;
+        int Cha;
+        double[][] B;
+        if (N > 0) {
+            Cha = 0;
+            B = new double[N][N];
+            Num = 0;
+            if (N == 1) {
+                return Matrix[0][0] * Matrix[1][1] - Matrix[0][1] * Matrix[1][0];
+            }
+            for (T0 = 0; T0 <= N; T0++)
+            {
+                for (T1 = 1; T1 <= N; T1++)
+                {
+                    for (T2 = 0; T2 <= N - 1; T2++)
+                    {
+                        if (T2 == T0) {
+                            Cha = 1;
+                        }
+                        B[T1 - 1][T2] = Matrix[T1][T2 + Cha];
+                    }
+                    Cha = 0;
+                }
+                Num = Num + Matrix[0][T0] * Determinat(B, N - 1) * Math.pow((-1), T0);
+            }
+            return Num;
+        } else if (N == 0) {
+            return Matrix[0][0];
+        }
+        return 0;
+    }
 
     @Override
     public double getCoercableParameterValue() {
@@ -130,13 +173,13 @@ public class InConstantDistanceOperator extends TreeOperator {
         twindowSize = value;
     }
 
-    *//**
+    /**
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
      * mixing
      *
      * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
-     *//*
+     */
 
     @Override
     public void optimize(double logAlpha) {
@@ -165,7 +208,7 @@ public class InConstantDistanceOperator extends TreeOperator {
         } else if (prob > 0.40) {
             return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
-    }*/
+    }
 
 
 }

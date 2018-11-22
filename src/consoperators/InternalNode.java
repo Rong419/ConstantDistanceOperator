@@ -18,17 +18,20 @@ public class InternalNode extends TreeOperator {
     public final Input<Double> twindowSizeInput =
             new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
+    public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
+            "A model describing the rates on the branches of the beast.tree.");
 
     private double twindowSize;
     private RealParameter rates;
     Tree tree;
-
+    protected BranchRateModel.Base branchRateModel;
 
     @Override
     public void initAndValidate() {
         twindowSize = twindowSizeInput.get();
         rates = rateInput.get();
         tree = treeInput.get(this);
+        branchRateModel = branchRateModelInput.get();
     }
 
     @Override
@@ -112,7 +115,7 @@ public class InternalNode extends TreeOperator {
        return 0.0;
     }
 
-/*
+
 
     @Override
     public double getCoercableParameterValue() {
@@ -125,13 +128,13 @@ public class InternalNode extends TreeOperator {
         twindowSize = value;
     }
 
-    *//**
+    /**
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
      * mixing
      *
      * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
-     *//*
+     */
 
     @Override
     public void optimize(double logAlpha) {
@@ -160,7 +163,7 @@ public class InternalNode extends TreeOperator {
         } else if (prob > 0.40) {
             return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
-    }*/
+    }
 
 
 }

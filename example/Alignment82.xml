@@ -150,7 +150,7 @@
                 </taxonset>
             </tree>
         <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="18">1.0</stateNode>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="238">1.0</stateNode>
         <parameter id="BirthRate.t:ratites" name="stateNode">2.0</parameter>
         <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
@@ -211,14 +211,13 @@
 
         </distribution>
 
-
+<!--
         <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" distr="@LogNormalDistribution2" weight="20.0"/>
+-->
 
-        <!--
         <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
                                  twindowSize="0.1"  tree="@Tree.t:ratites" rates="@rates.c:ratites" weight="20.0"/>
-        -->
-        <operator id="InternalnodesOperator.c:dna" spec="InternalNode" twindowSize="0.1"  tree="@Tree.t:ratites" rates="@rates.c:ratites" weight="20.0"/>
+
 
 <!--
         <operator id="RootOperator2.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
@@ -229,10 +228,10 @@
 
         <operator id="RootOperator3.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
                                  twindowSize="0.1" dwindowSize="0.12" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
-
+-->
+<!--
         <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="2.0"/>
-
-
+-->
         <operator id="RatesRandomWalk.c:ratites" spec="RealRandomWalkOperator" parameter="@rates.c:ratites" weight="10.0" windowSize="0.1"/>
 
         <operator id="RatesSwapOperator.c:ratites" spec="SwapOperator" parameter="@rates.c:ratites" weight="10.0"/>
