@@ -125,48 +125,21 @@ public class InConstantDistanceOperator extends TreeOperator {
        J[2][2] = (t_x - t_k) / (t_x_ - t_k);
        J[3][3] = (upper - t_x) / (upper - t_x_);
 
+       /*
+        double hastings;
+        try {
+            double Det = JD.mathDeterminantCalculation(J);
+            hastings=Math.log(Det);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to compute inverse cumulative probability!");
+        }
+       return hastings;
+       */
+
        double Det = JD.Determinant(J,3);
 
        return Math.log(Det);
     }
-/*
-    public static double Determinant(double[][] Matrix, int N)
-    {
-        int T0;
-        int T1;
-        int T2;
-        double Num;
-        int Cha;
-        double[][] B;
-        if (N > 0) {
-            Cha = 0;
-            B = new double[N][N];
-            Num = 0;
-            if (N == 1) {
-                return Matrix[0][0] * Matrix[1][1] - Matrix[0][1] * Matrix[1][0];
-            }
-            for (T0 = 0; T0 <= N; T0++)
-            {
-                for (T1 = 1; T1 <= N; T1++)
-                {
-                    for (T2 = 0; T2 <= N - 1; T2++)
-                    {
-                        if (T2 == T0) {
-                            Cha = 1;
-                        }
-                        B[T1 - 1][T2] = Matrix[T1][T2 + Cha];
-                    }
-                    Cha = 0;
-                }
-                Num = Num + Matrix[0][T0] * Determinant(B, N - 1) * Math.pow((-1), T0);
-            }
-            return Num;
-        } else if (N == 0) {
-            return Matrix[0][0];
-        }
-        return 0;
-    }
-    */
 
     @Override
     public double getCoercableParameterValue() {

@@ -46,7 +46,7 @@ public class IndependentOperator extends Operator {
 
         rates.setValue(index, r);
 
-    return  0.0;
+    return Double.NEGATIVE_INFINITY;
     }
 
 }

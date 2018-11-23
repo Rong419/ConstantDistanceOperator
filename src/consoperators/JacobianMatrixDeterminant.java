@@ -72,7 +72,7 @@ public class JacobianMatrixDeterminant {
          * @param value: the matrix
          * @return: the output
          */
-        /*
+
         public static double mathDeterminantCalculation(double[][] value) throws Exception{
             if (value.length == 1) {
                 //when the matrix is a 1*1 vector
@@ -110,13 +110,13 @@ public class JacobianMatrixDeterminant {
             DecimalFormat df = new DecimalFormat(".##");
             return Double.parseDouble(df.format(mathValue(value,result)));
         }
-*/
+
         /**
          * 计算行列式的结果
          * @param value
          * @return
          */
-        /*
+
         public static double mathValue(double[][] value,double result) throws Exception{
             for (int i = 0; i < value.length; i++) {
                 //如果对角线上有一个值为0则全部为0，直接返回结果
@@ -127,7 +127,7 @@ public class JacobianMatrixDeterminant {
             }
             return result;
         }
-       */
+
         /***
          * 将i行之前的每一行乘以一个系数，使得从i行的第i列之前的数字置换为0
          * @param currentRow 当前要处理的行
@@ -135,21 +135,21 @@ public class JacobianMatrixDeterminant {
          * @param ratio 要乘以的系数
          * @return 将i行i列之前数字置换为0后的新的行
          */
-        /*
+
         public static double[] addValue(double[] currentRow,double[] frontRow, double ratio)throws Exception{
             for (int i = 0; i < currentRow.length; i++) {
                 currentRow[i] += frontRow[i]*ratio;
             }
             return currentRow;
         }
-        */
+
         /**
          * 指定列的位置是否为0，查找第一个不为0的位置的行进行位置调换，如果没有则返回原来的值
          * @param determinant 需要处理的行列式
          * @param line 要调换的行
          * @param row 要判断的列
          */
-        /*
+
         public static double[][] changeDeterminantNoZero(double[][] determinant,int line,int row)throws Exception{
             for (int j = line; j < determinant.length; j++) {
                 //进行行调换
@@ -162,6 +162,4 @@ public class JacobianMatrixDeterminant {
             }
             return determinant;
         }
-
-       */
 }
