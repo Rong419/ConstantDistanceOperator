@@ -29,9 +29,8 @@ public class SmallPulleyV1 extends TreeOperator {
     private double dwindowSize;
     private Tree tree;
     private RealParameter rates;
-    private double hastingsRatio;
     protected BranchRateModel.Base branchRateModel;
-
+    JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
@@ -90,8 +89,12 @@ public class SmallPulleyV1 extends TreeOperator {
         r_j = branchRateModel.getRateForBranch(son);//branch rate for son
         r_k = branchRateModel.getRateForBranch(daughter);//branch rate for daughter
 
-        double d = r_k * (t_x - t_k);//d3, which should be logged
-        double D = r_j * (t_x - t_j) + d;//d3+d4
+        //d3, which should be proposed
+        //distance on the branch above son
+        double d = r_j * (t_x - t_j);
+        //d3+d4
+        //d4;distance on the branch above daughter
+        double D = r_k * (t_x - t_k) + d;
         double b = Randomizer.uniform(-dwindowSize, dwindowSize);
         double d_ = d + b;
         if (d_ <= 0.0 || d_ >= D) {
@@ -99,14 +102,26 @@ public class SmallPulleyV1 extends TreeOperator {
         }
 
         //Step 3: make changes on the rates
-        r_j_ = (D - d_) / (t_x - t_j);
-        r_k_ = d_ / (t_x - t_k);
+        r_j_ = d_ / (t_x - t_j);
+        r_k_ = (D - d_) / (t_x - t_k);
 
         //Step 4: set the proposed new rates
         rates.setValue(nodeN02, r_j_);
         rates.setValue(nodeN03, r_k_);
 
-        return hastingsRatio = 0.0;
+        //Step4: calculate the Hastings ratio
+        double [][] J = new double[3][3];
+
+        J[0][0] = 1.0;
+        J[1][0] = 1 / (t_x - t_j);
+        J[2][0] = - d / (t_x - t_k);
+        J[1][1] = 1;
+        J[2][1] = - (t_x - t_j) / (t_x - t_k);
+
+
+        double Det = JD.Determinant(J,2);
+
+        return  0.0;
     }
 }
 

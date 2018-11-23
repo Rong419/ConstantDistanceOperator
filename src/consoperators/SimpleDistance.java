@@ -23,8 +23,10 @@ public class SimpleDistance extends TreeOperator {
     private double twindowSize;
     private Tree tree;
     private RealParameter rates;
-    private double hastingsRatio;
+
     protected BranchRateModel.Base branchRateModel;
+    JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
+
 
 
     @Override
@@ -51,9 +53,6 @@ public class SimpleDistance extends TreeOperator {
         double r_i;
         double d_i;
         double d_x;
-
-        List C1;List C2;List E;
-        double ParaA = 1.0; double ParaB =1.0; double ParaC = 1.0;
 
 
         //Step 1: get the root of the tree
@@ -91,7 +90,17 @@ public class SimpleDistance extends TreeOperator {
         rates.setValue(nodeN02, r_i_);
         rates.setValue(nodeN03, r_x_);
 
-        return hastingsRatio;
+        //Step5: calculate the Hastings ratio
+        double [][] J = new double[3][3];
+        J[0][0] = 1;
+        J[1][0] = r_i / (t_x_ - t_j);
+        J[2][0] = r_x / (t_x_ - t_k);
+        J[1][1] = (t_x - t_j) / (t_x_ - t_j);
+        J[2][2] = (t_x - t_k) / (t_x_ - t_k);
+
+        double Det = JD.Determinant(J,2);
+
+        return Math.log(Det);
     }
 
     /**

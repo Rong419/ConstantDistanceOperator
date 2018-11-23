@@ -38,16 +38,9 @@ public class IndependentOperator extends Operator {
         MeanInRealSpace = L.hasMeanInRealSpaceInput.get();
 
         int index =Randomizer.nextInt(rates.getDimension());
-        //Node node = tree.getNode(index);
-        //if (node == tree.getRoot()){
-            //return Double.NEGATIVE_INFINITY;
-       //}
-        //System.out.println("original rates ="+rates);
-        //double lower = rates.getLower();
-        //double upper = rates.getUpper();
-        //double r = Randomizer.uniform(lower,upper);
+
         double r = Randomizer.nextLogNormal(M,S,MeanInRealSpace);
-        if (r < 0.0){
+        if (r <= 0.0){
             return Double.NEGATIVE_INFINITY;
         }
 

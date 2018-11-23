@@ -26,7 +26,7 @@ public class BigPulley extends TreeOperator {
     private RealParameter rates;
     private double hastingsRatio;
     protected BranchRateModel.Base branchRateModel;
-
+    JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
@@ -73,8 +73,8 @@ public class BigPulley extends TreeOperator {
         double dOld_ = 1.0;
         double dYoung = 1.0;
         List C1;List C2;List E;
-        double ParaA = 1.0; double ParaB =1.0; double ParaC = 1.0;
-
+        double ParaA = 1.0; double ParaB =1.0; double ParaC;
+        double det;
 
         //Step 1: randomly select a node, denoted by node x
         node = tree.getRoot();
@@ -91,8 +91,8 @@ public class BigPulley extends TreeOperator {
         r_x = branchRateModel.getRateForBranch(daughter);
         d_x = r_x * (t_x - t_k);
 
-        double a = Randomizer.uniform(-twindowSize, twindowSize);
-        double a1 = Randomizer.uniform(-twindowSize, twindowSize);
+        double a = Randomizer.uniform(-twindowSize, twindowSize);//for the root time
+        double a1 = Randomizer.uniform(-twindowSize, twindowSize);//for the
         double a2 = Randomizer.uniform(-twindowSize, twindowSize);
         double u1 = Randomizer.uniform(0, 1);//which node to pick, i.e. the son or the daughter of the root
         double u2 = Randomizer.uniform(0, 1);//which tree topology to go, i.e. which node to exchange
@@ -163,10 +163,10 @@ public class BigPulley extends TreeOperator {
                         if (E.size() != 0) {
                             ParaA = 0.25;
                         }
+                        //det = Det();
 
                     } else if (u2 < 0.5) {
                         //daughter <-> daughter1
-
                         if (d_k - d_i_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
@@ -175,11 +175,12 @@ public class BigPulley extends TreeOperator {
                         if (E.size() != 0) {
                             ParaA = 0.25;
                         }
-
+                        //det = Det();
                     } else {
                         return Double.NEGATIVE_INFINITY;
                     }
                     hastingsRatio = Math.log(ParaA / 0.25);
+                    //hastingsRatio = Math.log(4 * det * ParaA);
                 } else if (u1 < 0.5) {
                     //Pick the daughter and change the son
                     if (t_k_ <= t_j) {
@@ -318,14 +319,31 @@ public class BigPulley extends TreeOperator {
         double r_2_ = dSiblingA / (newParentATime - SiblingATime);
         double r_1_ = (dChangeA - newdParentA) / (newRootTime - ChangeATime);
         double r_4_ = newdParentA / (newRootTime - newParentATime);
+
         //exchange node A and C
         exchangeNodes(ChangeA, ChangeC, ParentA, Root);
         tree.setRoot(Root);
+
         //assign new rates to the nodes
         rates.setValue(ChangeC.getNr(), r_3_);
         rates.setValue(SiblingA.getNr(), r_2_);
         rates.setValue(ChangeA.getNr(), r_1_);
         rates.setValue(ParentA.getNr(), r_4_);
+
+
+    }
+
+    protected double Det () {
+        //calculate the determinant of the Jacobian matrix
+        double [][] J = new double[7][7];
+        // J[0][0] = 0;
+        //J[1][0] =
+
+
+
+
+        double Det = JD.Determinant(J,6);
+        return Det;
     }
 
     protected void exchangeNodes(Node i, Node j, Node p, Node jP) {
@@ -334,6 +352,10 @@ public class BigPulley extends TreeOperator {
         replace(jP, j, i);
         //postcondition p -> j & p -> i
     }
+
+
+
+
 
     /**
      * automatic parameter tuning *

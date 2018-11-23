@@ -8,7 +8,6 @@ import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
 import beast.util.Randomizer;
-
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class InConstantDistanceOperator extends TreeOperator {
     private RealParameter rates;
 
     protected BranchRateModel.Base branchRateModel;
-
+    JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
@@ -43,11 +42,11 @@ public class InConstantDistanceOperator extends TreeOperator {
         double t_j;
         double t_k;
         //the original distances
-        double d_i;
+        double d_j;
         double d_k;
         //the original rates
         double r_k;
-        double r_i;
+        double r_j;
 
         //the proposed node time
         double t_x_;
@@ -75,8 +74,8 @@ public class InConstantDistanceOperator extends TreeOperator {
         // son
         Node son = node.getChild(0);//get the left child of this node, i.e. son
         t_j = son.getHeight();//node time of son
-        r_i = branchRateModel.getRateForBranch(son);
-        d_i = r_i * (t_x - t_j);
+        r_j = branchRateModel.getRateForBranch(son);
+        d_j = r_j * (t_x - t_j);
         // daughter
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
@@ -102,7 +101,7 @@ public class InConstantDistanceOperator extends TreeOperator {
        //there are three rates in total
        //r_node, r_i, r_x
        double r_node_ = r_node * (upper - t_x) / (upper - t_x_);
-       double r_i_ = d_i / (t_x_ - t_j);
+       double r_j_ = d_j / (t_x_ - t_j);
        double r_k_ = d_k / (t_x_ - t_k);
        //if (r_i_ < 0.1 || r_k_  <0.1 || r_node_ <0.1) {
            //System.out.println("t_x_=" + t_x_);
@@ -112,20 +111,26 @@ public class InConstantDistanceOperator extends TreeOperator {
        //}
        // set the proposed new rates
        rates.setValue(node.getNr(), r_node_);
-       rates.setValue(son.getNr(), r_i_);
+       rates.setValue(son.getNr(), r_j_);
        rates.setValue(daughter.getNr(), r_k_);
 
+
+       //Step4: calculate the Hastings ratio
        double [][] J = new double[4][4];
        J[0][0] = 1.0;
-       //J[1][0] = ;
+       J[1][0] = r_j / (t_x_ - t_j);
+       J[2][0] = r_k / (t_x_ - t_k);
+       J[3][0] = (-r_node * upper) / (upper - t_x_);
+       J[1][1] = (t_x - t_j) / (t_x_ - t_j);
+       J[2][2] = (t_x - t_k) / (t_x_ - t_k);
+       J[3][3] = (upper - t_x) / (upper - t_x_);
 
-       double Det = Determinat(J,3);
+       double Det = JD.Determinant(J,3);
 
-
-
-       return 0.0;
+       return Math.log(Det);
     }
-    public static double Determinat(double[][] Matrix, int N)
+/*
+    public static double Determinant(double[][] Matrix, int N)
     {
         int T0;
         int T1;
@@ -153,7 +158,7 @@ public class InConstantDistanceOperator extends TreeOperator {
                     }
                     Cha = 0;
                 }
-                Num = Num + Matrix[0][T0] * Determinat(B, N - 1) * Math.pow((-1), T0);
+                Num = Num + Matrix[0][T0] * Determinant(B, N - 1) * Math.pow((-1), T0);
             }
             return Num;
         } else if (N == 0) {
@@ -161,6 +166,7 @@ public class InConstantDistanceOperator extends TreeOperator {
         }
         return 0;
     }
+    */
 
     @Override
     public double getCoercableParameterValue() {
