@@ -28,7 +28,6 @@
           <sequence taxon="8">?</sequence>
           <sequence taxon="9">?</sequence>
           <sequence taxon="10">?</sequence>
-
                           <sequence taxon="11">?</sequence>
                           <sequence taxon="12">?</sequence>
                           <sequence taxon="13">?</sequence>
@@ -39,6 +38,7 @@
                           <sequence taxon="18">?</sequence>
                           <sequence taxon="19">?</sequence>
                           <sequence taxon="20">?</sequence>
+<!--
                           <sequence taxon="21">?</sequence>
                           <sequence taxon="22">?</sequence>
                           <sequence taxon="23">?</sequence>
@@ -140,6 +140,7 @@
                           <sequence taxon="118">?</sequence>
                           <sequence taxon="119">?</sequence>
                           <sequence taxon="120">?</sequence>
+-->
       </data>
     <!--
         <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
@@ -179,7 +180,7 @@
                 </taxonset>
             </tree>
         <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="238">1.0</stateNode>
+        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="38">1.0</stateNode>
         <parameter id="BirthRate.t:ratites" name="stateNode">2.0</parameter>
         <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
@@ -240,17 +241,18 @@
 
         </distribution>
 
- <!--
         <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" distr="@LogNormalDistribution2" weight="10.0"/>
--->
+<!--
         <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
                                  twindowSize="0.1"  tree="@Tree.t:ratites" rates="@rates.c:ratites" weight="20.0"/>
-<!--
+
+
         <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
                                  twindowSize="0.1" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
 
         <operator id="RootOperator2.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
                                  dwindowSize="0.1" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
+
 
         <operator id="RootOperator3.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
                                          twindowSize="0.1" dwindowSize="0.12" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
@@ -267,6 +269,7 @@
          <operator id="CategoriesSwapOperator.c:ratites" spec="SwapOperator" intparameter="@rates.c:ratites" weight="10.0"/>
 
           <operator id="CategoriesUniform.c:ratites" spec="UniformOperator" parameter="@rates.c:ratites" weight="10.0"/>
+
 -->
 
         <operator id="YuleTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="20.0"/>

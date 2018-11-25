@@ -103,12 +103,7 @@ public class InConstantDistanceOperator extends TreeOperator {
        double r_node_ = r_node * (upper - t_x) / (upper - t_x_);
        double r_j_ = d_j / (t_x_ - t_j);
        double r_k_ = d_k / (t_x_ - t_k);
-       //if (r_i_ < 0.1 || r_k_  <0.1 || r_node_ <0.1) {
-           //System.out.println("t_x_=" + t_x_);
-           //System.out.println("r_node_ =" + r_node_ + ",r_i_=" + r_i_ + ",r_k_=" + r_k_);
-           //System.out.println("d_node=" + r_node * (upper - t_x) + ",d_i=" + d_i + ",d_k=" + d_k);
-           //return Double.NEGATIVE_INFINITY;
-       //}
+
        // set the proposed new rates
        rates.setValue(node.getNr(), r_node_);
        rates.setValue(son.getNr(), r_j_);
@@ -116,6 +111,18 @@ public class InConstantDistanceOperator extends TreeOperator {
 
 
        //Step4: calculate the Hastings ratio
+        /*
+         *input:t_x,r_node,r_j,r_k
+         *
+         *f:the function
+         *f(t_x,r_node,r_j,r_k)
+         *
+         *output:t_x_,r_node_,r_j_,r_k_
+         *t_x_ = t_x + a
+         *r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j)
+         *r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k)
+         *r_node_ = r_node * (upper - t_x) / (upper - t_x_)
+         */
        double [][] J = new double[4][4];
        J[0][0] = 1.0;
        J[1][0] = r_j / (t_x_ - t_j);

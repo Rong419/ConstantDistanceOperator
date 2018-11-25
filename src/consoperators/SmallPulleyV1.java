@@ -27,7 +27,7 @@ public class SmallPulleyV1 extends TreeOperator {
 
 
     private double dwindowSize;
-    private Tree tree;
+    Tree tree;
     private RealParameter rates;
     protected BranchRateModel.Base branchRateModel;
     JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
@@ -43,37 +43,27 @@ public class SmallPulleyV1 extends TreeOperator {
 
     @Override
     public double proposal() {
-        final Tree tree = treeInput.get(this);
+        //final Tree tree = treeInput.get(this);
 
         //original rates
-        double r_i;
         double r_j;
         double r_k;
-        double r_x;
+
         //proposed rates
-        double r_i_;
         double r_j_;
         double r_k_;
-        double r_x_;
+
         //the chosen node to work on
         Node node;
 
-        double a; //t factor in the operator, i.e. to move the node time
         //the original node time
         double t_x;
         double t_j;
         double t_k;
-        double t_i;
-        double t1 = 1.0;
-        double t2 = 0.0;
-        //the proposed node time
-        double t_x_;
 
         // Step1: get the root of the tree
         node = tree.getRoot();
-
-
-        // original root time
+        // root time
         t_x = node.getHeight();//get the time of this node
 
         // son
@@ -89,12 +79,14 @@ public class SmallPulleyV1 extends TreeOperator {
         r_j = branchRateModel.getRateForBranch(son);//branch rate for son
         r_k = branchRateModel.getRateForBranch(daughter);//branch rate for daughter
 
-        //d3, which should be proposed
+        //d3: the distance to be proposed
         //distance on the branch above son
         double d = r_j * (t_x - t_j);
-        //d3+d4
-        //d4;distance on the branch above daughter
+        //D = d3 + d4
+        //d4: distance on the branch above daughter
         double D = r_k * (t_x - t_k) + d;
+
+        //Step2: propose new genetic distance
         double b = Randomizer.uniform(-dwindowSize, dwindowSize);
         double d_ = d + b;
         if (d_ <= 0.0 || d_ >= D) {
@@ -109,32 +101,24 @@ public class SmallPulleyV1 extends TreeOperator {
         rates.setValue(nodeN02, r_j_);
         rates.setValue(nodeN03, r_k_);
 
-        //Step4: calculate the Hastings ratio
-        double [][] J = new double[3][3];
-
-        J[0][0] = 1.0;
-        J[1][0] = 1 / (t_x - t_j);
-        J[2][0] = - d / (t_x - t_k);
-        J[1][1] = 1;
-        J[2][1] = - (t_x - t_j) / (t_x - t_k);
-
-
-        double Det = JD.Determinant(J,2);
+        //Step5: calculate the Hastings ratio
+        /*
+         r_j_ = d_ / (t_x - t_j)
+              = [r_j * (t_x - t_j) + b ] / (t_x - t_j)
+              = r_j + [b  / (t_x - t_j)]
+         *
+         r_k_ = (D - d_) / (t_x - t_k)
+              = {[r_k * (t_x - t_k) + d] - (d + b)} / (t_x - t_k)
+              = r_k - [b  / (t_x - t_k)]
+         *
+         J = [1 0; 0 1]
+         Det(J) = 1
+         */
 
         return  0.0;
     }
 }
 
-   /*
-                 * Strategy one: Simple Distance
-                 */
-//node.setHeight(t_x_);
-//Step 3: make changes on the rates
-//r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j);
-//r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k);
-                /*
-                 * Strategy two: Small Pulley
-                 */
 
 
 

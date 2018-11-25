@@ -340,8 +340,6 @@ public class BigPulley extends TreeOperator {
         //J[1][0] =
 
 
-
-
         double Det = JD.Determinant(J,6);
         return Det;
     }

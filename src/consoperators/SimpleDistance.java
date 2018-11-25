@@ -91,6 +91,11 @@ public class SimpleDistance extends TreeOperator {
         rates.setValue(nodeN03, r_x_);
 
         //Step5: calculate the Hastings ratio
+        /*
+         t_x_ = t_x + a
+         r_i_ = r_i * (t_x - t_j) / (t_x_ - t_j)
+         r_x_ = r_x * (t_x - t_k) / (t_x_ - t_k)
+         */
         double [][] J = new double[3][3];
         J[0][0] = 1;
         J[1][0] = r_i / (t_x_ - t_j);
