@@ -74,7 +74,7 @@ public class BigPulley extends TreeOperator {
         double dYoung = 1.0;
         List C1;List C2;List E;
         double ParaA = 1.0; double ParaB =1.0; double ParaC;
-        double det;
+        double det = 1.0;
 
         //Step 1: randomly select a node, denoted by node x
         node = tree.getRoot();
@@ -123,6 +123,7 @@ public class BigPulley extends TreeOperator {
             double d_i_ = d_i + d0;
             double d_x_ = d_x + d1;
 
+            //for symmetric tree shapes
             if ((C1.size() != 0) && (C2.size() != 0)) {
                 son1 = son.getChild(0);
                 daughter1 = son.getChild(1);
@@ -154,33 +155,34 @@ public class BigPulley extends TreeOperator {
                     node.setHeight(t_x_);
                     son.setHeight(t_j_);
                     if (u2 > 0.5) {
-                        //daughter <-> son1
+                        //Case1: daughter <-> son1
                         if (d_j - d_i_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(son1, daughter1, daughter, son, node, d_j, d_k, d_x, d_i, d_i_, t3, t4, t_k, t_j_, t_x_);
+                        det = Det(r_j,r_k,r_x,r_i,t_x,t_x_,t_j,t_j_,t3,t4,t_k);
+                        //det = Det2 (t_x_,t_j_,t3,t4,t_k);
                         E = son1.getChildren();
                         if (E.size() != 0) {
                             ParaA = 0.25;
                         }
-                        //det = Det();
-
                     } else if (u2 < 0.5) {
-                        //daughter <-> daughter1
+                        //Case2: daughter <-> daughter1
                         if (d_k - d_i_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(daughter1, son1, daughter, son, node, d_k, d_j, d_x, d_i, d_i_, t4, t3, t_k, t_j_, t_x_);
+                        det = Det(r_k,r_j,r_x,r_i,t_x,t_x_,t_j,t_j_,t4,t3,t_k);
+                        //det = Det2 (t_x_,t_j_,t4,t3,t_k);
                         E = daughter1.getChildren();
                         if (E.size() != 0) {
                             ParaA = 0.25;
                         }
-                        //det = Det();
                     } else {
                         return Double.NEGATIVE_INFINITY;
                     }
-                    hastingsRatio = Math.log(ParaA / 0.25);
-                    //hastingsRatio = Math.log(4 * det * ParaA);
+                    //hastingsRatio = Math.log(ParaA / 0.25);
+                    hastingsRatio = Math.log(4 * det * ParaA);
                 } else if (u1 < 0.5) {
                     //Pick the daughter and change the son
                     if (t_k_ <= t_j) {
@@ -192,23 +194,26 @@ public class BigPulley extends TreeOperator {
                     node.setHeight(t_x_);
                     daughter.setHeight(t_k_);
                     if (u2 > 0.5) {
-                        //son <-> son2
+                        //Case3: son <-> son2
                         if (d_m - d_x_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(son2, daughter2, son, daughter, node, d_m, d_n, d_i, d_x, d_x_, t5, t6, t_j, t_k_, t_x_);
+                        det = Det(r_m,r_n,r_i,r_x,t_x,t_x_,t_k,t_k_,t5,t6,t_j);
+                        //det = Det2 (t_x_,t_k_,t5,t6,t_j);
                         E = son2.getChildren();
                         if (E.size() != 0) {
                             ParaB = 0.25;
                         }
 
                     } else if (u2 < 0.5) {
-                        //son <-> daughter2
-
+                        //Case4: son <-> daughter2
                         if (d_n - d_x_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(daughter2, son2, son, daughter, node, d_n, d_m, d_i, d_x, d_x_, t6, t5, t_j, t_k_, t_x_);
+                        det = Det(r_n,r_m,r_i,r_x,t_x,t_x_,t_k,t_k_,t6,t5,t_j);
+                        //det = Det2 (t_x_,t_k_,t6,t5,t_j);
                         E = daughter2.getChildren();
                         if (E.size() != 0) {
                             ParaB = 0.25;
@@ -217,11 +222,14 @@ public class BigPulley extends TreeOperator {
                     } else {
                         return Double.NEGATIVE_INFINITY;
                     }
-                    hastingsRatio = Math.log(ParaB / 0.25);
+                    //hastingsRatio = Math.log(ParaB / 0.25);
+                    hastingsRatio = Math.log(4 * det * ParaB);
                 } else {
                     return Double.NEGATIVE_INFINITY;
                 }
             }
+
+            //for asymmetric tree shape
             if (((C1.size() == 0) && (C2.size() != 0)) || ((C1.size() != 0) && (C2.size() == 0))) {
                 if (t_j > t_k) {
                     tOlder = t_j;
@@ -257,26 +265,32 @@ public class BigPulley extends TreeOperator {
                 double r_Ch2 = branchRateModel.getRateForBranch(Child2);
                 double d_Ch1 = r_Ch1 * (tOlder - t_Ch1);
                 double d_Ch2 = r_Ch2 * (tOlder - t_Ch2);
+                double r_Y = branchRateModel.getRateForBranch(nodeYounger);
+                double r_O = branchRateModel.getRateForBranch(nodeOlder);
 
                 if ((newtOlder > Math.max(t_Ch1, t_Ch2)) || (t_Ch1 == t_Ch2)) {
                     if (u2 > 0.5) {
-                        //Child1 <-> nodeYounger
+                        //Case5: Child1 <-> nodeYounger
                         if (d_Ch1 - dOld_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(Child1, Child2, nodeYounger, nodeOlder, node, d_Ch1, d_Ch2, dYoung, dOld, dOld_, t_Ch1, t_Ch2, tYounger, newtOlder, t_x_);
+                        det = Det(r_Ch1,r_Ch2,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch1,t_Ch2,tYounger);
+                        //det = Det2 (t_x_,newtOlder,t_Ch1,t_Ch2,tYounger);
                         List C = Child1.getChildren();
                         if (C.size() == 0) {
                             ParaC = 0.5;
                         } else {
                             ParaC = 0.25;
                         }
-                    } else if (u1 < 0.5) {
-                        //Child2 <-> nodeYounger
+                    } else if (u2 < 0.5) {
+                        //Case6: Child2 <-> nodeYounger
                         if (d_Ch2 - dOld_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(Child2, Child1, nodeYounger, nodeOlder, node, d_Ch2, d_Ch1, dYoung, dOld, dOld_, t_Ch2, t_Ch1, tYounger, newtOlder, t_x_);
+                        det = Det(r_Ch2,r_Ch1,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch2,t_Ch1,tYounger);
+                        //det = Det2 (t_x_,newtOlder,t_Ch2,t_Ch1,tYounger);
                         List D = Child2.getChildren();
                         if (D.size() == 0) {
                             ParaC = 0.5;
@@ -286,23 +300,31 @@ public class BigPulley extends TreeOperator {
                     } else {
                         return Double.NEGATIVE_INFINITY;
                     }
-                    hastingsRatio = Math.log(ParaC / 0.5);
-                } else if ((newtOlder > Math.min(t_Ch1, t_Ch2)) && (newtOlder <= Math.max(t_Ch1, t_Ch2))) {
+                    //hastingsRatio = Math.log(ParaC / 0.5);
+                    hastingsRatio = Math.log(2 * det * ParaC);
+                }
+
+                else if ((newtOlder > Math.min(t_Ch1, t_Ch2)) && (newtOlder <= Math.max(t_Ch1, t_Ch2))) {
                     if (t_Ch1 > t_Ch2) {
-                        //Child1 <-> nodeYounger
+                        //Case7: Child1 <-> nodeYounger
                         if (d_Ch1 - dOld_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(Child1, Child2, nodeYounger, nodeOlder, node, d_Ch1, d_Ch2, dYoung, dOld, dOld_, t_Ch1, t_Ch2, tYounger, newtOlder, t_x_);
+                        det = Det(r_Ch1,r_Ch2,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch1,t_Ch2,tYounger);
+                        //det = Det2 (t_x_,newtOlder,t_Ch1,t_Ch2,tYounger);
                     }
                     if (t_Ch1 < t_Ch2) {
-                        //Child2 <-> nodeYonger
+                        //Case8: Child2 <-> nodeYonger
                         if (d_Ch2 - dOld_ <= 0) {
                             return Double.NEGATIVE_INFINITY;
                         }
                         TreeChange(Child2, Child1, nodeYounger, nodeOlder, node, d_Ch2, d_Ch1, dYoung, dOld, dOld_, t_Ch2, t_Ch1, tYounger, newtOlder, t_x_);
+                        det = Det(r_Ch2,r_Ch1,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch2,t_Ch1,tYounger);
+                        //det = Det2 (t_x_,newtOlder,t_Ch2,t_Ch1,tYounger);
                     }
-                    hastingsRatio = Math.log(0.25);
+                    //hastingsRatio = Math.log(0.25);
+                    hastingsRatio = Math.log(0.25 * det);
                 } else {
                     return Double.NEGATIVE_INFINITY;
                 }
@@ -333,17 +355,46 @@ public class BigPulley extends TreeOperator {
 
     }
 
-    protected double Det () {
+    protected double Det (double r1, double r2, double r3, double r4, double T, double T_, double t,double t_, double t1, double t2, double t3) {
         //calculate the determinant of the Jacobian matrix
-        double [][] J = new double[7][7];
-        // J[0][0] = 0;
-        //J[1][0] =
-
-
-        double Det = JD.Determinant(J,6);
-        return Det;
+        double [][] J = new double[6][6];
+        //Case1:
+        //f(T,t,r1,r2,r3,r4) ---> T_,t_,r1_,r2_,r3_,r4_
+        J[0][0] = 1;
+        J[1][1] = 1;
+        J[2][0] = -r4 / (T_ - t1);
+        J[2][1] = (r1 + r4) / (T_ - t1);
+        J[2][2] = (t- t1) / (T_ - t1);
+        J[2][5] = (t - T) / (T_ - t1);
+        J[3][1] = r2 / (t_ - t2);
+        J[3][3] = (t - t2) / (t_ - t2);
+        J[4][0] = (r3 + r4) / (t_ - t3);
+        J[4][1] = -r4 / (t_ - t3);
+        J[4][4] = (T - t3) / (t_ - t3);
+        J[4][5] = (T - t) / (t_ - t3);
+        J[5][0] = r4 / (T_ - t_);
+        J[5][1] = -r4 / (T_ - t_);
+        J[5][5] = (T - t) / (T_ - t_);
+        double Det1 = JD.Determinant(J,5);
+        return Det1;
     }
-
+/*
+    protected double Det2 (double T_, double t_, double t1, double t2, double t3) {
+        //calculate the determinant of the Jacobian matrix
+        double [][] J = new double[6][6];
+        //Case2:
+        //f(T,t,d1,d2,d3,d4) ---> T_,t_,d4_,r1,r2,r3
+        J[0][0] = 1;
+        J[1][1] = 1;
+        J[2][5] = 1;
+        J[3][2] = 1 / (T_ - t1);
+        J[4][3] = 1 / (t_ - t2);
+        J[5][4] = 1 / (t_ -t3);
+        J[5][5] = 1 / (t_ -t3);
+        double Det2 = JD.Determinant(J,5);
+        return Det2;
+    }
+*/
     protected void exchangeNodes(Node i, Node j, Node p, Node jP) {
         //precondition p -> i & jP -> j
         replace(p, i, j);
@@ -358,6 +409,7 @@ public class BigPulley extends TreeOperator {
     /**
      * automatic parameter tuning *
      */
+/*
     @Override
     public double getCoercableParameterValue() {
         return dwindowSize;
@@ -367,7 +419,7 @@ public class BigPulley extends TreeOperator {
     public void setCoercableParameterValue(double value) {
         dwindowSize = value;
     }
-
+*/
     /**
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
@@ -375,6 +427,7 @@ public class BigPulley extends TreeOperator {
      *
      * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
      */
+/*
     @Override
     public void optimize(double logAlpha) {
         // must be overridden by operator implementation to have an effect
@@ -403,5 +456,6 @@ public class BigPulley extends TreeOperator {
             return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
     }
+*/
 }
 

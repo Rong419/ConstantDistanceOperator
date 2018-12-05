@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="BEAST v2.5.0" version="2.5">
 
-    <!-- This xml uses a yule tree to simulate the sequences -->
-    <!-- And run MCMC to sample the simulated sequences -->
-    <!-- Combines "Sequence.xml" and "testSequence.xml" -->
+    <!-- This xml uses categories to sample the simulated sequences  -->
+
+
 
     <data spec='beast.app.seqgen.SimulatedAlignment' id="ratites"
-	  sequencelength="5000"
+	  sequencelength="10000"
 	  outputFileName="simulated_alignment.xml">
 
 
       <tree id='tree' spec='beast.util.TreeParser'
-	    newick="(((((((((1:1.030018214427294,19:1.030018214427294):0.7683790995724777,11:1.7983973139997718):1.1402391211361318,9:2.9386364351359036):0.5245875757810512,(8:0.8307196906852363,10:0.8307196906852363):2.6325043202317184):0.29165557890258675,16:3.7548795898195415):0.2862838115074364,(5:1.6796210433712493,(12:0.3548910675690137,18:0.3548910675690137):1.3247299758022355):2.3615423579557286):0.6855743051874965,(6:0.7051354410715548,15:0.7051354410715548):4.02160226544292):1.3513263775200057,((2:0.8765717062415977,4:0.8765717062415977):4.240297484739964,13:5.116869190981562):0.9611948930529186):1.2140082128360268,((3:3.255531896280363,17:3.255531896280363):0.39569930524015984,(7:2.1188749346932307,(14:0.8968532555280082,20:0.8968532555280082):1.2220216791652225):1.5323562668272923):3.640841095349984)"
+	    newick="((((1:0.1324367376839707,(14:0.011537238858470716,20:0.011537238858470716):0.1208994988255):0.002610882789619323,(8:0.09808629430486554,11:0.09808629430486554):0.036961326168724495):0.29468011806306166,(((4:0.013429418034121395,16:0.013429418034121395):0.14472429735983813,19:0.15815371539395953):0.0016087450921132007,10:0.15976246048607273):0.26996527805057896):0.6836557321793754,((((((2:0.02305375318172475,9:0.02305375318172475):0.3863774281625608,5:0.4094311813442856):0.16167835258900398,(12:0.13185530680547244,15:0.13185530680547244):0.43925422712781714):0.22647100019340216,(13:0.2899757360538706,18:0.2899757360538706):0.5076047980728211):0.07519903609439982,6:0.8727795702210915):0.10777151206863722,((3:0.059986257005466455,17:0.059986257005466455):0.47871076998239115,7:0.5386970269878576):0.44185405530187116):0.1328323884262983):0.0;"
 	    IsLabelledNewick="true"/>
 
       <data spec='Alignment' id="input_alignment" dataType="nucleotide">
@@ -38,20 +38,18 @@
 
       <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
       <substModel spec='HKY' id='hky'>
-      <parameter name='kappa' id="hky.kappa" value="2.90976252559377" lower="0.0"/>
-      <frequencies id='freqs' spec='Frequencies' frequencies="0.1349109685063489 0.3699682092735705	0.27961562287289105	0.21550519934718956"/>
+      <parameter name='kappa' id="hky.kappa" value="0.241380933466144" lower="0.0"/>
+      <frequencies id='freqs' spec='Frequencies' frequencies="0.22380108927097 0.424050443184412 0.169749623568918 0.182398843975701"/>
       </substModel>
       </siteModel>
-
       <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
       <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
-      <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="38">1.0</parameter>
-          <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
+      <parameter id="branchrates" name="rateCategories" spec="parameter.IntegerParameter" dimension="38">1</parameter>
+      <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
       <parameter name='M' id='M' value="1.0"/>
-      <parameter name='S' id='ucld.stdev' value="0.20322536236504316"/>
+      <parameter name='S' id='ucld.stdev' value="0.19309711180023"/>
       </distr>
       </branchRateModel>
-
     </data>
 
     <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -66,18 +64,18 @@
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
     <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-    <run id="mcmc" spec="MCMC" chainLength="10000000">
+    <run id="mcmc" spec="MCMC" chainLength="10000000"  >
         <state id="state" storeEvery="5000">
             <tree id="Tree.t:ratites" name="stateNode">
                 <taxonset id="TaxonSet.ratites" spec="TaxonSet">
                     <alignment idref="ratites"/>
                 </taxonset>
             </tree>
-            <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
-            <stateNode id="rates.c:ratites" spec="parameter.RealParameter" lower="0.0" upper ="5" dimension="38">1</stateNode>
-            <parameter id="BirthRate.t:ratites" name="stateNode">1.0</parameter>
-            <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
-            <parameter id="freqParameter.t:ratites" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+    <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.2</parameter>
+        <stateNode id="rateCategories.c:ratites" spec="parameter.IntegerParameter" dimension="38">1</stateNode>
+        <parameter id="BirthRate.t:ratites" name="stateNode">2.0</parameter>
+        <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">2.0</parameter>
+        <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
         </state>
 
         <init id="RandomTree.t:dna" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:ratites" taxa="@ratites">
@@ -88,28 +86,23 @@
 
         <distribution id="posterior" spec="util.CompoundDistribution">
             <distribution id="prior" spec="util.CompoundDistribution">
-                <distribution id="YuleModel.t:ratites" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
-                <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BirthRate.t:ratites">
-                    <LogNormal id="LogNormalDistribution1" S="1"  M="2" meanInRealSpace="true" name="distr">
-                    </LogNormal>
-                </prior>
+            <distribution id="YuleModel.t:ratites" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
+            <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BirthRate.t:ratites">
+                <LogNormal id="LogNormalDistribution1" S="0.2"  M="0.7" meanInRealSpace="false" name="distr">
+                </LogNormal>
+            </prior>
 
-                <prior id="FrequencyPrior.t:ratites" name="distribution" x="@freqParameter.t:ratites">
-                    <Dirichlet id="Dirichlet1" alpha="10 10 10 10" name="distr"/>
-                </prior>
+            <prior id="FrequencyPrior.t:ratites" name="distribution" x="@freqParameter.t:ratites">
+                <Dirichlet id="Dirichlet1" alpha="10 10 10 10" name="distr"/>
+            </prior>
 
-                <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
-                    <LogNormal id="LogNormalDistribution0" S="1.25"  M="5.0" meanInRealSpace="true"  name="distr"/>
-                </prior>
+            <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
+                <LogNormal id="LogNormalDistribution0" S="0.6"  M="-1.0" meanInRealSpace="false"  name="distr"/>
+            </prior>
 
-                <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
-                    <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:ratites"  M="1" meanInRealSpace="true" name="distr"/>
-                </prior>
-
-                <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                    <LogNormal id="LogNormalDistribution3" S="0.6"  M="0.2" meanInRealSpace="true" name="distr"/>
-                </prior>
-
+            <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
+                <LogNormal id="LogNormalDistribution3" S="0.35"  M="-1.5" meanInRealSpace="false" name="distr"/>
+            </prior>
             </distribution>
 
             <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
@@ -123,55 +116,44 @@
                         </substModel>
                     </siteModel>
                     <branchRateModel id="RelaxedClock.c:ratites" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
-                                     rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2">
+                                     rateCategories="@rateCategories.c:ratites" tree="@Tree.t:ratites">
+                    <LogNormal id="LogNormalDistributionModel.c:ratites" S="@ucldStdev.c:ratites" M="1" meanInRealSpace="true" name="distr">
+                    </LogNormal>
                         <parameter id="ucldMean.c:ratites" estimate="false" name="clock.rate">1.0</parameter>
                     </branchRateModel>
                 </distribution>
             </distribution>
         </distribution>
+  
+        <operator id="CategoriesRandomWalk.c:ratites" spec="IntRandomWalkOperator" parameter="@rateCategories.c:ratites" weight="10.0" windowSize="1"/>
 
-        <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
-                  twindowSize="0.017"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="20"/>
+        <operator id="CategoriesSwapOperator.c:ratites" spec="SwapOperator" intparameter="@rateCategories.c:ratites" weight="10.0"/>
 
-        <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
-                  twindowSize="0.055" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
+        <operator id="CategoriesUniform.c:ratites" spec="UniformOperator" parameter="@rateCategories.c:ratites" weight="10.0"/>
 
-        <operator id="RootOperator2.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
-                  dwindowSize="0.038" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
+        <operator id="YuleTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="10.0"/>
 
-        <operator id="RootOperator3.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
-                  twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="1"/>
+        <operator id="YuleTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="5.0"/>
 
-
-        <operator id="RatesRandomWalk.c:ratites" spec="RealRandomWalkOperator" parameter="@rates.c:ratites" weight="20.0" windowSize="0.1"/>
-
-        <operator id="RatesSwapOperator.c:ratites" spec="SwapOperator" parameter="@rates.c:ratites" weight="20.0"/>
-
-        <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2" weight="20.0"/>
-
-        <operator id="YuleTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="20.0"/>
-
-        <operator id="YuleTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="10.0"/>
-
-        <operator id="YuleBirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BirthRate.t:ratites" scaleFactor="0.75" weight="15.0"/>
+        <operator id="YuleBirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BirthRate.t:ratites" scaleFactor="0.75" weight="10.0"/>
 
         <operator id="YuleModelUniformOperator.t:ratites" spec="Uniform" tree="@Tree.t:ratites" weight="10.0"/>
 
-        <operator id="YuleModelSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="10.0"/>
+        <operator id="YuleModelSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="5.0"/>
 
-        <operator id="YuleModelhNarrow.t:ratites" spec="Exchange" tree="@Tree.t:ratites" weight="10.0"/>
+        <operator id="YuleModelhNarrow.t:ratites" spec="Exchange" tree="@Tree.t:ratites" weight="5.0"/>
 
-        <operator id="YuleModelWide.t:ratites" spec="Exchange" isNarrow="false" tree="@Tree.t:ratites" weight="10.0"/>
+        <operator id="YuleModelWide.t:ratites" spec="Exchange" isNarrow="false" tree="@Tree.t:ratites" weight="5.0"/>
 
-        <operator id="YuleModelWilsonBalding.t:ratites" spec="WilsonBalding" tree="@Tree.t:ratites" weight="10.0"/>
+        <operator id="YuleModelWilsonBalding.t:ratites" spec="WilsonBalding" tree="@Tree.t:ratites" weight="5.0"/>
 
-        <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="2.0"/>
+        <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="1.0"/>
 
-        <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
+        <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.2">
             <parameter idref="freqParameter.t:ratites"/>
         </operator>
 
-            <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="10.0"/>
+        <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="5.0"/>
 
         <logger id="tracelog" fileName="ratites.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>

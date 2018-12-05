@@ -208,9 +208,7 @@ It is problemetic to sample the UcldStdev
     <operator id="RatesRandomWalk.c:ratites" spec="RealRandomWalkOperator" parameter="@rates.c:ratites" weight="20.0" windowSize="0.1"/>
 
     <operator id="RatesSwapOperator.c:ratites" spec="SwapOperator" parameter="@rates.c:ratites" weight="20.0"/>
-<!--
-    <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2" weight="20.0"/>
--->
+
     <operator id="YuleTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="20.0"/>
 
     <operator id="YuleTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="10.0"/>

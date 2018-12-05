@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
 
-
+<!--
+This xml is used to generate samples from a Yule Tree model
+-->
     <data id="ratites" name="alignment">
         <!--
         <sequence id="seq_ANDI" taxon="ANDI" totalcount="4" value="?"/>
