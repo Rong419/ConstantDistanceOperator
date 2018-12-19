@@ -126,7 +126,7 @@ public class JacobianMatrixDeterminant {
          * @param currentRow
          * @param frontRow
          * @param ratio
-         * @return 将i行
+         * @return
          */
         public static double[] addValue(double[] currentRow,double[] frontRow, double ratio)throws Exception{
             for (int i = 0; i < currentRow.length; i++) {
