@@ -147,7 +147,7 @@ public class InConstantDistanceOperator extends TreeOperator {
 
        return Math.log(Det);
     }
-/*
+
     @Override
     public double getCoercableParameterValue() {
         return twindowSize;
@@ -158,7 +158,7 @@ public class InConstantDistanceOperator extends TreeOperator {
     public void setCoercableParameterValue(double value) {
         twindowSize = value;
     }
-*/
+
     /**
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
@@ -166,7 +166,7 @@ public class InConstantDistanceOperator extends TreeOperator {
      *
      * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
      */
-/*
+
     @Override
     public void optimize(double logAlpha) {
         // must be overridden by operator implementation to have an effect
@@ -195,7 +195,7 @@ public class InConstantDistanceOperator extends TreeOperator {
             return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
     }
-*/
+
 
 }
 
