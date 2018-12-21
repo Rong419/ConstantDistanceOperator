@@ -44,6 +44,7 @@ public class TwoNodeOperator extends TreeOperator {
         Step1: randomly select one internal node in the tree
          */
         int nodeCount = tree.getNodeCount();
+        //tree.getInternalNodes()
         do {
             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
             node = tree.getNode(nodeNr);
@@ -53,6 +54,7 @@ public class TwoNodeOperator extends TreeOperator {
 
 
         //get the details of the child nodes of the selected node
+        //get parent node
         Node C1 = node.getChild(0);//always work on this node!!!
         if (C1.isLeaf()){
             return Double.NEGATIVE_INFINITY;
@@ -97,7 +99,7 @@ public class TwoNodeOperator extends TreeOperator {
             }
             t_x_ = Math.min(u1,u2);
             t_p_ = Math.max(u1,u2);
-            C1.setHeight(t_x);
+            C1.setHeight(t_x_);
             node.setHeight(t_p_);
 
             //propose new rates
