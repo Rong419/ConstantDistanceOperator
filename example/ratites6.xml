@@ -16,7 +16,6 @@ This xml is used to test the 7 ratites by using bModelTest as sitemodel
     <sequence id="seq_EMU" taxon="EMU" totalcount="4" value="?"/>
     <sequence id="seq_KIWI" taxon="KIWI" totalcount="4" value="?"/>
 
-
 </data>
 
     <map name="Uniform" >beast.math.distributions.Uniform</map>

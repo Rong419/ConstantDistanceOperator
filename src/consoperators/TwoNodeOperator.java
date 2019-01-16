@@ -17,7 +17,6 @@ public class TwoNodeOperator extends TreeOperator {
 
     RealParameter rates;
     BranchRateModel.Base branchRateModel;
-    Node node_P; Node node_C;
 
     @Override
     public void initAndValidate() {
@@ -38,197 +37,142 @@ public class TwoNodeOperator extends TreeOperator {
         Step1: randomly select one node in the tree
          */
         int nodeCount = tree.getNodeCount();
-        int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
-        node = tree.getNode(nodeNr);
+        //tree.getInternalNodes()
+        do {
+            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
+            node = tree.getNode(nodeNr);
 
-        /*
-        Case1: A leaf node
-              get the grandparent node
-              P: The left child node of grandparent
-              C: The left child of parent
-              propose two node times, i.e. P and C
-              propose five rates
+        } while (node.isRoot() || node.isLeaf());//rule out the leaf and root
+
+          /*
+        Step2: get the parent node and child nodes of this node
          */
-        if (node.isLeaf()){
-           Node GP = node.getParent().getParent();
-           node_P = GP.getChild(0);
-           node_C = node_P.getChild(0);
+          Node P = node.getParent();
+          Node C1 = node.getChild(0);
+          Node C2 = node.getChild(1);
 
-            hastingsratio = FiveRates(node_C,node_P);
-        }
-        /*
-        Case2: Root of the tree
-               get the left child node (can not be a leaf node)
-               propose two node time, i.e. root and left child
-               propose four rates
+          /*
+        Step3: get the sibling of this node
          */
-        else if (node.isRoot()) {
-             node_P = node;
-             node_C = node.getChild(0);
+          Node S;
+          if (node == P.getChild(0)) {
+              S = P.getChild(1);
+          } else {
+              S = P.getChild(0);
+          }
 
-             if (node_C.isLeaf()) {
-                 return Double.NEGATIVE_INFINITY;
-             }
 
-             hastingsratio = FourRates(node_C,node_P);
-        }
-        /*
-        Case3: An internal node
-               get the left child node (can't be a leaf node)
-               propose two node times, i.e. the internal node and its left child
-               propose five rates
+         //Step 4: Propose new node times and rates
+         /*
+        Case1: P is the root of tree
+                P
+               /\
+         node /  \
+             /\   \
+            /  \   \
+           C1  C2  S
          */
-        else {
-            node_P = node;
-            node_C = node.getChild(0);
+         if (P.isRoot()) {
+              hastingsratio = RateChange(C1,C2,S,node,P);
+         }
+         /*
+        Case2: P is not the root
+                 GP
+                 /\
+              P /  \
+               /\   \
+         node /  \   \
+             /\   \   \
+            /  \   \   \
+           C1  C2  S
+         */
+         else {
+             double t_GP = P.getParent().getHeight();
+             double r5 = branchRateModel.getRateForBranch(P);
+             //original node time of P
+             double t5 = P.getHeight();
+             //propose four rates on branches above C1, C2, S and node
+             double r = RateChange(C1,C2,S,node,P);
+             //proposed node time of P
+             double t5_ = P.getHeight();
+             //To Propose a new rate for branch above P
+             double r5_ = r5 * (t_GP - t5) / (t_GP - t5_);
+             rates.setValue(P.getNr(),r5_);
 
-            if (node_C.isLeaf()) {
-                return Double.NEGATIVE_INFINITY;
-            }
+             hastingsratio = r * (t_GP - t5) / (t_GP - t5_);
 
-            hastingsratio = FiveRates(node_C, node_P);
+         }
 
-        }
         return Math.log(hastingsratio);
     }
-
     /*
-    N1: the child node
-    N2: the parent node
-    N1 is the left child node of N2
-    t_N1: the new node time for N1
-    t_N2: the new node time for N2
-
-    this method proposes rates for s1, s2, s3 and N1
+    This method changes four rates on the branches above N1, N2, S, C
+    In the meantime, two node times is proposed for C and P
+                P
+               /\
+            C /  \
+             /\   \
+            /  \   \
+           N1  N2  S
      */
-    public double BasicRateChange (Node N1, Node N2, double t_N1, double t_N2) {
-        //child nodes of N1
-        Node s1 = N1.getChild(0);
-        Node s2 = N1.getChild(1);
-        //right child node of N2
-        Node s3 = N2.getChild(1);
-
+    public double RateChange (Node N1, Node N2, Node S, Node C, Node P) {
         //original node times
-        double TN1 = N1.getHeight();
-        double TN2 = N2.getHeight();
-        double t_s1 = s1.getHeight();
-        double t_s2 = s2.getHeight();
-        double t_s3 = s3.getHeight();
+        double t1 = N1.getHeight();
+        double t2 = N2.getHeight();
+        double t3 = S.getHeight();
+        double tc = C.getHeight();
+        double tp = P.getHeight();
+
         //original rates
-        double r1 = branchRateModel.getRateForBranch(s1);
-        double r2 = branchRateModel.getRateForBranch(s2);
-        double r3 = branchRateModel.getRateForBranch(s3);
-        double r4 = branchRateModel.getRateForBranch(N1);
+        double r1 = branchRateModel.getRateForBranch(N1);
+        double r2 = branchRateModel.getRateForBranch(N2);
+        double r3 = branchRateModel.getRateForBranch(S);
+        double r4 = branchRateModel.getRateForBranch(C);
+
+        //propose new node times
+        double T [] = NodeTime(C, P);
+        double tc_ = T[0]; double tp_ = T[1];
 
         //propose new rates
-        double r1_ = r1 * (TN1 - t_s1) / (t_N1 - t_s1);
-        double r2_ = r2 * (TN1 - t_s2) / (t_N1 - t_s2);
-        double r3_ = r3 * (TN2 - t_s3) / (t_N2 - t_s3);
-        double r4_ = r4 * (TN2 - TN1) / (t_N2 - t_N1);
+        double r1_ = r1 * (tc - t1) / (tc_ - t1);
+        double r2_ = r2 * (tc - t2) / (tc_ - t2);
+        double r3_ = r3 * (tp - t3) / (tp_ - t3);
+        double r4_ = r4 * (tp - tc) / (tp_- tc_);
+
         //update the new rates
-        rates.setValue(s1.getNr(),r1_);
-        rates.setValue(s2.getNr(),r2_);
-        rates.setValue(s3.getNr(),r3_);
-        rates.setValue(N1.getNr(),r4_);
+        rates.setValue(N1.getNr(),r1_);
+        rates.setValue(N2.getNr(),r2_);
+        rates.setValue(S.getNr(),r3_);
+        rates.setValue(C.getNr(),r4_);
 
         //the determinant of the Jacobian matrix
-        double nu = (TN1 - t_s1)*(TN1 - t_s2)*(TN2 - t_s3)*(TN2 - TN1);
-        double de = (t_N1 - t_s1)*(t_N1 - t_s2)*(t_N2 - t_s3)*(t_N2 - t_N1);
+        double nu = (tc - t1)*(tc - t2)*(tp - t3)*(tp - tc);
+        double de = (tc_ - t1)*(tc_ - t2)*(tp_ - t3)*(tp_ - tc_);
 
         return nu/de;
     }
 
-    /*
-    The method of changing four rates when the root is involved
-    N1: child node
-    N2: parent node
-    N1 is the left child of N2
+    public double[] NodeTime (Node D, Node A) {
+        double upper;
+        if (A.isRoot()) {
+            upper = 10.0;
+        } else {
+            upper = A.getParent().getHeight();
+        }
+        double lower = Math.max(D.getChild(0).getHeight(),D.getChild(1).getHeight());
 
-    The method proposes four rates for s1,s2,s3 and N1
-     */
-    public double FourRates (Node N1, Node N2) {
-        //child nodes of N1
-        Node s1 = N1.getChild(0);
-        Node s2 = N1.getChild(1);
-
-        //original node times
-        double t_s1 = s1.getHeight();
-        double t_s2 = s2.getHeight();
-
-        double H1 = 10.0; //upper bound: for the root time, the upper bound is positive infinity theoretically
-        double L1 = Math.max(t_s1,t_s2);//lower bound
-        //propose new node times
-        double T [] = TwoTime(L1, H1);
-        double t_N1 = T[0]; double t_N2 = T[1];
-
-        //propose four rates
-        double ratio = BasicRateChange(N1,N2,t_N1,t_N2);
-
-        //set new node times to N1 and N2
-        N1.setHeight(t_N1);
-        N2.setHeight(t_N2);
-
-        return ratio;
-    }
-
-    /*
-    N1: the child node
-    N2: the parent node
-    N1 is the left child node of N2
-    The method proposes five rates for s1,s2,s3, N1 and N2
-     */
-    public double FiveRates (Node N1, Node N2) {
-        //Here, getting the node s1,s2,s4 and their node times is used to
-        //propose new node times for N1 and N2
-        //because it needs boundaries for Uniform distribution
-
-        //child nodes of N1
-        Node s1 = N1.getChild(0);
-        Node s2 = N1.getChild(1);
-        //parent node of N2, i.e. grandparent of N1
-        Node s4 = N2.getParent();
-
-        //original node times
-        double t_s1 = s1.getHeight();
-        double t_s2 = s2.getHeight();
-        double TN2 = N2.getHeight();
-        double H2 = s4.getHeight(); //upper bound for new times
-
-        double L2 = Math.max(t_s1,t_s2);//lower bound for new times
-        //propose new node times for N1 and N2
-        //denoted by t_N1 and t_N2
-        double T [] = TwoTime(L2, H2);
-        double t_N1 = T[0]; double t_N2 = T[1];
-
-        //change the four rates
-        double ratio = BasicRateChange(N1,N2,t_N1,t_N2);
-
-        //set the new node times for node N1 and N2
-        //must after BasicRateChange
-        //because original rates will be required in the method
-        N1.setHeight(t_N1);
-        N2.setHeight(t_N2);
-
-        //propose additional rate above N2
-        double r5 = branchRateModel.getRateForBranch(N2);
-        double r5_ = r5 * (H2 - TN2) / (H2 - t_N2);
-        rates.setValue(N2.getNr(),r5_);
-
-        return ratio * (H2 - TN2) / (H2 - t_N2);
-    }
-    /*
-     This method generates two new node times from Uniform distribution
-     (1) get two random numbers from the Uniform distribution
-     (2) save the smaller one as t_C, i.e. the first element in Time
-     (3) save the larger one as t_P, i.e. the second element in Time
-     */
-    public double[] TwoTime (double lower, double upper) {
         double u1 = Randomizer.uniform(lower,upper);
         double u2 = Randomizer.uniform(lower,upper);
-        double t_C = Math.min(u1, u2);
-        double t_P = Math.max(u1, u2);
+        double t_D = Math.min(u1, u2);
+        double t_A = Math.max(u1, u2);
+
+        //set the new node times
+        D.setHeight(t_D);
+        A.setHeight(t_A);
+
+        //return the new node times for proposing new rates
         double Time []= {0.0,0.0};
-        Time[0] =t_C; Time[1] =t_P;
+        Time[0] =t_D; Time[1] =t_A;
         return Time;
     }
 
