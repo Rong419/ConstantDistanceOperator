@@ -4,4 +4,5 @@
 /out
 /META-INF
 /artifacts
+/production
 .DS_Store
