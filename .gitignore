@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# IntelliJ files
-=======
 #IntelliJ files
->>>>>>> edf3ccc26f80e5a898c7c20b4676fcf8f5b3761d
 /.idea
 /ConstantDistanceOperator.iml
 /out
