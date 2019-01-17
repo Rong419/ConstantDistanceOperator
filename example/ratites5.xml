@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
     <!--
-    This xml is used to test the 7 ratites by using HKY as sitemodel
+    This xml is used to test the 7 ratites
     (1) without data
     (2) sample a fixed rooted tree
     -->
@@ -30,7 +30,7 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="5000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
     <state id="state" storeEvery="5000">
      <tree spec="beast.util.TreeParser" id="Tree.t:ratites" name="stateNode" IsLabelledNewick="true" newick=
                     "((RHEA:0.26095,(DIGI:0.0834,ANDI:0.0834):0.17755):0.00695,(OST:0.253277,((CASS:0.159,EMU:0.159):0.084604,KIWI:0.243604):0.009673):0.014623)" taxa="@ratites"/>
@@ -43,13 +43,11 @@
         <parameter id="freqParameter.t:ratites" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
     </state>
 
-    <init id="ClusterTree.t:dna" spec="beast.util.ClusterTree" clusterType="neighborjoining" estimate="false" initial="@Tree.t:ratites" taxa="@ratites"/>
-
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
             <distribution id="BirthDeath.t:ratites" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:ratites" relativeDeathRate="@BDDeathRate.t:ratites" tree="@Tree.t:ratites"/>
             <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BDBirthRate.t:ratites">
-                <LogNormal id="LogNormalDistribution1" S="1"  M="2" meanInRealSpace="true" name="distr">
+                <LogNormal id="LogNormalDistribution1" S="1.5"  M="2.5" meanInRealSpace="true" name="distr">
                 </LogNormal>
             </prior>
             <prior id="DeathRatePrior.t:ratites" name="distribution" x="@BDDeathRate.t:ratites">
@@ -66,10 +64,6 @@
                     <parameter id="RealParameter.13" estimate="false" name="M">1.0</parameter>
                     <parameter id="RealParameter.14" estimate="false" name="S">1.25</parameter>
                 </LogNormal>
-            </prior>
-
-            <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
-                <LogNormal id="LogNormalDistribution3" S="0.1"  M="-2" meanInRealSpace="false" name="distr"/>
             </prior>
 
         </distribution>
@@ -93,10 +87,9 @@
         </distribution>
     </distribution>
 
-<!--
+
     <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
               twindowSize="0.02"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="20"/>
--->
 
     <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
               twindowSize="0.02" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
@@ -106,38 +99,11 @@
 
     <operator id="RootOperator3.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
               twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
-
+<!--
     <operator id="BirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDBirthRate.t:ratites" scaleFactor="0.75" weight="0.8"/>
 
     <operator id="DeathRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDDeathRate.t:ratites" scaleFactor="0.75" weight="0.8"/>
-
-    <operator id="RatesRandomWalk.c:ratites" spec="RealRandomWalkOperator" parameter="@rates.c:ratites" weight="20.0" windowSize="0.1"/>
-
-    <operator id="RatesSwapOperator.c:ratites" spec="SwapOperator" parameter="@rates.c:ratites" weight="20.0"/>
-
-    <operator id="RatesIndependent.c:ratites" spec="IndependentOperator" rates="@rates.c:ratites" distr="@LogNormalDistribution.c:dna" weight="20.0"/>
-
-    <operator id="BirthDeathTreeScaler.t:ratites" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:ratites" weight="15.0"/>
-
-    <operator id="BirthDeathTreeRootScaler.t:ratites" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:ratites" weight="5.0"/>
-
-    <operator id="BirthDeathUniformOperator.t:ratites" spec="Uniform" tree="@Tree.t:ratites" weight="10.0"/>
-
-    <operator id="BirthDeathSubtreeSlide.t:ratites" spec="SubtreeSlide" tree="@Tree.t:ratites" weight="10.0"/>
-
-    <operator id="BirthDeathNarrow.t:ratites" spec="Exchange" tree="@Tree.t:ratites" weight="20.0"/>
-
-    <operator id="BirthDeathWide.t:ratites" spec="Exchange" isNarrow="false" tree="@Tree.t:ratites" weight="20.0"/>
-
-    <operator id="BirthDeathWilsonBalding.t:ratites" spec="WilsonBalding" tree="@Tree.t:ratites" weight="20.0"/>
-
-    <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="0.8"/>
-
-    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
-        <parameter idref="freqParameter.t:ratites"/>
-    </operator>
-
-       <operator id="ucldStdevScaler.c:ratites" spec="ScaleOperator" parameter="@ucldStdev.c:ratites" scaleFactor="0.5" weight="5.0"/>
+-->
 
     <logger id="tracelog" fileName="ratites.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
