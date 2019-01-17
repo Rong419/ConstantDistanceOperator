@@ -1,4 +1,7 @@
-ntelliJ files
+# IntelliJ files
 /.idea
 /ConstantDistanceOperator.iml
 /out
+/META-INF
+/artifacts
+.DS_Store
