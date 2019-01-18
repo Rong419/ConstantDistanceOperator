@@ -34,7 +34,7 @@ public class TwoNodeOperator extends TreeOperator {
         double hastingsratio;
 
         /*
-        Step1: randomly select one node in the tree
+        Step1: randomly select one internal node in the tree
          */
         int nodeCount = tree.getNodeCount();
         //tree.getInternalNodes()
@@ -93,7 +93,7 @@ public class TwoNodeOperator extends TreeOperator {
              double t5 = P.getHeight();
              //propose four rates on branches above C1, C2, S and node
              double r = RateChange(C1,C2,S,node,P);
-             //proposed node time of P
+             //get the proposed node time of P
              double t5_ = P.getHeight();
              //To Propose a new rate for branch above P
              double r5_ = r5 * (t_GP - t5) / (t_GP - t5_);
@@ -105,6 +105,8 @@ public class TwoNodeOperator extends TreeOperator {
 
         return Math.log(hastingsratio);
     }
+
+
     /*
     This method changes four rates on the branches above N1, N2, S, C
     In the meantime, two node times is proposed for C and P
@@ -152,6 +154,18 @@ public class TwoNodeOperator extends TreeOperator {
         return nu/de;
     }
 
+    /*
+    This method proposes two node times
+    And also give the new values to the corresponding nodes
+
+            A____________ t_A
+            /\
+        D  /__\__________ t_D
+          /\   \
+         /  \   \
+
+    returns proposed times by Time = [t_D'  t_A']
+     */
     public double[] NodeTime (Node D, Node A) {
         double upper;
         if (A.isRoot()) {
