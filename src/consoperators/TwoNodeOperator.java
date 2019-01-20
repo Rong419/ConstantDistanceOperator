@@ -65,6 +65,7 @@ public class TwoNodeOperator extends TreeOperator {
          //Step 4: Propose new node times and rates
          /*
         Case1: P is the root of tree
+               change 4 rates above C1,C2,S and node
                 P
                /\
          node /  \
@@ -75,8 +76,12 @@ public class TwoNodeOperator extends TreeOperator {
          if (P.isRoot()) {
               hastingsratio = RateChange(C1,C2,S,node,P);
          }
+
          /*
         Case2: P is not the root
+               firstly, change the 4 rates above C1, C2, S and node
+               secondly, change the rate above P, i.e. r5 ---> r5'
+
                  GP
                  /\
               P /  \
@@ -109,7 +114,7 @@ public class TwoNodeOperator extends TreeOperator {
 
     /*
     This method changes four rates on the branches above N1, N2, S, C
-    In the meantime, two node times is proposed for C and P
+    In the meantime, two node times are proposed for C and P
                 P
                /\
             C /  \

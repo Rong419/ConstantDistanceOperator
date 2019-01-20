@@ -50,8 +50,7 @@ public class SpecialTwoNodeOperator extends TreeOperator {
               propose five rates
          */
         if (node.isLeaf()){
-           Node GP = node.getParent().getParent();
-           node_P = GP.getChild(0);
+           node_P = node.getParent().getParent();
            node_C = node_P.getChild(0);
 
             hastingsratio = FiveRates(node_C,node_P);
