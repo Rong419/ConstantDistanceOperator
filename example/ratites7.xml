@@ -96,7 +96,7 @@ to test TwoNode Operator
 -->
 
     <operator id="TwoNodeOperator.c:dna" spec="TwoNodeOperator" branchRateModel="@RelaxedClock.c:ratites"
-              tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="20"/>
+              tree="@Tree.t:ratites" rates="@rates.c:ratites" twindowSize="0.017" weight="20"/>
 
     <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
               twindowSize="0.02" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>

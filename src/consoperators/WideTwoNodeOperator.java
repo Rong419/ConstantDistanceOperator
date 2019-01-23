@@ -9,26 +9,19 @@ import beast.evolution.tree.Tree;
 import beast.util.Randomizer;
 import beast.evolution.tree.Node;
 
-import java.text.DecimalFormat;
-
 @Description("For internal nodes: propose two node times and rates that are associated with the node times")
-public class TwoNodeOperator extends TreeOperator {
+public class WideTwoNodeOperator extends TreeOperator {
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
-    public final Input<Double> twindowSizeInput =
-            new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
     public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
             "A model describing the rates on the branches of the beast.tree.");
 
     RealParameter rates;
-    double twindowSize;
     BranchRateModel.Base branchRateModel;
 
     @Override
     public void initAndValidate() {
         rates = rateInput.get();
-        twindowSize = twindowSizeInput.get();
         branchRateModel = branchRateModelInput.get();
-
     }
 
     @Override
@@ -179,13 +172,18 @@ public class TwoNodeOperator extends TreeOperator {
     returns proposed times by Time = [t_D'  t_A']
      */
     public double[] NodeTime (Node D, Node A) {
+        double upper;
+        if (A.isRoot()) {
+            upper = 10.0;
+        } else {
+            upper = A.getParent().getHeight();
+        }
+        double lower = Math.max(D.getChild(0).getHeight(),D.getChild(1).getHeight());
 
-        //generate two random variables from Uniform distribution
-        double u1 = Randomizer.uniform(-twindowSize,twindowSize);
-        double u2 = Randomizer.uniform(-twindowSize,twindowSize);
-
-        double t_D = D.getHeight() + u1;
-        double t_A = A.getHeight() + u2;
+        double u1 = Randomizer.uniform(lower,upper);
+        double u2 = Randomizer.uniform(lower,upper);
+        double t_D = Math.min(u1, u2);
+        double t_A = Math.max(u1, u2);
 
         //set the new node times
         D.setHeight(t_D);
@@ -196,55 +194,6 @@ public class TwoNodeOperator extends TreeOperator {
         Time[0] =t_D; Time[1] =t_A;
         return Time;
     }
-
-    @Override
-    public double getCoercableParameterValue() {
-        return twindowSize;
-    }
-
-
-    @Override
-    public void setCoercableParameterValue(double value) {
-        twindowSize = value;
-    }
-
-    /**
-     * called after every invocation of this operator to see whether
-     * a parameter can be optimised for better acceptance hence faster
-     * mixing
-     *
-     * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
-     */
-
-    @Override
-    public void optimize(double logAlpha) {
-        // must be overridden by operator implementation to have an effect
-        double delta = calcDelta(logAlpha);
-
-        delta += Math.log(twindowSize);
-        twindowSize = Math.exp(delta);
-    }
-
-    @Override
-    public final String getPerformanceSuggestion() {
-        double prob = m_nNrAccepted / (m_nNrAccepted + m_nNrRejected + 0.0);
-        double targetProb = getTargetAcceptanceProbability();
-
-        double ratio = prob / targetProb;
-        if (ratio > 2.0) ratio = 2.0;
-        if (ratio < 0.5) ratio = 0.5;
-
-        // new scale factor
-        double newWindowSize = twindowSize * ratio;
-
-        DecimalFormat formatter = new DecimalFormat("#.###");
-        if (prob < 0.10) {
-            return "Try setting window size to about " + formatter.format(newWindowSize);
-        } else if (prob > 0.40) {
-            return "Try setting window size to about " + formatter.format(newWindowSize);
-        } else return "";
-    }
-
 
 
 }
