@@ -91,11 +91,13 @@ to test TwoNode Operator
         </distribution>
     </distribution>
 <!--
-    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
-              twindowSize="0.02"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="20"/>
--->
-
+    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites" twindowSize="0.02"  tree="@Tree.t:ratites" rates="@rate .c:ratites"  weight="20"/>
+    -->
+<!--
     <operator id="TwoNodeOperator.c:dna" spec="TwoNodeOperator" branchRateModel="@RelaxedClock.c:ratites"
+              tree="@Tree.t:ratites" rates="@rates.c:ratites" twindowSize="0.017" weight="20"/>
+-->
+    <operator id="TwoNodeOperator.c:dna" spec="BranchOperator" branchRateModel="@RelaxedClock.c:ratites"
               tree="@Tree.t:ratites" rates="@rates.c:ratites" twindowSize="0.017" weight="20"/>
 
     <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"

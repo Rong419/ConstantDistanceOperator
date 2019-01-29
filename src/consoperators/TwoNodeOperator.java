@@ -181,6 +181,7 @@ public class TwoNodeOperator extends TreeOperator {
     public double[] NodeTime (Node D, Node A) {
 
         //generate two random variables from Uniform distribution
+
         double u1 = Randomizer.uniform(-twindowSize,twindowSize);
         double u2 = Randomizer.uniform(-twindowSize,twindowSize);
 

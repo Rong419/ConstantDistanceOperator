@@ -119,6 +119,16 @@ public class BranchOperator extends TreeOperator {
     that is the minimum space for the branch to move
      */
     public Node GetInternalNode (Tree tree){
+        Node Nx;
+        int nodeCount = tree.getNodeCount();
+        //tree.getInternalNodes()
+        do {
+            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
+            Nx = tree.getNode(nodeNr);
+
+        } while (Nx.isRoot() || Nx.isLeaf());//rule out the leaf and root
+
+        /*
         List<Double> W = new ArrayList<>(); //the list of weight for each internal node
         List<Integer> N = new ArrayList<>(); //the list of node number in the tree
         for (Node I : tree.getInternalNodes()) {
@@ -146,7 +156,8 @@ public class BranchOperator extends TreeOperator {
         //to select the internal node
         double wx = Collections.max(W);
         int nx = N.get(W.indexOf(wx));
-        Node Nx= tree.getNode(nx);
+        Nx= tree.getNode(nx);
+        */
         return Nx;
     }
 
