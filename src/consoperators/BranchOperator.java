@@ -188,6 +188,23 @@ public class BranchOperator extends TreeOperator {
         double T [] = NodeTime(C, P);
         double tc_ = T[0]; double tp_ = T[1];
 
+        //set the new node times
+        if (P.isRoot()) {
+            if (tc_ < Math.max(t1, t2)) {
+                return Double.NEGATIVE_INFINITY;
+            } else {
+                C.setHeight(tc_);
+                P.setHeight(tp_);
+            }
+        } else {
+            if (tc_ < Math.max(t1, t2) || tp_ > P.getParent().getHeight()) {
+                return Double.NEGATIVE_INFINITY;
+            } else {
+                C.setHeight(tc_);
+                P.setHeight(tp_);
+            }
+        }
+
         //propose new rates
         double r1_ = r1 * (tc - t1) / (tc_ - t1);
         double r2_ = r2 * (tc - t2) / (tc_ - t2);
@@ -228,8 +245,8 @@ public class BranchOperator extends TreeOperator {
         double t_A = A.getHeight() + u;
 
         //set the new node times
-        D.setHeight(t_D);
-        A.setHeight(t_A);
+        //D.setHeight(t_D);
+        //A.setHeight(t_A);
 
         //return the new node times for proposing new rates
         double Time []= {0.0,0.0};
