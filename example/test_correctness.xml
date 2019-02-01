@@ -27,7 +27,7 @@ name="alignment">
 
     <run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
          <state id="state" storeEvery="5000">
-             <!--
+<!--
          <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
                newick="((Human:4,Seal:4):4,Frog:8)" taxa="@dna"/>
 -->
@@ -35,15 +35,11 @@ name="alignment">
              <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
                newick="(((Human:2,Seal:2):2,Whale:4):4,Frog:8)" taxa="@dna"/>
 
-         <parameter id="gammaShape.s:dna" name="stateNode">1.0</parameter>
-         <parameter id="mutationRate.s:dna" name="stateNode">1.0</parameter>
-         <parameter id="popSize.t:dna" name="stateNode">0.3</parameter>
-         <parameter id="ucldStdev.c:dna" lower="0.0" name="stateNode">0.25</parameter>
-             <!--
+<!--
          <parameter id="rates.c:dna" name="stateNode" value="0.75 0.25 1.0 2.25"/>
-         -->
+-->
 
-         <parameter id="rates.c:dna" name="stateNode" value="0.5 0.3 0.1 0.2 0.2 0.25"/>
+         <parameter id="rates.c:dna" name="stateNode" value="0.5 0.3 0.2 0.1 0.2 0.25"/>
 
     </state>
 
@@ -51,26 +47,28 @@ name="alignment">
         <distribution id="prior" spec="util.CompoundDistribution">
 
             <distribution id="CoalescentConstant.t:dna" spec="Coalescent">
-                <populationModel id="ConstantPopulation.t:dna" spec="ConstantPopulation" popSize="@popSize.t:dna"/>
+                <populationModel id="ConstantPopulation.t:dna" spec="ConstantPopulation" popSize="0.3"/>
                 <treeIntervals id="TreeIntervals.t:dna" spec="TreeIntervals" tree="@Tree.t:dna"/>
             </distribution>
 
          <prior id="RatePriorDistrbution.t:dna" name="distribution" x="@rates.c:dna">
-         <LogNormal id="LogNormalDistribution.c:dna" M="-0.03" S="@ucldStdev.c:dna" meanInRealSpace="false" name="distr"/>
+         <LogNormal id="LogNormalDistribution.c:dna" M="-0.03" S="0.25" meanInRealSpace="false" name="distr"/>
          </prior>
 
-            <distribution id='mrcaPrior' spec='beast.math.distributions.MRCAPrior' tree='@Tree.t:dna'>
-            <taxonset spec='TaxonSet' id='ingroup'>
+            <distribution id='mrcaPrior1' spec='beast.math.distributions.MRCAPrior' tree='@Tree.t:dna'>
+            <taxonset spec='TaxonSet' id='ingroup1'>
                 <taxon spec='Taxon' id='Human'/>
                 <taxon spec='Taxon' id='Seal'/>
                 <taxon spec='Taxon' id='Whale'/>
             </taxonset>
-            </distribution>
+        </distribution>
+
+
         </distribution>
 
         <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
             <distribution id="treeLikelihood.dna" spec="ThreadedTreeLikelihood" data="@dna" tree="@Tree.t:dna">
-                <siteModel id="SiteModel.s:dna" spec="SiteModel" gammaCategoryCount="1" mutationRate="@mutationRate.s:dna" shape="@gammaShape.s:dna">
+                <siteModel id="SiteModel.s:dna" spec="SiteModel" gammaCategoryCount="1" mutationRate="1.0" shape="1.0">
                     <parameter id="proportionInvariant.s:dna" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
                     <substModel id="JC69.s:dna" spec="JukesCantor"/>
                 </siteModel>
@@ -80,32 +78,32 @@ name="alignment">
             </distribution>
         </distribution>
     </distribution>
-    
+
+
     <operator id="TwoNodeOperator.c:dna" spec="TwoNodeOperator" branchRateModel="@RelaxedClock.c:dna"
-              tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="1" weight="20"/>
-              
+              tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
+
 <!--
-<parameter id="ucldMean.c:dna" estimate="false" name="clock.rate">1.0</parameter>
-    <operator id="TwoNodeOperator.c:dna" spec="BranchOperator" branchRateModel="@RelaxedClock.c:ratites"
-              tree="@Tree.t:ratites" rates="@rates.c:ratites" twindowSize="0.017" weight="10"/>
-    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites" twindowSize="0.02"  
-              tree="@Tree.t:ratites" rates="@rate .c:ratites"  weight="20"/>
+    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:dna" twindowSize="0.02"
+          tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20"/>
+
+    <operator id="TwoNodeOperator.c:dna" spec="BranchOperator" branchRateModel="@RelaxedClock.c:dna"
+                  tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
 -->
+<!--
+    <operator id="TreeScaler.t:dna" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
 
+    <operator id="TreeRootScaler.t:dna" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
+
+    <operator id="ratesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@rates.c:dna" weight="10.0" windowSize="3"/>
+
+-->
 <!--
-    <operator id="ratesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@rates.c:dna" weight="10.0" windowSize="1"/>
-    <operator id="ratesSwapOperator.c:dna" spec="SwapOperator" parameter="@rates.c:dna" weight="10.0"/>
-    <operator id="ratesUniform.c:dna" spec="UniformOperator" parameter="@rates.c:dna" weight="10.0"/>
--->   
-<!--
+    <parameter id="ucldMean.c:dna" estimate="false" name="clock.rate">1.0</parameter>
+
     <operator id="YuleBirthRateScaler.t:dna" spec="ScaleOperator" parameter="@birthRate.t:dna" scaleFactor="0.75" weight="3.0" />
- -->
-<!--
-    <operator id="YuleModelTreeScaler.t:dna" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
 
-    <operator id="YuleModelTreeRootScaler.t:dna" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
-
-    <operator id="YuleModelUniformOperator.t:dna" spec="Uniform" tree="@Tree.t:dna" weight="30.0"/>
+    <operator id="YuleModelUniformOperator.t:dna" spec="Uniform" tree="@Tree.t:dna" weight=""/>
 
     <operator id="YuleModelSubtreeSlide.t:dna" spec="SubtreeSlide" tree="@Tree.t:dna" weight="15.0"/>
 
@@ -114,14 +112,14 @@ name="alignment">
     <operator id="YuleModelWide.t:dna" spec="Exchange" isNarrow="false" tree="@Tree.t:dna" weight="3.0"/>
 
     <operator id="YuleModelWilsonBalding.t:dna" spec="WilsonBalding" tree="@Tree.t:dna" weight="3.0"/>
--->            
 
-<!--
     <operator id="FixMeanMutationRatesOperator" spec="DeltaExchangeOperator" delta="0.75" weight="2.0">
     <parameter idref="mutationRate.s:dna"/>
     <weightvector id="weightparameter" spec="parameter.IntegerParameter" estimate="false" lower="0" upper="0">705</weightvector>
     </operator>
+
     <operator id="gammaShapeScaler.s:dna" spec="ScaleOperator" parameter="@gammaShape.s:dna" scaleFactor="0.5" weight="0.5"/>
+
     <operator id="ucldStdevScaler.c:dna" spec="ScaleOperator" parameter="@ucldStdev.c:dna" scaleFactor5" weight="3.0"/>
 -->
 
@@ -130,16 +128,14 @@ name="alignment">
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.dna"/>
-        <log id="TreeHeight.t:dna" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:dna"/>
-        <log idref="mutationRate.s:dna"/>
+        <log id="TreeLength.t:ratites" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:dna"/>
         <log id="rate.c:dna" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna"/>
-        <log idref="popSize.t:dna"/>
         <log idref="CoalescentConstant.t:dna"/>
         <log idref="RatePriorDistrbution.t:dna"/>
-        <log idref="gammaShape.s:dna"/>
-        <log idref="ucldStdev.c:dna"/>
         <log idref="rates.c:dna"/>
-        <log idref="mrcaPrior"/>
+
+        <log idref="mrcaPrior1"/>
+
     </logger>
 
     <logger id="screenlog" logEvery="100000">
