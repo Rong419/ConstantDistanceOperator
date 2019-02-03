@@ -72,25 +72,25 @@ public class TwoNodeOperator extends TreeOperator {
          */
         double tx = node.getHeight();
         double tp = P.getHeight();
+        double t1 = C1.getHeight();
+        double t2 = C2.getHeight();
 
         double u1 = Randomizer.uniform(-twindowSize,twindowSize);
         double u2 = Randomizer.uniform(-twindowSize,twindowSize);
-/*
+
         double a = tx + u1;
         double b = tp + u2;
         double tx_ = Math.min(a,b);
         double tp_ = Math.max(a,b);
-*/
+
+
+/*
         double tx_ = tx + u1;
         double tp_ = tp + u2;
-        //set the new node times
-        double t1 = C1.getHeight();
-        double t2 = C2.getHeight();
-
         if (tx_ >= tp_){
             return Double.NEGATIVE_INFINITY;
         }
-
+*/
         if (P.isRoot()) {
             if (tx_ < Math.max(t1, t2)) {
                 return Double.NEGATIVE_INFINITY;
@@ -99,7 +99,7 @@ public class TwoNodeOperator extends TreeOperator {
                 P.setHeight(tp_);
             }
         } else {
-            if (tx_ < Math.max(t1, t2) || tp_ > P.getParent().getHeight()) {
+            if (tx_ <= Math.max(t1, t2) || tp_ >= P.getParent().getHeight()) {
                 return Double.NEGATIVE_INFINITY;
             } else {
                 node.setHeight(tx_);
@@ -138,10 +138,10 @@ public class TwoNodeOperator extends TreeOperator {
             double r5_ = r5 * (t_GP - tp) / (t_GP - tp_);
             rates.setValue(P.getNr(),r5_);
             hastingsratio = r * (t_GP - tp) / (t_GP - tp_);
-            return Math.log(8*hastingsratio);
          } else {
-            return Math.log(8*r);
+            hastingsratio = r;
         }
+        return Math.log(hastingsratio);
     }
 
     @Override

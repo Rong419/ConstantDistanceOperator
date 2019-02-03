@@ -77,7 +77,7 @@ public class BranchOperator extends TreeOperator {
            C1  C2  S
          */
          if (P.isRoot()) {
-              hastingsratio = RateChange(C1,C2,S,node,P);
+              hastingsratio = RateChangeV2(C1,C2,S,node,P);
          }
 
          /*
@@ -99,8 +99,8 @@ public class BranchOperator extends TreeOperator {
              double r4 = branchRateModel.getRateForBranch(P);
              //original node time of P
              double t4 = P.getHeight();
-             //propose three rates on branches above C1, C2, S and node
-             double r = RateChange(C1,C2,S,node,P);
+             //propose three rates on branches above C1, C2, S
+             double r = RateChangeV2(C1,C2,S,node,P);
              //get the proposed node time of P
              double t4_ = P.getHeight();
              //To Propose a new rate for branch above P
@@ -108,7 +108,6 @@ public class BranchOperator extends TreeOperator {
              rates.setValue(P.getNr(),r4_);
 
              hastingsratio = r * (t_GP - t4) / (t_GP - t4_);
-
          }
 
         return Math.log(hastingsratio);
@@ -171,7 +170,7 @@ public class BranchOperator extends TreeOperator {
             /  \   \
            N1  N2  S
      */
-    public double RateChange (Node N1, Node N2, Node S, Node C, Node P) {
+    public double RateChangeV2 (Node N1, Node N2, Node S, Node C, Node P) {
         //original node times
         double t1 = N1.getHeight();
         double t2 = N2.getHeight();
@@ -244,6 +243,8 @@ public class BranchOperator extends TreeOperator {
         double t_D = D.getHeight() + u;
         double t_A = A.getHeight() + u;
 
+        //do{} while()
+        //to deal with invalid proposals
         //set the new node times
         //D.setHeight(t_D);
         //A.setHeight(t_A);
