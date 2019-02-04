@@ -111,6 +111,7 @@ public class BranchOperator extends TreeOperator {
          }
 
         return Math.log(hastingsratio);
+        //return 0.0;
     }
 
     /*

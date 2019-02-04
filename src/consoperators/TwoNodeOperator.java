@@ -77,20 +77,19 @@ public class TwoNodeOperator extends TreeOperator {
 
         double u1 = Randomizer.uniform(-twindowSize,twindowSize);
         double u2 = Randomizer.uniform(-twindowSize,twindowSize);
-
+/*
         double a = tx + u1;
         double b = tp + u2;
         double tx_ = Math.min(a,b);
         double tp_ = Math.max(a,b);
+*/
 
-
-/*
         double tx_ = tx + u1;
         double tp_ = tp + u2;
         if (tx_ >= tp_){
             return Double.NEGATIVE_INFINITY;
         }
-*/
+
         if (P.isRoot()) {
             if (tx_ < Math.max(t1, t2)) {
                 return Double.NEGATIVE_INFINITY;

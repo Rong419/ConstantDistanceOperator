@@ -14,6 +14,7 @@ import beast.evolution.tree.Node;
 import org.apache.commons.math.MathException;
 import beast.evolution.operators.TreeOperator;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Description("Small pulley version1: Propose a new genetic distance")
@@ -69,11 +70,11 @@ public class SmallPulleyV1 extends TreeOperator {
         // son
         Node son = node.getChild(0);//get the left child of this node, i.e. son
         t_j = son.getHeight();//node time of son
-        int nodeN02 = son.getNr();//node number of son
+
         // daughter
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
-        int nodeN03 = daughter.getNr();//node number of daughter
+
 
         // get the rates on branches linked to root
         r_j = branchRateModel.getRateForBranch(son);//branch rate for son
@@ -98,8 +99,8 @@ public class SmallPulleyV1 extends TreeOperator {
         r_k_ = (D - d_) / (t_x - t_k);
 
         //Step 4: set the proposed new rates
-        rates.setValue(nodeN02, r_j_);
-        rates.setValue(nodeN03, r_k_);
+        rates.setValue(son.getNr(), r_j_);
+        rates.setValue(daughter.getNr(), r_k_);
 
         //Step5: calculate the Hastings ratio
         /*
@@ -116,6 +117,55 @@ public class SmallPulleyV1 extends TreeOperator {
          */
 
         return  0.0;
+    }
+
+
+    @Override
+    public double getCoercableParameterValue() {
+        return dwindowSize;
+    }
+
+
+    @Override
+    public void setCoercableParameterValue(double value) {
+        dwindowSize = value;
+    }
+
+    /**
+     * called after every invocation of this operator to see whether
+     * a parameter can be optimised for better acceptance hence faster
+     * mixing
+     *
+     * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
+     */
+
+    @Override
+    public void optimize(double logAlpha) {
+        // must be overridden by operator implementation to have an effect
+        double delta = calcDelta(logAlpha);
+
+        delta += Math.log(dwindowSize);
+        dwindowSize = Math.exp(delta);
+    }
+
+    @Override
+    public final String getPerformanceSuggestion() {
+        double prob = m_nNrAccepted / (m_nNrAccepted + m_nNrRejected + 0.0);
+        double targetProb = getTargetAcceptanceProbability();
+
+        double ratio = prob / targetProb;
+        if (ratio > 2.0) ratio = 2.0;
+        if (ratio < 0.5) ratio = 0.5;
+
+        // new scale factor
+        double newWindowSize = dwindowSize * ratio;
+
+        DecimalFormat formatter = new DecimalFormat("#.###");
+        if (prob < 0.10) {
+            return "Try setting window size to about " + formatter.format(newWindowSize);
+        } else if (prob > 0.40) {
+            return "Try setting window size to about " + formatter.format(newWindowSize);
+        } else return "";
     }
 }
 

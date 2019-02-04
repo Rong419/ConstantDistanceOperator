@@ -95,7 +95,8 @@ public class SimpleDistance extends TreeOperator {
          t_x_ = t_x + a
          r_i_ = r_i * (t_x - t_j) / (t_x_ - t_j)
          r_x_ = r_x * (t_x - t_k) / (t_x_ - t_k)
-         */
+
+
         double [][] J = new double[3][3];
         J[0][0] = 1;
         J[1][0] = r_i / (t_x_ - t_j);
@@ -104,8 +105,16 @@ public class SimpleDistance extends TreeOperator {
         J[2][2] = (t_x - t_k) / (t_x_ - t_k);
 
         double Det = JD.Determinant(J,2);
+         return Math.log(Det);
+*/
 
-        return Math.log(Det);
+        double nu = (t_x - t_j) * (t_x - t_k);
+        double de = (t_x_ - t_j) * (t_x_ - t_k);
+        double hastingsratio = nu / de;
+        return Math.log(hastingsratio);
+
+      //return  0.0;
+
     }
 
     /**
