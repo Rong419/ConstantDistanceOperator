@@ -145,13 +145,13 @@ public class InConstantDistanceOperator extends TreeOperator {
         }
        return hastings;
        */
-/*
+
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
        double hastingsratio = nu /de;
        return Math.log(hastingsratio);
-*/
-       return  0.0;
+
+       //return  0.0;
 }
 
     @Override

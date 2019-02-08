@@ -7,9 +7,9 @@ name="alignment">
         <sequence id="seq_Human" taxon="Human" totalcount="4" value="?"/>
         <sequence id="seq_Seal" taxon="Seal" totalcount="4" value="?"/>
         <sequence id="seq_Frog" taxon="Frog" totalcount="4" value="?"/>
-<!--
+
         <sequence id="seq_Whale" taxon="Whale" totalcount="4" value="?"/>
--->
+
     </data>
 
 <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -27,20 +27,20 @@ name="alignment">
 
     <run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
          <state id="state" storeEvery="5000">
-
+<!--
          <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
                newick="((Human:4,Seal:4):4,Frog:8)" taxa="@dna"/>
+-->
 
-<!--
              <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
                newick="(((Human:2,Seal:2):2,Whale:4):4,Frog:8)" taxa="@dna"/>
--->
-
-         <parameter id="rates.c:dna" name="stateNode" value="0.75 0.25 1.0 2.25"/>
 
 <!--
-         <parameter id="rates.c:dna" name="stateNode" value="0.5 0.3 0.2 0.1 0.2 0.25"/>
+         <parameter id="rates.c:dna" name="stateNode" value="0.75 0.25 1.0 2.25"/>
 -->
+
+         <parameter id="rates.c:dna" name="stateNode" value="0.5 0.3 0.2 0.1 0.2 0.25"/>
+
     </state>
 
     <distribution id="posterior" spec="util.CompoundDistribution">
@@ -59,9 +59,9 @@ name="alignment">
             <taxonset spec='TaxonSet' id='ingroup1'>
                 <taxon spec='Taxon' id='Human'/>
                 <taxon spec='Taxon' id='Seal'/>
-                <!--
+
                 <taxon spec='Taxon' id='Whale'/>
-                -->
+
             </taxonset>
         </distribution>
 
@@ -81,20 +81,21 @@ name="alignment">
         </distribution>
     </distribution>
 
-<!--
+
     <operator id="TwoNodeOperator.c:dna" spec="TwoNodeOperator" branchRateModel="@RelaxedClock.c:dna"
               tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
--->
-
-    <operator id="TwoNodeOperator.c:dna" spec="BranchOperator" branchRateModel="@RelaxedClock.c:dna"
-                  tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
-
-    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:dna" twindowSize="2"
-          tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20"/>
 
 <!--
+    <operator id="TwoNodeOperator.c:dna" spec="BranchOperator" branchRateModel="@RelaxedClock.c:dna"
+                  tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
+-->
+<!--
+    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:dna" twindowSize="1"
+          tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20"/>
+
+
     <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:dna"
-                  twindowSize="2" tree="@Tree.t:dna" rates="@rates.c:dna"  weight="10"/>
+                  twindowSize="2" tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20"/>
 -->
 <!--
     <operator id="RootOperator2.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:dna"
