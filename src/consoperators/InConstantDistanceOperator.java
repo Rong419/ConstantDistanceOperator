@@ -23,7 +23,7 @@ public class InConstantDistanceOperator extends TreeOperator {
     private RealParameter rates;
 
     protected BranchRateModel.Base branchRateModel;
-    JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
+    //JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
@@ -53,7 +53,17 @@ public class InConstantDistanceOperator extends TreeOperator {
 
         //Step 1: randomly select an internal node, denoted by node x
        int nodeCount = tree.getNodeCount();//return the number of nodes in the tree
+       do {
+            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
+            node = tree.getNode(nodeNr);
+       } while (node.isRoot() || node.isLeaf());
+       //rate and time for this node
+       t_x = node.getHeight();
+       double r_node = branchRateModel.getRateForBranch(node);
 
+       /*
+       Another way to get internal node
+        */
        //Node [] node = tree.getNodesAsArray();
        // List nodes = tree.getInternalNodes();
        //int nodeCount = nodes.size();
@@ -63,41 +73,35 @@ public class InConstantDistanceOperator extends TreeOperator {
            //return Double.NEGATIVE_INFINITY;
        //}
 
-        do {
-            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
-            node = tree.getNode(nodeNr);
-        } while (node.isRoot() || node.isLeaf());
+       //Step 2: Access to the child nodes of this node
+       // son
+       Node son = node.getChild(0);//get the left child of this node, i.e. son
+       t_j = son.getHeight();//node time of son
+       r_j = branchRateModel.getRateForBranch(son);
+       d_j = r_j * (t_x - t_j);
+       // daughter
+       Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
+       t_k = daughter.getHeight();//node time of daughter
+       r_k = branchRateModel.getRateForBranch(daughter);
+       d_k = r_k * (t_x - t_k);
 
-        //node
-        t_x = node.getHeight();//get the time of this node
-        double r_node = branchRateModel.getRateForBranch(node);//branch rate for this node
-        // son
-        Node son = node.getChild(0);//get the left child of this node, i.e. son
-        t_j = son.getHeight();//node time of son
-        r_j = branchRateModel.getRateForBranch(son);
-        d_j = r_j * (t_x - t_j);
-        // daughter
-        Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
-        t_k = daughter.getHeight();//node time of daughter
-        r_k = branchRateModel.getRateForBranch(daughter);
-        d_k = r_k * (t_x - t_k);
 
-        double a = Randomizer.uniform(-twindowSize, twindowSize);
 
-        //Step2: to propose a new node time for this node
-        t_x_ = t_x + a;
+       //Step3: to propose a new node time for this node
+       double a = Randomizer.uniform(-twindowSize, twindowSize);
+       t_x_ = t_x + a;
 
-        double upper = node.getParent().getHeight();
-        double lower = Math.max(t_j, t_k);
+       //reject the proposal if exceeds the boundary
+       double upper = node.getParent().getHeight();
+       double lower = Math.max(t_j, t_k);
 
-        if (t_x_<= lower || t_x_ >= upper) {
+       if (t_x_<= lower || t_x_ >= upper) {
             return Double.NEGATIVE_INFINITY;
         }
         node.setHeight(t_x_);
 
 
-
-       //Step3: propose the new rates
+       //Step4: propose the new rates
        //there are three rates in total
        //r_node, r_i, r_x
        double r_node_ = r_node * (upper - t_x) / (upper - t_x_);
@@ -134,7 +138,7 @@ public class InConstantDistanceOperator extends TreeOperator {
        J[3][3] = (upper - t_x) / (upper - t_x_);
        double Det = JD.Determinant(J,3);
        return Math.log(Det);
-*/
+       */
        /*
         double hastings;
         try {
@@ -153,7 +157,9 @@ public class InConstantDistanceOperator extends TreeOperator {
 
        //return  0.0;
 }
-
+    /*
+    Tuning the parameter: twindowsize represents the range of Uniform distribution
+     */
     @Override
     public double getCoercableParameterValue() {
         return twindowSize;

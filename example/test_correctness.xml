@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
 
+    <!--
+    This XML is used to test the correctness of the ConstantDistance Operator
+    Tree Prior: Coalescent model with constant population size = 0.3
+    Rate Prior: LogNormal(M=-0.03,S=0.25,False) specified in Uncorrelated Relaxed Clock model
+    Tree Topology is fixed during the sampling process
+    Case1: three taxa
+    Case2: four taxa
+    -->
 
     <data
 id="dna"
@@ -7,9 +15,9 @@ name="alignment">
         <sequence id="seq_Human" taxon="Human" totalcount="4" value="?"/>
         <sequence id="seq_Seal" taxon="Seal" totalcount="4" value="?"/>
         <sequence id="seq_Frog" taxon="Frog" totalcount="4" value="?"/>
-
+<!--
         <sequence id="seq_Whale" taxon="Whale" totalcount="4" value="?"/>
-
+-->
     </data>
 
 <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -27,20 +35,20 @@ name="alignment">
 
     <run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
          <state id="state" storeEvery="5000">
-<!--
+
          <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
-               newick="((Human:4,Seal:4):4,Frog:8)" taxa="@dna"/>
--->
-
-             <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
-               newick="(((Human:2,Seal:2):2,Whale:4):4,Frog:8)" taxa="@dna"/>
+               newick="((Human:1,Seal:1):4,Frog:5)" taxa="@dna"/>
 
 <!--
-         <parameter id="rates.c:dna" name="stateNode" value="0.75 0.25 1.0 2.25"/>
+             <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
+               newick="(((Human:1,Seal:1):1,Whale:2):3,Frog:5)" taxa="@dna"/>
 -->
 
-         <parameter id="rates.c:dna" name="stateNode" value="0.5 0.3 0.2 0.1 0.2 0.25"/>
+         <parameter id="rates.c:dna" name="stateNode" value="1 1 1 1"/>
 
+<!--
+         <parameter id="rates.c:dna" name="stateNode" value="1 1 1 1 1 1"/>
+-->
     </state>
 
     <distribution id="posterior" spec="util.CompoundDistribution">
@@ -55,17 +63,15 @@ name="alignment">
          <LogNormal id="LogNormalDistribution.c:dna" M="-0.03" S="0.25" meanInRealSpace="false" name="distr"/>
          </prior>
 
-            <distribution id='mrcaPrior1' spec='beast.math.distributions.MRCAPrior' tree='@Tree.t:dna'>
-            <taxonset spec='TaxonSet' id='ingroup1'>
-                <taxon spec='Taxon' id='Human'/>
-                <taxon spec='Taxon' id='Seal'/>
-
-                <taxon spec='Taxon' id='Whale'/>
-
-            </taxonset>
+         <distribution id='mrcaPrior1' spec='beast.math.distributions.MRCAPrior' tree='@Tree.t:dna'>
+         <taxonset spec='TaxonSet' id='ingroup1'>
+         <taxon spec='Taxon' id='Human'/>
+         <taxon spec='Taxon' id='Seal'/>
+<!--
+         <taxon spec='Taxon' id='Whale'/>
+-->
+         </taxonset>
         </distribution>
-
-
         </distribution>
 
         <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
@@ -81,24 +87,23 @@ name="alignment">
         </distribution>
     </distribution>
 
-
-    <operator id="TwoNodeOperator.c:dna" spec="TwoNodeOperator" branchRateModel="@RelaxedClock.c:dna"
-              tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
-
 <!--
-    <operator id="TwoNodeOperator.c:dna" spec="BranchOperator" branchRateModel="@RelaxedClock.c:dna"
+    <operator id="TwoNodeOperator1" spec="TwoNodeOperator" branchRateModel="@RelaxedClock.c:dna"
+              tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
+-->
+<!--
+    <operator id="TwoNodeOperator2" spec="BranchOperator" branchRateModel="@RelaxedClock.c:dna"
                   tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
 -->
+    <operator id="InternalnodesOperator" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:dna" twindowSize="1"
+          tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20.0"/>
+
 <!--
-    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:dna" twindowSize="1"
-          tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20"/>
-
-
-    <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:dna"
-                  twindowSize="2" tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20"/>
+    <operator id="RootOperator1" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:dna"
+                  twindowSize="1.0" tree="@Tree.t:dna" rates="@rates.c:dna"  weight="10.0"/>
 -->
 <!--
-    <operator id="RootOperator2.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:dna"
+    <operator id="RootOperator2" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:dna"
                   dwindowSize="2" tree="@Tree.t:dna" rates="@rates.c:dna"  weight="10"/>
 -->
 <!--
@@ -144,9 +149,7 @@ name="alignment">
         <log idref="CoalescentConstant.t:dna"/>
         <log idref="RatePriorDistrbution.t:dna"/>
         <log idref="rates.c:dna"/>
-
         <log idref="mrcaPrior1"/>
-
     </logger>
 
     <logger id="screenlog" logEvery="100000">

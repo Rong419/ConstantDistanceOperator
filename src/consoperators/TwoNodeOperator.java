@@ -53,9 +53,11 @@ public class TwoNodeOperator extends TreeOperator {
         Step2: get the parent node and child nodes of this node
          */
           Node P = node.getParent();
+          /*
           if (P.isRoot()){
               return Double.NEGATIVE_INFINITY;
           }
+          */
           Node C1 = node.getChild(0);
           Node C2 = node.getChild(1);
 
@@ -143,7 +145,7 @@ public class TwoNodeOperator extends TreeOperator {
          } else {
             hastingsratio = r;
         }
-        return Math.log(2*hastingsratio);
+        return Math.log(hastingsratio);
     }
 
     @Override

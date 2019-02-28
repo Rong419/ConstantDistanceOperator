@@ -190,14 +190,14 @@ public class BranchOperator extends TreeOperator {
 
         //set the new node times
         if (P.isRoot()) {
-            if (tc_ < Math.max(t1, t2)) {
+            if (tc_ <= Math.max(t1, t2)) {
                 return Double.NEGATIVE_INFINITY;
             } else {
                 C.setHeight(tc_);
                 P.setHeight(tp_);
             }
         } else {
-            if (tc_ < Math.max(t1, t2) || tp_ > P.getParent().getHeight()) {
+            if (tc_ <= Math.max(t1, t2) || tp_ >= P.getParent().getHeight()) {
                 return Double.NEGATIVE_INFINITY;
             } else {
                 C.setHeight(tc_);
