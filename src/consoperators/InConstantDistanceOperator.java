@@ -152,8 +152,9 @@ public class InConstantDistanceOperator extends TreeOperator {
 
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
-       double hastingsratio = nu /de;
-       return -Math.log(hastingsratio);
+       double JD = nu /de;
+       //double g = Math.exp(a/0.3) * Math.exp(-3*a/0.3) * Math.exp(-3*a/0.3);
+       return Math.log(JD);
 
        //return  0.0;
 }

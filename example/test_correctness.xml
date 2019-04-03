@@ -9,9 +9,7 @@
     Case2: four taxa
     -->
 
-    <data
-id="dna"
-name="alignment">
+    <data id="dna" name="alignment">
         <sequence id="seq_Human" taxon="Human" totalcount="4" value="?"/>
         <sequence id="seq_Seal" taxon="Seal" totalcount="4" value="?"/>
         <sequence id="seq_Frog" taxon="Frog" totalcount="4" value="?"/>
@@ -95,6 +93,7 @@ name="alignment">
     <operator id="TwoNodeOperator2" spec="BranchOperator" branchRateModel="@RelaxedClock.c:dna"
                   tree="@Tree.t:dna" rates="@rates.c:dna" twindowSize="2" weight="20"/>
 -->
+
     <operator id="InternalnodesOperator" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:dna" twindowSize="0.5"
           tree="@Tree.t:dna" rates="@rates.c:dna"  weight="20.0"/>
 
