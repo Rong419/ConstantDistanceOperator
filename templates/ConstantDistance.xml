@@ -50,7 +50,7 @@
     <operator id="FastRootOperator1.c:$(n)" spec="consoperators.SimpleDistance" branchRateModel="@FastRelaxedClock.c:$(n)"
       twindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="2"/>
 
-    <operator id="FastRootOperator2.c:$(n)" spec="consoperators.SmallPulleyV1" branchRateModel="@FastRelaxedClock.c:$(n)"
+    <operator id="FastRootOperator2.c:$(n)" spec="consoperators.SmallPulley" branchRateModel="@FastRelaxedClock.c:$(n)"
       dwindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="2"/>
 
     <operator id="FastRootOperator3.c:$(n)" spec="consoperators.BigPulley" branchRateModel="@FastRelaxedClock.c:$(n)"

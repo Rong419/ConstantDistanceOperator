@@ -17,8 +17,8 @@ import beast.evolution.operators.TreeOperator;
 import java.text.DecimalFormat;
 import java.util.List;
 
-@Description("Small pulley version1: Propose a new genetic distance")
-public class SmallPulleyV1 extends TreeOperator {
+@Description("Small pulley: Propose a new genetic distance")
+public class SmallPulley extends TreeOperator {
     //public final Input<Tree> treeInput = new Input<>("tree", "the rooted time tree for the operator to work on");
     public final Input<Double> dwindowSizeInput =
             new Input<>("dwindowSize", "the size of the window in Big Pulley");

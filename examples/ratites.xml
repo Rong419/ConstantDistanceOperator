@@ -96,7 +96,7 @@ this xml uses rates directly and include ConstantDistance Operator
     <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
               twindowSize="0.02" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
 
-    <operator id="RootOperator2.c:dna" spec="SmallPulleyV1" branchRateModel="@RelaxedClock.c:ratites"
+    <operator id="RootOperator2.c:dna" spec="SmallPulley" branchRateModel="@RelaxedClock.c:ratites"
               dwindowSize="0.02" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
 
     <operator id="RootOperator3.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
