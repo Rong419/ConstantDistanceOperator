@@ -12,23 +12,37 @@
                      beast.evolution.branchratemodel.UCRelaxedClockModel.numberOfDiscreteRates,
                      beast.evolution.branchratemodel.UCRelaxedClockModel.rateQuantiles,
                      beast.evolution.branchratemodel.UCRelaxedClockModel.rates,
+                     beast.evolution.branchratemodel.UCRelaxedClockModel.normalize,
                      beast.evolution.branchratemodel.UCRelaxedClockModel.distr,
                      beast.evolution.branchratemodel.UCRelaxedClockModel.rateQuantiles'>
             <![CDATA[
+
+    <branchRateModel id="FastRelaxedClock.c:$(n)" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
+         rates="@fastRates.c:$(n)" tree="@Tree.t:$(n)">
+        <LogNormal id="FastLogNormalDistributionModel.c:$(n)" S="@fastUcldStdev.c:$(n)" meanInRealSpace="true" name="distr">
+        	<M spec="parameter.RealParameter" estimate="false">1</M>
+        </LogNormal>
+        <parameter id="fastUcldMean.c:$(n)" estimate="false" name="clock.rate">1.0</parameter>
+    </branchRateModel>
 
     <parameter id="fastUcldStdev.c:$(n)" lower="0.0" name="stateNode">0.1</parameter>
     <parameter id="fastRates.c:$(n)" lower="0.0" upper ="5" dimension="1">1</parameter>
 
     <prior id="FastRatePriorDistrbution.c:$(n)" name="distribution" x="@fastRates.c:$(n)">
-    	<LogNormal id="LogNormalDistribution.c:$(n)" S="@fastUcldStdev.c:$(n)"  M="1.0" meanInRealSpace="true" name="distr">
+    	<LogNormal S="@fastUcldStdev.c:$(n)"  meanInRealSpace="true" name="distr">
+        	<M spec="parameter.RealParameter" estimate="false">1</M>
 	    </LogNormal>
     </prior>
+    <prior id="fastUcldStdevPrior.c:$(n)" name="distribution" x="@fastUcldStdev.c:$(n)">
+        <LogNormal meanInRealSpace="false" name="distr">
+        	<M spec="parameter.RealParameter" estimate="false">-2</M>
+        	<S spec="parameter.RealParameter" estimate="false">0.1</S>
+        </LogNormal>
+    </prior>
+    <prior id="fastUcldMeanPrior.c:$(n)" name="distribution" x="@fastUcldMean.c:$(n)">
+        <Gamma alpha="100.0" beta="0.01" name="distr"/>
+    </prior>
 
-    <branchRateModel id="FastRelaxedClock.c:$(n)" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
-         rates="@fastRates.c:$(n)" tree="@Tree.t:$(n)">
-        <LogNormal id="FastLogNormalDistributionModel.c:$(n)" S="@fastUcldStdev.c:$(n)" M="1" meanInRealSpace="true" name="distr"/>
-        <parameter id="fastUcldMean.c:$(n)" estimate="false" name="clock.rate">1.0</parameter>
-    </branchRateModel>
 
     <operator id="FastInternalnodesOperator.c:$(n)" spec="consoperators.InConstantDistanceOperator" branchRateModel="@FastRelaxedClock.c:$(n)"
       twindowSize="0.02"  tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="20"/>
@@ -46,12 +60,6 @@
 
     <operator id="ucldMeanScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldMean.c:$(n)" scaleFactor="0.5" weight="5.0"/>
 
-    <prior id="fastUcldStdevPrior.c:$(n)" name="distribution" x="@fastUcldStdev.c:$(n)">
-        <LogNormal S="0.1"  M="-2" meanInRealSpace="false" name="distr"/>
-    </prior>
-    <prior id="fastUcldMeanPrior.c:$(n)" name="distribution" x="@fastUcldMean.c:$(n)">
-        <Gamma alpha="100.0" beta="0.01" name="distr"/>
-    </prior>
 ]]>
             <connect srcID='fastUcldMean.c:$(n)' targetID='state' inputName='stateNode'
                      if='inlikelihood(fastUcldMean.c:$(n)) and fastUcldMean.c:$(n)/estimate=true'/>

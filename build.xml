@@ -78,7 +78,7 @@
 		       memorymaximumsize="256m"
 			   source="1.8"
 		       target="1.8">
-			<include name="beast/**/**" />
+			<include name="**/**" />
 			<!-- compile JUnit test classes -->
 			<include name="test/beast/**" />
 		</javac>
@@ -109,9 +109,7 @@
 		</jar>
 		<jar jarfile="${distConstantDistance}/ConstantDistance.src.jar">
 			<fileset dir="${srcConstantDistance}">
-				<include name="beast/**/*.java" />
-				<include name="beast/**/*.png" />
-				<include name="beast/**/*.xsl" />
+				<include name="**/*.java" />
 			</fileset>
         </jar>
 		<jar jarfile="${distConstantDistance}/ConstantDistance.addon.jar">
@@ -119,9 +117,7 @@
 				<attribute name="Built-By" value="${user.name}" />
 			</manifest>
 			<fileset dir="${buildConstantDistance}">
-				<include name="beast/**/*.class" />
-				<include name="util/**/*.class" />
-				<include name="**/*.properties" />
+				<include name="**/*.class" />
 			</fileset>
 		</jar>
 	</target>
