@@ -17,7 +17,7 @@ import consoperators.InConstantDistanceOperator;
 import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.util.TreeParser;
 import consoperators.IndependentOperator;
-import consoperators.SmallPulleyV1;
+import consoperators.SmallPulley;
 import consoperators.BigPulley;
 import org.junit.Test;
 import junit.framework.TestCase;
