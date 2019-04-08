@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
 <!--
-This xml is used to test the 7 ratites by using bModelTest as sitemodel
+This xml is used to analyze the 7 ratites by using bModelTest as sitemodel
+The results show that GTR + I + gamma is sufficient for ratites data
 -->
 
     <data id="ratites" name="alignment">
