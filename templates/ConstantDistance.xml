@@ -56,10 +56,15 @@
     <operator id="FastRootOperator3.c:$(n)" spec="consoperators.BigPulley" branchRateModel="@FastRelaxedClock.c:$(n)"
       twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="2"/>
 
-    <operator id="ucldStdevScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldStdev.c:$(n)" scaleFactor="0.5" weight="5.0"/>
+    <operator id="fastUcldStdevScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldStdev.c:$(n)" scaleFactor="0.5" weight="5.0"/>
 
-    <operator id="ucldMeanScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldMean.c:$(n)" scaleFactor="0.5" weight="5.0"/>
+    <operator id="fastUcldMeanScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldMean.c:$(n)" scaleFactor="0.5" weight="5.0"/>
 
+    <operator id="RatesRandomWalk.c:$(n)" spec="RealRandomWalkOperator" parameter="@fastRates.c:$(n)" weight="1.0" windowSize="0.1"/>
+
+    <operator id="RatesSwapOperator.c:$(n)" spec="SwapOperator" parameter="@fastRates.c:$(n)" weight="1.0"/>
+
+	<log id="fastRates" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)"/>
 ]]>
             <connect srcID='fastUcldMean.c:$(n)' targetID='state' inputName='stateNode'
                      if='inlikelihood(fastUcldMean.c:$(n)) and fastUcldMean.c:$(n)/estimate=true'/>
@@ -76,7 +81,7 @@
                      if='inlikelihood(fastUcldStdev.c:$(n)) and fastUcldStdev.c:$(n)/estimate=true'>Scale stdev of rate of partition c:$(n)
             </connect>
             <connect srcID='FastInternalnodesOperator.c:$(n)' targetID='mcmc' inputName='operator'
-                     if='inlikelihood(fastRates.c:$(n)) and fastRates.c:$(n)/estimate=true'>Change rates of partition c:$(n)
+                     if='inlikelihood(fastRates.c:$(n)) and fastRates.c:$(n)/estimate=true'>Change internal rates of partition c:$(n)
             </connect>
             <connect srcID='FastRootOperator1.c:$(n)' targetID='mcmc' inputName='operator'
                      if='inlikelihood(fastRates.c:$(n)) and fastRates.c:$(n)/estimate=true'>Change root rates 1 of partition c:$(n)
@@ -87,8 +92,12 @@
             <connect srcID='FastRootOperator3.c:$(n)' targetID='mcmc' inputName='operator'
                      if='inlikelihood(fastRates.c:$(n)) and fastRates.c:$(n)/estimate=true'>Change root rates 3 of partition c:$(n)
             </connect>
-
-
+            <connect srcID='RatesRandomWalk.c:$(n)' targetID='mcmc' inputName='operator'
+                     if='inlikelihood(fastRates.c:$(n)) and fastRates.c:$(n)/estimate=true'>Change all rates of partition c:$(n)
+            </connect>
+            <connect srcID='RatesSwapOperator.c:$(n)' targetID='mcmc' inputName='operator'
+                     if='inlikelihood(fastRates.c:$(n)) and fastRates.c:$(n)/estimate=true'>Change all rates of partition c:$(n)
+            </connect>
 
             <connect srcID='Tree.t:$(n)' targetID='FastRelaxedClock.c:$(n)' inputName='tree' if='inlikelihood(FastRelaxedClock.c:$(n))'/>
             <connect srcID='Tree.t:$(n)' targetID='rate.c:$(n)' inputName='tree' if='inlikelihood(FastRelaxedClock.c:$(n))'/>
@@ -96,6 +105,7 @@
             <connect srcID='fastUcldMean.c:$(n)' targetID='tracelog' inputName='log'
                      if='inlikelihood(fastUcldMean.c:$(n)) and fastUcldMean.c:$(n)/estimate=true'/>
             <connect srcID='fastUcldStdev.c:$(n)' targetID='tracelog' inputName='log' if='inlikelihood(fastUcldStdev.c:$(n))'/>
+            <connect srcID='fastRates' targetID='tracelog' inputName='log' if='inlikelihood(fastRates.c:$(n))'/>
 
 
             <connect srcID='fastUcldStdevPrior.c:$(n)' targetID='prior' inputName='distribution'
