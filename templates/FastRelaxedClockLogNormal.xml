@@ -67,7 +67,7 @@
 
     <operator id="RatesSwapOperator.c:$(n)" spec="SwapOperator" parameter="@fastRates.c:$(n)" weight="1.0"/>
 
-	<log id="fastRates.c:$(n)" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)"/>
+	<log id="fastRatesStat.c:$(n)" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)"/>
 ]]>
             <connect srcID='fastUcldMean.c:$(n)' targetID='state' inputName='stateNode'
                      if='inlikelihood(fastUcldMean.c:$(n)) and fastUcldMean.c:$(n)/estimate=true'/>
@@ -108,7 +108,7 @@
             <connect srcID='fastUcldMean.c:$(n)' targetID='tracelog' inputName='log'
                      if='inlikelihood(fastUcldMean.c:$(n)) and fastUcldMean.c:$(n)/estimate=true'/>
             <connect srcID='fastUcldStdev.c:$(n)' targetID='tracelog' inputName='log' if='inlikelihood(fastUcldStdev.c:$(n))'/>
-            <connect srcID='fastRates' targetID='tracelog' inputName='log' if='inlikelihood(fastRates.c:$(n))'/>
+            <connect srcID='fastRatesStat.c:$(n)' targetID='tracelog' inputName='log' if='inlikelihood(fastRates.c:$(n))'/>
 
 
             <connect srcID='fastUcldStdevPrior.c:$(n)' targetID='prior' inputName='distribution'
