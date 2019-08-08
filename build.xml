@@ -28,6 +28,7 @@
 	<path id="classpath">
         <pathelement path="${buildFastRelaxedClockLogNormal}"/>
 		<fileset dir="${libBeast2}" includes="junit-4.8.2.jar"/>
+ 		<fileset dir="${libBeast2}" includes="antlr-runtime-4.7.jar"/>
         <pathelement path="${beast2classpath}"/>
 		<fileset dir="${beast2path}/lib" includes="jam.jar"/>
 		<fileset dir="${beast2path}/lib" includes="beagle.jar"/>
