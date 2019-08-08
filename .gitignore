@@ -6,3 +6,5 @@
 /artifacts
 /production
 .DS_Store
+/release
+/build
