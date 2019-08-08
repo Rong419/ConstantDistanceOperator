@@ -34,10 +34,13 @@
 	    </LogNormal>
     </prior>
     <prior id="fastUcldStdevPrior.c:$(n)" name="distribution" x="@fastUcldStdev.c:$(n)">
-        <LogNormal meanInRealSpace="false" name="distr">
-        	<M spec="parameter.RealParameter" estimate="false">-1.5</M>
-        	<S spec="parameter.RealParameter" estimate="false">0.35</S>
-        </LogNormal>
+
+        <!-- this prior has a median of 0.1 and 97.5% of its probability is below S=1 -->
+        <distr spec="beast.math.distributions.Gamma">
+            <parameter name='alpha' value="0.5396" estimate='false'/> <!-- shape -->
+            <parameter name='beta' value="0.3819" estimate='false'/> <!-- scale -->
+        </distr>
+
     </prior>
     <prior id="fastUcldMeanPrior.c:$(n)" name="distribution" x="@fastUcldMean.c:$(n)">
         <Gamma alpha="100.0" beta="0.01" name="distr"/>
