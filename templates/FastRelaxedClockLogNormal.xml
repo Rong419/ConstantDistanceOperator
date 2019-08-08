@@ -5,7 +5,7 @@
     <!-- Clock models -->
     <mergewith point='clockModelTemplates'>
 
-        <!-- Relaxed clock log normal -->
+          <!-- Fast Relaxed clock log normal -->
         <subtemplate id='FastRelaxedClockLogNormal' class='beast.evolution.branchratemodel.UCRelaxedClockModel'
                      mainid='FastRelaxedClock.c:$(n)'
                      suppressInputs='
@@ -25,8 +25,8 @@
         <parameter id="fastUcldMean.c:$(n)" estimate="false" name="clock.rate">1.0</parameter>
     </branchRateModel>
 
-    <parameter id="fastUcldStdev.c:$(n)" lower="0.0" name="stateNode">0.1</parameter>
-    <parameter id="fastRates.c:$(n)" lower="0.0" upper ="5" dimension="1">1</parameter>
+    <parameter id="fastUcldStdev.c:$(n)" name="stateNode">0.2</parameter>
+    <parameter id="fastRates.c:$(n)" name="stateNode">1</parameter>
 
     <prior id="FastRatePriorDistrbution.c:$(n)" name="distribution" x="@fastRates.c:$(n)">
     	<LogNormal S="@fastUcldStdev.c:$(n)"  meanInRealSpace="true" name="distr">
@@ -35,8 +35,8 @@
     </prior>
     <prior id="fastUcldStdevPrior.c:$(n)" name="distribution" x="@fastUcldStdev.c:$(n)">
         <LogNormal meanInRealSpace="false" name="distr">
-        	<M spec="parameter.RealParameter" estimate="false">-2</M>
-        	<S spec="parameter.RealParameter" estimate="false">0.1</S>
+        	<M spec="parameter.RealParameter" estimate="false">-1.5</M>
+        	<S spec="parameter.RealParameter" estimate="false">0.35</S>
         </LogNormal>
     </prior>
     <prior id="fastUcldMeanPrior.c:$(n)" name="distribution" x="@fastUcldMean.c:$(n)">
