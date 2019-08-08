@@ -1,18 +1,18 @@
-<!-- Build ConstantDistance. It is also used by Hudson ConstantDistance project. JUnit test is available for this build. -->
-<project basedir="." default="addon" name="BUILD_ConstantDistance">
+<!-- Build FastRelaxedClockLogNormal. It is also used by Hudson FastRelaxedClockLogNormal project. JUnit test is available for this build. -->
+<project basedir="." default="addon" name="BUILD_FastRelaxedClockLogNormal">
 	<description>
-	    Build ConstantDistance. 
-            Also used by Hudson ConstantDistance project. 
+	    Build FastRelaxedClockLogNormal. 
+            Also used by Hudson FastRelaxedClockLogNormal project. 
 	    JUnit test is available for this build.
-	    $Id: build_ConstantDistance.xml $
+	    $Id: build_FastRelaxedClockLogNormal.xml $
 	</description>
 
 	<!-- set global properties for this build -->
-	<property name="srcConstantDistance" location="src" />
-	<property name="buildConstantDistance" location="build" />
-	<property name="libConstantDistance" location="lib" />
+	<property name="srcFastRelaxedClockLogNormal" location="src" />
+	<property name="buildFastRelaxedClockLogNormal" location="build" />
+	<property name="libFastRelaxedClockLogNormal" location="lib" />
 	<property name="release_dir" value="release" />
-	<property name="distConstantDistance" location="${buildConstantDistance}/dist" />
+	<property name="distFastRelaxedClockLogNormal" location="${buildFastRelaxedClockLogNormal}/dist" />
 	<property name="beast2path" location="../beast2" />
 	<property name="libBeast2" location="${beast2path}/lib" />
 	<property name="srcBeast2" location="${beast2path}/src" />
@@ -23,10 +23,10 @@
     <import file="${beast2path}/build.xml" />
 
 	<property name="main_class_BEAST" value="beast.app.BeastMCMC" />
-	<property name="report" value="${buildConstantDistance}/junitreport"/>
+	<property name="report" value="${buildFastRelaxedClockLogNormal}/junitreport"/>
 
 	<path id="classpath">
-        <pathelement path="${buildConstantDistance}"/>
+        <pathelement path="${buildFastRelaxedClockLogNormal}"/>
 		<fileset dir="${libBeast2}" includes="junit-4.8.2.jar"/>
         <pathelement path="${beast2classpath}"/>
 		<fileset dir="${beast2path}/lib" includes="jam.jar"/>
@@ -36,32 +36,32 @@
 	</path>
 
 	<!-- start -->
-	<target name="initConstantDistance">
+	<target name="initFastRelaxedClockLogNormal">
 		<echo message="${ant.project.name}: ${ant.file}" />
 	</target>
 
-	<target name="cleanConstantDistance">
-    	<delete dir="${buildConstantDistance}" />
+	<target name="cleanFastRelaxedClockLogNormal">
+    	<delete dir="${buildFastRelaxedClockLogNormal}" />
 	</target>
 
 	<!-- clean previous build, and then compile Java source code, and Juint test -->
-	<target name="build_all_ConstantDistance" depends="cleanConstantDistance,compile-allConstantDistance,junitConstantDistance"
+	<target name="build_all_FastRelaxedClockLogNormal" depends="cleanFastRelaxedClockLogNormal,compile-allFastRelaxedClockLogNormal,junitFastRelaxedClockLogNormal"
         description="Clean and Build all run-time stuff">
 	</target>
 
 	<!-- clean previous build, compile Java source code, and Junit test, and make the beast.jar and beauti.jar -->
-	<target name="build_jar_all_ConstantDistance" depends="cleanConstantDistance,compile-allConstantDistance,junitConstantDistance,dist_all_ConstantDistance"
+	<target name="build_jar_all_FastRelaxedClockLogNormal" depends="cleanFastRelaxedClockLogNormal,compile-allFastRelaxedClockLogNormal,junitFastRelaxedClockLogNormal,dist_all_FastRelaxedClockLogNormal"
         description="Clean and Build all run-time stuff">
 	</target>
 
 
-	<!-- No JUnit Test, clean previous build, compile Java source code, and make the ConstantDistance.jar and beauti.jar -->
-	<target name="build_jar_all_ConstantDistance_NoJUnitTest" depends="cleanConstantDistance,compile-allConstantDistance,dist_all_ConstantDistance"
+	<!-- No JUnit Test, clean previous build, compile Java source code, and make the FastRelaxedClockLogNormal.jar and beauti.jar -->
+	<target name="build_jar_all_FastRelaxedClockLogNormal_NoJUnitTest" depends="cleanFastRelaxedClockLogNormal,compile-allFastRelaxedClockLogNormal,dist_all_FastRelaxedClockLogNormal"
         description="Clean and Build all run-time stuff">
 	</target>
 
 	<!-- compile Java source code -->
-	<target name="compile-allConstantDistance" depends="initConstantDistance,compile-all">
+	<target name="compile-allFastRelaxedClockLogNormal" depends="initFastRelaxedClockLogNormal,compile-all">
 
 
 	    <!-- Capture the path as a delimited property using the refid attribute -->
@@ -69,10 +69,10 @@
 	    <!-- Emit the property to the ant console -->
 	    <echo message="Classpath = ${myclasspath}"/>
 
-		<mkdir dir="${buildConstantDistance}" />
+		<mkdir dir="${buildFastRelaxedClockLogNormal}" />
 
-		<!-- Compile the java code from ${srcConstantDistance} into ${buildConstantDistance} /bin -->
-		<javac srcdir="${srcConstantDistance}" destdir="${buildConstantDistance}" classpathref="classpath" 
+		<!-- Compile the java code from ${srcFastRelaxedClockLogNormal} into ${buildFastRelaxedClockLogNormal} /bin -->
+		<javac srcdir="${srcFastRelaxedClockLogNormal}" destdir="${buildFastRelaxedClockLogNormal}" classpathref="classpath" 
 		       fork="true"
 		       memoryinitialsize="256m"
 		       memorymaximumsize="256m"
@@ -86,17 +86,17 @@
 	</target>
 
 	<!-- make the beast.jar and beauti.jar -->
-	<target name="dist_all_ConstantDistance" depends="compile-allConstantDistance" description="create ConstantDistance jar">
+	<target name="dist_all_FastRelaxedClockLogNormal" depends="compile-allFastRelaxedClockLogNormal" description="create FastRelaxedClockLogNormal jar">
 		<!-- Create the distribution directory -->
-		<mkdir dir="${distConstantDistance}" />
+		<mkdir dir="${distFastRelaxedClockLogNormal}" />
 
-		<!-- Put everything in ${buildConstantDistance} into the beast.jar file -->
-		<jar jarfile="${distConstantDistance}/ConstantDistance.jar">
+		<!-- Put everything in ${buildFastRelaxedClockLogNormal} into the beast.jar file -->
+		<jar jarfile="${distFastRelaxedClockLogNormal}/FastRelaxedClockLogNormal.jar">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Main-Class" value="${main_class_BEAST}" />
 			</manifest>
-			<fileset dir="${buildConstantDistance}">
+			<fileset dir="${buildFastRelaxedClockLogNormal}">
 				<include name="beast/**/*.class" />
 			</fileset>
 			<fileset dir="${beast2classpath}">
@@ -107,40 +107,40 @@
 				<include name="org/**/*.class" />
 			</fileset>
 		</jar>
-		<jar jarfile="${distConstantDistance}/ConstantDistance.src.jar">
-			<fileset dir="${srcConstantDistance}">
+		<jar jarfile="${distFastRelaxedClockLogNormal}/FastRelaxedClockLogNormal.src.jar">
+			<fileset dir="${srcFastRelaxedClockLogNormal}">
 				<include name="**/*.java" />
 			</fileset>
         </jar>
-		<jar jarfile="${distConstantDistance}/ConstantDistance.addon.jar">
+		<jar jarfile="${distFastRelaxedClockLogNormal}/FastRelaxedClockLogNormal.addon.jar">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 			</manifest>
-			<fileset dir="${buildConstantDistance}">
+			<fileset dir="${buildFastRelaxedClockLogNormal}">
 				<include name="**/*.class" />
 			</fileset>
 		</jar>
 	</target>
 
 	<!-- run beast.jar -->
-	<target name="run_ConstantDistance">
-		<java jar="${distConstantDistance}/ConstantDistance.jar" fork="true" />
+	<target name="run_FastRelaxedClockLogNormal">
+		<java jar="${distFastRelaxedClockLogNormal}/FastRelaxedClockLogNormal.jar" fork="true" />
 	</target>
 
 	
 	<!-- JUnit test -->
-	<target name="junitConstantDistance">
+	<target name="junitFastRelaxedClockLogNormal">
 		<mkdir dir="${report}" />
 		<junit printsummary="yes"> <!--showoutput='yes'-->
 			<classpath>
 				<path refid="classpath" />
-				<path location="${buildConstantDistance}" />
+				<path location="${buildFastRelaxedClockLogNormal}" />
 			</classpath>
 
 			<formatter type="xml" />
 
 			<batchtest fork="yes" todir="${report}">
-				<fileset dir="${srcConstantDistance}">
+				<fileset dir="${srcFastRelaxedClockLogNormal}">
                     <include name="test/**/*Test.java"/>                                         
 				</fileset>
 				<fileset dir="${srcBeast2}">
@@ -162,8 +162,8 @@
 
 
 	<target name="addon"
-	        depends="build_jar_all_ConstantDistance_NoJUnitTest"
-	        description="release BEAST 2 add-on version of ConstantDistance">
+	        depends="build_jar_all_FastRelaxedClockLogNormal_NoJUnitTest"
+	        description="release BEAST 2 add-on version of FastRelaxedClockLogNormal">
 
 		<delete dir="${Add_on_dir}" />
 		<!-- Create the release directory -->
@@ -179,16 +179,16 @@
 			<fileset dir="examples" />
 		</copy>
 		<copy todir="${Add_on_dir}/lib">
-			<fileset dir="${distConstantDistance}" includes="ConstantDistance.addon.jar" />
+			<fileset dir="${distFastRelaxedClockLogNormal}" includes="FastRelaxedClockLogNormal.addon.jar" />
 		</copy>
 		<copy todir="${Add_on_dir}">
-			<fileset dir="${distConstantDistance}" includes="ConstantDistance.src.jar" />
+			<fileset dir="${distFastRelaxedClockLogNormal}" includes="FastRelaxedClockLogNormal.src.jar" />
 		</copy>
 		<copy todir="${Add_on_dir}/templates">
 			<fileset file="templates/*.xml" />
 		</copy>
 
-		<jar jarfile="${distConstantDistance}/ConstantDistance.addon.v${version}.zip">
+		<jar jarfile="${distFastRelaxedClockLogNormal}/FastRelaxedClockLogNormal.addon.v${version}.zip">
 			<fileset dir="${Add_on_dir}">
 				<include name="**/*" />
 			</fileset>
