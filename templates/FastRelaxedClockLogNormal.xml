@@ -43,7 +43,7 @@
 
     </prior>
     <prior id="fastUcldMeanPrior.c:$(n)" name="distribution" x="@fastUcldMean.c:$(n)">
-        <Gamma alpha="100.0" beta="0.01" name="distr"/>
+        <Gamma alpha="0.1" beta="100.0" name="distr"/>
     </prior>
 
 
@@ -114,7 +114,7 @@
             <connect srcID='fastUcldStdevPrior.c:$(n)' targetID='prior' inputName='distribution'
                      if='inlikelihood(fastUcldStdev.c:$(n))'>fast uncorrelated lognormal relaxed clock stdev of partition c:$(n)
             </connect>
-            <connect srcID='MeanRatePrior.c:$(n)' targetID='prior' inputName='distribution'
+            <connect srcID='fastUcldMeanPrior.c:$(n)' targetID='prior' inputName='distribution'
                      if='inlikelihood(fastUcldMean.c:$(n)) and inlikelihood(Tree.t:$(n)) and fastUcldMean.c:$(n)/estimate=true'>
                 fast uncorrelated lognormal relaxed clock mean of partition c:$(n)
             </connect>
