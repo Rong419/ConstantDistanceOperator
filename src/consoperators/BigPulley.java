@@ -231,7 +231,7 @@ public class BigPulley extends TreeOperator {
 
             //for asymmetric tree shape
             if (((C1.size() == 0) && (C2.size() != 0)) || ((C1.size() != 0) && (C2.size() == 0))) {
-                if (t_j > t_k) {
+                if (C2.size() == 0) {
                     tOlder = t_j;
                     tYounger = t_k;
                     newtOlder = t_j_;
@@ -241,7 +241,7 @@ public class BigPulley extends TreeOperator {
                     nodeOlder = son;
                     nodeYounger = daughter;
                 }
-                if (t_j < t_k) {
+                if (C1.size() == 0) {
                     tOlder = t_k;
                     tYounger = t_j;
                     newtOlder = t_k_;
@@ -252,7 +252,7 @@ public class BigPulley extends TreeOperator {
                     dYoung = d_i;
 
                 }
-                if (t_x_ <= newtOlder) {
+                if ((t_x_ <= newtOlder) || (newtOlder <= tYounger)) {
                     return Double.NEGATIVE_INFINITY;
                 }
                 node.setHeight(t_x_);
