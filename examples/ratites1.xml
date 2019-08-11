@@ -136,16 +136,16 @@ using GTR + I + gamma
         </distribution>
     </distribution>
 
-    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" branchRateModel="@RelaxedClock.c:ratites"
+    <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator"
               twindowSize="0.02"  tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="20"/>
 
-    <operator id="RootOperator1.c:dna" spec="SimpleDistance" branchRateModel="@RelaxedClock.c:ratites"
+    <operator id="RootOperator1.c:dna" spec="SimpleDistance"
               twindowSize="0.02" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
 
-    <operator id="RootOperator2.c:dna" spec="SmallPulley" branchRateModel="@RelaxedClock.c:ratites"
+    <operator id="RootOperator2.c:dna" spec="SmallPulley"
               dwindowSize="0.02" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
 
-    <operator id="RootOperator3.c:dna" spec="BigPulley" branchRateModel="@RelaxedClock.c:ratites"
+    <operator id="RootOperator3.c:dna" spec="BigPulley"
               twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:ratites" rates="@rates.c:ratites"  weight="2"/>
 
     <operator id="BirthRateScaler.t:ratites" spec="ScaleOperator" parameter="@BDBirthRate.t:ratites" scaleFactor="0.75" weight="0.8"/>
