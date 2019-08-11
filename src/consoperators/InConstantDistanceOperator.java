@@ -4,6 +4,7 @@ import beast.core.Description;
 import beast.core.Input;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.BranchRateModel;
+import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
@@ -15,20 +16,21 @@ import java.util.List;
 public class InConstantDistanceOperator extends TreeOperator {
     public final Input<Double> twindowSizeInput =
             new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
-    public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
-            "A model describing the rates on the branches of the beast.tree.");
+    //public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
+            //"A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
 
     private double twindowSize;
     private RealParameter rates;
 
-    protected BranchRateModel.Base branchRateModel;
+    //protected BranchRateModel.Base branchRateModel;
+    //protected UCRelaxedClockModel branchRateModel;
     //JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
         twindowSize = twindowSizeInput.get();
-        branchRateModel = branchRateModelInput.get();
+        //branchRateModel = branchRateModelInput.get();
         rates = rateInput.get();
     }
 
@@ -59,8 +61,8 @@ public class InConstantDistanceOperator extends TreeOperator {
        } while (node.isRoot() || node.isLeaf());
        //rate and time for this node
        t_x = node.getHeight();
-       double r_node = branchRateModel.getRateForBranch(node);
-
+       //double r_node = branchRateModel.getRateForBranch(node);
+       double r_node = rates.getValues()[node.getNr()];
        /*
        Another way to get internal node
         */
@@ -77,12 +79,14 @@ public class InConstantDistanceOperator extends TreeOperator {
        // son
        Node son = node.getChild(0);//get the left child of this node, i.e. son
        t_j = son.getHeight();//node time of son
-       r_j = branchRateModel.getRateForBranch(son);
+       //r_j = branchRateModel.getRateForBranch(son);
+        r_j = rates.getValues()[son.getNr()];
        d_j = r_j * (t_x - t_j);
        // daughter
        Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
        t_k = daughter.getHeight();//node time of daughter
-       r_k = branchRateModel.getRateForBranch(daughter);
+       //r_k = branchRateModel.getRateForBranch(daughter);
+        r_k = rates.getValues()[daughter.getNr()];
        d_k = r_k * (t_x - t_k);
 
 

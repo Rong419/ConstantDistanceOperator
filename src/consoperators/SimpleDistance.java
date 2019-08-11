@@ -16,15 +16,15 @@ import java.util.List;
 public class SimpleDistance extends TreeOperator {
     public final Input<Double> twindowSizeInput =
             new Input<>("twindowSize", "the size of the window for proposing new node time", Input.Validate.REQUIRED);
-    public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
-            "A model describing the rates on the branches of the beast.tree.");
+    //public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
+            //"A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
 
     private double twindowSize;
     private Tree tree;
     private RealParameter rates;
 
-    protected BranchRateModel.Base branchRateModel;
+    //protected BranchRateModel.Base branchRateModel;
     JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
 
@@ -33,7 +33,7 @@ public class SimpleDistance extends TreeOperator {
     public void initAndValidate() {
         twindowSize = twindowSizeInput.get();
         tree = treeInput.get();
-        branchRateModel = branchRateModelInput.get();
+        //branchRateModel = branchRateModelInput.get();
         rates = rateInput.get();
     }
 
@@ -63,13 +63,15 @@ public class SimpleDistance extends TreeOperator {
         // son
         Node son = node.getChild(0);//get the left child of this node, i.e. son
         t_j = son.getHeight();//node time of son
-        r_i = branchRateModel.getRateForBranch(son);
+        //r_i = branchRateModel.getRateForBranch(son);
+        r_i = rates.getValues()[son.getNr()];
         d_i = r_i * (t_x - t_j);
         int nodeN02 = son.getNr();//node number of son
         // daughter
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
-        r_x = branchRateModel.getRateForBranch(daughter);
+        //r_x = branchRateModel.getRateForBranch(daughter);
+        r_x = rates.getValues()[daughter.getNr()];
         d_x = r_x * (t_x - t_k);
         int nodeN03 = daughter.getNr();//node number of daughter
         double a = Randomizer.uniform(-twindowSize, twindowSize);

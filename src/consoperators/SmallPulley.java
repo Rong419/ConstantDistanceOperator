@@ -22,22 +22,22 @@ public class SmallPulley extends TreeOperator {
     //public final Input<Tree> treeInput = new Input<>("tree", "the rooted time tree for the operator to work on");
     public final Input<Double> dwindowSizeInput =
             new Input<>("dwindowSize", "the size of the window in Big Pulley");
-    public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
-            "A model describing the rates on the branches of the beast.tree.");
+   // public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
+            //"A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
 
 
     private double dwindowSize;
     Tree tree;
     private RealParameter rates;
-    protected BranchRateModel.Base branchRateModel;
+    //protected BranchRateModel.Base branchRateModel;
     JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
         dwindowSize = dwindowSizeInput.get();
         tree = treeInput.get();
-        branchRateModel = branchRateModelInput.get();
+       // branchRateModel = branchRateModelInput.get();
         rates = rateInput.get();
 
     }
@@ -77,9 +77,10 @@ public class SmallPulley extends TreeOperator {
 
 
         // get the rates on branches linked to root
-        r_j = branchRateModel.getRateForBranch(son);//branch rate for son
-        r_k = branchRateModel.getRateForBranch(daughter);//branch rate for daughter
-
+        //r_j = branchRateModel.getRateForBranch(son);//branch rate for son
+        //r_k = branchRateModel.getRateForBranch(daughter);//branch rate for daughter
+        r_j = rates.getValues()[son.getNr()];
+        r_k = rates.getValues()[daughter.getNr()];
         //d3: the distance to be proposed
         //distance on the branch above son
         double d = r_j * (t_x - t_j);
