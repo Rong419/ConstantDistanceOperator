@@ -12,7 +12,7 @@ import beast.core.parameter.RealParameter;
 import org.apache.commons.math.distribution.WeibullDistributionImpl;
 
 
-public class Weibull extends ParametricDistribution {
+public class WeibullDistribution extends ParametricDistribution {
     final public Input<RealParameter> kParameterInput = new Input<>("K", "Shape parameter.");
     final public Input<RealParameter> lambdaParameterInput = new Input<>("Lambda", "Scale parameter.");
 

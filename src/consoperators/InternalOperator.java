@@ -23,15 +23,18 @@ public class InternalOperator extends TreeOperator {
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.REQUIRED);
     final public Input<RealParameter> quantileInput = new Input<>("rateQuantiles", "the rate quantiles associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.XOR, rateInput);
     final public Input<ParametricDistribution> rateDistInput = new Input<>("distr", "the distribution governing the rates among branches.", Input.Validate.REQUIRED);
+    final public Input<RealParameter> stdevInput = new Input<>("stdev", "the distribution governing the rates among branches.");
+
 
     enum Mode {
         quantiles,
         rates
     }
-    Mode mode = Mode.rates;
+    private Mode mode = Mode.rates;
     private double twindowSize;
     private RealParameter rates;
     private RealParameter quantiles;
+    private RealParameter ucldStdev;
 
     protected ParametricDistribution distribution;
 
@@ -45,11 +48,17 @@ public class InternalOperator extends TreeOperator {
         } else {
             rates = rateInput.get();
         }
+        ucldStdev = stdevInput.get();
     }
 
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
+        double stdev = ucldStdev.getValue();
+        double m_fScaleFactor = 0.5;
+        double b =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
+        double new_stdev = stdev * b;
+        ucldStdev.setValue(new_stdev);
 
         //the original rates
         double r_node;
@@ -84,11 +93,13 @@ public class InternalOperator extends TreeOperator {
            double q_node = quantiles.getValues()[node.getNr()];
            double q_j = quantiles.getValues()[son.getNr()];
            double q_k = quantiles.getValues()[daughter.getNr()];
+           System.out.println("q1="+q_node+",q2="+q_j+",q3="+q_k);
            r_node = getRealRate(q_node);
            r_j = getRealRate(q_j);
            r_k = getRealRate(q_k);
-
+           System.out.println("r1="+r_node+",r2="+r_j+",r3="+r_k);
        } else {
+           // use real rates
            r_node = rates.getValues()[node.getNr()];
            r_j = rates.getValues()[son.getNr()];
            r_k = rates.getValues()[daughter.getNr()];
@@ -118,7 +129,7 @@ public class InternalOperator extends TreeOperator {
        double r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j);
        double r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k);
 
-
+        //System.out.println("r1'="+r_node_+",r2'="+r_j_+",r3'="+r_k_);
        // set the proposed new rates
         if (mode == Mode.rates) {
             rates.setValue(node.getNr(), r_node_);
@@ -136,20 +147,23 @@ public class InternalOperator extends TreeOperator {
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
        double icdfq = getDicdf(getRateQuantiles(r_node_)) * getDicdf(getRateQuantiles(r_j_)) * getDicdf(getRateQuantiles(r_k_));
-       double JD = icdfq * nu /de;
+       double JD =  b * nu /de;
 
        return Math.log(JD);
 }
 
-    public double getRateQuantiles (double r) {
+    private double getRateQuantiles (double r) {
         try {
+            LogNormalDistributionModel mylognormal=(LogNormalDistributionModel)distribution;
+            double S=mylognormal.SParameterInput.get().getValue();
+            //System.out.println("S="+S);
             return distribution.cumulativeProbability(r);
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute inverse cumulative probability because rate =" + r);
         }
     }
 
-    public double getRealRate (double q) {
+    private double getRealRate (double q) {
         try {
             return distribution.inverseCumulativeProbability(q);
         } catch (MathException e) {
@@ -157,7 +171,7 @@ public class InternalOperator extends TreeOperator {
         }
     }
 
-    public double getDicdf(double q) {
+    private double getDicdf(double q) {
         LogNormalDistributionModel mylognormal=(LogNormalDistributionModel)distribution;
         double S=mylognormal.SParameterInput.get().getValue();
         double miu = Math.log(1/(Math.sqrt(1+S)));
