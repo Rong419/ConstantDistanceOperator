@@ -25,6 +25,7 @@ public class InternalOperator extends TreeOperator {
     final public Input<RealParameter> quantileInput = new Input<>("rateQuantiles", "the rate quantiles associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.XOR, rateInput);
     final public Input<ParametricDistribution> rateDistInput = new Input<>("distr", "the distribution governing the rates among branches.", Input.Validate.REQUIRED);
     final public Input<RealParameter> stdevInput = new Input<>("stdev", "the distribution governing the rates among branches.");
+    public final Input<Double> scaleFactorInput = new Input<>("scaleFactor", "scaling factor: larger means more bold proposals", 1.0);
 
 
 
@@ -39,6 +40,7 @@ public class InternalOperator extends TreeOperator {
     private RealParameter ucldStdev;
     double new_stdev;
     double stdev;
+    private double m_fScaleFactor;
 
     protected ParametricDistribution distribution;
 
@@ -53,13 +55,14 @@ public class InternalOperator extends TreeOperator {
             rates = rateInput.get();
         }
         stdev = stdevInput.get().getValue();
+        m_fScaleFactor = scaleFactorInput.get();
     }
 
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
         ucldStdev=stdevInput.get();
-        double m_fScaleFactor = 0.5;
+        //double m_fScaleFactor = 0.5;
         double b =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
         new_stdev = stdev * b;
         ucldStdev.setValue(new_stdev);
@@ -150,7 +153,7 @@ public class InternalOperator extends TreeOperator {
        //Step4: calculate the Hastings ratio
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
-       double JD =  b * getDicdf(r_node) * getDicdf(r_j) * getDicdf(r_k)* nu / de;
+       double JD =  b * getDicdf(r_node) * getDicdf(r_j) * getDicdf(r_k) * nu / de;
 
        return Math.log(JD);
 }
@@ -188,16 +191,21 @@ public class InternalOperator extends TreeOperator {
     Tuning the parameter: twindowsize represents the range of Uniform distribution
      */
     @Override
+    /*public double getCoercableParameterValue() { return twindowSize; }*/
     public double getCoercableParameterValue() {
-        return twindowSize;
+        return m_fScaleFactor;
     }
-
 
     @Override
-    public void setCoercableParameterValue(double value) {
+    /*public void setCoercableParameterValue(double value) {
         twindowSize = value;
     }
-
+    */
+    public void setCoercableParameterValue(final double value) {
+        double upper = 1.0 - 1e-8;
+        double lower = 1e-8;
+        m_fScaleFactor = Math.max(Math.min(value, upper), lower);
+    }
     /**
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
@@ -209,10 +217,15 @@ public class InternalOperator extends TreeOperator {
     @Override
     public void optimize(double logAlpha) {
         // must be overridden by operator implementation to have an effect
-        double delta = calcDelta(logAlpha);
 
+        /*double delta = calcDelta(logAlpha);
         delta += Math.log(twindowSize);
         twindowSize = Math.exp(delta);
+        */
+
+        double delta = calcDelta(logAlpha);
+        delta += Math.log(1.0 / m_fScaleFactor - 1.0);
+        setCoercableParameterValue(1.0 / (Math.exp(delta) + 1.0));
     }
 
     @Override
@@ -224,14 +237,16 @@ public class InternalOperator extends TreeOperator {
         if (ratio > 2.0) ratio = 2.0;
         if (ratio < 0.5) ratio = 0.5;
 
-        // new scale factor
-        double newWindowSize = twindowSize * ratio;
+        //double newWindowSize = twindowSize * ratio;
+        final double sf = Math.pow(m_fScaleFactor, ratio);
 
         DecimalFormat formatter = new DecimalFormat("#.###");
         if (prob < 0.10) {
-            return "Try setting window size to about " + formatter.format(newWindowSize);
+            //return "Try setting window size to about " + formatter.format(newWindowSize);
+            return "Try setting scaleFactor to about " + formatter.format(sf);
         } else if (prob > 0.40) {
-            return "Try setting window size to about " + formatter.format(newWindowSize);
+            //return "Try setting window size to about " + formatter.format(newWindowSize);
+            return "Try setting scaleFactor to about " + formatter.format(sf);
         } else return "";
     }
 

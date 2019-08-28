@@ -57,7 +57,7 @@ name="alignment">
         <parameter id="birthRate.t:Dengue4" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="kappa.s:Dengue4" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="fastUcldMean.c:Dengue4" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
-        <parameter id="fastUcldStdev.c:Dengue4" spec="parameter.RealParameter" name="stateNode">0.2</parameter>
+        <parameter id="fastUcldStdev.c:Dengue4" spec="parameter.RealParameter" name="stateNode">0.08</parameter>
         <parameter id="fastRates.c:Dengue4" spec="parameter.RealParameter"  name="stateNode">0.5</parameter>
         <parameter id="freqParameter.s:Dengue4" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
     </state>
@@ -83,17 +83,26 @@ name="alignment">
                     <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="S">1.25</parameter>
                 </LogNormal>
             </prior>
+
             <prior id="fastUcldStdevPrior.c:Dengue4" name="distribution" x="@fastUcldStdev.c:Dengue4">
+                <!--
                 <Gamma id="Gamma.1" name="distr">
                     <parameter id="RealParameter.8" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396</parameter>
                     <parameter id="RealParameter.9" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
+-->
+                <LogNormal id="Gamma.1" name="distr" M="0.2" S="0.2" meanInRealSpace="true"/>
+
             </prior>
+
             <prior id="fastUcldMeanPrior.c:Dengue4" name="distribution" x="@fastUcldMean.c:Dengue4">
-                <Normal id="Gamma.2" name="distr">
-                    <parameter id="RealParameter.10" spec="parameter.RealParameter" name="mean" >1</parameter>
-                    <parameter id="RealParameter.11" spec="parameter.RealParameter" name="sigma" >0.5</parameter>
-                </Normal>
+                <!--
+                <LogNormal id="Gamma.2" name="distr">
+                    <parameter id="RealParameter.10" spec="parameter.RealParameter" name="mean" >1.0</parameter>
+                    <parameter id="RealParameter.11" spec="parameter.RealParameter" name="sigma" >0.25</parameter>
+                </LogNormal>
+                -->
+                <Normal id="Gamma.2" name="distr" mean="1" sigma="0.2"/>
             </prior>
 
             <prior id="FastRatePriorDistrbution.c:Dengue4" name="distribution" x="@fastRates.c:Dengue4">
@@ -131,33 +140,37 @@ name="alignment">
 
     <operator id="YuleModelUniformOperator.t:Dengue4" spec="Uniform" tree="@Tree.t:Dengue4" weight="30.0"/>
 
-    <operator id="YuleModelSubtreeSlide.t:Dengue4" spec="SubtreeSlide" tree="@Tree.t:Dengue4" weight="15.0"/>
+    <operator id="YuleModelSubtreeSlide.t:Dengue4" spec="SubtreeSlide" tree="@Tree.t:Dengue4" weight="10.0"/>
 
-    <operator id="YuleModelNarrow.t:Dengue4" spec="Exchange" tree="@Tree.t:Dengue4" weight="15.0"/>
+    <operator id="YuleModelNarrow.t:Dengue4" spec="Exchange" tree="@Tree.t:Dengue4" weight="10.0"/>
 
     <operator id="YuleModelWide.t:Dengue4" spec="Exchange" isNarrow="false" tree="@Tree.t:Dengue4" weight="3.0"/>
 
     <operator id="YuleModelWilsonBalding.t:Dengue4" spec="WilsonBalding" tree="@Tree.t:Dengue4" weight="3.0"/>
 
-    <operator id="KappaScaler.s:Dengue4" spec="ScaleOperator" parameter="@kappa.s:Dengue4" scaleFactor="0.5" weight="0.1"/>
+    <operator id="KappaScaler.s:Dengue4" spec="ScaleOperator" parameter="@kappa.s:Dengue4" scaleFactor="0.5" weight="0.5"/>
 
     <operator id="fastUcldMeanScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldMean.c:Dengue4" scaleFactor="0.5" weight="5.0"/>
+
+    <operator id="fastUcldStdevScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldStdev.c:Dengue4" scaleFactor="0.5" weight="5.0"/>
 <!--
-    <operator id="fastUcldStdevScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldStdev.c:Dengue4" scaleFactor="0.5" weight="10.0"/>
--->
-
     <operator id="FastInternalnodesOperator.c:Dengue4" spec="consoperators.InternalOperator"
-              rates="@fastRates.c:Dengue4" stdev="@fastUcldStdev.c:Dengue4" distr="@FastLogNormalDistributionModel.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="0.4" weight="3.0"/>
-    <!--
-        <operator id="FastRootOperator1.c:Dengue4" spec="consoperators.SimpleDistance" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="0.002" weight="3.0"/>
+              rates="@fastRates.c:Dengue4" stdev="@fastUcldStdev.c:Dengue4" scaleFactor="0.5" distr="@FastLogNormalDistributionModel.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="0.4" weight="10.0"/>
 
-        <operator id="FastRootOperator2.c:Dengue4" spec="consoperators.SmallPulley"  dwindowSize="0.001" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" weight="3.0"/>
-
-        <operator id="FastRootOperator3.c:Dengue4" spec="consoperators.BigPulley"  dwindowSize="0.002" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="0.02" weight="3.0"/>
 -->
-        <operator id="RatesRandomWalk.c:Dengue4" spec="RealRandomWalkOperator" parameter="@fastRates.c:Dengue4" weight="3.0" windowSize="0.1"/>
 
-        <operator id="RatesSwapOperator.c:Dengue4" spec="SwapOperator" parameter="@fastRates.c:Dengue4" weight="3.0"/>
+        <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
+              twindowSize="0.02"  tree="@Tree.t:Dengue4" rates="@fastRates.c:Dengue4"  weight="5"/>
+
+        <operator id="FastRootOperator1.c:Dengue4" spec="consoperators.SimpleDistance" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="0.002" weight="2.0"/>
+
+        <operator id="FastRootOperator2.c:Dengue4" spec="consoperators.SmallPulley"  dwindowSize="0.001" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" weight="2.0"/>
+
+        <operator id="FastRootOperator3.c:Dengue4" spec="consoperators.BigPulley"  dwindowSize="0.002" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="0.02" weight="1.0"/>
+
+        <operator id="RatesRandomWalk.c:Dengue4" spec="RealRandomWalkOperator" parameter="@fastRates.c:Dengue4" weight="5.0" windowSize="0.1"/>
+
+        <operator id="RatesScaleOperator.c:Dengue4" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:Dengue4" weight="5.0"/>
 
     <operator id="FrequenciesExchanger.s:Dengue4" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
         <parameter idref="freqParameter.s:Dengue4"/>
