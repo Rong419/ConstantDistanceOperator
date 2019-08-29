@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="BEAST v2.5.0" version="2.5">
+
+    <!-- This xml uses a yule tree to simulate the sequences  -->
+    <!-- The yule tree is the summary tree of the MCMC samples using real data set under a yule model-->
+    <!-- And run MCMC to sample the simulated sequences -->
+
+
+    <data spec='beast.app.seqgen.SimulatedAlignment' id="calsim"
+	  sequencelength="5000"
+	  outputFileName="simulated_alignment.xml">
+
+
+      <tree id='tree' spec='beast.util.TreeParser'
+	    newick="TREE"
+	    IsLabelledNewick="true"/>
+
+      <data spec='Alignment' id="input_alignment" dataType="nucleotide">
+          <sequence taxon="1">?</sequence>
+          <sequence taxon="2">?</sequence>
+          <sequence taxon="3">?</sequence>
+          <sequence taxon="4">?</sequence>
+          <sequence taxon="5">?</sequence>
+          <sequence taxon="6">?</sequence>
+          <sequence taxon="7">?</sequence>
+          <sequence taxon="8">?</sequence>
+          <sequence taxon="9">?</sequence>
+          <sequence taxon="10">?</sequence>
+          <sequence taxon="11">?</sequence>
+          <sequence taxon="12">?</sequence>
+          <sequence taxon="13">?</sequence>
+          <sequence taxon="14">?</sequence>
+          <sequence taxon="15">?</sequence>
+          <sequence taxon="16">?</sequence>
+          <sequence taxon="17">?</sequence>
+          <sequence taxon="18">?</sequence>
+          <sequence taxon="19">?</sequence>
+          <sequence taxon="20">?</sequence>
+          <sequence taxon="21">?</sequence>
+          <sequence taxon="22">?</sequence>
+          <sequence taxon="23">?</sequence>
+          <sequence taxon="24">?</sequence>
+          <sequence taxon="25">?</sequence>
+          <sequence taxon="26">?</sequence>
+          <sequence taxon="27">?</sequence>
+          <sequence taxon="28">?</sequence>
+          <sequence taxon="29">?</sequence>
+          <sequence taxon="30">?</sequence>
+          <sequence taxon="31">?</sequence>
+          <sequence taxon="32">?</sequence>
+          <sequence taxon="33">?</sequence>
+          <sequence taxon="34">?</sequence>
+          <sequence taxon="35">?</sequence>
+          <sequence taxon="36">?</sequence>
+          <sequence taxon="37">?</sequence>
+          <sequence taxon="38">?</sequence>
+          <sequence taxon="39">?</sequence>
+          <sequence taxon="40">?</sequence>
+          <sequence taxon="41">?</sequence>
+          <sequence taxon="42">?</sequence>
+          <sequence taxon="43">?</sequence>
+          <sequence taxon="44">?</sequence>
+          <sequence taxon="45">?</sequence>
+          <sequence taxon="46">?</sequence>
+          <sequence taxon="47">?</sequence>
+          <sequence taxon="48">?</sequence>
+          <sequence taxon="49">?</sequence>
+          <sequence taxon="50">?</sequence>
+          <sequence taxon="51">?</sequence>
+          <sequence taxon="52">?</sequence>
+          <sequence taxon="53">?</sequence>
+          <sequence taxon="54">?</sequence>
+          <sequence taxon="55">?</sequence>
+          <sequence taxon="56">?</sequence>
+          <sequence taxon="57">?</sequence>
+          <sequence taxon="58">?</sequence>
+          <sequence taxon="59">?</sequence>
+          <sequence taxon="60">?</sequence>
+          <sequence taxon="61">?</sequence>
+          <sequence taxon="62">?</sequence>
+          <sequence taxon="63">?</sequence>
+          <sequence taxon="64">?</sequence>
+          <sequence taxon="65">?</sequence>
+          <sequence taxon="66">?</sequence>
+          <sequence taxon="67">?</sequence>
+          <sequence taxon="68">?</sequence>
+          <sequence taxon="69">?</sequence>
+          <sequence taxon="70">?</sequence>
+          <sequence taxon="71">?</sequence>
+          <sequence taxon="72">?</sequence>
+          <sequence taxon="73">?</sequence>
+          <sequence taxon="74">?</sequence>
+          <sequence taxon="75">?</sequence>
+          <sequence taxon="76">?</sequence>
+          <sequence taxon="77">?</sequence>
+          <sequence taxon="78">?</sequence>
+          <sequence taxon="79">?</sequence>
+          <sequence taxon="80">?</sequence>
+          <sequence taxon="81">?</sequence>
+          <sequence taxon="82">?</sequence>
+          <sequence taxon="83">?</sequence>
+          <sequence taxon="84">?</sequence>
+          <sequence taxon="85">?</sequence>
+          <sequence taxon="86">?</sequence>
+          <sequence taxon="87">?</sequence>
+          <sequence taxon="88">?</sequence>
+          <sequence taxon="89">?</sequence>
+          <sequence taxon="90">?</sequence>
+          <sequence taxon="91">?</sequence>
+          <sequence taxon="92">?</sequence>
+          <sequence taxon="93">?</sequence>
+          <sequence taxon="94">?</sequence>
+          <sequence taxon="95">?</sequence>
+          <sequence taxon="96">?</sequence>
+          <sequence taxon="97">?</sequence>
+          <sequence taxon="98">?</sequence>
+          <sequence taxon="99">?</sequence>
+          <sequence taxon="100">?</sequence>
+          <sequence taxon="101">?</sequence>
+          <sequence taxon="102">?</sequence>
+          <sequence taxon="103">?</sequence>
+          <sequence taxon="104">?</sequence>
+          <sequence taxon="105">?</sequence>
+          <sequence taxon="106">?</sequence>
+          <sequence taxon="107">?</sequence>
+          <sequence taxon="108">?</sequence>
+          <sequence taxon="109">?</sequence>
+          <sequence taxon="110">?</sequence>
+          <sequence taxon="111">?</sequence>
+          <sequence taxon="112">?</sequence>
+          <sequence taxon="113">?</sequence>
+          <sequence taxon="114">?</sequence>
+          <sequence taxon="115">?</sequence>
+          <sequence taxon="116">?</sequence>
+          <sequence taxon="117">?</sequence>
+          <sequence taxon="118">?</sequence>
+          <sequence taxon="119">?</sequence>
+          <sequence taxon="120">?</sequence>
+      </data>
+
+      <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
+      <substModel spec='HKY' id='hky'>
+      <parameter name='kappa' id="hky.kappa" value="KAPPA" lower="0.0"/>
+      <frequencies id='freqs' spec='Frequencies' frequencies="FREQUENCIES"/>
+      </substModel>
+      </siteModel>
+      <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
+      <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
+      <parameter id="branchrates" name="rateCategories" spec="parameter.IntegerParameter" dimension="238">1</parameter>
+      <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
+      <parameter name='M' id='M' value="1.0"/>
+      <parameter name='S' id='ucld.stdev' value="UCLDSTD"/>
+      </distr>
+      </branchRateModel>
+    </data>
+
+    <map name="Uniform" >beast.math.distributions.Uniform</map>
+    <map name="Exponential" >beast.math.distributions.Exponential</map>
+    <map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+    <map name="Normal" >beast.math.distributions.Normal</map>
+    <map name="Beta" >beast.math.distributions.Beta</map>
+    <map name="Gamma" >beast.math.distributions.Gamma</map>
+    <map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+    <map name="prior" >beast.math.distributions.Prior</map>
+    <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+    <map name="OneOnX" >beast.math.distributions.OneOnX</map>
+    <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
+
+    <run id="mcmc" spec="MCMC" chainLength="10000000"  >
+        <state id="state" storeEvery="5000">
+            <tree id="Tree.t:calsim" name="stateNode">
+                <taxonset id="TaxonSet.calsim" spec="TaxonSet">
+                    <alignment idref="calsim"/>
+                </taxonset>
+            </tree>
+    <parameter id="ucldStdev.c:calsim" lower="0.0" name="stateNode">0.2</parameter>
+        <stateNode id="rates.c:calsim" spec="parameter.RealParameter" dimension="238">1.0</stateNode>
+        <parameter id="BirthRate.t:calsim" name="stateNode">2.0</parameter>
+        <parameter id="kappa.t:calsim" lower="0.0" name="stateNode">2.0</parameter>
+        <parameter id="freqParameter.t:calsim" dimension="4" name="stateNode">0.25</parameter>
+        </state>
+
+        <init id="RandomTree.t:dna" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:calsim" taxa="@calsim">
+            <populationModel id="ConstantPopulation0.t:calsim" spec="ConstantPopulation">
+                <parameter id="randomPopSize.t:calsim" name="popSize">1.0</parameter>
+            </populationModel>
+        </init>
+
+        <distribution id="posterior" spec="util.CompoundDistribution">
+            <distribution id="prior" spec="util.CompoundDistribution">
+            <distribution id="YuleModel.t:calsim" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:calsim" tree="@Tree.t:calsim"/>
+            <prior id="BirthRatePrior.t:calsim" name="distribution" x="@BirthRate.t:calsim">
+                <LogNormal id="LogNormalDistribution1" S="0.2"  M="0.7" meanInRealSpace="false" name="distr">
+                </LogNormal>
+            </prior>
+
+            <prior id="FrequencyPrior.t:calsim" name="distribution" x="@freqParameter.t:calsim">
+                <Dirichlet id="Dirichlet1" alpha="10 10 10 10" name="distr"/>
+            </prior>
+
+            <prior id="KappaPrior.t:calsim" name="distribution" x="@kappa.t:calsim">
+                <LogNormal id="LogNormalDistribution0" S="0.6"  M="-1.0" meanInRealSpace="false"  name="distr"/>
+            </prior>
+
+            <prior id="RatePrior.t:calsim" name="distribution" x="@rates.c:calsim">
+                <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:calsim"  M="1.0" meanInRealSpace="true" name="distr"/>
+            </prior>
+
+            <prior id="ucldStdevPrior.c:calsim" name="distribution" x="@ucldStdev.c:calsim">
+                <LogNormal id="LogNormalDistribution3" S="0.35"  M="-1.5" meanInRealSpace="false" name="distr"/>
+            </prior>
+            </distribution>
+
+            <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+                <distribution id="treeLikelihood.calsim" spec="ThreadedTreeLikelihood" data="@calsim" tree="@Tree.t:calsim">
+                    <siteModel id="SiteModel.t:calsim" spec="SiteModel">
+                        <parameter id="mutationRate.t:calsim" estimate="false" name="mutationRate">1.0</parameter>
+                        <parameter id="gammaShape.t:calsim" estimate="false" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.t:calsim" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="hky.t:calsim" spec="HKY" kappa="@kappa.t:calsim">
+                            <frequencies id="estimatedFreqs.t:calsim" spec="Frequencies" frequencies="@freqParameter.t:calsim"/>
+                        </substModel>
+                    </siteModel>
+                    <branchRateModel id="RelaxedClock.c:calsim" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
+                                     rates="@rates.c:calsim" tree="@Tree.t:calsim" distr="@LogNormalDistribution2">
+                        <parameter id="ucldMean.c:calsim" estimate="false" name="clock.rate">1.0</parameter>
+                    </branchRateModel>
+                </distribution>
+            </distribution>
+        </distribution>
+
+        <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator"
+                  twindowSize="0.017"  tree="@Tree.t:calsim" rates="@rates.c:calsim"  weight="10.0"/>
+
+        <operator id="RootOperator1.c:dna" spec="SimpleDistance"
+                  twindowSize="0.055" tree="@Tree.t:calsim" rates="@rates.c:calsim"  weight="1.0"/>
+
+        <operator id="RootOperator2.c:dna" spec="SmallPulley"
+                  dwindowSize="0.038" tree="@Tree.t:calsim" rates="@rates.c:calsim"  weight="1.0"/>
+
+        <operator id="RootOperator3.c:dna" spec="BigPulley"
+                  twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:calsim" rates="@rates.c:calsim"  weight="1.0"/>
+
+        <operator id="RatesRandomWalk.c:calsim" spec="RealRandomWalkOperator" parameter="@rates.c:calsim" weight="10.0" windowSize="0.1"/>
+
+        <operator id="RatesSwapOperator.c:calsim" spec="SwapOperator" parameter="@rates.c:calsim" weight="10.0"/>
+
+        <operator id="YuleTreeScaler.t:calsim" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:calsim" weight="10.0"/>
+
+        <operator id="YuleTreeRootScaler.t:calsim" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:calsim" weight="5.0"/>
+
+        <operator id="YuleBirthRateScaler.t:calsim" spec="ScaleOperator" parameter="@BirthRate.t:calsim" scaleFactor="0.75" weight="10.0"/>
+
+        <operator id="YuleModelUniformOperator.t:calsim" spec="Uniform" tree="@Tree.t:calsim" weight="10.0"/>
+
+        <operator id="YuleModelSubtreeSlide.t:calsim" spec="SubtreeSlide" tree="@Tree.t:calsim" weight="5.0"/>
+
+        <operator id="YuleModelhNarrow.t:calsim" spec="Exchange" tree="@Tree.t:calsim" weight="5.0"/>
+
+        <operator id="YuleModelWide.t:calsim" spec="Exchange" isNarrow="false" tree="@Tree.t:calsim" weight="5.0"/>
+
+        <operator id="YuleModelWilsonBalding.t:calsim" spec="WilsonBalding" tree="@Tree.t:calsim" weight="5.0"/>
+
+        <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:calsim" scaleFactor="0.5" weight="1.0"/>
+
+        <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.2">
+            <parameter idref="freqParameter.t:calsim"/>
+        </operator>
+
+        <operator id="ucldStdevScaler.c:calsim" spec="ScaleOperator" parameter="@ucldStdev.c:calsim" scaleFactor="0.5" weight="5.0"/>
+
+        <logger id="tracelog" fileName="calsim.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+            <log idref="treeLikelihood.calsim"/>
+            <log id="TreeLength.t:calsim" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:calsim"/>
+            <log id="rate.c:calsim" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:calsim" tree="@Tree.t:calsim"/>
+            <log idref="kappa.t:calsim"/>
+            <log idref="freqParameter.t:calsim"/>
+            <log idref="ucldStdev.c:calsim"/>
+            <log idref="BirthRate.t:calsim"/>
+        </logger>
+
+        <logger id="screenlog" logEvery="10000">
+            <log idref="posterior"/>
+            <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+        </logger>
+
+        <logger id="treelog.t:calsim" fileName="$(tree).trees" logEvery="2000" mode="tree">
+            <log id="TreeWithMetaDataLogger.t:calsim" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:calsim" tree="@Tree.t:calsim"/>
+        </logger>
+
+    </run>
+
+</beast>
