@@ -24,8 +24,8 @@ public class InternalOperator extends TreeOperator {
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.REQUIRED);
     final public Input<RealParameter> quantileInput = new Input<>("rateQuantiles", "the rate quantiles associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.XOR, rateInput);
     final public Input<ParametricDistribution> rateDistInput = new Input<>("distr", "the distribution governing the rates among branches.", Input.Validate.REQUIRED);
-    final public Input<RealParameter> stdevInput = new Input<>("stdev", "the distribution governing the rates among branches.");
-    public final Input<Double> scaleFactorInput = new Input<>("scaleFactor", "scaling factor: larger means more bold proposals", 1.0);
+    //final public Input<RealParameter> stdevInput = new Input<>("stdev", "the distribution governing the rates among branches.");
+    //public final Input<Double> scaleFactorInput = new Input<>("scaleFactor", "scaling factor: larger means more bold proposals", 1.0);
 
 
 
@@ -37,8 +37,8 @@ public class InternalOperator extends TreeOperator {
     private double twindowSize;
     private RealParameter rates;
     private RealParameter quantiles;
-    private RealParameter ucldStdev;
-    double new_stdev;
+    private double mean;
+
     double stdev;
     private double m_fScaleFactor;
 
@@ -54,18 +54,23 @@ public class InternalOperator extends TreeOperator {
         } else {
             rates = rateInput.get();
         }
-        stdev = stdevInput.get().getValue();
-        m_fScaleFactor = scaleFactorInput.get();
+        //stdev = stdevInput.get().getValue();
+        //m_fScaleFactor = scaleFactorInput.get();
     }
 
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
-        ucldStdev=stdevInput.get();
+        //ucldStdev=stdevInput.get();
         //double m_fScaleFactor = 0.5;
-        double b =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
-        new_stdev = stdev * b;
-        ucldStdev.setValue(new_stdev);
+        //double b =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
+        //new_stdev = stdev * b;
+        //ucldStdev.setValue(new_stdev);
+        if(distribution instanceof LogNormalDistributionModel){
+            LogNormalDistributionModel mylognormal=(LogNormalDistributionModel)distribution;
+            stdev = mylognormal.MParameterInput.get().getValue();
+            mean = mylognormal.SParameterInput.get().getValue();
+        }
 
         //the original rates
         double r_node;
@@ -95,12 +100,18 @@ public class InternalOperator extends TreeOperator {
        double t_k = daughter.getHeight();
 
        //original rates for these nodes
+        double q_node = 0.5;
+        double q_j = 0.5;
+        double q_k = 0.5;
        if (mode == Mode.quantiles) {
            // use quantiles
-           double q_node = quantiles.getValues()[node.getNr()];
-           double q_j = quantiles.getValues()[son.getNr()];
-           double q_k = quantiles.getValues()[daughter.getNr()];
+           q_node = quantiles.getValues()[node.getNr()];
+           q_j = quantiles.getValues()[son.getNr()];
+           q_k = quantiles.getValues()[daughter.getNr()];
            //System.out.println("q1="+q_node+",q2="+q_j+",q3="+q_k);
+           if (q_node == 1.0 || q_j == 1.0 || q_k == 1.0) {
+               return Double.NEGATIVE_INFINITY;
+           }
            r_node = getRealRate(q_node);
            r_j = getRealRate(q_j);
            r_k = getRealRate(q_k);
@@ -112,10 +123,11 @@ public class InternalOperator extends TreeOperator {
            r_k = rates.getValues()[daughter.getNr()];
        }
 
+       //System.out.println("r1="+r_node+",r2="+r_j+",r3="+r_k);
        if (r_node == 0.0 || r_j == 0.0 || r_k == 0.0) {
            return Double.NEGATIVE_INFINITY;
        }
-       //System.out.println("r1="+r_node+",r2="+r_j+",r3="+r_k);
+
 
        //Step3: to propose a new node time for this node
        double a = Randomizer.uniform(-twindowSize, twindowSize);
@@ -136,7 +148,7 @@ public class InternalOperator extends TreeOperator {
        double r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j);
        double r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k);
 
-        //System.out.println("r1'="+r_node_+",r2'="+r_j_+",r3'="+r_k_);
+       //System.out.println("r1'="+r_node_+",r2'="+r_j_+",r3'="+r_k_);
        // set the proposed new rates
         if (mode == Mode.rates) {
             rates.setValue(node.getNr(), r_node_);
@@ -144,7 +156,7 @@ public class InternalOperator extends TreeOperator {
             rates.setValue(daughter.getNr(), r_k_);
         }
         else {
-            //System.out.println("q1="+getRateQuantiles(r_node_)+",q2="+getRateQuantiles(r_j_)+",q3="+getRateQuantiles(r_k_));
+            //System.out.println("q1'="+getRateQuantiles(r_node_)+",q2'="+getRateQuantiles(r_j_)+",q3'="+getRateQuantiles(r_k_));
             quantiles.setValue(node.getNr(),getRateQuantiles(r_node_));
             quantiles.setValue(son.getNr(),getRateQuantiles(r_j_));
             quantiles.setValue(daughter.getNr(),getRateQuantiles(r_k_));
@@ -153,7 +165,7 @@ public class InternalOperator extends TreeOperator {
        //Step4: calculate the Hastings ratio
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
-       double JD =  b * getDicdf(r_node) * getDicdf(r_j) * getDicdf(r_k) * nu / de;
+       double JD =  getDicdf(r_node,r_node_,q_node) * getDicdf(r_j,r_j_,q_j) * getDicdf(r_k,r_k_,q_k);
 
        return Math.log(JD);
 }
@@ -174,38 +186,26 @@ public class InternalOperator extends TreeOperator {
         }
     }
 
-    private double getDicdf(double r) {
+    private double getDicdf(double r, double r_, double q) {
+        double a = Math.pow(Math.log(r_ - mean),2);
+        double b = (Math.sqrt(2) + 1) * erfInv(2 * q -1);
+        double c =  -a / (2 * Math.pow(stdev,2));
 
-        double miu = Math.log(1/(Math.sqrt(1+stdev)));
-        double miu_ = Math.log(1/(Math.sqrt(1+new_stdev)));
-        double jita = Math.sqrt(Math.log(1 + stdev * stdev));
-        double a = 1/(jita * r);
-        double b = 1 - Math.pow((Math.log(r) - miu) / (Math.sqrt(2) * jita),2);
-        double c = erfInv(2 * getRateQuantiles(r) -1);
-        double d = miu_ + Math.sqrt(2)*Math.E*c + c*c + b;
-
-        return a * Math.exp(d);
+        return Math.exp(c + mean + b) / r;
     }
 
     /*
     Tuning the parameter: twindowsize represents the range of Uniform distribution
      */
     @Override
-    /*public double getCoercableParameterValue() { return twindowSize; }*/
-    public double getCoercableParameterValue() {
-        return m_fScaleFactor;
-    }
+    public double getCoercableParameterValue() { return twindowSize; }
+
 
     @Override
-    /*public void setCoercableParameterValue(double value) {
+    public void setCoercableParameterValue(double value) {
         twindowSize = value;
     }
-    */
-    public void setCoercableParameterValue(final double value) {
-        double upper = 1.0 - 1e-8;
-        double lower = 1e-8;
-        m_fScaleFactor = Math.max(Math.min(value, upper), lower);
-    }
+
     /**
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
@@ -218,13 +218,11 @@ public class InternalOperator extends TreeOperator {
     public void optimize(double logAlpha) {
         // must be overridden by operator implementation to have an effect
 
-        /*double delta = calcDelta(logAlpha);
+       double delta = calcDelta(logAlpha);
         delta += Math.log(twindowSize);
         twindowSize = Math.exp(delta);
-        */
 
-        double delta = calcDelta(logAlpha);
-        delta += Math.log(1.0 / m_fScaleFactor - 1.0);
+
         setCoercableParameterValue(1.0 / (Math.exp(delta) + 1.0));
     }
 
@@ -237,16 +235,15 @@ public class InternalOperator extends TreeOperator {
         if (ratio > 2.0) ratio = 2.0;
         if (ratio < 0.5) ratio = 0.5;
 
-        //double newWindowSize = twindowSize * ratio;
-        final double sf = Math.pow(m_fScaleFactor, ratio);
+        double newWindowSize = twindowSize * ratio;
+
 
         DecimalFormat formatter = new DecimalFormat("#.###");
         if (prob < 0.10) {
-            //return "Try setting window size to about " + formatter.format(newWindowSize);
-            return "Try setting scaleFactor to about " + formatter.format(sf);
+            return "Try setting window size to about " + formatter.format(newWindowSize);
+
         } else if (prob > 0.40) {
-            //return "Try setting window size to about " + formatter.format(newWindowSize);
-            return "Try setting scaleFactor to about " + formatter.format(sf);
+            return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
     }
 

@@ -48,10 +48,10 @@ public class UcldScalerOperator extends Operator {
         new_stdev = stdev * scale;
 
         ucldStdev.setValue(new_stdev);
-        //System.out.println("S="+stdev);
-        //System.out.println("S'="+new_stdev);
+        System.out.println("S="+stdev);
+        System.out.println("S'="+new_stdev);
 
-        //System.out.println(Arrays.toString(rateInput.get().getValues()));
+        System.out.println(Arrays.toString(rateInput.get().getValues()));
 
         RealParameter s_ = new RealParameter(new Double[] { new_stdev });
         RealParameter mean = new RealParameter(new Double[] { 1.0 });
@@ -62,17 +62,18 @@ public class UcldScalerOperator extends Operator {
         hastingsRatio = 1/scale;
         for (int idx = 0; idx < rates.getDimension(); idx++) {
             double r = rates.getValue(idx);
-            //System.out.println("r="+r);
+            System.out.println("r="+r);
             double q = getRateQuantiles(r,ucldStdev);
-            //System.out.println("q="+q);
+            System.out.println("q="+q);
             if (q == 0.0 || q == 1.0) {
+                System.out.println("return infinity");
                 return Double.NEGATIVE_INFINITY;
             }
             double r_ = getRealRate(q,s_);
-            //System.out.println("r_="+ r_);
+            System.out.println("r_="+ r_);
 
             rates.setValue(idx, r_);
-            hastingsRatio = hastingsRatio * getDicdf(r,ucldStdev,new_stdev);
+            //hastingsRatio = hastingsRatio * getDicdf(r,ucldStdev,new_stdev);
             //hastingsRatio = hastingsRatio * r_ * r;
         }
         //System.out.println("HR="+hastingsRatio);

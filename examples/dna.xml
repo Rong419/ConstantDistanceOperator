@@ -26,7 +26,7 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="5000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="3000000" sampleFromPrior="true">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:dna" spec="beast.evolution.tree.Tree" name="stateNode">
             <taxonset id ="TaxonSet.dna" spec="TaxonSet">
@@ -59,22 +59,31 @@
             <prior id="DeathRatePrior.t:dna" name="distribution" x="@BDDeathRate.t:dna">
                 <Uniform id="Uniform.5" name="distr"/>
             </prior>
-
+<!--
             <prior id="FastRatePriorDistrbution.c:dna" name="distribution" x="@fastRates.c:dna">
                 <LogNormal id="LogNormalDistributionModel" S="@fastUcldStdev.c:dna" meanInRealSpace="true" name="distr">
                     <parameter id="RealParameter" spec="parameter.RealParameter" estimate="false" name="M">1.0</parameter>
                 </LogNormal>
             </prior>
-
+-->
             <prior id="fastUcldStdevPrior.c:dna" name="distribution" x="@fastUcldStdev.c:dna">
+<!--
                 <LogNormal id="LogNormalDistributionModel1" name="distr" meanInRealSpace="true">
                     <parameter id="RealParameter1" spec="parameter.RealParameter" estimate="false" name="M">0.2</parameter>
-                    <parameter id="RealParameter2" spec="parameter.RealParameter" estimate="false" name="S">0.3</parameter>
+                    <parameter id="RealParameter2" spec="parameter.RealParameter" estimate="false" name="S">2.0</parameter>
                 </LogNormal>
+-->
+
+                <Gamma id="Gamma.10" name="distr">
+                    <parameter id="RealParameter.47" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396</parameter>
+                    <parameter id="RealParameter.48" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
+                </Gamma>
+
             </prior>
 
             <prior id="fastUcldMeanPrior.c:Dengue4" name="distribution" x="@fastUcldMean.c:dna">
-                <Normal id="Gamma.2" name="distr" mean="1.0" sigma="0.2"/>
+                <!--<Normal id="Gamma.2" name="distr" mean="1.0" sigma="1"/>-->
+                <LogNormal id="Gamma.2" name="distr" M="1" S="0.5" meanInRealSpace="true"/>
             </prior>
 
             <prior id="FrequenciesPrior.s:dna" name="distribution" x="@freqParameter.s:dna">
@@ -98,7 +107,7 @@
                         <frequencies id="estimatedFreqs.s:dna" spec="Frequencies" frequencies="@freqParameter.s:dna"/>
                     </substModel>
                 </siteModel>
-                <branchRateModel id="FastRelaxedClock.c:dna" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@fastUcldMean.c:dna" rates="@fastRates.c:dna" tree="@Tree.t:dna">
+                <branchRateModel id="FastRelaxedClock.c:dna" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@fastUcldMean.c:dna" rateQuantiles="@fastRates.c:dna" tree="@Tree.t:dna">
                     <LogNormal id="FastLogNormalDistributionModel.c:dna" S="@fastUcldStdev.c:dna" meanInRealSpace="true" name="distr">
                         <parameter id="RealParameter3" spec="parameter.RealParameter" estimate="false" name="M">1.0</parameter>
                     </LogNormal>
@@ -119,19 +128,28 @@
     <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"
               twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="1"/>
 -->
-    <operator id="RatesRandomWalk.c:Dengue4" spec="RealRandomWalkOperator" parameter="@fastRates.c:dna" weight="5.0" windowSize="0.1"/>
+<!--
+    <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
+              rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" scaleFactor="0.8" weight="10.0"/>
+-->
 
-    <operator id="RatesScaleOperator.c:Dengue4" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:dna" weight="5.0"/>
+    <operator id="FastRatesInternal.c:dna" spec="consoperators.InternalOperator"
+              rateQuantiles="@fastRates.c:dna" twindowSize="0.309" tree="@Tree.t:dna" distr="@FastLogNormalDistributionModel.c:dna" weight="20.0"/>
 
-    <operator id="fastUcldMeanScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldMean.c:dna" scaleFactor="0.5" weight="5.0"/>
+    <operator id="RatesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@fastRates.c:dna" weight="15.0" windowSize="0.1"/>
 
-    <operator id="fastUcldStdevScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldStdev.c:dna" scaleFactor="0.5" weight="5.0"/>
+    <operator id="RatesScaleOperator.c:dna" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:dna" weight="15.0"/>
 
-    <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.s:dna" scaleFactor="0.5" weight="0.5"/>
+    <operator id="fastUcldMeanScaler.c:dna" spec="ScaleOperator" parameter="@fastUcldMean.c:dna" scaleFactor="0.5" weight="5.0"/>
 
+    <operator id="fastUcldStdevScaler.c:dna4" spec="ScaleOperator" parameter="@fastUcldStdev.c:dna" scaleFactor="0.5" weight="5.0"/>
+<!--
     <operator id="BirthDeathTreeScaler.t:dna" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
 
     <operator id="BirthDeathTreeRootScaler.t:dna" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
+-->
+<!--
+    <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.s:dna" scaleFactor="0.5" weight="0.5"/>
 
     <operator id="BirthDeathUniformOperator.t:dna" spec="Uniform" tree="@Tree.t:dna" weight="30.0"/>
 
@@ -150,7 +168,7 @@
     <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
         <parameter idref="freqParameter.s:dna"/>
     </operator>
-
+-->
     <logger id="tracelog" spec="Logger" fileName="dna.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
@@ -167,7 +185,7 @@
         <log idref="fastRates.c:dna"/>
     </logger>
 
-    <logger id="screenlog" spec="Logger" logEvery="100000">
+    <logger id="screenlog" spec="Logger" logEvery="1000">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
