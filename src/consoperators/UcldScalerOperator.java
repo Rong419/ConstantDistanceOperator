@@ -66,11 +66,11 @@ public class UcldScalerOperator extends Operator {
             double q = getRateQuantiles(r,ucldStdev);
             System.out.println("q="+q);
             if (q == 0.0 || q == 1.0) {
-                System.out.println("return infinity");
+                //System.out.println("return infinity");
                 return Double.NEGATIVE_INFINITY;
             }
             double r_ = getRealRate(q,s_);
-            System.out.println("r_="+ r_);
+            //System.out.println("r_="+ r_);
 
             rates.setValue(idx, r_);
             //hastingsRatio = hastingsRatio * getDicdf(r,ucldStdev,new_stdev);

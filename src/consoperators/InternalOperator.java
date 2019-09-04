@@ -46,7 +46,7 @@ public class InternalOperator extends TreeOperator {
 
     @Override
     public void initAndValidate() {
-        twindowSize = twindowSizeInput.get();
+
         distribution = rateDistInput.get();
         if (quantileInput.get() != null) {
             mode = Mode.quantiles;
@@ -61,6 +61,7 @@ public class InternalOperator extends TreeOperator {
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
+        twindowSize = twindowSizeInput.get();
         //ucldStdev=stdevInput.get();
         //double m_fScaleFactor = 0.5;
         //double b =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
@@ -68,8 +69,8 @@ public class InternalOperator extends TreeOperator {
         //ucldStdev.setValue(new_stdev);
         if(distribution instanceof LogNormalDistributionModel){
             LogNormalDistributionModel mylognormal=(LogNormalDistributionModel)distribution;
-            stdev = mylognormal.MParameterInput.get().getValue();
-            mean = mylognormal.SParameterInput.get().getValue();
+            mean = mylognormal.MParameterInput.get().getValue();
+            stdev = mylognormal.SParameterInput.get().getValue();
         }
 
         //the original rates
@@ -121,23 +122,33 @@ public class InternalOperator extends TreeOperator {
            r_node = rates.getValues()[node.getNr()];
            r_j = rates.getValues()[son.getNr()];
            r_k = rates.getValues()[daughter.getNr()];
+           //q_node = getRateQuantiles(r_node);
+           //q_j = getRateQuantiles(r_j);
+           //q_k = getRateQuantiles(r_k);
+           //System.out.println("r1="+r_node+",r2="+r_j+",r3="+r_k);
        }
 
        //System.out.println("r1="+r_node+",r2="+r_j+",r3="+r_k);
        if (r_node == 0.0 || r_j == 0.0 || r_k == 0.0) {
+           //System.out.println("return bad rates");
            return Double.NEGATIVE_INFINITY;
        }
 
 
        //Step3: to propose a new node time for this node
+
        double a = Randomizer.uniform(-twindowSize, twindowSize);
+       //System.out.println("window="+twindowSize+",random a="+a);
        double t_x_ = t_x + a;
+
+       //System.out.println("origin time="+t_x+",new time ="+t_x_+",");
 
        //reject the proposal if exceeds the boundary
        double upper = node.getParent().getHeight();
        double lower = Math.max(t_j, t_k);
 
        if (t_x_<= lower || t_x_ >= upper) {
+           //System.out.println("return bad times");
             return Double.NEGATIVE_INFINITY;
         }
         node.setHeight(t_x + a);
@@ -147,6 +158,7 @@ public class InternalOperator extends TreeOperator {
        double r_node_ = r_node * (upper - t_x) / (upper - t_x_);
        double r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j);
        double r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k);
+
 
        //System.out.println("r1'="+r_node_+",r2'="+r_j_+",r3'="+r_k_);
        // set the proposed new rates
@@ -165,9 +177,11 @@ public class InternalOperator extends TreeOperator {
        //Step4: calculate the Hastings ratio
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
-       double JD =  getDicdf(r_node,r_node_,q_node) * getDicdf(r_j,r_j_,q_j) * getDicdf(r_k,r_k_,q_k);
+       //double JD =  getDicdf(r_node,r_node_,q_node) + getDicdf(r_j,r_j_,q_j) + getDicdf(r_k,r_k_,q_k);
+       double JD = Math.log(nu / de);
+        //System.out.println("HR="+JD);
 
-       return Math.log(JD);
+       return JD;
 }
 
     private double getRateQuantiles (double r) {
@@ -187,11 +201,11 @@ public class InternalOperator extends TreeOperator {
     }
 
     private double getDicdf(double r, double r_, double q) {
-        double a = Math.pow(Math.log(r_ - mean),2);
+        double a = Math.pow((Math.log(r_) - mean),2);
         double b = (Math.sqrt(2) + 1) * erfInv(2 * q -1);
         double c =  -a / (2 * Math.pow(stdev,2));
 
-        return Math.exp(c + mean + b) / r;
+        return c + mean + b - Math.log(r);
     }
 
     /*
