@@ -47,11 +47,12 @@ public class UcldScalerOperator extends Operator {
         double scale =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
         new_stdev = stdev * scale;
 
-        ucldStdev.setValue(new_stdev);
+
+
         System.out.println("S="+stdev);
         System.out.println("S'="+new_stdev);
 
-        System.out.println(Arrays.toString(rateInput.get().getValues()));
+        //System.out.println(Arrays.toString(rateInput.get().getValues()));
 
         RealParameter s_ = new RealParameter(new Double[] { new_stdev });
         RealParameter mean = new RealParameter(new Double[] { 1.0 });
@@ -59,7 +60,7 @@ public class UcldScalerOperator extends Operator {
         LN.setInputValue("meanInRealSpace",true);
 
 
-        hastingsRatio = 1/scale;
+        hastingsRatio = Math.log(1/scale);
         for (int idx = 0; idx < rates.getDimension(); idx++) {
             double r = rates.getValue(idx);
             System.out.println("r="+r);
@@ -70,20 +71,21 @@ public class UcldScalerOperator extends Operator {
                 return Double.NEGATIVE_INFINITY;
             }
             double r_ = getRealRate(q,s_);
-            //System.out.println("r_="+ r_);
+            System.out.println("r_="+ r_);
 
             rates.setValue(idx, r_);
-            //hastingsRatio = hastingsRatio * getDicdf(r,ucldStdev,new_stdev);
+            hastingsRatio = hastingsRatio + getDicdf(r,ucldStdev,new_stdev);
             //hastingsRatio = hastingsRatio * r_ * r;
         }
-        //System.out.println("HR="+hastingsRatio);
-       return Math.log(hastingsRatio);
+        ucldStdev.setValue(new_stdev);
+        System.out.println("HR="+hastingsRatio);
+       return hastingsRatio;
 }
 
     private double getRateQuantiles (double r, RealParameter s) {
         try {
             LN.setInputValue("S",s);
-            //System.out.println("q_cal="+s);
+            System.out.println("q_cal="+s);
             return LN.cumulativeProbability(r);
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute inverse cumulative probability because rate =" + r);
@@ -102,14 +104,16 @@ public class UcldScalerOperator extends Operator {
 
     private double getDicdf(double r, RealParameter stdev, double new_stdev ) {
         double s = stdev.getValue();
-        double miu = Math.log(1/(Math.sqrt(1+s)));
-        double miu_ = Math.log(1/(Math.sqrt(1+new_stdev)));
-        double jita = Math.sqrt(Math.log(1 + s * s));
-        double a = 1/(jita * r);
-        double b = 1 - Math.pow((Math.log(r) - miu) / (Math.sqrt(2) * jita),2);
-        double c = erfInv(2 * getRateQuantiles(r,stdev) -1);
-        double d = miu_ + Math.sqrt(2)*Math.E*c + c*c + b;
-        return a * Math.exp(d);
+        double a = Math.log(1 + s * s);
+        double b1 = Math.log(1/(Math.sqrt(1 + s * s)));
+        double b2 = Math.log(1/(Math.sqrt(1 + new_stdev * new_stdev)));
+        double y = getRateQuantiles(r,stdev);
+        double c = erfInv(2 * y - 1);
+        double x_sq = Math.pow((Math.log(r) - b1), 2) / (2 * a);
+        double d = b2 + Math.sqrt(2) * Math.E * c + 1 + c * c - x_sq;
+        double e = r * Math.sqrt(a);
+        double f = Math.log(1/e);
+        return (d + f);
     }
 
     /*

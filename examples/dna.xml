@@ -26,7 +26,7 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="3000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="1000000" sampleFromPrior="true">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:dna" spec="beast.evolution.tree.Tree" name="stateNode">
             <taxonset id ="TaxonSet.dna" spec="TaxonSet">
@@ -72,13 +72,15 @@
                     <parameter id="RealParameter1" spec="parameter.RealParameter" estimate="false" name="M">0.2</parameter>
                     <parameter id="RealParameter2" spec="parameter.RealParameter" estimate="false" name="S">2.0</parameter>
                 </LogNormal>
--->
+                -->
+                <Uniform id="Uniform.10" name="distr" upper="0.1" lower="0.0"/>
+<!--
 
                 <Gamma id="Gamma.10" name="distr">
                     <parameter id="RealParameter.47" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396</parameter>
                     <parameter id="RealParameter.48" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
-
+-->
             </prior>
 
             <prior id="fastUcldMeanPrior.c:Dengue4" name="distribution" x="@fastUcldMean.c:dna">
@@ -131,7 +133,6 @@
 
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" scaleFactor="0.8" weight="10.0"/>
-
 
     <operator id="FastRatesInternal.c:dna" spec="consoperators.InternalOperator"
               rates="@fastRates.c:dna" twindowSize="0.1" tree="@Tree.t:dna" distr="@FastLogNormalDistributionModel.c:dna" weight="20.0"/>
