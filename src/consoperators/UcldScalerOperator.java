@@ -11,6 +11,8 @@ import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math3.special.Erf;
 import org.apache.commons.math3.util.FastMath;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +22,7 @@ public class UcldScalerOperator extends Operator {
    final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.REQUIRED);
     final public Input<RealParameter> stdevInput = new Input<>("stdev", "the distribution governing the rates among branches.");
     public final Input<Double> scaleFactorInput = new Input<>("scaleFactor", "scaling factor: larger means more bold proposals", 1.0);
+    final public Input<ParametricDistribution> rateDistInput = new Input<>("distr", "the distribution governing the rates among branches.", Input.Validate.REQUIRED);
 
 
 
@@ -29,7 +32,7 @@ public class UcldScalerOperator extends Operator {
     private double m_fScaleFactor;
 
     protected ParametricDistribution distribution;
-    LogNormalDistributionModel LN = new LogNormalDistributionModel();
+    private  LogNormalDistributionModel LN ;
 
 
     @Override
@@ -37,81 +40,95 @@ public class UcldScalerOperator extends Operator {
         rates = rateInput.get();
         m_fScaleFactor = scaleFactorInput.get();
         ucldStdev=stdevInput.get();
+        distribution = rateDistInput.get();
     }
 
     @Override
     public double proposal() {
         double hastingsRatio;
         double new_stdev;
-        double stdev = stdevInput.get().getValue();
-        double scale =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
-        new_stdev = stdev * scale;
+        double[] quantiles = new double[rates.getDimension()];
+        double[] real_rates = new double[rates.getDimension()];
 
+        if(distribution instanceof LogNormalDistributionModel) {
+            LN = (LogNormalDistributionModel) distribution;
+        }
 
-
-        System.out.println("S="+stdev);
-        System.out.println("S'="+new_stdev);
-
-        //System.out.println(Arrays.toString(rateInput.get().getValues()));
-
-        RealParameter s_ = new RealParameter(new Double[] { new_stdev });
-        RealParameter mean = new RealParameter(new Double[] { 1.0 });
-        LN.setInputValue("M",mean);
-        LN.setInputValue("meanInRealSpace",true);
-
-
-        hastingsRatio = Math.log(1/scale);
+        // Step1: calculate quantiles for real rates given the current ucldStdev
+        //System.out.println("rates="+Arrays.toString(rateInput.get().getValues()));
         for (int idx = 0; idx < rates.getDimension(); idx++) {
             double r = rates.getValue(idx);
-            System.out.println("r="+r);
-            double q = getRateQuantiles(r,ucldStdev);
-            System.out.println("q="+q);
+            real_rates[idx] = r;
+            quantiles[idx] = getRateQuantiles(r);
+        }
+        //System.out.println("quantiles="+Arrays.toString(quantiles));
+
+        // Step2: use scale operation to propose a new_ucldStdev
+        double stdev = stdevInput.get().getValue();
+        //System.out.println("S="+stdev);
+
+        double scale =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
+
+        new_stdev = stdev * scale;
+        //System.out.println("S'="+new_stdev);
+
+        // set the new value
+        ucldStdev.setValue(new_stdev);
+
+        // return the log hastings ratio for scale operation
+        hastingsRatio = Math.log(1/scale);
+
+
+        // Step3: calculate the new real rates under the proposed new_ucldStdev
+        double [] rates_ = new double [rates.getDimension()];
+        for (int idx = 0; idx < rates.getDimension(); idx++) {
+            double r = real_rates[idx];
+            double q = quantiles[idx];
             if (q == 0.0 || q == 1.0) {
-                //System.out.println("return infinity");
                 return Double.NEGATIVE_INFINITY;
             }
-            double r_ = getRealRate(q,s_);
-            System.out.println("r_="+ r_);
+            double r_ = getRealRate(q);
+            rates_[idx] = r_;
+
+            hastingsRatio = hastingsRatio + getDicdf(r,q,stdev,new_stdev) ;
 
             rates.setValue(idx, r_);
-            hastingsRatio = hastingsRatio + getDicdf(r,ucldStdev,new_stdev);
-            //hastingsRatio = hastingsRatio * r_ * r;
         }
-        ucldStdev.setValue(new_stdev);
-        System.out.println("HR="+hastingsRatio);
-       return hastingsRatio;
+        //System.out.println("rates'="+Arrays.toString(rates_));
+
+
+       // System.out.println("HR="+hastingsRatio);
+
+        return hastingsRatio;
 }
 
-    private double getRateQuantiles (double r, RealParameter s) {
+    private double getRateQuantiles (double r) {
         try {
-            LN.setInputValue("S",s);
-            System.out.println("q_cal="+s);
+            //System.out.println("S="+LN.SParameterInput.get()+",M="+LN.MParameterInput.get());
             return LN.cumulativeProbability(r);
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute inverse cumulative probability because rate =" + r);
         }
     }
 
-    private double getRealRate (double q, RealParameter s) {
+    private double getRealRate (double q) {
         try {
-            LN.setInputValue("S",s);
-            //System.out.println("r_cal="+s);
+            //System.out.println("S'="+LN.SParameterInput.get()+",M="+LN.MParameterInput.get());
             return LN.inverseCumulativeProbability(q);
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute inverse cumulative probability because quantile = " + q);
         }
     }
 
-    private double getDicdf(double r, RealParameter stdev, double new_stdev ) {
-        double s = stdev.getValue();
-        double a = Math.log(1 + s * s);
-        double b1 = Math.log(1/(Math.sqrt(1 + s * s)));
+    private double getDicdf(double r, double q, double stdev, double new_stdev ) {
+        double a1 = Math.log(1 + stdev * stdev);
+        double a2 = Math.log(1 + new_stdev * new_stdev);
+        double b1 = Math.log(1/(Math.sqrt(1 + stdev * stdev)));
         double b2 = Math.log(1/(Math.sqrt(1 + new_stdev * new_stdev)));
-        double y = getRateQuantiles(r,stdev);
-        double c = erfInv(2 * y - 1);
-        double x_sq = Math.pow((Math.log(r) - b1), 2) / (2 * a);
-        double d = b2 + Math.sqrt(2) * Math.E * c + 1 + c * c - x_sq;
-        double e = r * Math.sqrt(a);
+        double c = erfInv(2 * q - 1);
+        double x_sq = Math.pow((Math.log(r) - b1), 2) / (2 * a1);
+        double d = b2 + Math.sqrt(2 * a2) * c + 1 + c * c - x_sq;
+        double e = r * Math.sqrt(a1);
         double f = Math.log(1/e);
         return (d + f);
     }
