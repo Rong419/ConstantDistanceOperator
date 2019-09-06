@@ -1,9 +1,9 @@
 # conoperators: Validation of ConstantDistance Operator
 
-This file will guide you through reproducing the simulations of validating the ConstantDistance Operator. 
+This file will guide you through reproducing the simulations of validating the ConstantDistance Operator in our paper. 
 
 ## 1. Sample from prior
-
+The tree includes three taxa.
 ## 2. Well-calibrated simulation study
 
 ## 3. Efficiency comparison
