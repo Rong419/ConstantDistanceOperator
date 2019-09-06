@@ -67,16 +67,20 @@ public class UcldScalerOperator extends Operator {
         double stdev = stdevInput.get().getValue();
         //System.out.println("S="+stdev);
 
-        double scale =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
+        //double scale =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
+        double scale = Randomizer.uniform(-0.5,0.5);
 
-        new_stdev = stdev * scale;
+        new_stdev = stdev + scale;
+        if (new_stdev <=0) {
+            return Double.NEGATIVE_INFINITY;
+        }
         //System.out.println("S'="+new_stdev);
 
         // set the new value
         ucldStdev.setValue(new_stdev);
 
         // return the log hastings ratio for scale operation
-        hastingsRatio = Math.log(1/scale);
+        hastingsRatio = 0;
 
 
         // Step3: calculate the new real rates under the proposed new_ucldStdev
@@ -96,8 +100,7 @@ public class UcldScalerOperator extends Operator {
         }
         //System.out.println("rates'="+Arrays.toString(rates_));
 
-
-       // System.out.println("HR="+hastingsRatio);
+        //System.out.println("HR="+hastingsRatio);
 
         return hastingsRatio;
 }
@@ -127,9 +130,9 @@ public class UcldScalerOperator extends Operator {
         double b2 = Math.log(1/(Math.sqrt(1 + new_stdev * new_stdev)));
         double c = erfInv(2 * q - 1);
         double x_sq = Math.pow((Math.log(r) - b1), 2) / (2 * a1);
-        double d = b2 + Math.sqrt(2 * a2) * c + 1 + c * c - x_sq;
+        double d = b2 + Math.sqrt(2 * a2) * c + c * c - x_sq;
         double e = r * Math.sqrt(a1);
-        double f = Math.log(1/e);
+        double f = Math.log(Math.sqrt(a2)/e);
         return (d + f);
     }
 
