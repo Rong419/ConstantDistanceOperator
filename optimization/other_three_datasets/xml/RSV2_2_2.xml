@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
 
 
     <data
@@ -297,7 +297,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <parameter id="kappa.s:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="ucldMean.c:RSV2" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="ucldStdev.c:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
-        <stateNode id="rateCategories.c:RSV2" spec="parameter.IntegerParameter" dimension="256">1</stateNode>
+        <stateNode id="fastRates.c:RSV2" spec="parameter.RealParameter" dimension="256">1.0</stateNode>
         <parameter id="BDBirthRate.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="10000.0">1.0</parameter>
         <parameter id="BDDeathRate.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
         <parameter id="freqParameter.s:RSV2" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
@@ -336,6 +336,11 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
                     <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
             </prior>
+            <prior id="FastRatePriorDistrbution.c:RSV2" name="distribution" x="@fastRates.c:RSV2">
+                <LogNormal id="LogNormalDistributionModel.1" S="@ucldStdev.c:RSV2" meanInRealSpace="true" name="distr">
+                    <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="M">1.0</parameter>
+                </LogNormal>
+            </prior>
         </distribution>
         <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
             <distribution id="treeLikelihood.RSV2" spec="ThreadedTreeLikelihood" data="@RSV2" tree="@Tree.t:RSV2">
@@ -347,7 +352,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
                         <frequencies id="estimatedFreqs.s:RSV2" spec="Frequencies" frequencies="@freqParameter.s:RSV2"/>
                     </substModel>
                 </siteModel>
-                <branchRateModel id="RelaxedClock.c:RSV2" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@ucldMean.c:RSV2" rateCategories="@rateCategories.c:RSV2" tree="@Tree.t:RSV2">
+                <branchRateModel id="RelaxedClock.c:RSV2" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@ucldMean.c:RSV2" rates="@fastRates.c:RSV2" tree="@Tree.t:RSV2">
                     <LogNormal id="LogNormalDistributionModel.c:RSV2" S="@ucldStdev.c:RSV2" meanInRealSpace="true" name="distr">
                         <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" lower="0.0" name="M" upper="1.0">1.0</parameter>
                     </LogNormal>
@@ -356,17 +361,24 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         </distribution>
     </distribution>
 
+    <operator id="InternalnodesOperator.c:RSV2" spec="InConstantDistanceOperator"
+              twindowSize="0.2"  tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="20"/>
+
+    <operator id="RootOperator2.c:RSV2" spec="SimpleDistance"
+              twindowSize="0.2" tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="2.0"/>
+
+    <operator id="RootOperator3.c:RSV2" spec="SmallPulley"
+              dwindowSize="0.04" tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="2.0"/>
+
     <operator id="KappaScaler.s:RSV2" spec="ScaleOperator" parameter="@kappa.s:RSV2" scaleFactor="0.5" weight="0.1"/>
 
     <operator id="ucldMeanScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldMean.c:RSV2" scaleFactor="0.5" weight="1.0"/>
 
     <operator id="ucldStdevScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldStdev.c:RSV2" scaleFactor="0.5" weight="3.0"/>
 
-    <operator id="CategoriesRandomWalk.c:RSV2" spec="IntRandomWalkOperator" parameter="@rateCategories.c:RSV2" weight="10.0" windowSize="1"/>
+    <operator id="FastRatesRandomWalk.c:RSV2" spec="RealRandomWalkOperator" parameter="@fastRates.c:RSV2" weight="10.0" windowSize="1"/>
 
-    <operator id="CategoriesSwapOperator.c:RSV2" spec="SwapOperator" intparameter="@rateCategories.c:RSV2" weight="10.0"/>
-
-    <operator id="CategoriesUniform.c:RSV2" spec="UniformOperator" parameter="@rateCategories.c:RSV2" weight="10.0"/>
+    <operator id="FastRatesSwapOperator.c:RSV2" spec="SwapOperator" parameter="@fastRates.c:RSV2" weight="10.0"/>
 
     <operator id="relaxedUpDownOperator.c:RSV2" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
         <up idref="ucldMean.c:RSV2"/>
@@ -395,7 +407,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <parameter idref="freqParameter.s:RSV2"/>
     </operator>
 
-    <logger id="tracelog" spec="Logger" fileName="RSV2.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="RSV2_2_2.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -417,7 +429,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:RSV2" spec="Logger" fileName="$(tree).trees" logEvery="5000" mode="tree">
+    <logger id="treelog.t:RSV2" spec="Logger" fileName="$(tree)_2_2.trees" logEvery="5000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:RSV2" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:RSV2" tree="@Tree.t:RSV2"/>
     </logger>
 

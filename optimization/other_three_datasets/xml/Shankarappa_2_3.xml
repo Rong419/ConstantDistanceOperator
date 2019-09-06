@@ -377,7 +377,7 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <parameter idref="freqParameter.s:Shankarappa"/>
     </operator>
 
-    <logger id="tracelog" spec="Logger" fileName="Shankarappa.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="Shankarappa_2_3.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -398,7 +398,7 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="$(tree).trees" logEvery="5000" mode="tree">
+    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="$(tree)_2_3.trees" logEvery="5000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:Shankarappa" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:Shankarappa" tree="@Tree.t:Shankarappa"/>
     </logger>
 

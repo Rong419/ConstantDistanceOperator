@@ -407,7 +407,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <parameter idref="freqParameter.s:RSV2"/>
     </operator>
 
-    <logger id="tracelog" spec="Logger" fileName="RSV2.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="RSV2_2_1.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -429,7 +429,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:RSV2" spec="Logger" fileName="$(tree).trees" logEvery="5000" mode="tree">
+    <logger id="treelog.t:RSV2" spec="Logger" fileName="$(tree)_2_1.trees" logEvery="5000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:RSV2" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:RSV2" tree="@Tree.t:RSV2"/>
     </logger>
 
