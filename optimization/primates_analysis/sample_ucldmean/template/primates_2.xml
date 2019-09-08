@@ -237,6 +237,7 @@ This xml uses ConstantDistance Operator to sample continuous real rates
         <log idref="treeLikelihood.journal"/>
         <log id="TreeHeight.t:journal" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:journal"/>
         <log idref="ucldStdev.c:journal"/>
+        <log idref="ucldMean.c:journal"/>
         <log id="rate.c:journal" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:journal" tree="@Tree.t:journal"/>
         <log idref="BirthDeath.t:journal"/>
         <log idref="BDBirthRate.t:journal"/>
