@@ -8,7 +8,7 @@ do
     for sim in {1..3}
     do
     sed "s/FILE/${data}_${param}_${sim}/g" ${TEMPLATE} > ./Treerandom.sl 
-    echo "summarise primates${ft}_${sim}.trees"
+    echo "summarise ${data}_${param}_${sim}.trees"
     sbatch Treerandom.sl 
     rm -f Treerandom.sl 
     sleep 5
