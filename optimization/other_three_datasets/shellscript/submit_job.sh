@@ -7,7 +7,7 @@ do
   do 
     for sim in {1..3}
     do
-    sed 's/DATA/${data}/g; s/PARAM/${param}/g; s/SIM/${sim}/g' ${TEMPLATE} > ./temp.sl 
+    sed "s/DATA/${data}/g; s/PARAM/${param}/g; s/SIM/${sim}/g" ${TEMPLATE} > ./temp.sl 
     echo "submit primates_${param}_${sim}.xml"
     sbatch temp.sl 
     rm -f temp.sl 
