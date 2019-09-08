@@ -33,7 +33,7 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="5000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="5000000">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:Dengue4" spec="beast.evolution.tree.Tree" name="stateNode">
             <trait id="dateTrait.t:Dengue4" spec="beast.evolution.tree.TraitSet" traitname="date" value="D4Brazi82=82,D4ElSal83=83,D4ElSal94=94,D4Indon76=76,D4Indon77=77,D4Mexico84=84,D4NewCal81=81,D4Philip64=64,D4Philip56=56,D4Philip84=84,D4PRico86=86,D4SLanka78=78,D4Tahiti79=79,D4Tahiti85=85,D4Thai63=63,D4Thai78=78,D4Thai84=84">
@@ -74,13 +74,6 @@
             </prior>
 
             <prior id="fastUcldStdevPrior.c:Dengue4" name="distribution" x="@fastUcldStdev.c:Dengue4">
-<!--
-                <LogNormal id="LogNormalDistributionModel1" name="distr" meanInRealSpace="true">
-                    <parameter id="RealParameter1" spec="parameter.RealParameter" estimate="false" name="M">0.2</parameter>
-                    <parameter id="RealParameter2" spec="parameter.RealParameter" estimate="false" name="S">2.0</parameter>
-                </LogNormal>
--->
-
                 <Gamma id="Gamma.10" name="distr">
                     <parameter id="RealParameter.47" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396</parameter>
                     <parameter id="RealParameter.48" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
@@ -117,7 +110,7 @@
             </distribution>
         </distribution>
     </distribution>
-<!--
+
     <operator id="YuleBirthRateScaler.t:Dengue4" spec="ScaleOperator" parameter="@birthRate.t:Dengue4" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="YuleModelTreeScaler.t:Dengue4" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Dengue4" weight="3.0"/>
@@ -141,7 +134,8 @@
     <operator id="KappaScaler.s:Dengue4" spec="ScaleOperator" parameter="@kappa.s:Dengue4" scaleFactor="0.5" weight="0.5"/>
 
     <operator id="fastUcldStdevScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldStdev.c:Dengue4" scaleFactor="0.5" weight="50.0"/>
-    -->
+
+    <!--
     <operator id="fastUcldMeanScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldMean.c:Dengue4" scaleFactor="0.5" weight="5.0"/>
 
     <operator id="RatesRandomWalk.c:Dengue4" spec="RealRandomWalkOperator" parameter="@fastRates.c:Dengue4" weight="5.0" windowSize="0.1"/>
@@ -150,12 +144,12 @@
 
     <operator id="FastInternalnodesOperator.c:Dengue4" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:Dengue4" stdev="@fastUcldStdev.c:Dengue4" scaleFactor="0.8" weight="10.0"/>
+    -->
+    <operator id="relaxedUpDownOperator.c:anolis" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
+        <up idref="fastUcldMean.c:Dengue4"/>
+        <down idref="Tree.t:Dengue4"/>
+    </operator>
 
-<!--
-    <operator id="UpDownOperatorOperator.c:dna" spec="UpDownOperator"
-              scaleFactor="0.5"  up="@Tree.t:Dengue4" down="@fastRates.c:Dengue4"  weight="5"/>
--->
-<!--
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
                   twindowSize="0.02"  tree="@Tree.t:Dengue4" rates="@fastRates.c:Dengue4"  weight="5"/>
 
@@ -164,7 +158,7 @@
     <operator id="FastRootOperator2.c:Dengue4" spec="consoperators.SmallPulley"  dwindowSize="0.001" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" weight="2.0"/>
 
     <operator id="FastRootOperator3.c:Dengue4" spec="consoperators.BigPulley"  dwindowSize="0.002" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="0.02" weight="1.0"/>
--->
+
 
 
     <logger id="tracelog" spec="Logger" fileName="Dengue4f.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">

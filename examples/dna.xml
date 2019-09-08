@@ -86,7 +86,8 @@
 
             <prior id="fastUcldMeanPrior.c:Dengue4" name="distribution" x="@fastUcldMean.c:dna">
                 <!--<Normal id="Gamma.2" name="distr" mean="1.0" sigma="1"/>-->
-                <LogNormal id="Gamma.2" name="distr" M="1" S="0.5" meanInRealSpace="true"/>
+                <!--<LogNormal id="Gamma.2" name="distr" M="1" S="0.5" meanInRealSpace="true"/>-->
+                <Uniform id="Uniform.8" name="distr" upper="Infinity"/>
             </prior>
 
             <prior id="FrequenciesPrior.s:dna" name="distribution" x="@freqParameter.s:dna">
@@ -119,7 +120,7 @@
         </distribution>
     </distribution>
 
-
+<!--
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
               twindowSize="0.02"  tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="5"/>
 
@@ -131,7 +132,7 @@
 
     <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"
               twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="1"/>
-
+-->
 <!--
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" distr="@FastLogNormalDistributionModel.c:dna" scaleFactor="0.8" weight="10.0"/>
@@ -141,7 +142,7 @@
               rateQuantiles="@fastRates.c:dna" twindowSize="0.1" tree="@Tree.t:dna" distr="@FastLogNormalDistributionModel.c:dna" weight="20.0"/>
 -->
     <operator id="relaxedUpDownOperator.c:anolis" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
-        <up idref="fastUcldMeanScaler.c:dna"/>
+        <up idref="fastUcldMean.c:dna"/>
         <down idref="Tree.t:dna"/>
     </operator>
 
