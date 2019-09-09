@@ -37,8 +37,8 @@
         <parameter id="fastUcldMean.c:dna" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="fastUcldStdev.c:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
         <parameter id="fastRates.c:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
-        <parameter id="BDBirthRate.t:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="10000.0">1.0</parameter>
-        <parameter id="BDDeathRate.t:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="BDBirthRate.t:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="BDDeathRate.t:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
         <parameter id="freqParameter.s:dna" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
     </state>
 
@@ -53,11 +53,11 @@
             <distribution id="BirthDeath.t:dna" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:dna" relativeDeathRate="@BDDeathRate.t:dna" tree="@Tree.t:dna"/>
 
             <prior id="BirthRatePrior.t:dna" name="distribution" x="@BDBirthRate.t:dna">
-                <Uniform id="Uniform.4" name="distr" upper="1000.0"/>
+                <LogNormal id="LogNormal.4" name="distr" M="1000" S="3" meanInRealSpace="true"/>
             </prior>
 
             <prior id="DeathRatePrior.t:dna" name="distribution" x="@BDDeathRate.t:dna">
-                <Uniform id="Uniform.5" name="distr"/>
+                <Uniform id="Uniform.5" name="distr" upper="Infinity"/>
             </prior>
 
             <prior id="FastRatePriorDistrbution.c:dna" name="distribution" x="@fastRates.c:dna">
@@ -67,27 +67,10 @@
             </prior>
 
             <prior id="fastUcldStdevPrior.c:dna" name="distribution" x="@fastUcldStdev.c:dna">
-<!--
-                <LogNormal id="LogNormalDistributionModel1" name="distr" meanInRealSpace="true">
-                    <parameter id="RealParameter1" spec="parameter.RealParameter" estimate="false" name="M">0.5</parameter>
-                    <parameter id="RealParameter2" spec="parameter.RealParameter" estimate="false" name="S">0.5</parameter>
-                </LogNormal>
--->
-<!--
-                <Uniform id="Uniform.10" name="distr" upper="1.0" lower="0.0" />
--->
-
                 <Gamma id="Gamma.10" name="distr">
                     <parameter id="RealParameter.47" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396</parameter>
                     <parameter id="RealParameter.48" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
-
-            </prior>
-
-            <prior id="fastUcldMeanPrior.c:Dengue4" name="distribution" x="@fastUcldMean.c:dna">
-                <!--<Normal id="Gamma.2" name="distr" mean="1.0" sigma="1"/>-->
-                <!--<LogNormal id="Gamma.2" name="distr" M="1" S="0.5" meanInRealSpace="true"/>-->
-                <Uniform id="Uniform.8" name="distr" upper="Infinity"/>
             </prior>
 
             <prior id="FrequenciesPrior.s:dna" name="distribution" x="@freqParameter.s:dna">
@@ -141,14 +124,10 @@
     <operator id="FastRatesInternal.c:dna" spec="consoperators.InternalOperator"
               rateQuantiles="@fastRates.c:dna" twindowSize="0.1" tree="@Tree.t:dna" distr="@FastLogNormalDistributionModel.c:dna" weight="20.0"/>
 -->
-    <operator id="relaxedUpDownOperator.c:anolis" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
-        <up idref="fastUcldMean.c:dna"/>
-        <down idref="Tree.t:dna"/>
-    </operator>
 
     <operator id="RatesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@fastRates.c:dna" weight="3.0" windowSize="0.1"/>
 
-    <operator id="RatesScaleOperator.c:dna" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:dna" weight="3.0"/>
+    <operator id="RatesSwapOperator.c:dna" spec="SwapOperator" parameter="@fastRates.c:dna" weight="3.0"/>
 
     <operator id="fastUcldStdevScaler.c:dna4" spec="ScaleOperator" parameter="@fastUcldStdev.c:dna" scaleFactor="0.5" weight="5.0"/>
 
@@ -159,8 +138,6 @@
     <operator id="BirthDeathTreeScaler.t:dna" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
 
     <operator id="BirthDeathTreeRootScaler.t:dna" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
-
-    <operator id="fastUcldMeanScaler.c:dna" spec="ScaleOperator" parameter="@fastUcldMean.c:dna" scaleFactor="0.5" weight="5.0"/>
 
     <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.s:dna" scaleFactor="0.5" weight="0.5"/>
 
