@@ -142,7 +142,7 @@ name="alignment">
 <map name="prior" >beast.math.distributions.Prior</map>
 <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
-
+<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
 <run id="mcmc" spec="MCMC" chainLength="50000000">
     <state id="state" spec="State" storeEvery="5000">
@@ -270,7 +270,9 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
             </trait>
             <taxonset idref="TaxonSet.Shankarappa"/>
         </tree>
-        <parameter id="birthRate.t:Shankarappa" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+        
+        <parameter id="BDBirthRate.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="BDDeathRate.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
         <parameter id="kappa.s:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="ucldMean.c:Shankarappa" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="ucldStdev.c:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
@@ -286,12 +288,16 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
 
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
-            <distribution id="YuleModel.t:Shankarappa" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@birthRate.t:Shankarappa" tree="@Tree.t:Shankarappa"/>
-            <prior id="YuleBirthRatePrior.t:Shankarappa" name="distribution" x="@birthRate.t:Shankarappa">
-                <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
+             <distribution id="BirthDeath.t:Shankarappa" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:Shankarappa" relativeDeathRate="@BDDeathRate.t:Shankarappa" tree="@Tree.t:Shankarappa"/>
+            <prior id="BirthRatePrior.t:Shankarappa" name="distribution" x="@BDBirthRate.t:Shankarappa">
+                <LogNormal id="LogNormalDistribution1" S="3"  M="10000" meanInRealSpace="true" name="distr"/>
             </prior>
+            <prior id="DeathRatePrior.t:Shankarappa" name="distribution" x="@BDDeathRate.t:Shankarappa">
+                <Uniform id="Uniform.6" name="distr" upper="Infinity"/>
+            </prior>
+            
             <prior id="FrequenciesPrior.s:Shankarappa" name="distribution" x="@freqParameter.s:Shankarappa">
-                <Uniform id="Uniform.3" name="distr"/>
+                <Dirichlet id="Dirichlet" alpha="10 10 10 10" name="distr"/>
             </prior>
             <prior id="KappaPrior.s:Shankarappa" name="distribution" x="@kappa.s:Shankarappa">
                 <LogNormal id="LogNormalDistributionModel.0" name="distr">
@@ -328,21 +334,23 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         </distribution>
     </distribution>
 
-    <operator id="YuleBirthRateScaler.t:Shankarappa" spec="ScaleOperator" parameter="@birthRate.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
+    <operator id="BirthDeathTreeScaler.t:Shankarappa" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
-    <operator id="YuleModelTreeScaler.t:Shankarappa" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="BirthDeathTreeRootScaler.t:Shankarappa" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
-    <operator id="YuleModelTreeRootScaler.t:Shankarappa" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="BirthDeathUniformOperator.t:Shankarappa" spec="Uniform" tree="@Tree.t:Shankarappa" weight="30.0"/>
 
-    <operator id="YuleModelUniformOperator.t:Shankarappa" spec="Uniform" tree="@Tree.t:Shankarappa" weight="30.0"/>
+    <operator id="BirthDeathSubtreeSlide.t:Shankarappa" spec="SubtreeSlide" tree="@Tree.t:Shankarappa" weight="15.0"/>
 
-    <operator id="YuleModelSubtreeSlide.t:Shankarappa" spec="SubtreeSlide" tree="@Tree.t:Shankarappa" weight="15.0"/>
+    <operator id="BirthDeathNarrow.t:Shankarappa" spec="Exchange" tree="@Tree.t:Shankarappa" weight="15.0"/>
 
-    <operator id="YuleModelNarrow.t:Shankarappa" spec="Exchange" tree="@Tree.t:Shankarappa" weight="15.0"/>
+    <operator id="BirthDeathWide.t:Shankarappa" spec="Exchange" isNarrow="false" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
-    <operator id="YuleModelWide.t:Shankarappa" spec="Exchange" isNarrow="false" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="BirthDeathWilsonBalding.t:Shankarappa" spec="WilsonBalding" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
-    <operator id="YuleModelWilsonBalding.t:Shankarappa" spec="WilsonBalding" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="BirthRateScaler.t:Shankarappa" spec="ScaleOperator" parameter="@BDBirthRate.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
+
+    <operator id="DeathRateScaler.t:Shankarappa" spec="ScaleOperator" parameter="@BDDeathRate.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="KappaScaler.s:Shankarappa" spec="ScaleOperator" parameter="@kappa.s:Shankarappa" scaleFactor="0.5" weight="0.1"/>
 
@@ -371,8 +379,9 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <log idref="prior"/>
         <log idref="treeLikelihood.Shankarappa"/>
         <log id="TreeHeight.t:Shankarappa" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:Shankarappa"/>
-        <log idref="YuleModel.t:Shankarappa"/>
-        <log idref="birthRate.t:Shankarappa"/>
+        <log idref="BirthDeath.t:Shankarappa"/>
+        <log idref="BDBirthRate.t:Shankarappa"/>
+        <log idref="BDDeathRate.t:Shankarappa"/>
         <log idref="kappa.s:Shankarappa"/>
         <log idref="ucldMean.c:Shankarappa"/>
         <log idref="ucldStdev.c:Shankarappa"/>

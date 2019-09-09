@@ -154,6 +154,7 @@ name="alignment">
 <map name="prior" >beast.math.distributions.Prior</map>
 <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
+<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
 
 <run id="mcmc" spec="MCMC" chainLength="50000000">
@@ -313,13 +314,13 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <distribution id="prior" spec="util.CompoundDistribution">
             <distribution id="BirthDeath.t:RSV2" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:RSV2" relativeDeathRate="@BDDeathRate.t:RSV2" tree="@Tree.t:RSV2"/>
             <prior id="BirthRatePrior.t:RSV2" name="distribution" x="@BDBirthRate.t:RSV2">
-                <Uniform id="Uniform.5" name="distr" upper="1000.0"/>
+                <LogNormal id="LogNormalDistribution1" S="3"  M="10000" meanInRealSpace="true" name="distr"/>
             </prior>
             <prior id="DeathRatePrior.t:RSV2" name="distribution" x="@BDDeathRate.t:RSV2">
-                <Uniform id="Uniform.6" name="distr"/>
+                <Uniform id="Uniform.6" name="distr" upper="Infinity"/>
             </prior>
             <prior id="FrequenciesPrior.s:RSV2" name="distribution" x="@freqParameter.s:RSV2">
-                <Uniform id="Uniform.3" name="distr"/>
+                <Dirichlet id="Dirichlet" alpha="10 10 10 10" name="distr"/>
             </prior>
             <prior id="KappaPrior.s:RSV2" name="distribution" x="@kappa.s:RSV2">
                 <LogNormal id="LogNormalDistributionModel.0" name="distr">

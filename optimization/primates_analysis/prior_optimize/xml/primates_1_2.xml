@@ -2,7 +2,7 @@
 <!--
 This xml uses normal operators to sample rate categories
 5 times longer than previous analysis
-+ sample ucldMean
++ fix ucldMean
 -->
 
     <data id="journal" name="alignment">
@@ -118,8 +118,8 @@ This xml uses normal operators to sample rate categories
         <parameter id="ucldStdev.c:journal" lower="0.0" name="stateNode">0.2</parameter>
         <parameter id="ucldMean.c:journal" lower="0.0" name="stateNode">1.0</parameter>
         <stateNode id="rateCategories.c:journal" spec="parameter.IntegerParameter" dimension="164">1</stateNode>
-        <parameter id="BDBirthRate.t:journal" lower="0.0" name="stateNode" upper="10000.0">1.0</parameter>
-        <parameter id="BDDeathRate.t:journal" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="BDBirthRate.t:journal" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="BDDeathRate.t:journal" lower="0.0" name="stateNode">0.5</parameter>
     </state>
 
     <init id="RandomTree.t:journal" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:journal" taxa="@journal">
@@ -133,10 +133,10 @@ This xml uses normal operators to sample rate categories
 
             <distribution id="BirthDeath.t:journal" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:journal" relativeDeathRate="@BDDeathRate.t:journal" tree="@Tree.t:journal"/>
             <prior id="BirthRatePrior.t:journal" name="distribution" x="@BDBirthRate.t:journal">
-                <LogNormal id="LogNormalDistribution1" S="0.1"  M="1.6" meanInRealSpace="false" name="distr"/>
+                <LogNormal id="LogNormalDistribution1" S="3"  M="10000" meanInRealSpace="true" name="distr"/>
             </prior>
             <prior id="DeathRatePrior.t:journal" name="distribution" x="@BDDeathRate.t:journal">
-                <Uniform id="Uniform.5" name="distr"/>
+                <Uniform id="Uniform.5" name="distr" upper="Infinity"/>
             </prior>
 
             <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
@@ -152,9 +152,6 @@ This xml uses normal operators to sample rate categories
                     <parameter id="RealParameter.13" estimate="false" name="alpha">0.5396</parameter>
                     <parameter id="RealParameter.14" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
-            </prior>
-            <prior id="MeanRatePrior.c:journal" name="distribution" x="@ucldMean.c:journal">
-                <Uniform id="Uniform.4" name="distr" upper="Infinity"/>
             </prior>
 
         </distribution>
@@ -209,15 +206,8 @@ This xml uses normal operators to sample rate categories
     </operator>
 
    <operator id="KappaScaler.s:dna" spec="ScaleOperator" parameter="@kappa.t:ratites" scaleFactor="0.5" weight="2.0"/>
-   
-   <operator id="ucldMeanScaler.c:journal" spec="ScaleOperator" parameter="@ucldMean.c:journal" scaleFactor="0.5" weight="1.0"/>
-
-   <operator id="relaxedUpDownOperator.c:journal" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
-        <up idref="ucldMean.c:journal"/>
-        <down idref="Tree.t:journal"/>
-   </operator>
-   
-    <logger id="tracelog" fileName="primates_FILE.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
+ 
+    <logger id="tracelog" fileName="primates_1_2.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -240,7 +230,7 @@ This xml uses normal operators to sample rate categories
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:journal" fileName="primates_FILE.trees" logEvery="10000" mode="tree">
+    <logger id="treelog.t:journal" fileName="primates_1_2.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:journal" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:journal" tree="@Tree.t:journal"/>
     </logger>
 

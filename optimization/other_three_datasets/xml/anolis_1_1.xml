@@ -54,6 +54,7 @@ name="alignment">
 <map name="prior" >beast.math.distributions.Prior</map>
 <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
+<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
 
 <run id="mcmc" spec="MCMC" chainLength="50000000">
@@ -63,8 +64,8 @@ name="alignment">
                 <alignment idref="anolis"/>
             </taxonset>
         </tree>
-        <parameter id="BDBirthRate.t:anolis" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="10000.0">1.0</parameter>
-        <parameter id="BDDeathRate.t:anolis" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="BDBirthRate.t:anolis" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="BDDeathRate.t:anolis" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
         <parameter id="kappa.s:anolis" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="ucldStdev.c:anolis" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
         <parameter id="ucldMean.c:anolis" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
@@ -82,13 +83,13 @@ name="alignment">
         <distribution id="prior" spec="util.CompoundDistribution">
             <distribution id="BirthDeath.t:anolis" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:anolis" relativeDeathRate="@BDDeathRate.t:anolis" tree="@Tree.t:anolis"/>
             <prior id="BirthRatePrior.t:anolis" name="distribution" x="@BDBirthRate.t:anolis">
-                <Uniform id="Uniform.1" name="distr" upper="1000.0"/>
+                <LogNormal id="LogNormalDistribution1" S="3"  M="10000" meanInRealSpace="true" name="distr"/>
             </prior>
             <prior id="DeathRatePrior.t:anolis" name="distribution" x="@BDDeathRate.t:anolis">
-                <Uniform id="Uniform.2" name="distr"/>
+                <Uniform id="Uniform.2" name="distr" upper="Infinity"/>
             </prior>
             <prior id="FrequenciesPrior.s:anolis" name="distribution" x="@freqParameter.s:anolis">
-                <Uniform id="Uniform.3" name="distr"/>
+                <Dirichlet id="Dirichlet" alpha="10 10 10 10" name="distr"/>
             </prior>
             <prior id="KappaPrior.s:anolis" name="distribution" x="@kappa.s:anolis">
                 <LogNormal id="LogNormalDistributionModel.0" name="distr">
@@ -102,9 +103,7 @@ name="alignment">
                     <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
             </prior>
-            <prior id="MeanRatePrior.c:anolis" name="distribution" x="@ucldMean.c:anolis">
-                <Uniform id="Uniform.4" name="distr" upper="Infinity"/>
-            </prior>
+
         </distribution>
         <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
             <distribution id="treeLikelihood.anolis" spec="ThreadedTreeLikelihood" data="@anolis" tree="@Tree.t:anolis">
@@ -146,14 +145,6 @@ name="alignment">
     <operator id="KappaScaler.s:anolis" spec="ScaleOperator" parameter="@kappa.s:anolis" scaleFactor="0.5" weight="0.1"/>
 
     <operator id="ucldStdevScaler.c:anolis" spec="ScaleOperator" parameter="@ucldStdev.c:anolis" scaleFactor="0.5" weight="3.0"/>
-
-    <operator id="ucldMeanScaler.c:anolis" spec="ScaleOperator" parameter="@ucldMean.c:anolis" scaleFactor="0.5" weight="1.0"/>
-
-    <operator id="relaxedUpDownOperator.c:anolis" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
-        <up idref="ucldMean.c:anolis"/>
-        <down idref="Tree.t:anolis"/>
-    </operator>
-
 
     <operator id="CategoriesRandomWalk.c:anolis" spec="IntRandomWalkOperator" parameter="@rateCategories.c:anolis" weight="10.0" windowSize="1"/>
 
