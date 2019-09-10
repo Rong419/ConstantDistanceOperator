@@ -21,7 +21,6 @@ public class SimpleDistance extends TreeOperator {
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
 
     private double twindowSize;
-    private Tree tree;
     private RealParameter rates;
 
     //protected BranchRateModel.Base branchRateModel;
@@ -32,14 +31,14 @@ public class SimpleDistance extends TreeOperator {
     @Override
     public void initAndValidate() {
         twindowSize = twindowSizeInput.get();
-        tree = treeInput.get();
-        //branchRateModel = branchRateModelInput.get();
         rates = rateInput.get();
     }
 
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
+        int branchCount = tree.getNodeCount() - 1; //the number of branches of the tree
+
         //the chosen node to work on
         Node node;
 
@@ -57,23 +56,32 @@ public class SimpleDistance extends TreeOperator {
 
         //Step 1: get the root of the tree
         node = tree.getRoot();
-
-        t_x = node.getHeight();//get the time of this node
+        t_x = node.getHeight();//root time
 
         // son
         Node son = node.getChild(0);//get the left child of this node, i.e. son
         t_j = son.getHeight();//node time of son
-        //r_i = branchRateModel.getRateForBranch(son);
-        r_i = rates.getValues()[son.getNr()];
-        d_i = r_i * (t_x - t_j);
+
         int nodeN02 = son.getNr();//node number of son
+        if (nodeN02 == branchCount) {
+            nodeN02 = son.getTree().getRoot().getNr();
+        }
+
+        r_i = rates.getValues()[nodeN02];
+        d_i = r_i * (t_x - t_j);
+
         // daughter
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
-        //r_x = branchRateModel.getRateForBranch(daughter);
-        r_x = rates.getValues()[daughter.getNr()];
+
+        int nodeN03 = daughter.getNr(); // node time of daughter
+        if (nodeN03 == branchCount) {
+            nodeN03 = daughter.getTree().getRoot().getNr();
+        }
+
+        r_x = rates.getValues()[nodeN03];
         d_x = r_x * (t_x - t_k);
-        int nodeN03 = daughter.getNr();//node number of daughter
+
         double a = Randomizer.uniform(-twindowSize, twindowSize);
         //to propose a new node time for this node
         t_x_ = t_x + a;
@@ -111,9 +119,6 @@ public class SimpleDistance extends TreeOperator {
         double de = (t_x_ - t_j) * (t_x_ - t_k);
         double hastingsratio = nu / de;
         return Math.log(hastingsratio);
-
-      //return  0.0;
-
     }
 
     /**
