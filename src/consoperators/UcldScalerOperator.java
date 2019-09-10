@@ -55,59 +55,45 @@ public class UcldScalerOperator extends Operator {
         }
 
         // Step1: calculate quantiles for real rates given the current ucldStdev
-        //System.out.println("rates="+Arrays.toString(rateInput.get().getValues()));
         for (int idx = 0; idx < rates.getDimension(); idx++) {
             double r = rates.getValue(idx);
             real_rates[idx] = r;
             quantiles[idx] = getRateQuantiles(r);
         }
-        //System.out.println("quantiles="+Arrays.toString(quantiles));
+
 
         // Step2: use scale operation to propose a new_ucldStdev
         double stdev = stdevInput.get().getValue();
-        //System.out.println("S="+stdev);
-
-        //double scale =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
-        double scale = Randomizer.uniform(-0.5,0.5);
-
-        new_stdev = stdev + scale;
-        if (new_stdev <=0) {
-            return Double.NEGATIVE_INFINITY;
-        }
-        //System.out.println("S'="+new_stdev);
+        double scale =  (m_fScaleFactor + (Randomizer.nextDouble() * ((1.0 / m_fScaleFactor) - m_fScaleFactor)));
+        new_stdev = stdev * scale;
 
         // set the new value
         ucldStdev.setValue(new_stdev);
 
         // return the log hastings ratio for scale operation
-        hastingsRatio = 0;
+        hastingsRatio = Math.log(1/scale);
 
+        // use mean (M=1) and variance (stdev square) to calculate miu and sigma square of lognormal in log space
+        double sigmasq = FastMath.log(1 + stdev * stdev);
+        double new_sigmasq = FastMath.log(1 + new_stdev * new_stdev); // new sigma square of lognormal
+        double miu = - 0.5 * sigmasq; // original miu of lognormal
+        double new_miu = - 0.5 * new_sigmasq; // new miu of lognormal
 
         // Step3: calculate the new real rates under the proposed new_ucldStdev
-        double [] rates_ = new double [rates.getDimension()];
         for (int idx = 0; idx < rates.getDimension(); idx++) {
-            double r = real_rates[idx];
-            double q = quantiles[idx];
-            if (q == 0.0 || q == 1.0) {
-                return Double.NEGATIVE_INFINITY;
-            }
-            double r_ = getRealRate(q);
-            rates_[idx] = r_;
 
-            hastingsRatio = hastingsRatio + getDicdf(r,q,stdev,new_stdev) ;
+            double r_ = getRealRate(quantiles[idx]);
+
+            hastingsRatio = hastingsRatio + getDicdf(real_rates[idx],quantiles[idx],miu,new_miu,sigmasq,new_sigmasq) ;
 
             rates.setValue(idx, r_);
         }
-        //System.out.println("rates'="+Arrays.toString(rates_));
-
-        //System.out.println("HR="+hastingsRatio);
 
         return hastingsRatio;
 }
 
     private double getRateQuantiles (double r) {
         try {
-            //System.out.println("S="+LN.SParameterInput.get()+",M="+LN.MParameterInput.get());
             return LN.cumulativeProbability(r);
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute inverse cumulative probability because rate =" + r);
@@ -116,29 +102,23 @@ public class UcldScalerOperator extends Operator {
 
     private double getRealRate (double q) {
         try {
-            //System.out.println("S'="+LN.SParameterInput.get()+",M="+LN.MParameterInput.get());
             return LN.inverseCumulativeProbability(q);
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute inverse cumulative probability because quantile = " + q);
         }
     }
 
-    private double getDicdf(double r, double q, double stdev, double new_stdev ) {
-        double a1 = Math.log(1 + stdev * stdev);
-        double a2 = Math.log(1 + new_stdev * new_stdev);
-        double b1 = Math.log(1/(Math.sqrt(1 + stdev * stdev)));
-        double b2 = Math.log(1/(Math.sqrt(1 + new_stdev * new_stdev)));
+    private double getDicdf(double r, double q, double u1, double u2, double s1, double s2 ) {
+        // inverse error function of (2F -1), where F(r) = cdf_s(r)
         double c = erfInv(2 * q - 1);
-        double x_sq = Math.pow((Math.log(r) - b1), 2) / (2 * a1);
-        double d = b2 + Math.sqrt(2 * a2) * c + c * c - x_sq;
-        double e = r * Math.sqrt(a1);
-        double f = Math.log(Math.sqrt(a2)/e);
-        return (d + f);
+        double x = FastMath.log(r) - u1;
+        double x_sq = x * x / (2 * s1);
+        double d = u2 + Math.sqrt(2 * s2) * c + c * c - x_sq;
+        double e = 0.5 * Math.log(s2) - 0.5 * Math.log(s1) - Math.log(r);
+        return (d + e);
     }
 
-    /*
-    Tuning the parameter: twindowsize represents the range of Uniform distribution
-     */
+
     @Override
     public double getCoercableParameterValue() {
         return m_fScaleFactor;

@@ -35,7 +35,7 @@
         </tree>
         <parameter id="kappa.s:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="fastUcldMean.c:dna" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
-        <parameter id="fastUcldStdev.c:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
+        <parameter id="fastUcldStdev.c:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.2</parameter>
         <parameter id="fastRates.c:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
         <parameter id="BDBirthRate.t:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
         <parameter id="BDDeathRate.t:dna" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
@@ -65,10 +65,13 @@
             </prior>
 
             <prior id="fastUcldStdevPrior.c:dna" name="distribution" x="@fastUcldStdev.c:dna">
+                <!--
                 <Gamma id="Gamma.10" name="distr">
                     <parameter id="RealParameter.47" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396</parameter>
                     <parameter id="RealParameter.48" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
+                -->
+                <LogNormal id="Gamma.10" name="distr" M="0.206" S="1.2" meanInRealSpace="true"/>
             </prior>
 
             <prior id="FrequenciesPrior.s:dna" name="distribution" x="@freqParameter.s:dna">
@@ -113,17 +116,17 @@
 
     <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"
               twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="1"/>
-<!--
+
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" distr="@FastLogNormalDistributionModel.c:dna" scaleFactor="0.8" weight="10.0"/>
--->
+
 <!--
     <operator id="FastRatesInternal.c:dna" spec="consoperators.InternalOperator"
               rateQuantiles="@fastRates.c:dna" twindowSize="0.1" tree="@Tree.t:dna" distr="@FastLogNormalDistributionModel.c:dna" weight="20.0"/>
 -->
-
+<!--
     <operator id="fastUcldStdevScaler.c:dna4" spec="ScaleOperator" parameter="@fastUcldStdev.c:dna" scaleFactor="0.5" weight="5.0"/>
-
+-->
     <operator id="RatesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@fastRates.c:dna" weight="3.0" windowSize="0.1"/>
 
     <operator id="RatesSwapOperator.c:dna" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:dna" weight="3.0"/>
