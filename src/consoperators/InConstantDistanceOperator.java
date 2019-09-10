@@ -37,8 +37,12 @@ public class InConstantDistanceOperator extends TreeOperator {
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
+        int nodeCount = tree.getNodeCount(); //return the number of nodes in the tree
+        int branchCount = nodeCount - 1; //the number of branches of the tree
+
         //the chosen node to work on
         Node node;
+
         //the original node times
         double t_x;
         double t_j;
@@ -54,40 +58,47 @@ public class InConstantDistanceOperator extends TreeOperator {
         double t_x_;
 
         //Step 1: randomly select an internal node, denoted by node x
-       int nodeCount = tree.getNodeCount();//return the number of nodes in the tree
        do {
             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
             node = tree.getNode(nodeNr);
        } while (node.isRoot() || node.isLeaf());
+
+       // the number of this node
+        int nodeNr = node.getNr();
+        if (nodeNr == branchCount) {
+            nodeNr = node.getTree().getRoot().getNr();
+        }
+
        //rate and time for this node
        t_x = node.getHeight();
-       //double r_node = branchRateModel.getRateForBranch(node);
-       double r_node = rates.getValues()[node.getNr()];
-       /*
-       Another way to get internal node
-        */
-       //Node [] node = tree.getNodesAsArray();
-       // List nodes = tree.getInternalNodes();
-       //int nodeCount = nodes.size();
-       //int nodeNr = Randomizer.nextInt(nodeCount);
-       //node = tree.getNode(nodeNr);
-       //if (node.isRoot() || node.isLeaf()){
-           //return Double.NEGATIVE_INFINITY;
-       //}
+       double r_node = rates.getValues()[nodeNr];
+
 
        //Step 2: Access to the child nodes of this node
        // son
        Node son = node.getChild(0);//get the left child of this node, i.e. son
        t_j = son.getHeight();//node time of son
-       //r_j = branchRateModel.getRateForBranch(son);
-        r_j = rates.getValues()[son.getNr()];
-       d_j = r_j * (t_x - t_j);
+
+       int sonNr = son.getNr();// node number of son
+       if (sonNr == branchCount) {
+           sonNr = son.getTree().getRoot().getNr();
+        }
+
+       r_j = rates.getValues()[sonNr]; // rate of branch above son
+       d_j = r_j * (t_x - t_j); // distance of branch above son
+
+
        // daughter
        Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
        t_k = daughter.getHeight();//node time of daughter
-       //r_k = branchRateModel.getRateForBranch(daughter);
-        r_k = rates.getValues()[daughter.getNr()];
-       d_k = r_k * (t_x - t_k);
+
+       int dauNr = daughter.getNr(); // node time of daughter
+       if (dauNr == branchCount) {
+            dauNr = daughter.getTree().getRoot().getNr();
+       }
+
+       r_k = rates.getValues()[dauNr];// rate of branch above daughter
+       d_k = r_k * (t_x - t_k);// distance of branch above daughter
 
 
 
@@ -113,9 +124,9 @@ public class InConstantDistanceOperator extends TreeOperator {
        double r_k_ = d_k / (t_x_ - t_k);
 
        // set the proposed new rates
-       rates.setValue(node.getNr(), r_node_);
-       rates.setValue(son.getNr(), r_j_);
-       rates.setValue(daughter.getNr(), r_k_);
+       rates.setValue(nodeNr, r_node_);
+       rates.setValue(sonNr, r_j_);
+       rates.setValue(dauNr, r_k_);
 
 
        //Step4: calculate the Hastings ratio
@@ -157,10 +168,7 @@ public class InConstantDistanceOperator extends TreeOperator {
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
        double JD = nu /de;
-       //double g = Math.exp(a/0.3) * Math.exp(-3*a/0.3) * Math.exp(-3*a/0.3);
        return Math.log(JD);
-
-       //return  0.0;
 }
     /*
     Tuning the parameter: twindowsize represents the range of Uniform distribution
