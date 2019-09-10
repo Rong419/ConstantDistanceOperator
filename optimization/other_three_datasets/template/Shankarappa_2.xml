@@ -270,8 +270,14 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
             </trait>
             <taxonset idref="TaxonSet.Shankarappa"/>
         </tree>
+        <!--
         <parameter id="BDBirthRate.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
         <parameter id="BDDeathRate.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
+        -->
+        <parameter id="diversificationRateFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="turnoverFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="samplingProportionFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="originFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">150.0</parameter>
         <parameter id="kappa.s:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="ucldMean.c:Shankarappa" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="ucldStdev.c:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
@@ -287,12 +293,30 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
 
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
-          <distribution id="BirthDeath.t:Shankarappa" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:Shankarappa" relativeDeathRate="@BDDeathRate.t:Shankarappa" tree="@Tree.t:Shankarappa"/>
+          <!--
+            <distribution id="BirthDeath.t:Shankarappa" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:Shankarappa" relativeDeathRate="@BDDeathRate.t:Shankarappa" tree="@Tree.t:Shankarappa"/>
             <prior id="BirthRatePrior.t:Shankarappa" name="distribution" x="@BDBirthRate.t:Shankarappa">
                 <LogNormal id="LogNormalDistribution1" S="3"  M="10000" meanInRealSpace="true" name="distr"/>
             </prior>
             <prior id="DeathRatePrior.t:Shankarappa" name="distribution" x="@BDDeathRate.t:Shankarappa">
                 <Uniform id="Uniform.6" name="distr" upper="Infinity"/>
+            </prior>
+            -->
+            <distribution id="FBD.t:Shankarappa" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" diversificationRate="@diversificationRateFBD.t:Shankarappa" origin="@originFBD.t:Shankarappa" samplingProportion="@samplingProportionFBD.t:Shankarappa" tree="@Tree.t:Shankarappa" turnover="@turnoverFBD.t:Shankarappa">
+                <parameter id="rFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                <parameter id="rhoFBD.t:Shankarappa" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
+            </distribution>
+            <prior id="diversificationRatePriorFBD.t:Shankarappa" name="distribution" x="@diversificationRateFBD.t:Shankarappa">
+                <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="originPriorFBD.t:Shankarappa" name="distribution" x="@originFBD.t:Shankarappa">
+                <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="samplingProportionPriorFBD.t:Shankarappa" name="distribution" x="@samplingProportionFBD.t:Shankarappa">
+                <Uniform id="Uniform.2" name="distr"/>
+            </prior>
+            <prior id="turnoverPriorFBD.t:Shankarappa" name="distribution" x="@turnoverFBD.t:Shankarappa">
+                <Uniform id="Uniform.3" name="distr"/>
             </prior>
             <prior id="FrequenciesPrior.s:Shankarappa" name="distribution" x="@freqParameter.s:Shankarappa">
                 <Dirichlet id="Dirichlet" alpha="10 10 10 10" name="distr"/>
@@ -346,6 +370,7 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
     <operator id="RootOperator3.c:Shankarappa" spec="SmallPulley"
               dwindowSize="0.04" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="2.0"/>
 
+    <!--
     <operator id="BirthDeathTreeScaler.t:Shankarappa" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
     <operator id="BirthDeathTreeRootScaler.t:Shankarappa" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
@@ -363,6 +388,28 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
     <operator id="BirthRateScaler.t:Shankarappa" spec="ScaleOperator" parameter="@BDBirthRate.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="DeathRateScaler.t:Shankarappa" spec="ScaleOperator" parameter="@BDDeathRate.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
+    -->
+    <operator id="originScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@originFBD.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
+
+    <operator id="divRateScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@diversificationRateFBD.t:Shankarappa" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="turnoverScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@turnoverFBD.t:Shankarappa" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="samplingPScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@samplingProportionFBD.t:Shankarappa" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="LeafToSAFBD.t:Shankarappa" spec="LeafToSampledAncestorJump" tree="@Tree.t:Shankarappa" weight="10.0"/>
+
+    <operator id="SAWilsonBaldingFBD.t:Shankarappa" spec="SAWilsonBalding" tree="@Tree.t:Shankarappa" weight="10.0"/>
+
+    <operator id="SAWideFBD.t:Shankarappa" spec="SAExchange" isNarrow="false" tree="@Tree.t:Shankarappa" weight="10.0"/>
+
+    <operator id="SANarrowFBD.t:Shankarappa" spec="SAExchange" tree="@Tree.t:Shankarappa" weight="10.0"/>
+
+    <operator id="SAUniformOperatorFBD.t:Shankarappa" spec="SAUniform" tree="@Tree.t:Shankarappa" weight="20.0"/>
+
+    <operator id="SATreeRootScalerFBD.t:Shankarappa" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:Shankarappa" weight="1.0"/>
+
+    <operator id="SATreeScalerFBD.t:Shankarappa" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
     <operator id="KappaScaler.s:Shankarappa" spec="ScaleOperator" parameter="@kappa.s:Shankarappa" scaleFactor="0.5" weight="0.1"/>
 
@@ -389,9 +436,17 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <log idref="prior"/>
         <log idref="treeLikelihood.Shankarappa"/>
         <log id="TreeHeight.t:Shankarappa" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:Shankarappa"/>
+        <!--
         <log idref="BirthDeath.t:Shankarappa"/>
         <log idref="BDBirthRate.t:Shankarappa"/>
         <log idref="BDDeathRate.t:Shankarappa"/>
+        -->
+        <log idref="FBD.t:Shankarappa"/>
+        <log idref="diversificationRateFBD.t:Shankarappa"/>
+        <log idref="turnoverFBD.t:Shankarappa"/>
+        <log idref="samplingProportionFBD.t:Shankarappa"/>
+        <log idref="originFBD.t:Shankarappa"/>
+        <log id="SACountFBD.t:Shankarappa" spec="beast.evolution.tree.SampledAncestorLogger" tree="@Tree.t:Shankarappa"/>
         <log idref="kappa.s:Shankarappa"/>
         <log idref="ucldMean.c:Shankarappa"/>
         <log idref="ucldStdev.c:Shankarappa"/>
