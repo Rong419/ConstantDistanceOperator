@@ -19,33 +19,26 @@ import java.util.List;
 
 @Description("Small pulley: Propose a new genetic distance")
 public class SmallPulley extends TreeOperator {
-    //public final Input<Tree> treeInput = new Input<>("tree", "the rooted time tree for the operator to work on");
-    public final Input<Double> dwindowSizeInput =
+    final public  Input<Double> dwindowSizeInput =
             new Input<>("dwindowSize", "the size of the window in Big Pulley");
-   // public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
-            //"A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
 
 
     private double dwindowSize;
-    Tree tree;
     private RealParameter rates;
-    //protected BranchRateModel.Base branchRateModel;
-    JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
+
 
     @Override
     public void initAndValidate() {
         dwindowSize = dwindowSizeInput.get();
-        tree = treeInput.get();
-       // branchRateModel = branchRateModelInput.get();
         rates = rateInput.get();
 
     }
 
     @Override
     public double proposal() {
-        //final Tree tree = treeInput.get(this);
-
+        final Tree tree = treeInput.get(this);
+        int branchCount = tree.getNodeCount() - 1; //the number of branches of the tree
         //original rates
         double r_j;
         double r_k;
@@ -75,12 +68,19 @@ public class SmallPulley extends TreeOperator {
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
 
+        int nodeN02 = son.getNr();//node number of son
+        if (nodeN02 == branchCount) {
+            nodeN02 = son.getTree().getRoot().getNr();
+        }
+
+        int nodeN03 = daughter.getNr(); // node time of daughter
+        if (nodeN03 == branchCount) {
+            nodeN03 = daughter.getTree().getRoot().getNr();
+        }
 
         // get the rates on branches linked to root
-        //r_j = branchRateModel.getRateForBranch(son);//branch rate for son
-        //r_k = branchRateModel.getRateForBranch(daughter);//branch rate for daughter
-        r_j = rates.getValues()[son.getNr()];
-        r_k = rates.getValues()[daughter.getNr()];
+        r_j = rates.getValues()[nodeN02];
+        r_k = rates.getValues()[nodeN03];
         //d3: the distance to be proposed
         //distance on the branch above son
         double d = r_j * (t_x - t_j);
@@ -100,8 +100,8 @@ public class SmallPulley extends TreeOperator {
         r_k_ = (D - d_) / (t_x - t_k);
 
         //Step 4: set the proposed new rates
-        rates.setValue(son.getNr(), r_j_);
-        rates.setValue(daughter.getNr(), r_k_);
+        rates.setValue(nodeN02, r_j_);
+        rates.setValue(nodeN03, r_k_);
 
         //Step5: calculate the Hastings ratio
         /*
