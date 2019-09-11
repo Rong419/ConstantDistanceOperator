@@ -43,20 +43,15 @@
             </trait>
             <taxonset idref="TaxonSet.Dengue4"/>
         </tree>
-        <!--
-        <parameter id="BDBirthRate.t:Dengue4" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
-        <parameter id="BDDeathRate.t:Dengue4" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
-        -->
         <parameter id="FBDbirthRate" name="stateNode">0.1</parameter>
         <parameter id="FBDdeathRate" name="stateNode">0.05</parameter>
         <parameter id="FBDsamplingRate" name="stateNode">0.01</parameter>
         <parameter id="FBDorigin" name="stateNode">50</parameter>
-
         <parameter id="kappa.s:Dengue4" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="fastUcldMean.c:Dengue4" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="fastUcldStdev.c:Dengue4" spec="parameter.RealParameter" name="stateNode" upper="1.0">0.1</parameter>
-        <parameter id="fastRates.c:Dengue4" spec="parameter.RealParameter"  name="stateNode">1.0</parameter>
         <parameter id="freqParameter.s:Dengue4" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+        <parameter id="rateCategories.c:Dengue4" spec="parameter.IntegerParameter"  name="stateNode">1</parameter>
     </state>
 
     <init id="RandomTree.t:Dengue4" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:Dengue4" taxa="@Dengue4">
@@ -67,16 +62,6 @@
 
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
-            <!--
-            <distribution id="BirthDeath.t:Dengue4" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:Dengue4" relativeDeathRate="@BDDeathRate.t:Dengue4" tree="@Tree.t:Dengue4"/>
-            <prior id="BirthRatePrior.t:Dengue4" name="distribution" x="@BDBirthRate.t:Dengue4">
-                <LogNormal id="LogNormal.0" name="distr" M="1000" S="3" meanInRealSpace="true"/>
-            </prior>
-            <prior id="DeathRatePrior.t:Dengue4" name="distribution" x="@BDDeathRate.t:Dengue4">
-                <Uniform id="Uniform.0" name="distr" upper="10"/>
-            </prior>
-            -->
-
             <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" birthRate="@FBDbirthRate" deathRate="@FBDdeathRate" samplingRate="@FBDsamplingRate" origin="@FBDorigin" tree="@Tree.t:Dengue4">
                 <parameter id="FBDremovalProb" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
                 <parameter id="FBDrho" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
@@ -108,10 +93,6 @@
                 </LogNormal>
             </prior>
 
-            <prior id="FastRatePriorDistrbution.c:Dengue4" name="distribution" x="@fastRates.c:Dengue4">
-                <LogNormal id="LogNormal.2" S="@fastUcldStdev.c:Dengue4" M="1.0" meanInRealSpace="true" name="distr"/>
-            </prior>
-
             <prior id="fastUcldStdevPrior.c:Dengue4" name="distribution" x="@fastUcldStdev.c:Dengue4">
                 <Gamma id="Gamma.0" name="distr">
                     <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396 </parameter>
@@ -138,36 +119,18 @@
                     </substModel>
                 </siteModel>
                 <branchRateModel id="FastRelaxedClock.c:Dengue4" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@fastUcldMean.c:Dengue4"
-                                 rates="@fastRates.c:Dengue4"  tree="@Tree.t:Dengue4">
-                       <LogNormal id="LogNormal.3" S="@fastUcldStdev.c:Dengue4" M="1.0" meanInRealSpace="true" name="distr"/>
+                                 rateCategories="@rateCategories.c:Dengue4"  tree="@Tree.t:Dengue4">
+                        <LogNormal id="LogNormal.3" S="@fastUcldStdev.c:Dengue4" M="1.0" meanInRealSpace="true" name="distr"/>
                 </branchRateModel>
+
             </distribution>
         </distribution>
     </distribution>
-    <!--
-    <operator id="BirthDeathTreeScaler.t:Dengue4" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Dengue4" weight="3.0"/>
 
-    <operator id="BirthDeathTreeRootScaler.t:Dengue4" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:Dengue4" weight="3.0"/>
-
-    <operator id="BirthDeathUniformOperator.t:Dengue4" spec="Uniform" tree="@Tree.t:Dengue4" weight="30.0"/>
-
-    <operator id="BirthDeathSubtreeSlide.t:Dengue4" spec="SubtreeSlide" tree="@Tree.t:Dengue4" weight="15.0"/>
-
-    <operator id="BirthDeathNarrow.t:Dengue4" spec="Exchange" tree="@Tree.t:Dengue4" weight="15.0"/>
-
-    <operator id="BirthDeathWide.t:Dengue4" spec="Exchange" isNarrow="false" tree="@Tree.t:Dengue4" weight="3.0"/>
-
-    <operator id="BirthDeathWilsonBalding.t:Dengue4" spec="WilsonBalding" tree="@Tree.t:Dengue4" weight="3.0"/>
-
-    <operator id="BirthRateScaler.t:Dengue4" spec="ScaleOperator" parameter="@BDBirthRate.t:Dengue4" scaleFactor="0.75" weight="3.0"/>
-
-    <operator id="DeathRateScaler.t:Dengue4" spec="ScaleOperator" parameter="@BDDeathRate.t:Dengue4" scaleFactor="0.75" weight="3.0"/>
-    -->
     <operator id="FBDoriginScaler" spec="ScaleOperator" parameter="@FBDorigin" scaleFactor="0.75" weight="3.0"/>
     <operator id="FBDbirthRateScaler" spec="ScaleOperator" parameter="@FBDbirthRate" scaleFactor="0.75" weight="1.0"/>
     <operator id="FBDdeathRateScaler" spec="ScaleOperator" parameter="@FBDdeathRate" scaleFactor="0.75" weight="1.0"/>
     <operator id="FBDsamplingRateScaler" spec="ScaleOperator" parameter="@FBDsamplingRate" scaleFactor="0.75" weight="10.0"/>
-
     <operator id="FBDLeafToSA" spec="LeafToSampledAncestorJump" tree="@Tree.t:Dengue4" weight="10.0"/>
     <operator id="FBDSAWilsonBalding" spec="SAWilsonBalding" tree="@Tree.t:Dengue4" weight="10.0"/>
     <operator id="FBDSAWide" spec="SAExchange" isNarrow="false" tree="@Tree.t:Dengue4" weight="10.0"/>
@@ -183,59 +146,35 @@
     <operator id="KappaScaler.s:Dengue4" spec="ScaleOperator" parameter="@kappa.s:Dengue4" scaleFactor="0.5" weight="0.5"/>
 
     <operator id="fastUcldMeanScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldMean.c:Dengue4" scaleFactor="0.5" weight="5.0"/>
-<!--
-    <operator id="fastUcldStdevScaler.c:Dengue4" spec="ScaleOperator" parameter="@fastUcldStdev.c:Dengue4" scaleFactor="0.5" weight="50.0"/>
--->
-    <operator id="FastUcldStdevScaler.c:Dengue4" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:Dengue4" stdev="@fastUcldStdev.c:Dengue4" distr="@LogNormal.2" scaleFactor="0.8" weight="10.0"/>
 
+    <operator id="UcldStdevScaler.c:dna" spec="ScaleOperator" parameter="@fastUcldStdev.c:Dengue4" scaleFactor="0.5" weight="5.0"/>
 
-    <operator id="RatesRandomWalk.c:Dengue4" spec="RealRandomWalkOperator" parameter="@fastRates.c:Dengue4" weight="5.0" windowSize="0.1"/>
-
-    <operator id="RatesScaleOperator.c:Dengue4" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:Dengue4" weight="5.0"/>
-<!--
-    <operator id="RatesScaleOperator.c:Dengue4" spec="SwapOperator"  intparameter="@fastRates.c:Dengue4" weight="5.0"/>
--->
-    <operator id="relaxedUpDownOperator.c:anolis" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
+    <operator id="relaxedUpDownOperator.c:Dengue4" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
         <up idref="fastUcldMean.c:Dengue4"/>
         <down idref="Tree.t:Dengue4"/>
     </operator>
-<!--
-    <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
-                  twindowSize="1"  tree="@Tree.t:Dengue4" rates="@fastRates.c:Dengue4"  weight="5"/>
 
-    <operator id="FastRootOperator1.c:Dengue4" spec="consoperators.SimpleDistance" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="1.0" weight="2.0"/>
+    <operator id="CategoriesSwapOperator.c:Dengue4" spec="SwapOperator" intparameter="@rateCategories.c:Dengue4" weight="10.0"/>
 
-    <operator id="FastRootOperator2.c:Dengue4" spec="consoperators.SmallPulley"  dwindowSize="0.1" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" weight="2.0"/>
--->
+    <operator id="CategoriesUniform.c:Dengue4" spec="UniformOperator" parameter="@rateCategories.c:Dengue4" weight="10.0"/>
 
-    <operator id="FastRootOperator3.c:Dengue4" spec="consoperators.BigPulley"  dwindowSize="0.1" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="1.0" weight="1.0"/>
+    <operator id="CategoriesRandomWalk.c:Dengue4" spec="IntRandomWalkOperator" parameter="@rateCategories.c:Dengue4" weight="10.0" windowSize="1"/>
 
-<!--
-    <operator id="FastInternalnodesOperator.c:Dengue4" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:Dengue4" stdev="@fastUcldStdev.c:Dengue4" scaleFactor="0.8" weight="10.0"/>
--->
-    <logger id="tracelog" spec="Logger" fileName="Dengue4f.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+
+    <logger id="tracelog" spec="Logger" fileName="Dengue4.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.Dengue4"/>
         <log id="TreeHeight.t:Dengue4" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:Dengue4"/>
-        <!--
-        <log idref="BirthDeath.t:Dengue4"/>
-        <log idref="BDBirthRate.t:Dengue4"/>
-        <log idref="BDDeathRate.t:Dengue4"/>
-        -->
         <log idref="FBD"/>
         <log idref="FBDbirthRate"/>
         <log idref="FBDdeathRate"/>
-
         <log idref="kappa.s:Dengue4"/>
         <log idref="fastUcldMean.c:Dengue4"/>
         <log idref="fastUcldStdev.c:Dengue4"/>
-        <log id="fastRatesStat.c:Dengue4" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@FastRelaxedClock.c:Dengue4" tree="@Tree.t:Dengue4"/>
         <log idref="freqParameter.s:Dengue4"/>
-        <log idref="fastRates.c:Dengue4"/>
+        <log id="ratesStat.c:Dengue4" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@FastRelaxedClock.c:Dengue4" tree="@Tree.t:Dengue4"/>
     </logger>
 
     <logger id="screenlog" spec="Logger" logEvery="100000">
@@ -244,7 +183,7 @@
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:Dengue4" spec="Logger" fileName="$(tree)f.trees" logEvery="1000" mode="tree">
+    <logger id="treelog.t:Dengue4" spec="Logger" fileName="$(tree).trees" logEvery="1000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:Dengue4" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@FastRelaxedClock.c:Dengue4" tree="@Tree.t:Dengue4"/>
     </logger>
 
