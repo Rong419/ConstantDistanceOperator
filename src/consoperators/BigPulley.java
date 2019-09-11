@@ -16,30 +16,29 @@ public class BigPulley extends TreeOperator {
             new Input<>("twindowSize", "the size of the window for proposing new node time", Input.Validate.REQUIRED);
     public final Input<Double> dwindowSizeInput =
             new Input<>("dwindowSize", "the size of the window for proposing new genetic distance");
-    //public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
-            //"A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
 
     private double twindowSize;
     private double dwindowSize;
     private Tree tree;
+    private int branchCount;
     private RealParameter rates;
     private double hastingsRatio;
-    //protected BranchRateModel.Base branchRateModel;
-    JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
+    private JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
         twindowSize = twindowSizeInput.get();
         dwindowSize = dwindowSizeInput.get();
-        tree = treeInput.get();
-        //branchRateModel = branchRateModelInput.get();
         rates = rateInput.get();
+        tree = treeInput.get();
     }
 
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
+        branchCount = tree.getNodeCount() - 1; //the number of branches of the tree
+
         //the chosen node to work on
         Node node;
         Node nodeOlder = new Node(); //the older child node
@@ -78,19 +77,20 @@ public class BigPulley extends TreeOperator {
 
         //Step 1: randomly select a node, denoted by node x
         node = tree.getRoot();
-
         t_x = node.getHeight();//get the time of this node
+
         // son
         Node son = node.getChild(0);//get the left child of this node, i.e. son
         t_j = son.getHeight();//node time of son
-        //r_i = branchRateModel.getRateForBranch(son);
-        r_i = rates.getValues()[son.getNr()];
+
+        r_i = rates.getValues()[getNodeNr(son)];
         d_i = r_i * (t_x - t_j);
+
         // daughter
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
-        //r_x = branchRateModel.getRateForBranch(daughter);
-        r_x = rates.getValues()[daughter.getNr()];
+
+        r_x = rates.getValues()[getNodeNr(daughter)];
         d_x = r_x * (t_x - t_k);
 
         double a = Randomizer.uniform(-twindowSize, twindowSize);//for the root time
@@ -137,14 +137,10 @@ public class BigPulley extends TreeOperator {
                 double t5 = son2.getHeight();
                 double t6 = daughter2.getHeight();
 
-                //r_j = branchRateModel.getRateForBranch(son1);
-                //r_k = branchRateModel.getRateForBranch(daughter1);
-                //double r_m = branchRateModel.getRateForBranch(son2);
-                //double r_n = branchRateModel.getRateForBranch(daughter2);
-                r_j = rates.getValues()[son1.getNr()];
-                r_k = rates.getValues()[daughter1.getNr()];
-                double r_m = rates.getValues()[son2.getNr()];
-                double r_n = rates.getValues()[daughter2.getNr()];
+                r_j = rates.getValues()[getNodeNr(son1)];
+                r_k = rates.getValues()[getNodeNr(daughter1)];
+                double r_m = rates.getValues()[getNodeNr(son2)];
+                double r_n = rates.getValues()[getNodeNr(daughter2)];
 
                 d_j = r_j * (t_j - t3);
                 d_k = r_k * (t_j - t4);
@@ -267,16 +263,16 @@ public class BigPulley extends TreeOperator {
                 Node Child2 = nodeOlder.getChild(1);
                 double t_Ch1 = Child1.getHeight();
                 double t_Ch2 = Child2.getHeight();
-                //double r_Ch1 = branchRateModel.getRateForBranch(Child1);
-                //double r_Ch2 = branchRateModel.getRateForBranch(Child2);
-                double r_Ch1 = rates.getValues()[Child1.getNr()];
-                double r_Ch2 = rates.getValues()[Child2.getNr()];
+
+
+
+                double r_Ch1 = rates.getValues()[getNodeNr(Child1)];
+                double r_Ch2 = rates.getValues()[getNodeNr(Child2)];
                 double d_Ch1 = r_Ch1 * (tOlder - t_Ch1);
                 double d_Ch2 = r_Ch2 * (tOlder - t_Ch2);
-                //double r_Y = branchRateModel.getRateForBranch(nodeYounger);
-                //double r_O = branchRateModel.getRateForBranch(nodeOlder);
-                double r_Y = rates.getValues()[nodeYounger.getNr()];
-                double r_O = rates.getValues()[nodeOlder.getNr()];
+
+                double r_Y = rates.getValues()[getNodeNr(nodeYounger)];
+                double r_O = rates.getValues()[getNodeNr(nodeOlder)];
 
                 if ((newtOlder > Math.max(t_Ch1, t_Ch2)) || (t_Ch1 == t_Ch2)) {
                     if (u2 > 0.5) {
@@ -357,10 +353,10 @@ public class BigPulley extends TreeOperator {
         tree.setRoot(Root);
 
         //assign new rates to the nodes
-        rates.setValue(ChangeC.getNr(), r_3_);
-        rates.setValue(SiblingA.getNr(), r_2_);
-        rates.setValue(ChangeA.getNr(), r_1_);
-        rates.setValue(ParentA.getNr(), r_4_);
+        rates.setValue(getNodeNr(ChangeC), r_3_);
+        rates.setValue(getNodeNr(SiblingA), r_2_);
+        rates.setValue(getNodeNr(ChangeA), r_1_);
+        rates.setValue(getNodeNr(ParentA), r_4_);
 
 
     }
@@ -412,7 +408,13 @@ public class BigPulley extends TreeOperator {
         //postcondition p -> j & p -> i
     }
 
-
+   private int getNodeNr (Node node) {
+       int nodenumber = node.getNr(); // node time of daughter
+       if (nodenumber == branchCount) {
+           nodenumber =node.getTree().getRoot().getNr();
+       }
+       return nodenumber;
+   }
 
 
 
