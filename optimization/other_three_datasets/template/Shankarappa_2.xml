@@ -414,9 +414,12 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
     <operator id="KappaScaler.s:Shankarappa" spec="ScaleOperator" parameter="@kappa.s:Shankarappa" scaleFactor="0.5" weight="0.1"/>
 
     <operator id="ucldMeanScaler.c:Shankarappa" spec="ScaleOperator" parameter="@ucldMean.c:Shankarappa" scaleFactor="0.5" weight="1.0"/>
-
+    <!--
     <operator id="ucldStdevScaler.c:Shankarappa" spec="ScaleOperator" parameter="@ucldStdev.c:Shankarappa" scaleFactor="0.5" weight="3.0"/>
-
+    -->
+        <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
+              rates="@fastRates.c:Shankarappa" stdev="@ucldStdev.c:Shankarappa" distr="@LogNormalDistributionModel.c:Shankarappa" scaleFactor="0.8" weight="10.0"/>
+              
     <operator id="FastRatesRandomWalk.c:Shankarappa" spec="RealRandomWalkOperator" parameter="@fastRates.c:Shankarappa" weight="10.0" windowSize="1"/>
 
     <operator id="FastRatesSwapOperator.c:Shankarappa" spec="SwapOperator" parameter="@fastRates.c:Shankarappa" weight="10.0"/>

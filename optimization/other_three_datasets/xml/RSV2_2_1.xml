@@ -298,8 +298,14 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <parameter id="ucldMean.c:RSV2" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="ucldStdev.c:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
         <stateNode id="fastRates.c:RSV2" spec="parameter.RealParameter" dimension="256">1.0</stateNode>
+        <!--
         <parameter id="BDBirthRate.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="10000.0">1.0</parameter>
         <parameter id="BDDeathRate.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        -->
+        <parameter id="diversificationRateFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="turnoverFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="samplingProportionFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="originFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode">100.0</parameter>
         <parameter id="freqParameter.s:RSV2" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
     </state>
 
@@ -311,6 +317,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
 
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
+            <!--
             <distribution id="BirthDeath.t:RSV2" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:RSV2" relativeDeathRate="@BDDeathRate.t:RSV2" tree="@Tree.t:RSV2"/>
             <prior id="BirthRatePrior.t:RSV2" name="distribution" x="@BDBirthRate.t:RSV2">
                 <LogNormal id="LogNormalDistribution1" S="3"  M="10000" meanInRealSpace="true" name="distr"/>
@@ -318,8 +325,22 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
             <prior id="DeathRatePrior.t:RSV2" name="distribution" x="@BDDeathRate.t:RSV2">
                 <Uniform id="Uniform.6" name="distr" upper="Infinity"/>
             </prior>
-            <prior id="FrequenciesPrior.s:RSV2" name="distribution" x="@freqParameter.s:RSV2">
-               <Dirichlet id="Dirichlet" alpha="10 10 10 10" name="distr"/>
+            -->
+            <distribution id="FBD.t:RSV2" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" diversificationRate="@diversificationRateFBD.t:RSV2" origin="@originFBD.t:RSV2" samplingProportion="@samplingProportionFBD.t:RSV2" tree="@Tree.t:RSV2" turnover="@turnoverFBD.t:RSV2">
+                <parameter id="rFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                <parameter id="rhoFBD.t:RSV2" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
+            </distribution>
+            <prior id="diversificationRatePriorFBD.t:RSV2" name="distribution" x="@diversificationRateFBD.t:RSV2">
+                <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="originPriorFBD.t:RSV2" name="distribution" x="@originFBD.t:RSV2">
+                <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="samplingProportionPriorFBD.t:RSV2" name="distribution" x="@samplingProportionFBD.t:RSV2">
+                <Uniform id="Uniform.2" name="distr"/>
+            </prior>
+            <prior id="turnoverPriorFBD.t:RSV2" name="distribution" x="@turnoverFBD.t:RSV2">
+                <Uniform id="Uniform.3" name="distr"/>
             </prior>
             <prior id="KappaPrior.s:RSV2" name="distribution" x="@kappa.s:RSV2">
                 <LogNormal id="LogNormalDistributionModel.0" name="distr">
@@ -373,9 +394,12 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
     <operator id="KappaScaler.s:RSV2" spec="ScaleOperator" parameter="@kappa.s:RSV2" scaleFactor="0.5" weight="0.1"/>
 
     <operator id="ucldMeanScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldMean.c:RSV2" scaleFactor="0.5" weight="1.0"/>
-
+    <!--
     <operator id="ucldStdevScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldStdev.c:RSV2" scaleFactor="0.5" weight="3.0"/>
-
+    -->
+    <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
+              rates="@fastRates.c:RSV2" stdev="@ucldStdev.c:RSV2" distr="@LogNormalDistributionModel.c:RSV2" scaleFactor="0.8" weight="10.0"/>
+              
     <operator id="FastRatesRandomWalk.c:RSV2" spec="RealRandomWalkOperator" parameter="@fastRates.c:RSV2" weight="10.0" windowSize="1"/>
 
     <operator id="FastRatesSwapOperator.c:RSV2" spec="SwapOperator" parameter="@fastRates.c:RSV2" weight="10.0"/>
@@ -384,7 +408,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <up idref="ucldMean.c:RSV2"/>
         <down idref="Tree.t:RSV2"/>
     </operator>
-
+<!--
     <operator id="BirthDeathTreeScaler.t:RSV2" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:RSV2" weight="3.0"/>
 
     <operator id="BirthDeathTreeRootScaler.t:RSV2" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:RSV2" weight="3.0"/>
@@ -402,6 +426,28 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
     <operator id="BirthRateScaler.t:RSV2" spec="ScaleOperator" parameter="@BDBirthRate.t:RSV2" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="DeathRateScaler.t:RSV2" spec="ScaleOperator" parameter="@BDDeathRate.t:RSV2" scaleFactor="0.75" weight="3.0"/>
+    -->
+    <operator id="originScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@originFBD.t:RSV2" scaleFactor="0.75" weight="3.0"/>
+
+    <operator id="divRateScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@diversificationRateFBD.t:RSV2" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="turnoverScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@turnoverFBD.t:RSV2" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="samplingPScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@samplingProportionFBD.t:RSV2" scaleFactor="0.75" weight="10.0"/>
+
+    <operator id="LeafToSAFBD.t:RSV2" spec="LeafToSampledAncestorJump" tree="@Tree.t:RSV2" weight="10.0"/>
+
+    <operator id="SAWilsonBaldingFBD.t:RSV2" spec="SAWilsonBalding" tree="@Tree.t:RSV2" weight="10.0"/>
+
+    <operator id="SAWideFBD.t:RSV2" spec="SAExchange" isNarrow="false" tree="@Tree.t:RSV2" weight="10.0"/>
+
+    <operator id="SANarrowFBD.t:RSV2" spec="SAExchange" tree="@Tree.t:RSV2" weight="10.0"/>
+
+    <operator id="SAUniformOperatorFBD.t:RSV2" spec="SAUniform" tree="@Tree.t:RSV2" weight="20.0"/>
+
+    <operator id="SATreeRootScalerFBD.t:RSV2" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:RSV2" weight="1.0"/>
+
+    <operator id="SATreeScalerFBD.t:RSV2" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:RSV2" weight="3.0"/>
 
     <operator id="FrequenciesExchanger.s:RSV2" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
         <parameter idref="freqParameter.s:RSV2"/>
@@ -417,9 +463,17 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <log idref="ucldMean.c:RSV2"/>
         <log idref="ucldStdev.c:RSV2"/>
         <log id="rate.c:RSV2" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:RSV2" tree="@Tree.t:RSV2"/>
+        <!--
         <log idref="BirthDeath.t:RSV2"/>
         <log idref="BDBirthRate.t:RSV2"/>
         <log idref="BDDeathRate.t:RSV2"/>
+        -->
+        <log idref="FBD.t:RSV2"/>
+        <log idref="diversificationRateFBD.t:RSV2"/>
+        <log idref="turnoverFBD.t:RSV2"/>
+        <log idref="samplingProportionFBD.t:RSV2"/>
+        <log idref="originFBD.t:RSV2"/>
+        <log id="SACountFBD.t:RSV2" spec="beast.evolution.tree.SampledAncestorLogger" tree="@Tree.t:RSV2"/>
         <log idref="freqParameter.s:RSV2"/>
     </logger>
 

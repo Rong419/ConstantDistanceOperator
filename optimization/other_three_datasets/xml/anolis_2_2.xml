@@ -158,8 +158,11 @@ name="alignment">
     <operator id="DeathRateScaler.t:anolis" spec="ScaleOperator" parameter="@BDDeathRate.t:anolis" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="KappaScaler.s:anolis" spec="ScaleOperator" parameter="@kappa.s:anolis" scaleFactor="0.5" weight="0.1"/>
-
+    <!--
     <operator id="ucldStdevScaler.c:anolis" spec="ScaleOperator" parameter="@ucldStdev.c:anolis" scaleFactor="0.5" weight="3.0"/>
+    -->
+    <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
+              rates="@fastRates.c:anolis" stdev="@ucldStdev.c:anolis" distr="@LogNormalDistributionModel.c:anolis" scaleFactor="0.8" weight="10.0"/>
 
     <operator id="FastRatessRandomWalk.c:anolis" spec="RealRandomWalkOperator" parameter="@fastRates.c:anolis" weight="10.0" windowSize="1"/>
 

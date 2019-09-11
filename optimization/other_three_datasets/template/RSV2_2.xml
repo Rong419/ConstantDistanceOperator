@@ -394,9 +394,12 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
     <operator id="KappaScaler.s:RSV2" spec="ScaleOperator" parameter="@kappa.s:RSV2" scaleFactor="0.5" weight="0.1"/>
 
     <operator id="ucldMeanScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldMean.c:RSV2" scaleFactor="0.5" weight="1.0"/>
-
+    <!--
     <operator id="ucldStdevScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldStdev.c:RSV2" scaleFactor="0.5" weight="3.0"/>
-
+    -->
+    <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
+              rates="@fastRates.c:RSV2" stdev="@ucldStdev.c:RSV2" distr="@LogNormalDistributionModel.c:RSV2" scaleFactor="0.8" weight="10.0"/>
+              
     <operator id="FastRatesRandomWalk.c:RSV2" spec="RealRandomWalkOperator" parameter="@fastRates.c:RSV2" weight="10.0" windowSize="1"/>
 
     <operator id="FastRatesSwapOperator.c:RSV2" spec="SwapOperator" parameter="@fastRates.c:RSV2" weight="10.0"/>
