@@ -50,7 +50,7 @@
         <parameter id="FBDbirthRate" name="stateNode">0.1</parameter>
         <parameter id="FBDdeathRate" name="stateNode">0.05</parameter>
         <parameter id="FBDsamplingRate" name="stateNode">0.01</parameter>
-        <parameter id="FBDorigin" name="stateNode">41.2668</parameter>
+        <parameter id="FBDorigin" name="stateNode">50</parameter>
 
         <parameter id="kappa.s:Dengue4" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="fastUcldMean.c:Dengue4" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
@@ -76,6 +76,7 @@
                 <Uniform id="Uniform.0" name="distr" upper="10"/>
             </prior>
             -->
+
             <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" birthRate="@FBDbirthRate" deathRate="@FBDdeathRate" samplingRate="@FBDsamplingRate" origin="@FBDorigin" tree="@Tree.t:Dengue4">
                 <parameter id="FBDremovalProb" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
                 <parameter id="FBDrho" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
@@ -143,7 +144,7 @@
             </distribution>
         </distribution>
     </distribution>
-<!--
+    <!--
     <operator id="BirthDeathTreeScaler.t:Dengue4" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Dengue4" weight="3.0"/>
 
     <operator id="BirthDeathTreeRootScaler.t:Dengue4" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:Dengue4" weight="3.0"/>
@@ -161,10 +162,10 @@
     <operator id="BirthRateScaler.t:Dengue4" spec="ScaleOperator" parameter="@BDBirthRate.t:Dengue4" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="DeathRateScaler.t:Dengue4" spec="ScaleOperator" parameter="@BDDeathRate.t:Dengue4" scaleFactor="0.75" weight="3.0"/>
--->
+    -->
     <operator id="FBDoriginScaler" spec="ScaleOperator" parameter="@FBDorigin" scaleFactor="0.75" weight="3.0"/>
-    <operator id="FBDbirthRateScaler" spec="ScaleOperator" parameter="@FBDbirthRate" scaleFactor="0.75" weight="10.0"/>
-    <operator id="FBDdeathRateScaler" spec="ScaleOperator" parameter="@FBDdeathRate" scaleFactor="0.75" weight="10.0"/>
+    <operator id="FBDbirthRateScaler" spec="ScaleOperator" parameter="@FBDbirthRate" scaleFactor="0.75" weight="1.0"/>
+    <operator id="FBDdeathRateScaler" spec="ScaleOperator" parameter="@FBDdeathRate" scaleFactor="0.75" weight="1.0"/>
     <operator id="FBDsamplingRateScaler" spec="ScaleOperator" parameter="@FBDsamplingRate" scaleFactor="0.75" weight="10.0"/>
 
     <operator id="FBDLeafToSA" spec="LeafToSampledAncestorJump" tree="@Tree.t:Dengue4" weight="10.0"/>
@@ -174,7 +175,6 @@
     <operator id="FBDSAUniformOperator" spec="SAUniform" tree="@Tree.t:Dengue4" weight="20.0"/>
     <operator id="FBDSATreeRootScaler" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:Dengue4" weight="1.0"/>
     <operator id="FBDSATreeScaler" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:Dengue4" weight="3.0"/>
-
 
     <operator id="FrequenciesExchanger.s:Dengue4" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
         <parameter idref="freqParameter.s:Dengue4"/>
@@ -207,9 +207,10 @@
     <operator id="FastRootOperator1.c:Dengue4" spec="consoperators.SimpleDistance" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="1.0" weight="2.0"/>
 
     <operator id="FastRootOperator2.c:Dengue4" spec="consoperators.SmallPulley"  dwindowSize="0.1" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" weight="2.0"/>
+-->
 
     <operator id="FastRootOperator3.c:Dengue4" spec="consoperators.BigPulley"  dwindowSize="0.1" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="1.0" weight="1.0"/>
--->
+
 <!--
     <operator id="FastInternalnodesOperator.c:Dengue4" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:Dengue4" stdev="@fastUcldStdev.c:Dengue4" scaleFactor="0.8" weight="10.0"/>
@@ -228,6 +229,7 @@
         <log idref="FBD"/>
         <log idref="FBDbirthRate"/>
         <log idref="FBDdeathRate"/>
+
         <log idref="kappa.s:Dengue4"/>
         <log idref="fastUcldMean.c:Dengue4"/>
         <log idref="fastUcldStdev.c:Dengue4"/>
