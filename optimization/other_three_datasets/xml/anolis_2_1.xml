@@ -131,13 +131,16 @@ name="alignment">
     </distribution>
 
     <operator id="InternalnodesOperator.c:anolis" spec="InConstantDistanceOperator"
-              twindowSize="0.2"  tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="20"/>
+              twindowSize="1.0"  tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="10.0"/>
 
     <operator id="RootOperator2.c:anolis" spec="SimpleDistance"
-              twindowSize="0.2" tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="2.0"/>
+              twindowSize="0.027" tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="1.0"/>
 
     <operator id="RootOperator3.c:anolis" spec="SmallPulley"
-              dwindowSize="0.04" tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="2.0"/>
+              dwindowSize="1.0" tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="1.0"/>
+    
+    <operator id="RootOperator4.c:anolis" spec="BigPulley"
+              twindowSize="0.02" dwindowSize="0.02" tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="1.0"/>
 
     <operator id="BirthDeathTreeScaler.t:anolis" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:anolis" weight="3.0"/>
 
@@ -158,15 +161,13 @@ name="alignment">
     <operator id="DeathRateScaler.t:anolis" spec="ScaleOperator" parameter="@BDDeathRate.t:anolis" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="KappaScaler.s:anolis" spec="ScaleOperator" parameter="@kappa.s:anolis" scaleFactor="0.5" weight="0.1"/>
-    <!--
-    <operator id="ucldStdevScaler.c:anolis" spec="ScaleOperator" parameter="@ucldStdev.c:anolis" scaleFactor="0.5" weight="3.0"/>
-    -->
+
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:anolis" stdev="@ucldStdev.c:anolis" distr="@LogNormalDistributionModel.c:anolis" scaleFactor="0.8" weight="10.0"/>
+              rates="@fastRates.c:anolis" stdev="@ucldStdev.c:anolis" distr="@LogNormalDistributionModel.c:anolis" scaleFactor="0.5" weight="10.0"/>
 
     <operator id="FastRatessRandomWalk.c:anolis" spec="RealRandomWalkOperator" parameter="@fastRates.c:anolis" weight="10.0" windowSize="1"/>
 
-    <operator id="FastRatesSwapOperator.c:anolis" spec="SwapOperator" parameter="@fastRates.c:anolis" weight="10.0"/>
+    <operator id="FastRatesScaleOperator.c:anolis" spec="ScaleOperator" parameter="@fastRates.c:anolis" weight="10.0"/>
 
     <operator id="FrequenciesExchanger.s:anolis" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
         <parameter idref="freqParameter.s:anolis"/>

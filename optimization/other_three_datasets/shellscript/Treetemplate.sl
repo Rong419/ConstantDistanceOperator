@@ -13,5 +13,5 @@
 module load beagle-lib/3.0.1-gimkl-2017a
 module load Java/1.8.0_144
 
-srun java -Xmx4096m -Djava.library.path=$BEAGLE_LIB_PATH -jar /nesi/project/nesi00390/rong/operator/TreeAnnotator.jar -heights ca -b 15 /nesi/project/nesi00390/rong/operator/others/output/FILE.trees /nesi/project/nesi00390/rong/operator/others/summarytree/s_FILE.trees
+srun java -Xmx4096m -Djava.library.path=$BEAGLE_LIB_PATH -jar /nesi/project/nesi00390/rong/operator/TreeAnnotator.jar -heights mean -b 15 /nesi/project/nesi00390/rong/operator/others/output/FILE.trees /nesi/project/nesi00390/rong/operator/others/summarytree/s_FILE.trees
 

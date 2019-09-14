@@ -298,10 +298,6 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <parameter id="ucldMean.c:RSV2" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="ucldStdev.c:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
         <stateNode id="fastRates.c:RSV2" spec="parameter.RealParameter" dimension="256">1.0</stateNode>
-        <!--
-        <parameter id="BDBirthRate.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="10000.0">1.0</parameter>
-        <parameter id="BDDeathRate.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
-        -->
         <parameter id="diversificationRateFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
         <parameter id="turnoverFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
         <parameter id="samplingProportionFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
@@ -383,57 +379,40 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
     </distribution>
 
     <operator id="InternalnodesOperator.c:RSV2" spec="InConstantDistanceOperator"
-              twindowSize="0.2"  tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="20"/>
+              twindowSize="0.2"  tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="10.0"/>
 
     <operator id="RootOperator2.c:RSV2" spec="SimpleDistance"
-              twindowSize="0.2" tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="2.0"/>
+              twindowSize="0.2" tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="1.0"/>
 
     <operator id="RootOperator3.c:RSV2" spec="SmallPulley"
-              dwindowSize="0.04" tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="2.0"/>
+              dwindowSize="0.04" tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="1.0"/>
+    
+    <operator id="RootOperator4.c:RSV2" spec="BigPulley"
+              twindowSize="0.02" dwindowSize="0.02" tree="@Tree.t:RSV2" rates="@fastRates.c:RSV2"  weight="1.0"/>
 
     <operator id="KappaScaler.s:RSV2" spec="ScaleOperator" parameter="@kappa.s:RSV2" scaleFactor="0.5" weight="0.1"/>
 
     <operator id="ucldMeanScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldMean.c:RSV2" scaleFactor="0.5" weight="1.0"/>
-    <!--
-    <operator id="ucldStdevScaler.c:RSV2" spec="ScaleOperator" parameter="@ucldStdev.c:RSV2" scaleFactor="0.5" weight="3.0"/>
-    -->
+
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:RSV2" stdev="@ucldStdev.c:RSV2" distr="@LogNormalDistributionModel.c:RSV2" scaleFactor="0.8" weight="10.0"/>
+              rates="@fastRates.c:RSV2" stdev="@ucldStdev.c:RSV2" distr="@LogNormalDistributionModel.c:RSV2" scaleFactor="0.5" weight="10.0"/>
               
     <operator id="FastRatesRandomWalk.c:RSV2" spec="RealRandomWalkOperator" parameter="@fastRates.c:RSV2" weight="10.0" windowSize="1"/>
 
-    <operator id="FastRatesSwapOperator.c:RSV2" spec="SwapOperator" parameter="@fastRates.c:RSV2" weight="10.0"/>
+    <operator id="FastRatesScaleOperator.c:RSV2" spec="ScaleOperator" parameter="@fastRates.c:RSV2" weight="10.0"/>
 
     <operator id="relaxedUpDownOperator.c:RSV2" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
         <up idref="ucldMean.c:RSV2"/>
         <down idref="Tree.t:RSV2"/>
     </operator>
-<!--
-    <operator id="BirthDeathTreeScaler.t:RSV2" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:RSV2" weight="3.0"/>
 
-    <operator id="BirthDeathTreeRootScaler.t:RSV2" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:RSV2" weight="3.0"/>
-
-    <operator id="BirthDeathUniformOperator.t:RSV2" spec="Uniform" tree="@Tree.t:RSV2" weight="30.0"/>
-
-    <operator id="BirthDeathSubtreeSlide.t:RSV2" spec="SubtreeSlide" tree="@Tree.t:RSV2" weight="15.0"/>
-
-    <operator id="BirthDeathNarrow.t:RSV2" spec="Exchange" tree="@Tree.t:RSV2" weight="15.0"/>
-
-    <operator id="BirthDeathWide.t:RSV2" spec="Exchange" isNarrow="false" tree="@Tree.t:RSV2" weight="3.0"/>
-
-    <operator id="BirthDeathWilsonBalding.t:RSV2" spec="WilsonBalding" tree="@Tree.t:RSV2" weight="3.0"/>
-
-    <operator id="BirthRateScaler.t:RSV2" spec="ScaleOperator" parameter="@BDBirthRate.t:RSV2" scaleFactor="0.75" weight="3.0"/>
-
-    <operator id="DeathRateScaler.t:RSV2" spec="ScaleOperator" parameter="@BDDeathRate.t:RSV2" scaleFactor="0.75" weight="3.0"/>
-    -->
     <operator id="originScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@originFBD.t:RSV2" scaleFactor="0.75" weight="3.0"/>
 
-    <operator id="divRateScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@diversificationRateFBD.t:RSV2" scaleFactor="0.75" weight="10.0"/>
+    <operator id="divRateScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@diversificationRateFBD.t:RSV2" scaleFactor="0.75" weight="15.0"/>
 
-    <operator id="turnoverScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@turnoverFBD.t:RSV2" scaleFactor="0.75" weight="10.0"/>
+    <operator id="turnoverScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@turnoverFBD.t:RSV2" scaleFactor="0.75" weight="15.0"/>
 
-    <operator id="samplingPScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@samplingProportionFBD.t:RSV2" scaleFactor="0.75" weight="10.0"/>
+    <operator id="samplingPScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@samplingProportionFBD.t:RSV2" scaleFactor="0.75" weight="15.0"/>
 
     <operator id="LeafToSAFBD.t:RSV2" spec="LeafToSampledAncestorJump" tree="@Tree.t:RSV2" weight="10.0"/>
 
