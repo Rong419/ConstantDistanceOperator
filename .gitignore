@@ -1,4 +1,5 @@
 #IntelliJ files
+.DS_Store
 /.idea
 /ConstantDistanceOperator.iml
 /out
