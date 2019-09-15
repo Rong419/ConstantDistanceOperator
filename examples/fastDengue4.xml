@@ -158,16 +158,18 @@
     <operator id="FastUcldStdevScaler.c:Dengue4" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:Dengue4" stdev="@fastUcldStdev.c:Dengue4" distr="@LogNormal.2" scaleFactor="0.8" weight="8.0"/>
 
-    <operator id="RatesRandomWalk.c:Dengue4" spec="RealRandomWalkOperator" parameter="@fastRates.c:Dengue4" weight="14.0" windowSize="0.1"/>
+    <operator id="RatesRandomWalk.c:Dengue4" spec="RealRandomWalkOperator" parameter="@fastRates.c:Dengue4" weight="10.0" windowSize="0.1"/>
 
-    <operator id="RatesScaleOperator.c:Dengue4" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:Dengue4" weight="14.0"/>
+    <operator id="RatesScaleOperator.c:Dengue4" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:Dengue4" weight="10.0"/>
+
+    <operator id="RatesSwapOperator.c:Dengue4" spec="SwapOperator" parameter="@fastRates.c:Dengue4" weight="10.0"/>
 
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
-              twindowSize="1"  tree="@Tree.t:Dengue4" rates="@fastRates.c:Dengue4"  weight="5"/>
+              twindowSize="1"  tree="@Tree.t:Dengue4" rates="@fastRates.c:Dengue4"  weight="8"/>
 
-    <operator id="FastRootOperator1.c:Dengue4" spec="consoperators.SimpleDistance" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="1.0" weight="2.0"/>
+    <operator id="FastRootOperator1.c:Dengue4" spec="consoperators.SimpleDistance" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="1.0" weight="1.0"/>
 
-    <operator id="FastRootOperator2.c:Dengue4" spec="consoperators.SmallPulley"  dwindowSize="0.1" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" weight="2.0"/>
+    <operator id="FastRootOperator2.c:Dengue4" spec="consoperators.SmallPulley"  dwindowSize="0.1" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" weight="1.0"/>
 
     <operator id="FastRootOperator3.c:Dengue4" spec="consoperators.BigPulley"  dwindowSize="0.1" rates="@fastRates.c:Dengue4" tree="@Tree.t:Dengue4" twindowSize="1.0" weight="1.0"/>
 
@@ -180,6 +182,9 @@
         <log idref="FBD"/>
         <log idref="FBDbirthRate"/>
         <log idref="FBDdeathRate"/>
+        <log idref="FBDsamplingRate"/>
+        <log idref="FBDorigin"/>
+        <log id="SACountFBD.t:Dengue4" spec="beast.evolution.tree.SampledAncestorLogger" tree="@Tree.t:Dengue4"/>
         <log idref="kappa.s:Dengue4"/>
         <log idref="fastUcldMean.c:Dengue4"/>
         <log idref="fastUcldStdev.c:Dengue4"/>

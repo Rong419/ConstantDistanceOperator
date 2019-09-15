@@ -170,6 +170,9 @@
         <log idref="FBD"/>
         <log idref="FBDbirthRate"/>
         <log idref="FBDdeathRate"/>
+        <log idref="FBDsamplingRate"/>
+        <log idref="FBDorigin"/>
+        <log id="SACountFBD.t:Dengue4" spec="beast.evolution.tree.SampledAncestorLogger" tree="@Tree.t:Dengue4"/>
         <log idref="kappa.s:Dengue4"/>
         <log idref="fastUcldMean.c:Dengue4"/>
         <log idref="fastUcldStdev.c:Dengue4"/>
