@@ -180,21 +180,24 @@ This xml uses ConstantDistance Operator to sample continuous real rates
     <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" 
               twindowSize="0.2"  tree="@Tree.t:journal" rates="@rates.c:journal"  weight="20"/>
 
-    <operator id="RootOperator2.c:dna" spec="SimpleDistance" 
+    <operator id="RootOperator1.c:dna" spec="SimpleDistance" 
               twindowSize="0.2" tree="@Tree.t:journal" rates="@rates.c:journal"  weight="2.0"/>
 
-    <operator id="RootOperator3.c:dna" spec="SmallPulley" 
+    <operator id="RootOperator2.c:dna" spec="SmallPulley" 
               dwindowSize="0.04" tree="@Tree.t:journal" rates="@rates.c:journal"  weight="2.0"/>
 
-    <operator id="RootOperator1.c:dna" spec="BigPulley" 
+    <operator id="RootOperator3.c:dna" spec="BigPulley" 
               twindowSize="0.2" dwindowSize="0.04" tree="@Tree.t:journal" rates="@rates.c:journal"  weight="2.0"/>
 
     <operator id="RatesRandomWalk.c:journal" spec="RealRandomWalkOperator" parameter="@rates.c:journal" windowSize="1" weight="20.0"/>
 
-    <operator id="RatesSwapOperator.c:journal" spec="SwapOperator" parameter="@rates.c:journal" weight="20.0"/>
-
+    <operator id="RatesScaleOperator.c:journal" spec="ScaleOperator" parameter="@rates.c:journal" weight="20.0"/>
+    <!--
     <operator id="ucldStdevScaler.c:journal" spec="ScaleOperator" parameter="@ucldStdev.c:journal" scaleFactor="0.5" weight="10.0"/>
-
+    -->
+    <operator id="FastUcldStdevScaler.c:journal" spec="UcldScalerOperator"
+              rates="@rates.c:journal" stdev="@ucldStdev.c:journal" distr="@LogNormalDistributionModel.c:journal" scaleFactor="0.5" weight="10.0"/>
+        
     <operator id="BirthDeathTreeScaler.t:journal" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:journal" weight="5.0"/>
 
     <operator id="BirthDeathTreeRootScaler.t:journal" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:journal" weight="8.0"/>
