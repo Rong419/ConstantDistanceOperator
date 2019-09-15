@@ -102,27 +102,29 @@
 
 
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
-              twindowSize="0.02"  tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="5"/>
+              twindowSize="0.02"  tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="6.0"/>
 
     <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance"
-              twindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="2"/>
+              twindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
 
     <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley"
-              dwindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="2"/>
+              dwindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
 
     <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"
-              twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="1"/>
+              twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
 
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" distr="@FastLogNormalDistributionModel.c:dna" scaleFactor="0.8" weight="8.0"/>
+              rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" distr="@FastLogNormalDistributionModel.c:dna" scaleFactor="0.5" weight="10.0"/>
 
-    <operator id="RatesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@fastRates.c:dna" weight="14.0" windowSize="0.1"/>
+    <operator id="RatesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@fastRates.c:dna" weight="10.0" windowSize="0.1"/>
 
-    <operator id="RatesScaleOperator.c:dna" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:dna" weight="14.0"/>
+    <operator id="RatesScaleOperator.c:dna" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:dna" weight="10.0"/>
 
-    <operator id="BirthRateScaler.t:dna" spec="ScaleOperator" parameter="@BDBirthRate.t:dna" scaleFactor="0.75" weight="3.0"/>
+    <operator id="RatesSwapOperator.c:dna" spec="SwapOperator" parameter="@fastRates.c:dna" weight="10.0"/>
 
-    <operator id="DeathRateScaler.t:dna" spec="ScaleOperator" parameter="@BDDeathRate.t:dna" scaleFactor="0.75" weight="3.0"/>
+    <operator id="BirthRateScaler.t:dna" spec="ScaleOperator" parameter="@BDBirthRate.t:dna" scaleFactor="0.75" weight="4.0"/>
+
+    <operator id="DeathRateScaler.t:dna" spec="ScaleOperator" parameter="@BDDeathRate.t:dna" scaleFactor="0.75" weight="4.0"/>
 
     <operator id="BirthDeathTreeScaler.t:dna" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:dna" weight="3.0"/>
 
@@ -140,7 +142,7 @@
 
     <operator id="BirthDeathWilsonBalding.t:dna" spec="WilsonBalding" tree="@Tree.t:dna" weight="3.0"/>
 
-    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
+    <operator id="FrequenciesExchanger.s:dna" spec="DeltaExchangeOperator" delta="0.01" weight="1.0">
     <parameter idref="freqParameter.s:dna"/>
     </operator>
 
