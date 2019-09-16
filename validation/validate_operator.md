@@ -3,7 +3,9 @@
 This file will guide you through reproducing the simulations of validating the ConstantDistance Operator, as is detailed in the paper.
 
 ## 1. Sample from prior
-The tree includes three taxa.
+In this step, we aim at get samples from prior distributions with the operators working internal nodes and root separately. Then, we demonstrate the correctness of the operators by comparing the sampled distributions with the numerical results.
+### Run BEAST analysis
+First of all, we run the xm files in the ./sample_prior/ folder and BEAST2 software will produce corresponding .log and .trees files.
 ```
 cd /validation/sample_prior/
 java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/sample_prior/test_internalnode.xml
@@ -11,6 +13,16 @@ java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/sample_prio
 java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/sample_prior/test_smallpulley.xml
 java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/sample_prior/test_bigpulley.xml
 ```
+### Conduct numerical integration and make comparisons
+
+```
+cd /validation/r_scripts/sample_prior/
+Rscript internal_node.R
+Rscript simple_distance.R
+Rscript small_pulley.R
+Rscript big_pulley.R
+```
+
 
 ## 2. Well-calibrated simulation study
 
@@ -37,10 +49,51 @@ java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/calibrated_
 ```
 Rscript
 ```
-## 3. Efficiency comparison
+
+## 3. Correlation analysis
+We use a data set with sequence of seven ratites.
+```
+cd /validation/ratites_data/
+```
+### (3.1) Run BEAST analysis using bModelTest as substitution model
+```
+java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/ratites_data/ratites1.xml
+```
+### (3.2) Run BEAST analysis using GTR+I+gamma as substitution model
+```
+java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/ratites_data/ratites2.xml
+```
+### (3.3) Run BEAST analysis by sampling the fixed tree using ConstantDistance operator
+```
+java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/ratites_data/ratites3.xml
+```
+
+
+
+## 4. Efficiency comparison
 ## (3.1) Simulated data sets
 ### 20 taxa
 ### 120 taxa
+Sequence length 5000, 10000, 20000
+```
+cd /validation/simulated_data/20taxa/data
+cd /validation/simulated_data/120taxa/data
+```
 
+Using categories (Alignment1.xml), continuous rates with ConstantDistance operator (Alignment2.xml) and continuous rates without ConstanceDistance operator (Alignment3.xml) .
+```
+cd /validation/simulated_data/20taxa/xmls/categories
+cd /validation/simulated_data/20taxa/xmls/cons
+cd /validation/simulated_data/20taxa/xmls/nocons
+```
+```
+cd /validation/simulated_data/120taxa/xmls/categories
+cd /validation/simulated_data/120taxa/xmls/cons
+cd /validation/simulated_data/120taxa/xmls/nocons
+```
 ## (3.2) Real data sets
 ### primates data set
+Using categories (primates1.xml), continuous rates with ConstantDistance operator (primates2.xml) and continuous rates without ConstanceDistance operator (primates3.xml).
+```
+cd /validation/primates_data/
+```
