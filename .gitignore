@@ -1,5 +1,6 @@
 #IntelliJ files
 .DS_Store
+/optimization/other_three_datasets/template/xml/
 /.idea
 /ConstantDistanceOperator.iml
 /out
