@@ -57,7 +57,7 @@ name="alignment">
 <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="50000000">
+<run id="mcmc" spec="MCMC" chainLength="20000000">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:anolis" spec="beast.evolution.tree.Tree" name="stateNode">
             <taxonset id="TaxonSet.anolis" spec="TaxonSet">

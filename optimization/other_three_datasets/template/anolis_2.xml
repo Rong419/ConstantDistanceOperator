@@ -56,7 +56,7 @@ name="alignment">
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-<run id="mcmc" spec="MCMC" chainLength="50000000">
+<run id="mcmc" spec="MCMC" chainLength="20000000">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:anolis" spec="beast.evolution.tree.Tree" name="stateNode">
             <taxonset id="TaxonSet.anolis" spec="TaxonSet">
@@ -142,9 +142,9 @@ name="alignment">
     <operator id="RootOperator4.c:anolis" spec="BigPulley"
               twindowSize="0.02" dwindowSize="0.02" tree="@Tree.t:anolis" rates="@fastRates.c:anolis"  weight="1.0"/>
 
-    <operator id="BirthDeathTreeScaler.t:anolis" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:anolis" weight="3.0"/>
+    <operator id="BirthDeathTreeScaler.t:anolis" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:anolis" weight="5.0"/>
 
-    <operator id="BirthDeathTreeRootScaler.t:anolis" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:anolis" weight="3.0"/>
+    <operator id="BirthDeathTreeRootScaler.t:anolis" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:anolis" weight="5.0"/>
 
     <operator id="BirthDeathUniformOperator.t:anolis" spec="Uniform" tree="@Tree.t:anolis" weight="30.0"/>
 
@@ -156,19 +156,21 @@ name="alignment">
 
     <operator id="BirthDeathWilsonBalding.t:anolis" spec="WilsonBalding" tree="@Tree.t:anolis" weight="3.0"/>
 
-    <operator id="BirthRateScaler.t:anolis" spec="ScaleOperator" parameter="@BDBirthRate.t:anolis" scaleFactor="0.75" weight="3.0"/>
+    <operator id="BirthRateScaler.t:anolis" spec="ScaleOperator" parameter="@BDBirthRate.t:anolis" scaleFactor="0.75" weight="5.0"/>
 
-    <operator id="DeathRateScaler.t:anolis" spec="ScaleOperator" parameter="@BDDeathRate.t:anolis" scaleFactor="0.75" weight="3.0"/>
+    <operator id="DeathRateScaler.t:anolis" spec="ScaleOperator" parameter="@BDDeathRate.t:anolis" scaleFactor="0.75" weight="5.0"/>
 
-    <operator id="KappaScaler.s:anolis" spec="ScaleOperator" parameter="@kappa.s:anolis" scaleFactor="0.5" weight="0.1"/>
+    <operator id="KappaScaler.s:anolis" spec="ScaleOperator" parameter="@kappa.s:anolis" scaleFactor="0.5" weight="0.2"/>
 
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:anolis" stdev="@ucldStdev.c:anolis" distr="@LogNormalDistributionModel.c:anolis" scaleFactor="0.5" weight="10.0"/>
+              rates="@fastRates.c:anolis" stdev="@ucldStdev.c:anolis" distr="@LogNormalDistributionModel.c:anolis" scaleFactor="0.5" weight="5.0"/>
 
     <operator id="FastRatessRandomWalk.c:anolis" spec="RealRandomWalkOperator" parameter="@fastRates.c:anolis" weight="10.0" windowSize="1"/>
 
     <operator id="FastRatesScaleOperator.c:anolis" spec="ScaleOperator" parameter="@fastRates.c:anolis" weight="10.0"/>
-
+    
+    <operator id="FastRatesSwapOperator.c:anolis" spec="SwapOperator" parameter="@fastRates.c:anolis" weight="10.0"/>
+    
     <operator id="FrequenciesExchanger.s:anolis" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
         <parameter idref="freqParameter.s:anolis"/>
     </operator>

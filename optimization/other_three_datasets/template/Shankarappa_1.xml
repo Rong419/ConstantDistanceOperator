@@ -144,7 +144,7 @@ name="alignment">
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-<run id="mcmc" spec="MCMC" chainLength="50000000">
+<run id="mcmc" spec="MCMC" chainLength="100000000">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:Shankarappa" spec="beast.evolution.tree.Tree" name="stateNode">
             <trait id="dateTrait.t:Shankarappa" spec="beast.evolution.tree.TraitSet" traitname="date-backward" units="month">
@@ -270,10 +270,6 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
             </trait>
             <taxonset idref="TaxonSet.Shankarappa"/>
         </tree>
-        <!--
-        <parameter id="BDBirthRate.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
-        <parameter id="BDDeathRate.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
-        -->
         <parameter id="diversificationRateFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
         <parameter id="turnoverFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
         <parameter id="samplingProportionFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
@@ -293,15 +289,6 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
 
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
-            <!--
-            <distribution id="BirthDeath.t:Shankarappa" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:Shankarappa" relativeDeathRate="@BDDeathRate.t:Shankarappa" tree="@Tree.t:Shankarappa"/>
-            <prior id="BirthRatePrior.t:Shankarappa" name="distribution" x="@BDBirthRate.t:Shankarappa">
-                <LogNormal id="LogNormalDistribution1" S="3"  M="10000" meanInRealSpace="true" name="distr"/>
-            </prior>
-            <prior id="DeathRatePrior.t:Shankarappa" name="distribution" x="@BDDeathRate.t:Shankarappa">
-                <Uniform id="Uniform.6" name="distr" upper="Infinity"/>
-            </prior>
-            -->
             <distribution id="FBD.t:Shankarappa" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" diversificationRate="@diversificationRateFBD.t:Shankarappa" origin="@originFBD.t:Shankarappa" samplingProportion="@samplingProportionFBD.t:Shankarappa" tree="@Tree.t:Shankarappa" turnover="@turnoverFBD.t:Shankarappa">
                 <parameter id="rFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
                 <parameter id="rhoFBD.t:Shankarappa" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
@@ -355,25 +342,7 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
             </distribution>
         </distribution>
     </distribution>
-    <!--
-    <operator id="BirthDeathTreeScaler.t:Shankarappa" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
-    <operator id="BirthDeathTreeRootScaler.t:Shankarappa" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
-
-    <operator id="BirthDeathUniformOperator.t:Shankarappa" spec="Uniform" tree="@Tree.t:Shankarappa" weight="30.0"/>
-
-    <operator id="BirthDeathSubtreeSlide.t:Shankarappa" spec="SubtreeSlide" tree="@Tree.t:Shankarappa" weight="15.0"/>
-
-    <operator id="BirthDeathNarrow.t:Shankarappa" spec="Exchange" tree="@Tree.t:Shankarappa" weight="15.0"/>
-
-    <operator id="BirthDeathWide.t:Shankarappa" spec="Exchange" isNarrow="false" tree="@Tree.t:Shankarappa" weight="3.0"/>
-
-    <operator id="BirthDeathWilsonBalding.t:Shankarappa" spec="WilsonBalding" tree="@Tree.t:Shankarappa" weight="3.0"/>
-
-    <operator id="BirthRateScaler.t:Shankarappa" spec="ScaleOperator" parameter="@BDBirthRate.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
-
-    <operator id="DeathRateScaler.t:Shankarappa" spec="ScaleOperator" parameter="@BDDeathRate.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
-    -->
     <operator id="originScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@originFBD.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
 
     <operator id="divRateScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@diversificationRateFBD.t:Shankarappa" scaleFactor="0.75" weight="10.0"/>
@@ -417,17 +386,12 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <parameter idref="freqParameter.s:Shankarappa"/>
     </operator>
 
-    <logger id="tracelog" spec="Logger" fileName="Shankarappa_FILE.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="Shankarappa_FILE.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.Shankarappa"/>
         <log id="TreeHeight.t:Shankarappa" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:Shankarappa"/>
-        <!--
-        <log idref="BirthDeath.t:Shankarappa"/>
-        <log idref="BDBirthRate.t:Shankarappa"/>
-        <log idref="BDDeathRate.t:Shankarappa"/>
-        -->
         <log idref="FBD.t:Shankarappa"/>
         <log idref="diversificationRateFBD.t:Shankarappa"/>
         <log idref="turnoverFBD.t:Shankarappa"/>
@@ -441,13 +405,13 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <log idref="freqParameter.s:Shankarappa"/>
     </logger>
 
-    <logger id="screenlog" spec="Logger" logEvery="50000">
+    <logger id="screenlog" spec="Logger" logEvery="100000">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="$(tree)_FILE.trees" logEvery="5000" mode="tree">
+    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="$(tree)_FILE.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:Shankarappa" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:Shankarappa" tree="@Tree.t:Shankarappa"/>
     </logger>
 

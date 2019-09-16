@@ -144,7 +144,7 @@ name="alignment">
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-<run id="mcmc" spec="MCMC" chainLength="50000000">
+<run id="mcmc" spec="MCMC" chainLength="100000000">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:Shankarappa" spec="beast.evolution.tree.Tree" name="stateNode">
             <trait id="dateTrait.t:Shankarappa" spec="beast.evolution.tree.TraitSet" traitname="date-backward" units="month">
@@ -392,6 +392,8 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
     <operator id="FastRatesRandomWalk.c:Shankarappa" spec="RealRandomWalkOperator" parameter="@fastRates.c:Shankarappa" weight="10.0" windowSize="1"/>
 
     <operator id="FastRatesScaleOperator.c:Shankarappa" spec="ScaleOperator" parameter="@fastRates.c:Shankarappa" weight="10.0"/>
+    
+    <operator id="FastRatesSwapOperator.c:Shankarappa" spec="SwapOperator" parameter="@fastRates.c:Shankarappa" weight="10.0"/>
 
     <operator id="relaxedUpDownOperator.c:Shankarappa" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
         <up idref="ucldMean.c:Shankarappa"/>
@@ -402,7 +404,7 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <parameter idref="freqParameter.s:Shankarappa"/>
     </operator>
 
-    <logger id="tracelog" spec="Logger" fileName="Shankarappa_FILE.log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="Shankarappa_FILE.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -421,13 +423,13 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <log idref="freqParameter.s:Shankarappa"/>
     </logger>
 
-    <logger id="screenlog" spec="Logger" logEvery="50000">
+    <logger id="screenlog" spec="Logger" logEvery="100000">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="$(tree)_FILE.trees" logEvery="5000" mode="tree">
+    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="$(tree)_FILE.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:Shankarappa" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:Shankarappa" tree="@Tree.t:Shankarappa"/>
     </logger>
 
