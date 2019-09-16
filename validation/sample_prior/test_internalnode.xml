@@ -63,7 +63,7 @@
     <operator id="InternalNodeOperator.c:dna" spec="InConstantDistanceOperator"
               twindowSize="1" tree="@Tree.t:dna" rates="@rates.c:dna" weight="30"/>
 
-    <logger id="tracelog" fileName="dna.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="dna_internal_node.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -87,7 +87,7 @@
         <log idref="mrcaPrior"/>
     </logger>
 
-    <logger id="treelog.t:dna" fileName="$(tree).trees" logEvery="2000" mode="tree">
+    <logger id="treelog.t:dna" fileName="$(tree)_internal_node.trees" logEvery="2000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna"/>
     </logger>
 
