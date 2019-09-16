@@ -23,14 +23,10 @@ public class InConstantDistanceOperator extends TreeOperator {
     private double twindowSize;
     private RealParameter rates;
 
-    //protected BranchRateModel.Base branchRateModel;
-    //protected UCRelaxedClockModel branchRateModel;
-    //JacobianMatrixDeterminant JD = new JacobianMatrixDeterminant();
 
     @Override
     public void initAndValidate() {
         twindowSize = twindowSizeInput.get();
-        //branchRateModel = branchRateModelInput.get();
         rates = rateInput.get();
     }
 
@@ -57,14 +53,16 @@ public class InConstantDistanceOperator extends TreeOperator {
         //the proposed node time
         double t_x_;
 
-        //Step 1: randomly select an internal node, denoted by node x
+        //Step 1: randomly select an internal node, denoted by node x.
+        // Avoid fake nodes used to connect direct ancestors into tree.
        do {
             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
             node = tree.getNode(nodeNr);
-       } while (node.isRoot() || node.isLeaf());
+       } while (node.isRoot() || node.isLeaf() || node.isFake());
 
        // the number of this node
         int nodeNr = node.getNr();
+        // if this node has max number, then use the free index stored in root node to get rate.
         if (nodeNr == branchCount) {
             nodeNr = node.getTree().getRoot().getNr();
         }
@@ -153,16 +151,6 @@ public class InConstantDistanceOperator extends TreeOperator {
        J[3][3] = (upper - t_x) / (upper - t_x_);
        double Det = JD.Determinant(J,3);
        return Math.log(Det);
-       */
-       /*
-        double hastings;
-        try {
-            double Det = JD.mathDeterminantCalculation(J);
-            hastings=Math.log(Det);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to compute inverse cumulative probability!");
-        }
-       return hastings;
        */
 
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
