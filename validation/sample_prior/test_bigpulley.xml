@@ -2,9 +2,9 @@
 
 
 <data id="dna" nname="alignment">
-   <sequence id="seq_Human" taxon="Human" totalcount="4" value="?"/>
-   <sequence id="seq_Seal" taxon="Seal" totalcount="4" value="?"/>
-   <sequence id="seq_Frog" taxon="Frog" totalcount="4" value="?"/>
+   <sequence id="seq_A" taxon="A" totalcount="4" value="?"/>
+   <sequence id="seq_B" taxon="B" totalcount="4" value="?"/>
+   <sequence id="seq_C" taxon="C" totalcount="4" value="?"/>
 </data>
 
 <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -21,13 +21,13 @@
 
 <run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
    <state id="state" storeEvery="5000">
-     <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true" newick=
-                            "(Frog:10,(Human:1,Seal:1):9)" taxa="@dna"/>
+     <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true" 
+     newick="(C:10,(A:5,B:5):5)" taxa="@dna"/>
      <parameter id="mutationRate.s:dna" name="stateNode">1.0</parameter>
      <parameter id="birthRate.t:dna" name="stateNode">1</parameter>
      <parameter id="gammaShape.s:dna" name="stateNode">1.0</parameter>
      <parameter id="ucldStdev.c:dna" lower="0.0" name="stateNode">0.25</parameter>
-     <parameter id="rates.c:dna" name="stateNode" value="0.8 0.5 0.06 0.05"/>
+     <parameter id="rates.c:dna" name="stateNode" value="0.1 0.1 0.03 0.04"/>
    </state>
 
    <distribution id="posterior" spec="util.CompoundDistribution">
@@ -80,11 +80,11 @@
         <log idref="prior"/>
     </logger>
 
-        <logger id="treelog.t:dna1" fileName="$(tree)_subst_root_BP.trees" logEvery="2000" mode="tree">
-            <log id="TreeWithMetaDataLogger.t:dna1" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna" substitutions="true"/>
-        </logger>
+    <logger id="treelog.t:dna1" fileName="subst_root_BP.trees" logEvery="2000" mode="tree">
+        <log id="TreeWithMetaDataLogger.t:dna1" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna" substitutions="true"/>
+    </logger>
 
-    <logger id="treelog.t:dna" fileName="$(tree)_root_BP.trees" logEvery="2000" mode="tree">
+    <logger id="treelog.t:dna" fileName="root_BP.trees" logEvery="2000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna"/>
     </logger>
 

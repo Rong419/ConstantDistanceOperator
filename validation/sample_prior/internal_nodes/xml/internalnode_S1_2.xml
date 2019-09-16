@@ -2,9 +2,9 @@
 
 
 <data id="dna" name="alignment">
-    <sequence id="seq_Human" taxon="Human" totalcount="4" value="?"/>
-    <sequence id="seq_Seal" taxon="Seal" totalcount="4" value="?"/>
-    <sequence id="seq_Frog" taxon="Frog" totalcount="4" value="?"/>
+    <sequence id="seq_A" taxon="A" totalcount="4" value="?"/>
+    <sequence id="seq_B" taxon="B" totalcount="4" value="?"/>
+    <sequence id="seq_C" taxon="C" totalcount="4" value="?"/>
 </data>
 
 <map name="Uniform" >beast.math.distributions.Uniform</map>
@@ -19,15 +19,15 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="20000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="2e+07" sampleFromPrior="true">
    <state id="state" storeEvery="5000">
     <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true" 
-          newick="(Frog:8,(Human:4,Seal:4):4)" taxa="@dna"/>
+          newick="(C:10,(A:1,B:1):9)" taxa="@dna"/>
     <parameter id="mutationRate.s:dna" name="stateNode">1.0</parameter>
     <parameter id="birthRate.t:dna" name="stateNode">1</parameter>
     <parameter id="gammaShape.s:dna" name="stateNode">1.0</parameter>
     <parameter id="ucldStdev.c:dna" lower="0.0" name="stateNode">0.25</parameter>
-    <parameter id="rates.c:dna" name="stateNode" value="0.75 1 0.75 2.25"/>
+    <parameter id="rates.c:dna" name="stateNode" value="0.1 0.2 0.04 0.03"/>
    </state>
 
   <distribution id="posterior" spec="util.CompoundDistribution">
@@ -40,8 +40,8 @@
 
        <distribution id='mrcaPrior' spec='beast.math.distributions.MRCAPrior' tree='@Tree.t:dna'>
          <taxonset spec='TaxonSet' id='ingroup'>
-           <taxon spec='Taxon' id='Human'/>
-           <taxon spec='Taxon' id='Seal'/>
+           <taxon spec='Taxon' id='A'/>
+           <taxon spec='Taxon' id='B'/>
          </taxonset>
       </distribution>
     </distribution>
@@ -63,7 +63,7 @@
     <operator id="InternalNodeOperator.c:dna" spec="InConstantDistanceOperator"
               twindowSize="1" tree="@Tree.t:dna" rates="@rates.c:dna" weight="30"/>
 
-    <logger id="tracelog" fileName="dna_internal_node.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="internalnode_S1_2.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -87,7 +87,7 @@
         <log idref="mrcaPrior"/>
     </logger>
 
-    <logger id="treelog.t:dna" fileName="$(tree)_internal_node.trees" logEvery="2000" mode="tree">
+    <logger id="treelog.t:dna" fileName="internalnode_S1_2.trees" logEvery="2000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna"/>
     </logger>
 
