@@ -7,12 +7,8 @@ import beast.core.Operator;
 import beast.math.distributions.LogNormalDistributionModel;
 import beast.math.distributions.ParametricDistribution;
 import beast.util.Randomizer;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.math.MathException;
-import org.apache.commons.math3.special.Erf;
 import org.apache.commons.math3.util.FastMath;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
