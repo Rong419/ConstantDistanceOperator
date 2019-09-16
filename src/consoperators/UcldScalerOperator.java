@@ -70,21 +70,25 @@ public class UcldScalerOperator extends Operator {
         // return the log hastings ratio for scale operation
         hastingsRatio = Math.log(1/scale);
 
-        //System.out.println("scale="+scale);
+
         // use mean (M=1) and variance (stdev square) to calculate miu and sigma square of lognormal in log space
         double variance = FastMath.exp(stdev * stdev) -1;
         double new_variance = FastMath.exp(new_stdev * new_stdev) -1; // new sigma square of lognormal
-        double miu = - 0.5 * FastMath.log(1 + variance);; // original miu of lognormal
+        double miu = - 0.5 * FastMath.log(1 + variance); // original miu of lognormal
         double new_miu = - 0.5 * FastMath.log(1 + new_variance); // new miu of lognormal
 
         // Step3: calculate the new real rates under the proposed new_ucldStdev
        for (int idx = 0; idx < rates.getDimension(); idx++) {
-
             double r_ = getRealRate(quantiles[idx]);
+
+            // to avoid numerical issues
             if (r_== 0.0 || r_ == Double.POSITIVE_INFINITY) {
                 return Double.NEGATIVE_INFINITY;
             }
+
+            // partial derivative of icdf_s'(cdf_s(r)) / r
             hastingsRatio = hastingsRatio + getDicdf(real_rates[idx],quantiles[idx],miu,new_miu,stdev,new_stdev);
+
             rates.setValue(idx, r_);
         }
 
@@ -93,7 +97,6 @@ public class UcldScalerOperator extends Operator {
 
     private double getRateQuantiles (double r) {
         try {
-            //System.out.println("r="+r+",M="+LN.MParameterInput.get().getValue()+",S="+LN.SParameterInput.get().getValue());
             return LN.cumulativeProbability(r);
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute cumulative probability because rate =" + r);
@@ -115,7 +118,6 @@ public class UcldScalerOperator extends Operator {
         double x_sq = x * x / (2 * s1 * s1);
         double d = u2 + Math.sqrt(2 * s2 * s2) * c + c * c - x_sq;
         double e = Math.log(s2) - Math.log(s1) - Math.log(r);
-        //System.out.println("c="+c+",x="+x+",d="+d+",e="+e);
         return (d + e);
 
     }
