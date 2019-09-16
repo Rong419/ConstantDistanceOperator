@@ -22,7 +22,7 @@ for(scenario.idx in 1:length(trees)){
   tree = trees[scenario.idx]
   rate = rates[scenario.idx]
    for (sim.idx in 1:n.sim) {
-     chain.length = as.numeric(chain.length.base) * sim.idx
+     chain.length = as.character(as.numeric(chain.length.base) * sim.idx)
      for (line in template.lines) {
         line = gsub("\\[TreeHere\\]", tree, line)
         line = gsub("\\[ChainLengthHere\\]", chain.length, line)

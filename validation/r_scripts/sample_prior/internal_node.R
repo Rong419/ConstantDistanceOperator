@@ -1,22 +1,39 @@
-#This script is to validate the operations on internal nodes by
-#1) reading the log file from MCMC, 
-#2) presenting the histogram of the parameter
-##############
+libarary(ape)
 
-#The tree has 3 taxa
-#4 rates,4 distance
-#2 node times (internal node: t,the root: T)
+args = commandArgs(trailingOnly=TRUE)
 
 
+newick.tree.path <- args[1]
+rates.path <- args[2]
+logfile.folder <- args[3]
+n.sim <- as.numeric(args[3])
+
+newick.tree.path <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/test_internalnode_trees.txt"
+rates.path <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/test_internalnode_rates.txt"
+logfile.folder <- "/Users/rzha419/Workspace/ConstantDistanceOperator/out/artifacts/ConstantDistanceOperator_jar/" 
+
+trees = readLines(newick.tree.path)
+rates = read.table(file=rates.path)
+
+Mean = c()
+Stdev = c()
+
+for (idx in 1:length(trees)){
+tree = read.tree(text = paste0(trees[1],";"))
+time = tree$edge.length
+rate = as.numeric(rates[idx,])
 #initialize the constant distance and root time
-d1 <- 0.1; d2 <- 0.2; d3 <- 0.4; d4 <- 0.27
-T <- 10;
+d1 = rate[1] * time[4]; 
+d2 = rate[2] * time[3]; 
+d3 = rate[3] * time[1]; 
+d4 = rate[4] * time[2]
+T = time[1];
 
 #functions of rates on the 4 branches
 #i.e. distance divided by the time duration
 r1 <- function (t) { d1 / t;}
 r2 <- function (t) {d2 / t;}
-r3 <- 0.04
+r3 = rate[3]
 r4 <- function (t) { d4 / (T-t);}
 
 #LogNormal distribution of rates
@@ -40,34 +57,36 @@ A=integrate(densityFromRates,0,T)
 B=A$value
 
 #normalize the density function
-#each CDF divided by the whole area
-G<- function (t) {
+#make sure that N should be equal to 1
+G <- function (t) {
  	densityFromRates(t)/B; 
  }
-integrate(G,0,T)
+N = integrate(G,0,T)
+
 
 #the mean of the distribution
-#i.e. m
-E<- function (t) {
+E <- function (t) {
 	 t*G(t); 
- }
- 
-integrate(E,0,T)
+ } 
+mean = integrate(E,0,T)
+
 
 #the standard deviation of the distribution
-# i.e. stdev
-t1<- function (t) {
-  (t-3.465785)*(t-3.465785); 
- }
- 
-F<- function (t) {
-  t1(t)*G(t); 
+Mean[idx] = mean$value
+F <- function (t) {
+  (t - Mean[idx]) * (t - Mean[idx]) * G(t); 
   }
+  
+variance = integrate(F, 0, T)
+Stdev[idx] = sqrt(variance$value)
+}
 
- integrate(F,0,T)
- 
+
+for (scenario in 1:length(trees)) {
+     for (sim in 1:n.sim) {
 #read log file
-l <- read.table(file="/Users/rzha419/desktop/dna.log", sep="\t", header=T)
+l <- read.table(file=paste0(logfile.folder,"internalnode_S",[ScenarioHere],"_",,".log"), sep="\t", header=T)
+
 #plot the histogram of the parameter
 #i.e. the distribution of sampled root time 
  hist(l$mrcatime.ingroup.,prob=T,breaks=80,xlab="",main='')
@@ -76,35 +95,8 @@ l <- read.table(file="/Users/rzha419/desktop/dna.log", sep="\t", header=T)
 #the normalized CDF distribution
 curve(G,from=0,to=T, col="red",add=TRUE,lwd=2)
 curve(densityFromRates,from=0,to=T, col="red",add=TRUE)
-
+}
+}
 d <- density(l$mrcatime.ingroup., n=length(l$mrcatime.ingroup.))
 plot(d, main="")
 
-
-################### Example ###################
-d1 <- 0.4; d2 <- 0.8; d3 <- 2.4; d4 <- 1.6
- T <- 0.8;
- 
- r1 <- function (t) { d1 / t;}
- r2 <- function (t) {d2 / t;}
- r3 <- 0.04
- r4 <- function (t) { d4 / (T-t);}
- 
- M = -3;
- S = 0.25;
- 
- logRateDensity <- function (t) {
-   logd <- log(dlnorm(r1(t),meanlog=M, sdlog=S)) +log(dlnorm(r2(t),meanlog=M, sdlog=S)) +log(dlnorm(r3,meanlog=M, sdlog=S))+log(dlnorm(r4(t),meanlog=M, sdlog=S)) ;
- }
- 
- densityFromRates <- function (t) {
-   exp(logRateDensity(t)); 
- }
- 
- 
- A=integrate(densityFromRates,0,T)
- B=A$value
- 
- G<- function (t) {
-   densityFromRates(t)/B; 
- }
