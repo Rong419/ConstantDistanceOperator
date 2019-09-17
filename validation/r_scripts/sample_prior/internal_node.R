@@ -1,4 +1,4 @@
-libarary(ape)
+library(ape)
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -40,10 +40,15 @@ r4 <- function (t) { d4 / (T-t);}
 M = -3;
 S = 0.25;
 
+N = 0.3
+
 #distribution of rates
 #CDF in log space 
 logRateDensity <- function (t) {
-logd <- log(dlnorm(r1(t),meanlog=M, sdlog=S)) +log(dlnorm(r2(t),meanlog=M, sdlog=S)) +log(dlnorm(r3,meanlog=M, sdlog=S))+log(dlnorm(r4(t),meanlog=M, sdlog=S)) ;
+t1 = (1 / N) * exp(-3 * T / N);
+t2 = (1 / N) * exp(-(t-T) / N);
+P2 = log(t1) + log(t2);
+logd <- log(dlnorm(r1(t),meanlog=M, sdlog=S)) +log(dlnorm(r2(t),meanlog=M, sdlog=S)) +log(dlnorm(r3,meanlog=M, sdlog=S))+log(dlnorm(r4(t),meanlog=M, sdlog=S)) + P2;
 }
 
 #CDF in real space
@@ -61,7 +66,7 @@ B=A$value
 G <- function (t) {
  	densityFromRates(t)/B; 
  }
-N = integrate(G,0,T)
+Normalized = integrate(G,0,T)
 
 
 #the mean of the distribution
