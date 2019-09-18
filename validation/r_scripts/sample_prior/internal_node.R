@@ -6,8 +6,8 @@ args = commandArgs(trailingOnly=TRUE)
 newick.tree.path <- args[1]
 rates.path <- args[2]
 logfile.folder <- args[3]
-n.sim <- as.numeric(args[3])
-output.figure.folder <- args[4]
+n.sim <- as.numeric(args[4])
+output.figure.folder <- args[5]
 
 #newick.tree.path <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/test_internalnode_trees.txt"
 #rates.path <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/test_internalnode_rates.txt"
@@ -20,6 +20,7 @@ rates = read.table(file=rates.path)
 Mean = c()
 Stdev = c()
 Abs = c()
+Table = c()
 
 for (idx in 1:length(trees)){
 tree = read.tree(text = paste0(trees[idx],";"))
@@ -92,7 +93,7 @@ Stdev[idx] = sqrt(variance$value)
 
 
 
-     print(paste0("Scenario", idx," : M =",Mean[idx], " with absolute error < ", Abs[idx], "S = ", Stdev[idx]))
+     Table[idx] = paste0("Scenario", idx," : M = ",Mean[idx], " with absolute error < ", Abs[idx], "S = ", Stdev[idx])
      
      
      for (sim in 1:n.sim) {
@@ -113,5 +114,6 @@ Stdev[idx] = sqrt(variance$value)
          }
                   
 }
+      write.table(Table,file=paste0(output.figure.folder,"numerical_internalnode.txt"))
 
 

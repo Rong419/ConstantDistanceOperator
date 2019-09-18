@@ -74,6 +74,10 @@ F <- function (T) {
 variance = integrate(F, 1, 15)
 Stdev = sqrt(variance$value)
 
+Table = c(paste0("M = ", Mean," with absolute error < ", mean$abs.error, ", S = ", Stdev))
+
+write.table(Table,file=paste0(output.figure.folder,"numerical_root_SD.txt"))
+
 
 l <- read.table(file=paste0(logfile.folder,"root_SD.log"), sep="\t", header=T)
 

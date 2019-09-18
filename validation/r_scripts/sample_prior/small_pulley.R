@@ -78,7 +78,11 @@ F <- function (d3) {
 
 variance = integrate(F,0,D)
 Stdev = sqrt(variance$value)
-print(paste0("SmallPulley: M = ", Mean, "with absolute error < ", mean$abs.error, "S = ", Stdev))
+
+Table = c(paste0("SmallPulley: M = ", Mean, "with absolute error < ", mean$abs.error, ", S = ", Stdev))
+
+write.table(Table,file=paste0(output.figure.folder,"numerical_root_SP.txt"))
+
 
 ####################################################
 #read tree files
