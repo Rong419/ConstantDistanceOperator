@@ -4,14 +4,12 @@ template.path <- args[1]
 xml.folder <- args[2]
 newick.tree.path <- args[3]
 rates.path <- args[4]
-chain.length.base <- args[5]
-n.sim <- as.numeric(args[6])
+n.sim <- as.numeric(args[5])
 
 #template.path <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/test_internalnode_template.xml"
 #xml.folder <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/xml/"
 #newick.tree.path <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/test_internalnode_trees.txt"
 #rates.path <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/sample_prior/internal_nodes/test_internalnode_rates.txt"
-#chain.length.base <- "10000000"
 #n.sim <- "2"
 
 trees = readLines(newick.tree.path)
@@ -22,7 +20,7 @@ for(scenario.idx in 1:length(trees)){
   tree = trees[scenario.idx]
   rate = rates[scenario.idx]
    for (sim.idx in 1:n.sim) {
-     chain.length = as.character(as.numeric(chain.length.base) * sim.idx)
+     chain.length = paste0(sim.idx,"0000000")
      for (line in template.lines) {
         line = gsub("\\[TreeHere\\]", tree, line)
         line = gsub("\\[ChainLengthHere\\]", chain.length, line)

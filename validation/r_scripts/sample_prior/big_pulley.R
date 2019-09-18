@@ -1,212 +1,185 @@
+library(ape)
+
+logfile.folder <- args[1]
+output.figure.folder  <- args[2]
+
+#logfile.folder <- "/Users/rzha419/Workspace/ConstantDistanceOperator/out/artifacts/ConstantDistanceOperator_jar/" 
+#output.figure.folder <- "/Users/rzha419/Workspace/ConstantDistanceOperator/out/artifacts/ConstantDistanceOperator_jar/" 
+
+
 #This R script is used to validate the operations of BigPulley
 #Test the tree with 3 taxa, i.e. A B and C
 #There are 3 topologies in total
 #The integration includes 3 parts for corresponding 3 topologies
 
 ###############################################
-##1. only consider the tree ((C B) A)
+# Initilaize the rates and times
+# r1 = 0.1; r2 = 0.1; r3 = 0.03; r4 = 0.04
+# t = 5; T = 10;
+# Calculate the distances
+# d1 = r1 * t;
+# d2 = r2 * t;
+# d3 = r3 * T;
+# d4 = r4 * (T - t);
 
-#Initialize distance
-d1 <- 1; d2 <- 2; 
-#d3 <- 0.4; d4 <- 0.2;
+d1 = 0.5; d2= 0.5; d3 = 0.3; d4 = 0.2;
 
-#all the possible values for genetic distance d4
-Y = seq(0,d1,length.out=1000);
+N = 0.3; #population size
+M = -3; #mean
+S = 0.25; #standard deviation
 
-##time of the higher child of the root
-t <- 5;
+Y = seq(0.001,0.499,length.out=50); # d4 range
+Z = seq(0.1,10, length.out=50) # T range
+X = seq(0,9.999,length.out=10000); # t range
+P = matrix(nrow = 50, ncol = 1);
+P1 = matrix(nrow = 10000, ncol = 1);
+P2 = matrix(nrow = 10000, ncol = 1);
+P3 = matrix(nrow = 50, ncol = 1);
+P4 = matrix(nrow = 50, ncol = 1);
+P5 = matrix(nrow = 50, ncol = 1);
+P6 = matrix(nrow = 10000, ncol = 1);
+P7 = matrix(nrow = 10000, ncol = 1);
+P8 = matrix(nrow = 50, ncol = 1);
+P9 = matrix(nrow = 50, ncol = 1);
+P10 = matrix(nrow = 50, ncol = 1);
+P11 = matrix(nrow = 50, ncol = 1);
+P12 = matrix(nrow = 50, ncol = 1);
+P13 = matrix(nrow = 50, ncol = 1);
 
-##the constant popolation size in Coalescent model
-N = 0.3;
+k = 1;	
+# iterating root time T
+for (T_ in Z) { 
+     j = 1;
+     # iterating internal node time t
+ for (t_ in X) {
+	    i = 1;
+	    a = (1 / N) * exp(-3 * t_ / N); # P(t1)
+	    b = (1 / N) * exp(-(T_ - t_ ) / N); # P(t2)
+	        # iterating distance d4
+	        for (d4_ in Y) {
+		       r1_ = d1 / t_;
+		       r2_ = (d2 - d4_) / T_;
+		       r3_ = (d3 + d4) / t_;
+		       r4_ = d4_ / (T_ - t_);
+		       P[i] =  a * b * dlnorm(r1_,meanlog=M, sdlog=S) * dlnorm(r2_,meanlog=M, sdlog=S) * dlnorm(r3_,meanlog=M, sdlog=S) * dlnorm(r4_,meanlog=M, sdlog=S);
+		       P5[i] = P[i] * d4_;
+               i = i + 1;
+	           }	
+	      P1[j] = mean(P5);
+          P2[j] = P1[j] * t_;
+          P6[j] = mean(P);
+          P7[j] = P6[j] * t_;
+          j = j + 1;	      
+     }	
+    P3[k] = mean(P1); ##Mean(Density)
+    P4[k] = P3[k] * T_; ##T*Mean(Density)
+    P10[k] = mean(P6);
+    P11[k] = P10[k] * T_;
 
-##the lognormal distribution that rates follow
-M = -3;
-S = 0.25;
-
-##root time T
-X = seq(0,5,length.out=1000);
-
-##initialize the parameters
-P=matrix(nrow=1000,ncol=1);
-P3=matrix(nrow=1000,ncol=1);
-P4=matrix(nrow=1000,ncol=1);
-
-
-##integrate d4 out
-j = 1;
-for (T in X) {
-			i = 1;
-			r2 = d2 / T;
-			r1 = (0.4 + 0.2) / T;
-			t1 = (1 / N) * exp(-3 * T / N);
-		    t2 = (1 / N) * exp(-(t-T) / N);
-		    P2 = log(t1) + log(t2);
-		for (d4 in Y){
-			r3 = (d1 - d4) / t;
-		    #r2 = (d2 - d4) / t;
-		    r4 = d4 / (t - T);
-		    P1 = log(dlnorm(r1,meanlog=M, sdlog=S)) + log(dlnorm(r2,meanlog=M, sdlog=S)) + log(dlnorm(r3,meanlog=M, sdlog=S)) + log(dlnorm(r4,meanlog=M, sdlog=S)); 
-		    LogP = P1 + P2;
-		    P[i] = exp(LogP);
-		    i = i + 1;
-		}
-		P3[j]=mean(P);
-        P4[j]=P3[j]*T;
-        j=j+1;	  
+    P8[k] = mean(P7);
+    P9[k] = P8[k] * T_;
+    P12[k] = mean(P2);
+    P13[k] = P12[k] * T_;
+    k = k + 1;
 }
-Num=seq(1,999,length.out=999)
-A=matrix(nrow=999,ncol=1);
-B=matrix(nrow=999,ncol=1);
-C=matrix(nrow=999,ncol=1);
-k=1;
-for (x in Num) {
-	A[k] = P3[x]; #Mean(LogP)
-	B[k] = X[x];#T
-	C[k] = P4[x];#T*Mean(LogP)
-	k = k + 1;
-}
-plot(B,A);
 
-#Normalize constant
-Cons = sum(A);
-#mean
-E = sum(C/Cons);
-#deviation
-e = (B - E) * (B - E);
-V = sum(e * A / Cons);
-#standard deviation
-std = sqrt(V);
+
+plot(Z,P12);
+
+##Normalize constant
+C1=sum(P12); 
+## mean of distribution
+E1=sum(P13/C1);
+##Variance and standard deviation
+##B is the random variable X
+e1=(Z-E1)*(Z-E1);
+V1=sum(e1*P12/C1);
+Sd1=sqrt(V1);
 ##Validation:D=1
-D = sum(A / Cons);
+D1=sum(P3/C1);
 
-#integrate T out
-for (d4 in Y) {
-	        i = 1;
-	        r3 = (d1 - d4) / t;   
-   for (T in X) { 
-		    r2 = d2 / T;
-		    r1 = (0.4 + 0.2) / T; 
-		    r4 = d4 / (t - T);	 
-		    t1 = (1 / N) * exp(-3 * T / N);
-		    t2 = (1 / N) * exp(-(t-T) / N);
-		    P1 = log(dlnorm(r1,meanlog=M, sdlog=S)) + log(dlnorm(r2,meanlog=M, sdlog=S)) + log(dlnorm(r3,meanlog=M, sdlog=S)) + log(dlnorm(r4,meanlog=M, sdlog=S));
-		    P2 = log(t1) + log(t2);
-		    LogP = P1 + P2;
-		    P[i] = exp(LogP);
-		    i = i + 1;
-		}
-		P3[j]=mean(P);
-        P4[j]=P3[j]*d4;
-        j=j+1;	  
-}
-Num=seq(2,1000,length.out=999)
-A=matrix(nrow=999,ncol=1);
-B=matrix(nrow=999,ncol=1);
-C=matrix(nrow=999,ncol=1);
-k=1;
-for (x in Num) {
-	A[k] = P3[x]; #Mean(LogP)
-	B[k] = Y[x];#d4
-	C[k] = P4[x];#d4*Mean(LogP)
-	k = k + 1;
-}
-plot(B,A);
+##(2) Integrate T and t out
+d1 = 0.5; d2= 0.5; d3 = 0.3; d4 = 0.2;
 
-#Normalize constant
-Cons = sum(A);
-#mean
-E = sum(C/Cons);
-#variance
-e = (B - E) * (B - E);
-V = sum(e * A / Cons);
-#standard devation
-std = sqrt(V);
+N = 0.3; #population size
+M = -3; #mean
+S = 0.25; #standard deviation
+
+Y = seq(0.001,0.499,length.out=50); # d4 range
+Z = seq(1,10, length.out=50) # T range
+P = matrix(nrow = 10000, ncol = 1);
+P1 = matrix(nrow = 50, ncol = 1);
+P2 = matrix(nrow = 50, ncol = 1);
+P3 = matrix(nrow = 50, ncol = 1);
+P4 = matrix(nrow = 50, ncol = 1);
+P5 = matrix(nrow = 10000, ncol = 1);
+P6 = matrix(nrow = 50, ncol = 1);
+P7 = matrix(nrow = 50, ncol = 1);
+P8 = matrix(nrow = 50, ncol = 1);
+P9 = matrix(nrow = 50, ncol = 1);
+P10 = matrix(nrow = 50, ncol = 1);
+P11 = matrix(nrow = 50, ncol = 1);
+P12 = matrix(nrow = 50, ncol = 1);
+P13 = matrix(nrow = 50, ncol = 1);
+
+k = 1;	
+for (d4_ in Y) { 
+     j = 1;
+     for (T_ in Z) {
+          X = seq(0,T_-0.01,length.out=10000); # t range
+	    i = 1; 
+	     for (t_ in X) {
+                   a = (1 / N) * exp(-3 * t_ / N); # P(t1)
+	             b = (1 / N) * exp(-(T_ - t_ ) / N); # P(t2)
+		       r1_ = d1 / t_;
+		       r2_ = (d2 - d4_) / T_;
+		       r3_ = (d3 + d4) / t_;
+		       r4_ = d4_ / (T_ - t_);
+		       P[i] =  a * b * dlnorm(r1_,meanlog=M, sdlog=S) * dlnorm(r2_,meanlog=M, sdlog=S) * dlnorm(r3_,meanlog=M, sdlog=S) * dlnorm(r4_,meanlog=M, sdlog=S);
+		       P5[i] = P[i] * t_;
+                   i = i + 1;
+	           }	
+	    P1[j] = mean(P5);
+          P2[j] = P1[j] * T_;
+          P6[j] = mean(P);
+          P7[j] = P6[j] * T_;
+          j = j + 1;	      
+     }	
+    P3[k] = mean(P1); ##Mean(Density)
+    P4[k] = P3[k] * d4_; ##T*Mean(Density)
+    P10[k] = mean(P6);
+    P11[k] = P10[k] * d4_;
+    P8[k] = mean(P7);
+    P9[k] = P8[k] * d4_;
+    P12[k] = mean(P2);
+    P13[k] = P12[k] * d4_;
+
+    k = k + 1;
+}
+
+plot(Y,P12);
+
+##Normalize constant
+C1=sum(P12); 
+## mean of distribution
+E1=sum(P13/C1);
+##Variance and standard deviation
+##B is the random variable X
+e1=(Y-E1)*(Y-E1);
+V1=sum(e1*P10/C1);
+Sd1=sqrt(V1);
 ##Validation:D=1
-D = sum(A / Cons);
+D1=sum(P3/C1);
 
-###############################################
-#2. only consider the big pulley (Tree: (A C) B)
-##Initialize distance
-d1 <- 1; d2 <- 2; 
-#d3 <- 0.4; d4 <- 0.2;
 
-##genetic distance d4
-Y = seq(0,d2,length.out=1000);
-
-##time of the higher child of the root
-t <- 5;
-
-##the constant popolation size Coalescene model
-N = 0.3;
-
-##the lognormal distribution that rates follow
-M = -3;
-S = 0.25;
-
-##root time T
-X = seq(0,5,length.out=1000);
-
-##initialize the parameters
-P=matrix(nrow=1000,ncol=1);
-P3=matrix(nrow=1000,ncol=1);
-P4=matrix(nrow=1000,ncol=1);
-j = 1;
-##integrate d4
-for (T in X) {
-			i = 1;
-			r1 = d1 / T;
-			r2 = (0.4 + 0.2) / T;
-			t1 = (1 / N) * exp(-3 * T / N);
-		    t2 = (1 / N) * exp(-(t-T) / N);
-		    P2 = log(t1) + log(t2);
-		for (d4 in Y){
-		    r3 = (d2 - d4) / t;
-		    r4 = d4 / (t - T);
-		    P1 = log(dlnorm(r1,meanlog=M, sdlog=S)) + log(dlnorm(r2,meanlog=M, sdlog=S)) + log(dlnorm(r3,meanlog=M, sdlog=S)) + log(dlnorm(r4,meanlog=M, sdlog=S)); 
-		    LogP = P1 + P2;
-		    P[i] = exp(LogP);
-		    i = i + 1;
-		}
-		P3[j]=mean(P);
-        P4[j]=P3[j]*T;
-        j=j+1;	  
-}
-Num=seq(1,999,length.out=999)
-A=matrix(nrow=999,ncol=1);
-B=matrix(nrow=999,ncol=1);
-C=matrix(nrow=999,ncol=1);
-k=1;
-for (x in Num) {
-	A[k] = P3[x]; #Mean(LogP)
-	B[k] = X[x];#T
-	C[k] = P4[x];#T*Mean(LogP)
-	k = k + 1;
-}
-plot(B,A);
-
-#Normalize constant
-Cons = sum(A);
-#mean
-E = sum(C/Cons);
-#variance
-e = (B - E) * (B - E);
-V = sum(e * A / Cons);
-#standard devation
-std = sqrt(V);
-##Validation:D=1
-D = sum(A / Cons);
 
 
 ##read files from MCMC, .log and .trees
-library(ape)
-
-strees <- read.nexus("/Users/rzha419/Documents/SoftWare/beast2-master/dna1.subst.trees")
-
+strees <- read.nexus(paste0(logfile.folder,"subst_root_BP.trees"))
 e <- sapply(strees, function(x) {x$edge.length[1]})
+hist(e,prob=T, breaks=100,xlab="",main='')
 
-hist(e,prob=T, breaks=100)
 
-l <- read.table(file="/Users/rzha419/Documents/SoftWare/beast2-master/dna.log", sep="\t", header=T)
-
-hist(l$mrcatime.ingroup.,prob=T,breaks=80)
+l <- read.table(file=paste0(logfile.folder,"root_BP.log"), sep="\t", header=T)
+hist(l$TreeHeight,prob=T,breaks=80)
 
