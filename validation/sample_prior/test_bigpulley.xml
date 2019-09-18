@@ -23,29 +23,30 @@
    <state id="state" storeEvery="5000">
      <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true" 
      newick="(C:10,(A:5,B:5):5)" taxa="@dna"/>
-     <parameter id="mutationRate.s:dna" name="stateNode">1.0</parameter>
-     <parameter id="birthRate.t:dna" name="stateNode">1</parameter>
-     <parameter id="gammaShape.s:dna" name="stateNode">1.0</parameter>
-     <parameter id="ucldStdev.c:dna" lower="0.0" name="stateNode">0.25</parameter>
      <parameter id="rates.c:dna" name="stateNode" value="0.1 0.1 0.03 0.04"/>
    </state>
 
    <distribution id="posterior" spec="util.CompoundDistribution">
      <distribution id="prior" spec="util.CompoundDistribution">
-       <prior id="RatePriorDistrbution.t:dna" name="distribution" x="@rates.c:dna">
-         <LogNormal id="LogNormalDistribution.c:dna" S="@ucldStdev.c:dna" meanInRealSpace="false" name="distr">
-         <parameter id="RealParameter.15" estimate="false" name="M" >-3.0</parameter>
-         </LogNormal>
-       </prior>
-
+      <distribution id="CoalescentConstant.t:dna" spec="Coalescent">
+         <populationModel id="ConstantPopulation.t:dna" spec="ConstantPopulation" popSize="0.3"/>
+         <treeIntervals id="TreeIntervals.t:dna" spec="TreeIntervals" tree="@Tree.t:dna"/>
+      </distribution>
+       
+      <prior id="RatePriorDistrbution.t:dna" name="distribution" x="@rates.c:dna">
+           <LogNormal id="LogNormalDistribution.c:dna" name="distr" meanInRealSpace="false">
+               <parameter estimate="false" id="RealParameter.15" name="M">-3.0</parameter>
+               <parameter id="ucldStdev.c:dna" lower="0.0" name="S">0.25</parameter>
+           </LogNormal>
+      </prior>
     </distribution>
 
     <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
       <distribution id="treeLikelihood.dna" spec="ThreadedTreeLikelihood" data="@dna" tree="@Tree.t:dna">
-        <siteModel id="SiteModel.s:dna" spec="SiteModel" gammaCategoryCount="1" mutationRate="@mutationRate.s:dna" shape="@gammaShape.s:dna">
-          <parameter id="proportionInvariant.s:dna" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
-          <substModel id="JC69.s:dna" spec="JukesCantor"/>
-        </siteModel>
+          <siteModel id="SiteModel.s:dna" spec="SiteModel" gammaCategoryCount="1" mutationRate="1.0" shape="1.0">
+           <parameter id="proportionInvariant.s:dna" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+           <substModel id="JC69.s:dna" spec="JukesCantor"/>
+          </siteModel>
       <branchRateModel id="RelaxedClock.c:dna" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
                        rates="@rates.c:dna" tree="@Tree.t:dna" distr="@LogNormalDistribution.c:dna">
         <parameter id="ucldMean.c:dna" estimate="false" name="clock.rate">1.0</parameter>
@@ -57,20 +58,14 @@
     <operator id="BigPulleyOperator.c:dna" spec="BigPulley"
               dwindowSize="0.01" twindowSize="0.1" tree="@Tree.t:dna" rates="@rates.c:dna" weight="30"/>
 
-    <logger id="tracelog" fileName="dna.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="root_BP.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.dna"/>
-        <log idref="mutationRate.s:dna"/>
         <log id="TreeHeight.t:dna" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:dna"/>
         <log id="rate.c:dna" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna"/>
-        <log idref="RatePriorDistrbution.t:dna"/>
-        <log idref="birthRate.t:dna"/>
-        <log idref="gammaShape.s:dna"/>
-        <log idref="ucldStdev.c:dna"/>
         <log idref="rates.c:dna"/>
-
     </logger>
 
     <logger id="screenlog" logEvery="100000">
