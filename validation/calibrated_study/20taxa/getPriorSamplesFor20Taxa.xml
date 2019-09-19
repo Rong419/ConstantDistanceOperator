@@ -21,7 +21,7 @@
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
     <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-    <data spec='Alignment' id="ratites" dataType="nucleotide">
+    <data spec='Alignment' id="simSeq" dataType="nucleotide">
         <sequence taxon="1">?</sequence>
         <sequence taxon="2">?</sequence>
         <sequence taxon="3">?</sequence>
@@ -45,63 +45,63 @@
     </data>
 
     <state id="state" storeEvery="5000">
-        <tree id="Tree.t:ratites" name="stateNode">
-            <taxonset id="TaxonSet.ratites" spec="TaxonSet">
-                <alignment idref="ratites"/>
+        <tree id="Tree.t:simSeq" name="stateNode">
+            <taxonset id="TaxonSet.simSeq" spec="TaxonSet">
+                <alignment idref="simSeq"/>
             </taxonset>
         </tree>
-        <parameter id="ucldStdev.c:ratites" lower="0.0" name="stateNode">0.1</parameter>
-        <stateNode id="rates.c:ratites" spec="parameter.RealParameter" dimension="38">1.0</stateNode>
-        <parameter id="BirthRate.t:ratites" name="stateNode">2.0</parameter>
-        <parameter id="kappa.t:ratites" lower="0.0" name="stateNode">5.0</parameter>
-        <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
+        <parameter id="ucldStdev.c:simSeq" lower="0.0" name="stateNode">0.1</parameter>
+        <stateNode id="rates.c:simSeq" spec="parameter.RealParameter" dimension="38">1.0</stateNode>
+        <parameter id="BirthRate.t:simSeq" name="stateNode">2.0</parameter>
+        <parameter id="kappa.t:simSeq" lower="0.0" name="stateNode">5.0</parameter>
+        <parameter id="freqParameter.t:simSeq" dimension="4" name="stateNode">0.25</parameter>
     </state>
 
 
-    <branchRateModel id="RelaxedClock.c:ratites" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
-                     rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2">
-        <parameter id="ucldMean.c:ratites" estimate="false" name="clock.rate">1.0</parameter>
+    <branchRateModel id="RelaxedClock.c:simSeq" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
+                     rates="@rates.c:simSeq" tree="@Tree.t:simSeq" distr="@LogNormalDistribution2">
+        <parameter id="ucldMean.c:simSeq" estimate="false" name="clock.rate">1.0</parameter>
     </branchRateModel>
 
 
     <run spec="DirectSimulator" nSamples="2000000">
         <distribution id="prior" spec="util.CompoundDistribution">
 
-            <distribution id="YuleModel.t:ratites" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
-            <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BirthRate.t:ratites">
+            <distribution id="YuleModel.t:simSeq" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:simSeq" tree="@Tree.t:simSeq"/>
+            <prior id="BirthRatePrior.t:simSeq" name="distribution" x="@BirthRate.t:simSeq">
                 <LogNormal id="LogNormalDistribution1" S="0.2"  M="0.7" meanInRealSpace="false" name="distr">
                 </LogNormal>
             </prior>
 
-            <prior id="FrequencyPrior.t:ratites" name="distribution" x="@freqParameter.t:ratites">
+            <prior id="FrequencyPrior.t:simSeq" name="distribution" x="@freqParameter.t:simSeq">
                 <Dirichlet id="Dirichlet1" alpha="10 10 10 10" name="distr"/>
             </prior>
 
-            <prior id="KappaPrior.t:ratites" name="distribution" x="@kappa.t:ratites">
+            <prior id="KappaPrior.t:simSeq" name="distribution" x="@kappa.t:simSeq">
                 <LogNormal id="LogNormalDistribution0" S="0.6"  M="-1.0" meanInRealSpace="false"  name="distr"/>
             </prior>
 
-            <prior id="RatePrior.t::ratites" name="distribution" x="@rates.c:ratites">
-                <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:ratites"  M="1.0" meanInRealSpace="true" name="distr"/>
+            <prior id="RatePrior.t::simSeq" name="distribution" x="@rates.c:simSeq">
+                <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:simSeq"  M="1.0" meanInRealSpace="true" name="distr"/>
             </prior>
 
-            <prior id="ucldStdevPrior.c:ratites" name="distribution" x="@ucldStdev.c:ratites">
+            <prior id="ucldStdevPrior.c:simSeq" name="distribution" x="@ucldStdev.c:simSeq">
                 <LogNormal id="LogNormalDistribution3" S="0.35"  M="-1.5" meanInRealSpace="false" name="distr"/>
             </prior>
         </distribution>
 
-        <logger id="tracelog" fileName="ratites.log" logEvery="1000" model="@prior" sanitiseHeaders="true" sort="smart">
-            <log idref="BirthRate.t:ratites"/>
-            <log idref="kappa.t:ratites"/>
-            <log idref="freqParameter.t:ratites"/>
-            <log idref="ucldStdev.c:ratites"/>
-            <log id="rate.c:ratites" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
-            <log id="TreeStat.t:ratites" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:ratites"/>
-            <log idref="rates.c:ratites"/>
+        <logger id="tracelog" fileName="simSeq_20taxa.log" logEvery="1000" model="@prior" sanitiseHeaders="true" sort="smart">
+            <log idref="BirthRate.t:simSeq"/>
+            <log idref="kappa.t:simSeq"/>
+            <log idref="freqParameter.t:simSeq"/>
+            <log idref="ucldStdev.c:simSeq"/>
+            <log id="rate.c:simSeq" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:simSeq" tree="@Tree.t:simSeq"/>
+            <log id="TreeStat.t:simSeq" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:simSeq"/>
+            <log idref="rates.c:simSeq"/>
         </logger>
 
-        <logger id="treelog.t:ratites" fileName="$(tree).trees" logEvery="1000" mode="tree">
-            <log idref="Tree.t:ratites"/>
+        <logger id="treelog.t:simSeq" fileName="$(tree)_20taxa.trees" logEvery="1000" mode="tree">
+            <log idref="Tree.t:simSeq"/>
         </logger>
 
     </run>
