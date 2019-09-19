@@ -147,7 +147,7 @@ name="alignment">
 <run id="mcmc" spec="MCMC" chainLength="100000000">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:Shankarappa" spec="beast.evolution.tree.Tree" name="stateNode">
-            <trait id="dateTrait.t:Shankarappa" spec="beast.evolution.tree.TraitSet" traitname="date-backward" units="month">
+            <trait id="dateTrait.t:Shankarappa" spec="beast.evolution.tree.TraitSet" traitname="date-forward" units="month">
                 p9c003-01=003,
 p9c003-04=003,
 p9c003-09=003,
@@ -337,16 +337,16 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
     </distribution>
 
     <operator id="InternalnodesOperator.c:Shankarappa" spec="InConstantDistanceOperator"
-              twindowSize="0.2"  tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="10"/>
+              twindowSize="0.2"  tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="7.5"/>
 
     <operator id="RootOperator2.c:Shankarappa" spec="SimpleDistance"
-              twindowSize="0.2" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="1.0"/>
+              twindowSize="0.2" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="0.5"/>
 
     <operator id="RootOperator3.c:Shankarappa" spec="SmallPulley"
-              dwindowSize="0.04" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="1.0"/>
+              dwindowSize="0.04" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="0.5"/>
     
     <operator id="RootOperator4.c:Shankarappa" spec="BigPulley"
-              twindowSize="0.02" dwindowSize="0.02" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="1.0"/>
+              twindowSize="0.02" dwindowSize="0.02" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="0.5"/>
 
     <operator id="CoalescentConstantTreeScaler.t:Shankarappa" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
@@ -369,13 +369,13 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
     <operator id="ucldMeanScaler.c:Shankarappa" spec="ScaleOperator" parameter="@ucldMean.c:Shankarappa" scaleFactor="0.5" weight="1.0"/>
 
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:Shankarappa" stdev="@ucldStdev.c:Shankarappa" distr="@LogNormalDistributionModel.c:Shankarappa" scaleFactor="0.5" weight="10.0"/>
+              rates="@fastRates.c:Shankarappa" stdev="@ucldStdev.c:Shankarappa" distr="@LogNormalDistributionModel.c:Shankarappa" scaleFactor="0.5" weight="3.0"/>
               
-    <operator id="FastRatesRandomWalk.c:Shankarappa" spec="RealRandomWalkOperator" parameter="@fastRates.c:Shankarappa" weight="10.0" windowSize="1"/>
+    <operator id="FastRatesRandomWalk.c:Shankarappa" spec="RealRandomWalkOperator" parameter="@fastRates.c:Shankarappa" weight="7.0" windowSize="1"/>
 
-    <operator id="FastRatesScaleOperator.c:Shankarappa" spec="ScaleOperator" parameter="@fastRates.c:Shankarappa" weight="10.0"/>
+    <operator id="FastRatesScaleOperator.c:Shankarappa" spec="ScaleOperator" parameter="@fastRates.c:Shankarappa" weight="7.0"/>
     
-    <operator id="FastRatesSwapOperator.c:Shankarappa" spec="SwapOperator" parameter="@fastRates.c:Shankarappa" weight="10.0"/>
+    <operator id="FastRatesSwapOperator.c:Shankarappa" spec="SwapOperator" parameter="@fastRates.c:Shankarappa" weight="7.0"/>
 
     <operator id="relaxedUpDownOperator.c:Shankarappa" spec="UpDownOperator" scaleFactor="0.75" weight="3.0">
         <up idref="ucldMean.c:Shankarappa"/>
