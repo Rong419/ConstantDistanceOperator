@@ -35,106 +35,6 @@
           <sequence taxon="18">?</sequence>
           <sequence taxon="19">?</sequence>
           <sequence taxon="20">?</sequence>
-          <sequence taxon="21">?</sequence>
-          <sequence taxon="22">?</sequence>
-          <sequence taxon="23">?</sequence>
-          <sequence taxon="24">?</sequence>
-          <sequence taxon="25">?</sequence>
-          <sequence taxon="26">?</sequence>
-          <sequence taxon="27">?</sequence>
-          <sequence taxon="28">?</sequence>
-          <sequence taxon="29">?</sequence>
-          <sequence taxon="30">?</sequence>
-          <sequence taxon="31">?</sequence>
-          <sequence taxon="32">?</sequence>
-          <sequence taxon="33">?</sequence>
-          <sequence taxon="34">?</sequence>
-          <sequence taxon="35">?</sequence>
-          <sequence taxon="36">?</sequence>
-          <sequence taxon="37">?</sequence>
-          <sequence taxon="38">?</sequence>
-          <sequence taxon="39">?</sequence>
-          <sequence taxon="40">?</sequence>
-          <sequence taxon="41">?</sequence>
-          <sequence taxon="42">?</sequence>
-          <sequence taxon="43">?</sequence>
-          <sequence taxon="44">?</sequence>
-          <sequence taxon="45">?</sequence>
-          <sequence taxon="46">?</sequence>
-          <sequence taxon="47">?</sequence>
-          <sequence taxon="48">?</sequence>
-          <sequence taxon="49">?</sequence>
-          <sequence taxon="50">?</sequence>
-          <sequence taxon="51">?</sequence>
-          <sequence taxon="52">?</sequence>
-          <sequence taxon="53">?</sequence>
-          <sequence taxon="54">?</sequence>
-          <sequence taxon="55">?</sequence>
-          <sequence taxon="56">?</sequence>
-          <sequence taxon="57">?</sequence>
-          <sequence taxon="58">?</sequence>
-          <sequence taxon="59">?</sequence>
-          <sequence taxon="60">?</sequence>
-          <sequence taxon="61">?</sequence>
-          <sequence taxon="62">?</sequence>
-          <sequence taxon="63">?</sequence>
-          <sequence taxon="64">?</sequence>
-          <sequence taxon="65">?</sequence>
-          <sequence taxon="66">?</sequence>
-          <sequence taxon="67">?</sequence>
-          <sequence taxon="68">?</sequence>
-          <sequence taxon="69">?</sequence>
-          <sequence taxon="70">?</sequence>
-          <sequence taxon="71">?</sequence>
-          <sequence taxon="72">?</sequence>
-          <sequence taxon="73">?</sequence>
-          <sequence taxon="74">?</sequence>
-          <sequence taxon="75">?</sequence>
-          <sequence taxon="76">?</sequence>
-          <sequence taxon="77">?</sequence>
-          <sequence taxon="78">?</sequence>
-          <sequence taxon="79">?</sequence>
-          <sequence taxon="80">?</sequence>
-          <sequence taxon="81">?</sequence>
-          <sequence taxon="82">?</sequence>
-          <sequence taxon="83">?</sequence>
-          <sequence taxon="84">?</sequence>
-          <sequence taxon="85">?</sequence>
-          <sequence taxon="86">?</sequence>
-          <sequence taxon="87">?</sequence>
-          <sequence taxon="88">?</sequence>
-          <sequence taxon="89">?</sequence>
-          <sequence taxon="90">?</sequence>
-          <sequence taxon="91">?</sequence>
-          <sequence taxon="92">?</sequence>
-          <sequence taxon="93">?</sequence>
-          <sequence taxon="94">?</sequence>
-          <sequence taxon="95">?</sequence>
-          <sequence taxon="96">?</sequence>
-          <sequence taxon="97">?</sequence>
-          <sequence taxon="98">?</sequence>
-          <sequence taxon="99">?</sequence>
-          <sequence taxon="100">?</sequence>
-          <sequence taxon="101">?</sequence>
-          <sequence taxon="102">?</sequence>
-          <sequence taxon="103">?</sequence>
-          <sequence taxon="104">?</sequence>
-          <sequence taxon="105">?</sequence>
-          <sequence taxon="106">?</sequence>
-          <sequence taxon="107">?</sequence>
-          <sequence taxon="108">?</sequence>
-          <sequence taxon="109">?</sequence>
-          <sequence taxon="110">?</sequence>
-          <sequence taxon="111">?</sequence>
-          <sequence taxon="112">?</sequence>
-          <sequence taxon="113">?</sequence>
-          <sequence taxon="114">?</sequence>
-          <sequence taxon="115">?</sequence>
-          <sequence taxon="116">?</sequence>
-          <sequence taxon="117">?</sequence>
-          <sequence taxon="118">?</sequence>
-          <sequence taxon="119">?</sequence>
-          <sequence taxon="120">?</sequence>
       </data>
 
       <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
@@ -145,7 +45,7 @@
       </siteModel>
       <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
       <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
-      <parameter id="branchrates" name="rateCategories" spec="parameter.IntegerParameter" dimension="238">1</parameter>
+      <parameter id="branchrates" name="rates" spec="parameter.RealParameter" dimension="38">1.0</parameter>
       <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
       <parameter name='M' id='M' value="1.0"/>
       <parameter name='S' id='ucld.stdev' value="UCLDSTD"/>
@@ -173,7 +73,7 @@
                 </taxonset>
             </tree>
     <parameter id="ucldStdev.c:calsim" lower="0.0" name="stateNode">0.2</parameter>
-        <stateNode id="rates.c:calsim" spec="parameter.RealParameter" dimension="238">1.0</stateNode>
+        <stateNode id="rates.c:calsim" spec="parameter.RealParameter" dimension="38">1.0</stateNode>
         <parameter id="BirthRate.t:calsim" name="stateNode">2.0</parameter>
         <parameter id="kappa.t:calsim" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="freqParameter.t:calsim" dimension="4" name="stateNode">0.25</parameter>
@@ -228,7 +128,7 @@
             </distribution>
         </distribution>
 
-        <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator"
+        <operator id="InternalnodesOperator.c:dna" spec="InConstantDistanceOperator" 
                   twindowSize="0.017"  tree="@Tree.t:calsim" rates="@rates.c:calsim"  weight="10.0"/>
 
         <operator id="RootOperator1.c:dna" spec="SimpleDistance"
@@ -268,7 +168,7 @@
 
         <operator id="ucldStdevScaler.c:calsim" spec="ScaleOperator" parameter="@ucldStdev.c:calsim" scaleFactor="0.5" weight="5.0"/>
 
-        <logger id="tracelog" fileName="calsim.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <logger id="tracelog" fileName="calibrated20taxa_SIM.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>
             <log idref="likelihood"/>
             <log idref="prior"/>
@@ -288,7 +188,7 @@
             <log idref="prior"/>
         </logger>
 
-        <logger id="treelog.t:calsim" fileName="$(tree).trees" logEvery="2000" mode="tree">
+        <logger id="treelog.t:calsim" fileName="calibrated20taxa_SIM.trees" logEvery="2000" mode="tree">
             <log id="TreeWithMetaDataLogger.t:calsim" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:calsim" tree="@Tree.t:calsim"/>
         </logger>
 

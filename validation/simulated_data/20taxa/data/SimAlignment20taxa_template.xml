@@ -32,7 +32,7 @@
 
     <run spec="beast.app.seqgen.SequenceSimulator" id="seqgen"
          data='@input_alignment' tree='@tree' sequencelength='5000'
-         outputFileName="simulated_alignment.xml">
+         outputFileName="simAlignment20_LENGTH.xml">
 
     <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
       <substModel spec='HKY' id='hky'>

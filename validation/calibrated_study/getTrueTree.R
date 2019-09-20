@@ -6,7 +6,7 @@ args = commandArgs(trailingOnly=TRUE)
 treefile.folder <- args[1] 
 output.txt.folder  <- args[2]
 
-#logfile.folder <- "~/Desktop/validation/well_calibrated/" 
+#treefile.folder <- "~/Desktop/validation/well_calibrated/" 
 #output.txt.folder  <- "~/Desktop/validation/well_calibrated/output/" 
 
 # get M samples in log file
@@ -22,7 +22,7 @@ for(i in seq(101, 10001, 100)) {
 Taxon <- c(20,120)
 for (taxa in Taxon) {
 #read the log file
-  L = read.nexus(file=paste0(logfile.folder,"simSeq_",taxa,"taxa.trees"))
+  L = read.nexus(file=paste0(treefile.folder,"simSeq_",taxa,"taxa.trees"))
   Tree = c()
   j=1;
   for (i in M) {
