@@ -270,7 +270,10 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
             </trait>
             <taxonset idref="TaxonSet.Shankarappa"/>
         </tree>
-        <parameter id="popSize.t:Shankarappa" spec="parameter.RealParameter" name="stateNode">0.3</parameter>
+        <parameter id="diversificationRateFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+        <parameter id="turnoverFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="samplingProportionFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.5</parameter>
+        <parameter id="originFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">150.0</parameter>
         <parameter id="kappa.s:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
         <parameter id="ucldMean.c:Shankarappa" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
         <parameter id="ucldStdev.c:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.1</parameter>
@@ -286,12 +289,21 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
 
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
-             <distribution id="CoalescentConstant.t:Shankarappa" spec="Coalescent">
-                <populationModel id="ConstantPopulation.t:Shankarappa" spec="ConstantPopulation" popSize="@popSize.t:Shankarappa"/>
-                <treeIntervals id="TreeIntervals.t:Shankarappa" spec="TreeIntervals" tree="@Tree.t:Shankarappa"/>
+            <distribution id="FBD.t:Shankarappa" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" diversificationRate="@diversificationRateFBD.t:Shankarappa" origin="@originFBD.t:Shankarappa" samplingProportion="@samplingProportionFBD.t:Shankarappa" tree="@Tree.t:Shankarappa" turnover="@turnoverFBD.t:Shankarappa">
+                <parameter id="rFBD.t:Shankarappa" spec="parameter.RealParameter" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
+                <parameter id="rhoFBD.t:Shankarappa" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
             </distribution>
-            <prior id="PopSizePrior.t:Shankarappa" name="distribution" x="@popSize.t:Shankarappa">
-                <OneOnX id="OneOnX.1" name="distr"/>
+            <prior id="diversificationRatePriorFBD.t:Shankarappa" name="distribution" x="@diversificationRateFBD.t:Shankarappa">
+                <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="originPriorFBD.t:Shankarappa" name="distribution" x="@originFBD.t:Shankarappa">
+                <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
+            </prior>
+            <prior id="samplingProportionPriorFBD.t:Shankarappa" name="distribution" x="@samplingProportionFBD.t:Shankarappa">
+                <Uniform id="Uniform.2" name="distr"/>
+            </prior>
+            <prior id="turnoverPriorFBD.t:Shankarappa" name="distribution" x="@turnoverFBD.t:Shankarappa">
+                <Uniform id="Uniform.3" name="distr"/>
             </prior>
             <prior id="FrequenciesPrior.s:Shankarappa" name="distribution" x="@freqParameter.s:Shankarappa">
                 <Dirichlet id="Dirichlet" alpha="10 10 10 10" name="distr"/>
@@ -337,32 +349,38 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
     </distribution>
 
     <operator id="InternalnodesOperator.c:Shankarappa" spec="InConstantDistanceOperator"
-              twindowSize="0.2"  tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="7.5"/>
+              twindowSize="0.2"  tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="10"/>
 
     <operator id="RootOperator2.c:Shankarappa" spec="SimpleDistance"
-              twindowSize="0.2" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="0.5"/>
+              twindowSize="0.2" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="1.0"/>
 
     <operator id="RootOperator3.c:Shankarappa" spec="SmallPulley"
-              dwindowSize="0.04" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="0.5"/>
+              dwindowSize="0.04" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="1.0"/>
     
     <operator id="RootOperator4.c:Shankarappa" spec="BigPulley"
-              twindowSize="0.02" dwindowSize="0.02" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="0.5"/>
+              twindowSize="0.02" dwindowSize="0.02" tree="@Tree.t:Shankarappa" rates="@fastRates.c:Shankarappa"  weight="1.0"/>
 
-    <operator id="CoalescentConstantTreeScaler.t:Shankarappa" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="originScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@originFBD.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
 
-    <operator id="CoalescentConstantTreeRootScaler.t:Shankarappa" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="divRateScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@diversificationRateFBD.t:Shankarappa" scaleFactor="0.75" weight="10.0"/>
 
-    <operator id="CoalescentConstantUniformOperator.t:Shankarappa" spec="Uniform" tree="@Tree.t:Shankarappa" weight="30.0"/>
+    <operator id="turnoverScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@turnoverFBD.t:Shankarappa" scaleFactor="0.75" weight="10.0"/>
 
-    <operator id="CoalescentConstantSubtreeSlide.t:Shankarappa" spec="SubtreeSlide" tree="@Tree.t:Shankarappa" weight="15.0"/>
+    <operator id="samplingPScalerFBD.t:Shankarappa" spec="ScaleOperator" parameter="@samplingProportionFBD.t:Shankarappa" scaleFactor="0.75" weight="10.0"/>
 
-    <operator id="CoalescentConstantNarrow.t:Shankarappa" spec="Exchange" tree="@Tree.t:Shankarappa" weight="15.0"/>
+    <operator id="LeafToSAFBD.t:Shankarappa" spec="LeafToSampledAncestorJump" tree="@Tree.t:Shankarappa" weight="10.0"/>
 
-    <operator id="CoalescentConstantWide.t:Shankarappa" spec="Exchange" isNarrow="false" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="SAWilsonBaldingFBD.t:Shankarappa" spec="SAWilsonBalding" tree="@Tree.t:Shankarappa" weight="10.0"/>
 
-    <operator id="CoalescentConstantWilsonBalding.t:Shankarappa" spec="WilsonBalding" tree="@Tree.t:Shankarappa" weight="3.0"/>
+    <operator id="SAWideFBD.t:Shankarappa" spec="SAExchange" isNarrow="false" tree="@Tree.t:Shankarappa" weight="10.0"/>
 
-    <operator id="PopSizeScaler.t:Shankarappa" spec="ScaleOperator" parameter="@popSize.t:Shankarappa" scaleFactor="0.75" weight="3.0"/>
+    <operator id="SANarrowFBD.t:Shankarappa" spec="SAExchange" tree="@Tree.t:Shankarappa" weight="10.0"/>
+
+    <operator id="SAUniformOperatorFBD.t:Shankarappa" spec="SAUniform" tree="@Tree.t:Shankarappa" weight="20.0"/>
+
+    <operator id="SATreeRootScalerFBD.t:Shankarappa" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:Shankarappa" weight="1.0"/>
+
+    <operator id="SATreeScalerFBD.t:Shankarappa" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:Shankarappa" weight="3.0"/>
 
     <operator id="KappaScaler.s:Shankarappa" spec="ScaleOperator" parameter="@kappa.s:Shankarappa" scaleFactor="0.5" weight="0.1"/>
 
@@ -386,14 +404,18 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <parameter idref="freqParameter.s:Shankarappa"/>
     </operator>
 
-    <logger id="tracelog" spec="Logger" fileName="ShankarappaC_FILE.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" spec="Logger" fileName="Shankarappa_FILE.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.Shankarappa"/>
         <log id="TreeHeight.t:Shankarappa" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:Shankarappa"/>
-        <log idref="popSize.t:Shankarappa"/>
-        <log idref="CoalescentConstant.t:Shankarappa"/>
+        <log idref="FBD.t:Shankarappa"/>
+        <log idref="diversificationRateFBD.t:Shankarappa"/>
+        <log idref="turnoverFBD.t:Shankarappa"/>
+        <log idref="samplingProportionFBD.t:Shankarappa"/>
+        <log idref="originFBD.t:Shankarappa"/>
+        <log id="SACountFBD.t:Shankarappa" spec="beast.evolution.tree.SampledAncestorLogger" tree="@Tree.t:Shankarappa"/>
         <log idref="kappa.s:Shankarappa"/>
         <log idref="ucldMean.c:Shankarappa"/>
         <log idref="ucldStdev.c:Shankarappa"/>
@@ -407,7 +429,7 @@ p9c129-04=129                <taxa id="TaxonSet.Shankarappa" spec="TaxonSet">
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="ShankarappaC_FILE.trees" logEvery="10000" mode="tree">
+    <logger id="treelog.t:Shankarappa" spec="Logger" fileName="$(tree)_FILE.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:Shankarappa" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:Shankarappa" tree="@Tree.t:Shankarappa"/>
     </logger>
 
