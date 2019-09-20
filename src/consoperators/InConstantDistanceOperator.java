@@ -16,8 +16,6 @@ import java.util.List;
 public class InConstantDistanceOperator extends TreeOperator {
     public final Input<Double> twindowSizeInput =
             new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
-    //public final Input<BranchRateModel.Base> branchRateModelInput = new Input<>("branchRateModel",
-            //"A model describing the rates on the branches of the beast.tree.");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
 
     private double twindowSize;
@@ -111,7 +109,7 @@ public class InConstantDistanceOperator extends TreeOperator {
        if (t_x_<= lower || t_x_ >= upper) {
             return Double.NEGATIVE_INFINITY;
         }
-        node.setHeight(t_x_);
+        node.setHeight(t_x + a);
 
 
        //Step4: propose the new rates
@@ -140,19 +138,6 @@ public class InConstantDistanceOperator extends TreeOperator {
          *r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k)
          *r_node_ = r_node * (upper - t_x) / (upper - t_x_)
          */
-        /*
-       double [][] J = new double[4][4];
-       J[0][0] = 1.0;
-       J[1][0] = r_j / (t_x_ - t_j);
-       J[2][0] = r_k / (t_x_ - t_k);
-       J[3][0] = (-r_node * upper) / (upper - t_x_);
-       J[1][1] = (t_x - t_j) / (t_x_ - t_j);
-       J[2][2] = (t_x - t_k) / (t_x_ - t_k);
-       J[3][3] = (upper - t_x) / (upper - t_x_);
-       double Det = JD.Determinant(J,3);
-       return Math.log(Det);
-       */
-
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
        double JD = nu /de;

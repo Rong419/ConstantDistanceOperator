@@ -56,24 +56,24 @@ public class SimpleDistance extends TreeOperator {
         Node son = node.getChild(0);//get the left child of this node, i.e. son
         t_j = son.getHeight();//node time of son
 
-        int nodeN02 = son.getNr();//node number of son
-        if (nodeN02 == branchCount) {
-            nodeN02 = son.getTree().getRoot().getNr();
+        int sonNr = son.getNr();//node number of son
+        if (sonNr == branchCount) {
+            sonNr = son.getTree().getRoot().getNr();
         }
 
-        r_i = rates.getValues()[nodeN02];
+        r_i = rates.getValues()[sonNr];
         d_i = r_i * (t_x - t_j);
 
         // daughter
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
 
-        int nodeN03 = daughter.getNr(); // node time of daughter
-        if (nodeN03 == branchCount) {
-            nodeN03 = daughter.getTree().getRoot().getNr();
+        int dauNr = daughter.getNr(); // node time of daughter
+        if (dauNr == branchCount) {
+            dauNr = daughter.getTree().getRoot().getNr();
         }
 
-        r_x = rates.getValues()[nodeN03];
+        r_x = rates.getValues()[dauNr];
         d_x = r_x * (t_x - t_k);
 
         double a = Randomizer.uniform(-twindowSize, twindowSize);
@@ -84,15 +84,15 @@ public class SimpleDistance extends TreeOperator {
         if (t_x_ <= lower) {
             return Double.NEGATIVE_INFINITY;
         }
-        node.setHeight(t_x_);
+        node.setHeight(t_x + a);
 
         //Step 3: make changes on the rates
         double r_i_ = d_i / (t_x_ - t_j);
         double r_x_ = d_x / (t_x_ - t_k);
 
         //Step 4: set the proposed new rates
-        rates.setValue(nodeN02, r_i_);
-        rates.setValue(nodeN03, r_x_);
+        rates.setValue(sonNr, r_i_);
+        rates.setValue(dauNr, r_x_);
 
         //Step5: calculate the Hastings ratio
         /*
@@ -111,8 +111,7 @@ public class SimpleDistance extends TreeOperator {
 
         double nu = (t_x - t_j) * (t_x - t_k);
         double de = (t_x_ - t_j) * (t_x_ - t_k);
-        double hastingsratio = nu / de;
-        return Math.log(hastingsratio);
+        return Math.log(nu / de);
     }
 
     /**

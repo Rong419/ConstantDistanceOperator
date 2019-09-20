@@ -75,271 +75,290 @@ public class BigPulley extends TreeOperator {
         double ParaA = 1.0; double ParaB =1.0; double ParaC;
         double det = 1.0;
 
-        //Step 1: randomly select a node, denoted by node x
+        // Step 1: randomly select a node, denoted by node x
         node = tree.getRoot();
         t_x = node.getHeight();//get the time of this node
 
-        // son
+        // information of son
         Node son = node.getChild(0);//get the left child of this node, i.e. son
         t_j = son.getHeight();//node time of son
-
         r_i = rates.getValues()[getNodeNr(son)];
         d_i = r_i * (t_x - t_j);
 
-        // daughter
+        // information of daughter
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
-
         r_x = rates.getValues()[getNodeNr(daughter)];
         d_x = r_x * (t_x - t_k);
 
+        // random numbers used in the proposal
         double a = Randomizer.uniform(-twindowSize, twindowSize);//for the root time
-        double a1 = Randomizer.uniform(-twindowSize, twindowSize);//for the
-        double a2 = Randomizer.uniform(-twindowSize, twindowSize);
+        double a1 = Randomizer.uniform(-twindowSize, twindowSize);//for the son's node time
+        double a2 = Randomizer.uniform(-twindowSize, twindowSize);//for the daughter's node time
         double u1 = Randomizer.uniform(0, 1);//which node to pick, i.e. the son or the daughter of the root
         double u2 = Randomizer.uniform(0, 1);//which tree topology to go, i.e. which node to exchange
-        double d0 = Randomizer.uniform(-dwindowSize, dwindowSize);
-        double d1 = Randomizer.uniform(-dwindowSize, dwindowSize);
+        double d0 = Randomizer.uniform(-dwindowSize, dwindowSize);//for distance of branch above son
+        double d1 = Randomizer.uniform(-dwindowSize, dwindowSize);//for distance of branch above daughter
 
-        //to propose a new node time for this node
-        t_x_ = t_x + a;
+        // Step 2: to propose a new values
+        t_x_ = t_x + a;  // new root time
+        t_j_ = t_j + a1; // new node time of  son
+        t_k_ = t_k + a2; // new node time of daughter
+        double d_i_ = d_i + d0; // new distance of branch above son
+        double d_x_ = d_x + d1; // new distance of branch above daughter
 
 
-            if (t_j > t_k) {
-                ParaA = 0.5;
-                ParaB = 1.0;
-            }
-            if (t_j < t_k) {
-                ParaA = 1.0;
-                ParaB = 0.5;
-            }
-            if (t_j == t_k) {
-                ParaA = 1.0;
-                ParaB = 1.0;
-            }
-            C1 = son.getChildren();
-            C2 = daughter.getChildren();
+        // to prepare the constant numbers for jacobian
+        // which is dependent on how the tree topology is proposed
+        if (t_j > t_k) {
+            ParaA = 0.5;
+            ParaB = 1.0;
+        }
+        if (t_j < t_k) {
+            ParaA = 1.0;
+            ParaB = 0.5;
+        }
+        if (t_j == t_k) {
+            ParaA = 1.0;
+            ParaB = 1.0;
+        }
 
-            t_j_ = t_j + a1;
-            t_k_ = t_k + a2;
-            double d_i_ = d_i + d0;
-            double d_x_ = d_x + d1;
+        // get grandchildren of the root
+        // to decide which tree shape it is
+        C1 = son.getChildren();
+        C2 = daughter.getChildren();
 
-            //for symmetric tree shapes
-            if ((C1.size() != 0) && (C2.size() != 0)) {
-                son1 = son.getChild(0);
-                daughter1 = son.getChild(1);
-                son2 = daughter.getChild(0);
-                daughter2 = daughter.getChild(1);
+        // symmetric tree shapes
+        // i.e. both son and daughter have child nodes
+        if ((C1.size() != 0) && (C2.size() != 0)) {
+            // access to child nodes of son and daughter
+            son1 = son.getChild(0);
+            daughter1 = son.getChild(1);
+            son2 = daughter.getChild(0);
+            daughter2 = daughter.getChild(1);
 
-                double t3 = son1.getHeight();
-                double t4 = daughter1.getHeight();
-                double t5 = son2.getHeight();
-                double t6 = daughter2.getHeight();
+            double t3 = son1.getHeight();
+            double t4 = daughter1.getHeight();
+            double t5 = son2.getHeight();
+            double t6 = daughter2.getHeight();
 
-                r_j = rates.getValues()[getNodeNr(son1)];
-                r_k = rates.getValues()[getNodeNr(daughter1)];
-                double r_m = rates.getValues()[getNodeNr(son2)];
-                double r_n = rates.getValues()[getNodeNr(daughter2)];
+            r_j = rates.getValues()[getNodeNr(son1)];
+            r_k = rates.getValues()[getNodeNr(daughter1)];
+            double r_m = rates.getValues()[getNodeNr(son2)];
+            double r_n = rates.getValues()[getNodeNr(daughter2)];
 
-                d_j = r_j * (t_j - t3);
-                d_k = r_k * (t_j - t4);
-                double d_m = r_m * (t_k - t5);
-                double d_n = r_n * (t_k - t6);
-                if (u1 > 0.5) {
-                    //Pick the son and change the daughter
-                    if (t_j_ <= t_k) {
+            d_j = r_j * (t_j - t3);
+            d_k = r_k * (t_j - t4);
+            double d_m = r_m * (t_k - t5);
+            double d_n = r_n * (t_k - t6);
+
+            // with 0.5 probability to pick the son and change the daughter
+            if (u1 > 0.5) {
+                if (t_j_ <= t_k) {
+                    return Double.NEGATIVE_INFINITY;
+                }
+                if (t_x_ <= t_j_) {
+                    return Double.NEGATIVE_INFINITY;
+                }
+                node.setHeight(t_x + a);
+                son.setHeight(t_j_);
+
+                //Case1: daughter <-> son1
+                if (u2 > 0.5) {
+                    if (d_j - d_i_ <= 0) {
                         return Double.NEGATIVE_INFINITY;
                     }
-                    if (t_x_ <= t_j_) {
-                        return Double.NEGATIVE_INFINITY;
+                    TreeChange(son1, daughter1, daughter, son, node, d_j, d_k, d_x, d_i, d_i_, t3, t4, t_k, t_j_, t_x_);
+                    det = Det(r_j,r_k,r_x,r_i,t_x,t_x_,t_j,t_j_,t3,t4,t_k);
+                    //det = Det2 (t_x_,t_j_,t3,t4,t_k);
+                    E = son1.getChildren();
+                    if (E.size() != 0) {
+                        ParaA = 0.25;
                     }
-                    node.setHeight(t_x_);
-                    son.setHeight(t_j_);
-                    if (u2 > 0.5) {
-                        //Case1: daughter <-> son1
-                        if (d_j - d_i_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(son1, daughter1, daughter, son, node, d_j, d_k, d_x, d_i, d_i_, t3, t4, t_k, t_j_, t_x_);
-                        det = Det(r_j,r_k,r_x,r_i,t_x,t_x_,t_j,t_j_,t3,t4,t_k);
-                        //det = Det2 (t_x_,t_j_,t3,t4,t_k);
-                        E = son1.getChildren();
-                        if (E.size() != 0) {
-                            ParaA = 0.25;
-                        }
-                    } else if (u2 < 0.5) {
-                        //Case2: daughter <-> daughter1
-                        if (d_k - d_i_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(daughter1, son1, daughter, son, node, d_k, d_j, d_x, d_i, d_i_, t4, t3, t_k, t_j_, t_x_);
-                        det = Det(r_k,r_j,r_x,r_i,t_x,t_x_,t_j,t_j_,t4,t3,t_k);
-                        //det = Det2 (t_x_,t_j_,t4,t3,t_k);
-                        E = daughter1.getChildren();
-                        if (E.size() != 0) {
-                            ParaA = 0.25;
-                        }
-                    } else {
-                        return Double.NEGATIVE_INFINITY;
-                    }
-                    //hastingsRatio = Math.log(ParaA / 0.25);
-                    hastingsRatio = Math.log(4 * det * ParaA);
-                } else if (u1 < 0.5) {
-                    //Pick the daughter and change the son
-                    if (t_k_ <= t_j) {
-                        return Double.NEGATIVE_INFINITY;
-                    }
-                    if (t_x_ <= t_k_) {
-                        return Double.NEGATIVE_INFINITY;
-                    }
-                    node.setHeight(t_x_);
-                    daughter.setHeight(t_k_);
-                    if (u2 > 0.5) {
-                        //Case3: son <-> son2
-                        if (d_m - d_x_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(son2, daughter2, son, daughter, node, d_m, d_n, d_i, d_x, d_x_, t5, t6, t_j, t_k_, t_x_);
-                        det = Det(r_m,r_n,r_i,r_x,t_x,t_x_,t_k,t_k_,t5,t6,t_j);
-                        //det = Det2 (t_x_,t_k_,t5,t6,t_j);
-                        E = son2.getChildren();
-                        if (E.size() != 0) {
-                            ParaB = 0.25;
-                        }
+                }
 
-                    } else if (u2 < 0.5) {
-                        //Case4: son <-> daughter2
-                        if (d_n - d_x_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(daughter2, son2, son, daughter, node, d_n, d_m, d_i, d_x, d_x_, t6, t5, t_j, t_k_, t_x_);
-                        det = Det(r_n,r_m,r_i,r_x,t_x,t_x_,t_k,t_k_,t6,t5,t_j);
-                        //det = Det2 (t_x_,t_k_,t6,t5,t_j);
-                        E = daughter2.getChildren();
-                        if (E.size() != 0) {
-                            ParaB = 0.25;
-                        }
+                //Case2: daughter <-> daughter1
+                else if (u2 < 0.5) {
 
-                    } else {
+                    if (d_k - d_i_ <= 0) {
                         return Double.NEGATIVE_INFINITY;
                     }
-                    //hastingsRatio = Math.log(ParaB / 0.25);
-                    hastingsRatio = Math.log(4 * det * ParaB);
+                    TreeChange(daughter1, son1, daughter, son, node, d_k, d_j, d_x, d_i, d_i_, t4, t3, t_k, t_j_, t_x_);
+                    det = Det(r_k,r_j,r_x,r_i,t_x,t_x_,t_j,t_j_,t4,t3,t_k);
+                    //det = Det2 (t_x_,t_j_,t4,t3,t_k);
+                    E = daughter1.getChildren();
+                    if (E.size() != 0) {
+                        ParaA = 0.25;
+                    }
                 } else {
                     return Double.NEGATIVE_INFINITY;
                 }
+                //hastingsRatio = Math.log(ParaA / 0.25);
+                hastingsRatio = Math.log(4 * det * ParaA);
             }
 
-            //for asymmetric tree shape
-            if (((C1.size() == 0) && (C2.size() != 0)) || ((C1.size() != 0) && (C2.size() == 0))) {
-                if (C2.size() == 0) {
-                    tOlder = t_j;
-                    tYounger = t_k;
-                    newtOlder = t_j_;
-                    dOld = d_i;
-                    dOld_ = d_i_;
-                    dYoung = d_x;
-                    nodeOlder = son;
-                    nodeYounger = daughter;
-                }
-                if (C1.size() == 0) {
-                    tOlder = t_k;
-                    tYounger = t_j;
-                    newtOlder = t_k_;
-                    nodeOlder = daughter;
-                    nodeYounger = son;
-                    dOld = d_x;
-                    dOld_ = d_x_;
-                    dYoung = d_i;
-
-                }
-                if ((t_x_ <= newtOlder) || (newtOlder <= tYounger)) {
+            // with 0.5  probability to pick the daughter and change the son
+            else if (u1 < 0.5) {
+                if (t_k_ <= t_j) {
                     return Double.NEGATIVE_INFINITY;
                 }
-                node.setHeight(t_x_);
-                nodeOlder.setHeight(newtOlder);
-                Node Child1 = nodeOlder.getChild(0);
-                Node Child2 = nodeOlder.getChild(1);
-                double t_Ch1 = Child1.getHeight();
-                double t_Ch2 = Child2.getHeight();
+                if (t_x_ <= t_k_) {
+                    return Double.NEGATIVE_INFINITY;
+                }
+                node.setHeight(t_x + a);
+                daughter.setHeight(t_k_);
 
-
-
-                double r_Ch1 = rates.getValues()[getNodeNr(Child1)];
-                double r_Ch2 = rates.getValues()[getNodeNr(Child2)];
-                double d_Ch1 = r_Ch1 * (tOlder - t_Ch1);
-                double d_Ch2 = r_Ch2 * (tOlder - t_Ch2);
-
-                double r_Y = rates.getValues()[getNodeNr(nodeYounger)];
-                double r_O = rates.getValues()[getNodeNr(nodeOlder)];
-
-                if ((newtOlder > Math.max(t_Ch1, t_Ch2)) || (t_Ch1 == t_Ch2)) {
-                    if (u2 > 0.5) {
-                        //Case5: Child1 <-> nodeYounger
-                        if (d_Ch1 - dOld_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(Child1, Child2, nodeYounger, nodeOlder, node, d_Ch1, d_Ch2, dYoung, dOld, dOld_, t_Ch1, t_Ch2, tYounger, newtOlder, t_x_);
-                        det = Det(r_Ch1,r_Ch2,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch1,t_Ch2,tYounger);
-                        //det = Det2 (t_x_,newtOlder,t_Ch1,t_Ch2,tYounger);
-                        List C = Child1.getChildren();
-                        if (C.size() == 0) {
-                            ParaC = 0.5;
-                        } else {
-                            ParaC = 0.25;
-                        }
-                    } else if (u2 < 0.5) {
-                        //Case6: Child2 <-> nodeYounger
-                        if (d_Ch2 - dOld_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(Child2, Child1, nodeYounger, nodeOlder, node, d_Ch2, d_Ch1, dYoung, dOld, dOld_, t_Ch2, t_Ch1, tYounger, newtOlder, t_x_);
-                        det = Det(r_Ch2,r_Ch1,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch2,t_Ch1,tYounger);
-                        //det = Det2 (t_x_,newtOlder,t_Ch2,t_Ch1,tYounger);
-                        List D = Child2.getChildren();
-                        if (D.size() == 0) {
-                            ParaC = 0.5;
-                        } else {
-                            ParaC = 0.25;
-                        }
-                    } else {
+                //Case3: son <-> son2
+                if (u2 > 0.5) {
+                    if (d_m - d_x_ <= 0) {
                         return Double.NEGATIVE_INFINITY;
                     }
-                    //hastingsRatio = Math.log(ParaC / 0.5);
-                    hastingsRatio = Math.log(2 * det * ParaC);
+                    TreeChange(son2, daughter2, son, daughter, node, d_m, d_n, d_i, d_x, d_x_, t5, t6, t_j, t_k_, t_x_);
+                    det = Det(r_m,r_n,r_i,r_x,t_x,t_x_,t_k,t_k_,t5,t6,t_j);
+                    //det = Det2 (t_x_,t_k_,t5,t6,t_j);
+                    E = son2.getChildren();
+                    if (E.size() != 0) {
+                        ParaB = 0.25;
+                    }
                 }
 
-                else if ((newtOlder > Math.min(t_Ch1, t_Ch2)) && (newtOlder <= Math.max(t_Ch1, t_Ch2))) {
-                    if (t_Ch1 > t_Ch2) {
-                        //Case7: Child1 <-> nodeYounger
-                        if (d_Ch1 - dOld_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(Child1, Child2, nodeYounger, nodeOlder, node, d_Ch1, d_Ch2, dYoung, dOld, dOld_, t_Ch1, t_Ch2, tYounger, newtOlder, t_x_);
-                        det = Det(r_Ch1,r_Ch2,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch1,t_Ch2,tYounger);
-                        //det = Det2 (t_x_,newtOlder,t_Ch1,t_Ch2,tYounger);
+                //Case4: son <-> daughter2
+                else if (u2 < 0.5) {
+                    if (d_n - d_x_ <= 0) {
+                        return Double.NEGATIVE_INFINITY;
                     }
-                    if (t_Ch1 < t_Ch2) {
-                        //Case8: Child2 <-> nodeYonger
-                        if (d_Ch2 - dOld_ <= 0) {
-                            return Double.NEGATIVE_INFINITY;
-                        }
-                        TreeChange(Child2, Child1, nodeYounger, nodeOlder, node, d_Ch2, d_Ch1, dYoung, dOld, dOld_, t_Ch2, t_Ch1, tYounger, newtOlder, t_x_);
-                        det = Det(r_Ch2,r_Ch1,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch2,t_Ch1,tYounger);
-                        //det = Det2 (t_x_,newtOlder,t_Ch2,t_Ch1,tYounger);
+                    TreeChange(daughter2, son2, son, daughter, node, d_n, d_m, d_i, d_x, d_x_, t6, t5, t_j, t_k_, t_x_);
+                    det = Det(r_n,r_m,r_i,r_x,t_x,t_x_,t_k,t_k_,t6,t5,t_j);
+                    //det = Det2 (t_x_,t_k_,t6,t5,t_j);
+                    E = daughter2.getChildren();
+                    if (E.size() != 0) {
+                        ParaB = 0.25;
                     }
-                    //hastingsRatio = Math.log(0.25);
-                    hastingsRatio = Math.log(0.25 * det);
                 } else {
                     return Double.NEGATIVE_INFINITY;
                 }
+                //hastingsRatio = Math.log(ParaB / 0.25);
+                hastingsRatio = Math.log(4 * det * ParaB);
+            } else {
+                return Double.NEGATIVE_INFINITY;
             }
+        }
+
+        // asymmetric tree shape
+        // i.e. either son or daughter is a tip node
+        if (((C1.size() == 0) && (C2.size() != 0)) || ((C1.size() != 0) && (C2.size() == 0))) {
+            // to identify which node is a tip (younger one)
+            if (C2.size() == 0) {
+                tOlder = t_j;
+                tYounger = t_k;
+                newtOlder = t_j_;
+                dOld = d_i;
+                dOld_ = d_i_;
+                dYoung = d_x;
+                nodeOlder = son;
+                nodeYounger = daughter;
+            }
+            if (C1.size() == 0) {
+                tOlder = t_k;
+                tYounger = t_j;
+                newtOlder = t_k_;
+                nodeOlder = daughter;
+                nodeYounger = son;
+                dOld = d_x;
+                dOld_ = d_x_;
+                dYoung = d_i;
+            }
+
+            if ((t_x_ <= newtOlder) || (newtOlder <= tYounger)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+            node.setHeight(t_x + a);
+            nodeOlder.setHeight(newtOlder);
+
+            // access to child nodes of the node that is not a tip
+            Node Child1 = nodeOlder.getChild(0);
+            Node Child2 = nodeOlder.getChild(1);
+            double t_Ch1 = Child1.getHeight();
+            double t_Ch2 = Child2.getHeight();
+
+            double r_Ch1 = rates.getValues()[getNodeNr(Child1)];
+            double r_Ch2 = rates.getValues()[getNodeNr(Child2)];
+            double d_Ch1 = r_Ch1 * (tOlder - t_Ch1);
+            double d_Ch2 = r_Ch2 * (tOlder - t_Ch2);
+
+            double r_Y = rates.getValues()[getNodeNr(nodeYounger)];
+            double r_O = rates.getValues()[getNodeNr(nodeOlder)];
+
+            if ((newtOlder > Math.max(t_Ch1, t_Ch2)) || (t_Ch1 == t_Ch2)) {
+
+                //Case5: Child1 <-> nodeYounger
+                if (u2 > 0.5) {
+                    if (d_Ch1 - dOld_ <= 0) {
+                        return Double.NEGATIVE_INFINITY;
+                    }
+                    TreeChange(Child1, Child2, nodeYounger, nodeOlder, node, d_Ch1, d_Ch2, dYoung, dOld, dOld_, t_Ch1, t_Ch2, tYounger, newtOlder, t_x_);
+                    det = Det(r_Ch1,r_Ch2,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch1,t_Ch2,tYounger);
+                    //det = Det2 (t_x_,newtOlder,t_Ch1,t_Ch2,tYounger);
+                    List C = Child1.getChildren();
+                    if (C.size() == 0) {
+                        ParaC = 0.5;
+                    } else {
+                        ParaC = 0.25;
+                    }
+                }
+
+                //Case6: Child2 <-> nodeYounger
+                else if (u2 < 0.5) {
+                    if (d_Ch2 - dOld_ <= 0) {
+                        return Double.NEGATIVE_INFINITY;
+                    }
+                    TreeChange(Child2, Child1, nodeYounger, nodeOlder, node, d_Ch2, d_Ch1, dYoung, dOld, dOld_, t_Ch2, t_Ch1, tYounger, newtOlder, t_x_);
+                    det = Det(r_Ch2,r_Ch1,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch2,t_Ch1,tYounger);
+                    //det = Det2 (t_x_,newtOlder,t_Ch2,t_Ch1,tYounger);
+                    List D = Child2.getChildren();
+                    if (D.size() == 0) {
+                        ParaC = 0.5;
+                    } else {
+                        ParaC = 0.25;
+                    }
+                } else {
+                    return Double.NEGATIVE_INFINITY;
+                }
+                //hastingsRatio = Math.log(ParaC / 0.5);
+                hastingsRatio = Math.log(2 * det * ParaC);
+            }
+
+            else if ((newtOlder > Math.min(t_Ch1, t_Ch2)) && (newtOlder <= Math.max(t_Ch1, t_Ch2))) {
+
+                // /Case7: Child1 <-> nodeYounger
+                if (t_Ch1 > t_Ch2) {
+                    if (d_Ch1 - dOld_ <= 0) {
+                        return Double.NEGATIVE_INFINITY;
+                    }
+                    TreeChange(Child1, Child2, nodeYounger, nodeOlder, node, d_Ch1, d_Ch2, dYoung, dOld, dOld_, t_Ch1, t_Ch2, tYounger, newtOlder, t_x_);
+                    det = Det(r_Ch1,r_Ch2,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch1,t_Ch2,tYounger);
+                    //det = Det2 (t_x_,newtOlder,t_Ch1,t_Ch2,tYounger);
+                }
+                if (t_Ch1 < t_Ch2) {
+                    //Case8: Child2 <-> nodeYonger
+                    if (d_Ch2 - dOld_ <= 0) {
+                        return Double.NEGATIVE_INFINITY;
+                    }
+                    TreeChange(Child2, Child1, nodeYounger, nodeOlder, node, d_Ch2, d_Ch1, dYoung, dOld, dOld_, t_Ch2, t_Ch1, tYounger, newtOlder, t_x_);
+                    det = Det(r_Ch2,r_Ch1,r_Y,r_O,t_x,t_x_,tOlder,newtOlder,t_Ch2,t_Ch1,tYounger);
+                    //det = Det2 (t_x_,newtOlder,t_Ch2,t_Ch1,tYounger);
+                }
+                //hastingsRatio = Math.log(0.25);
+                hastingsRatio = Math.log(0.25 * det);
+            } else {
+                return Double.NEGATIVE_INFINITY;
+            }
+        }
 
         return hastingsRatio;
     }
 
-    protected void TreeChange(Node ChangeA, Node SiblingA, Node ChangeC, Node ParentA, Node Root,
+    private void TreeChange(Node ChangeA, Node SiblingA, Node ChangeC, Node ParentA, Node Root,
                               double dChangeA, double dSiblingA, double dChangC, double dParentA, double newdParentA,
                               double ChangeATime, double SiblingATime, double ChangeCTime,double newParentATime, double newRootTime) {
         //propose new rates
@@ -361,10 +380,9 @@ public class BigPulley extends TreeOperator {
 
     }
 
-    protected double Det (double r1, double r2, double r3, double r4, double T, double T_, double t,double t_, double t1, double t2, double t3) {
-        //calculate the determinant of the Jacobian matrix
+    //calculate the determinant of the Jacobian matrix
+    private double Det (double r1, double r2, double r3, double r4, double T, double T_, double t,double t_, double t1, double t2, double t3) {
         double [][] J = new double[6][6];
-        //Case1:
         //f(T,t,r1,r2,r3,r4) ---> T_,t_,r1_,r2_,r3_,r4_
         J[0][0] = 1;
         J[1][1] = 1;
@@ -381,35 +399,21 @@ public class BigPulley extends TreeOperator {
         J[5][0] = r4 / (T_ - t_);
         J[5][1] = -r4 / (T_ - t_);
         J[5][5] = (T - t) / (T_ - t_);
-        double Det1 = JD.Determinant(J,5);
-        return Det1;
+
+        return JD.Determinant(J,5);
     }
-/*
-    protected double Det2 (double T_, double t_, double t1, double t2, double t3) {
-        //calculate the determinant of the Jacobian matrix
-        double [][] J = new double[6][6];
-        //Case2:
-        //f(T,t,d1,d2,d3,d4) ---> T_,t_,d4_,r1,r2,r3
-        J[0][0] = 1;
-        J[1][1] = 1;
-        J[2][5] = 1;
-        J[3][2] = 1 / (T_ - t1);
-        J[4][3] = 1 / (t_ - t2);
-        J[5][4] = 1 / (t_ -t3);
-        J[5][5] = 1 / (t_ -t3);
-        double Det2 = JD.Determinant(J,5);
-        return Det2;
-    }
-*/
-    protected void exchangeNodes(Node i, Node j, Node p, Node jP) {
+
+    private void exchangeNodes(Node i, Node j, Node p, Node jP) {
         //precondition p -> i & jP -> j
         replace(p, i, j);
-        replace(jP, j, i);
+
         //postcondition p -> j & p -> i
+        replace(jP, j, i);
+
     }
 
    private int getNodeNr (Node node) {
-       int nodenumber = node.getNr(); // node time of daughter
+       int nodenumber = node.getNr();
        if (nodenumber == branchCount) {
            nodenumber =node.getTree().getRoot().getNr();
        }
@@ -418,10 +422,10 @@ public class BigPulley extends TreeOperator {
 
 
 
-    /**
+    /*
      * automatic parameter tuning *
      */
-/*
+
     @Override
     public double getCoercableParameterValue() {
         return dwindowSize;
@@ -431,15 +435,15 @@ public class BigPulley extends TreeOperator {
     public void setCoercableParameterValue(double value) {
         dwindowSize = value;
     }
-*/
-    /**
+
+    /*
      * called after every invocation of this operator to see whether
      * a parameter can be optimised for better acceptance hence faster
      * mixing
      *
      * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
      */
-/*
+
     @Override
     public void optimize(double logAlpha) {
         // must be overridden by operator implementation to have an effect
@@ -468,6 +472,6 @@ public class BigPulley extends TreeOperator {
             return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
     }
-*/
+
 }
 

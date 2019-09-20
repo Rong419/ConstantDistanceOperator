@@ -10,7 +10,7 @@ public class JacobianMatrixDeterminant {
     N = n - 1
     Matrix is the input Jacobian matrix
      */
-    public static double Determinant(double[][] Matrix, int N)
+    public double Determinant(double[][] Matrix, int N)
     {
         int T0;
         int T1;
@@ -49,23 +49,6 @@ public class JacobianMatrixDeterminant {
         return 0;
 
     }
-        /*test the calculation
-
-    public static void main(String[] args) {
-//		double[][] test = {{2,1,-1},{4,-1,1},{201,102,-99}}; 			"return -18"
-//		double[][] test = {{1,1,-1,3},{-1,-1,2,1},{2,5,2,4},{1,2,3,2}};  "return 33"
-//		double[][] test = {{1,0,-1,2},{-2,1,3,1},{0,1,0,-1},{1,3,4,-2}}; "return 31"
-        //"return 12"
-        double[][] test = {{1,-1,2,-3,1},{-3,3,-7,9,-5},{2,0,4,-2,1},{3,-5,7,-14,6},{4,-4,10,-10,2}};
-        double result;
-        try {
-            result = mathDeterminantCalculation(test);
-            System.out.println(result);
-        } catch (Exception e) {
-            System.out.println("Wrong answer！！");
-        }
-    }
-    */
 
         /*
          * Algorithm to compute the determinant
@@ -152,3 +135,21 @@ public class JacobianMatrixDeterminant {
             return determinant;
         }
 }
+
+/*test the calculation
+
+    public static void main(String[] args) {
+//		double[][] test = {{2,1,-1},{4,-1,1},{201,102,-99}}; 			"return -18"
+//		double[][] test = {{1,1,-1,3},{-1,-1,2,1},{2,5,2,4},{1,2,3,2}};  "return 33"
+//		double[][] test = {{1,0,-1,2},{-2,1,3,1},{0,1,0,-1},{1,3,4,-2}}; "return 31"
+        //"return 12"
+        double[][] test = {{1,-1,2,-3,1},{-3,3,-7,9,-5},{2,0,4,-2,1},{3,-5,7,-14,6},{4,-4,10,-10,2}};
+        double result;
+        try {
+            result = mathDeterminantCalculation(test);
+            System.out.println(result);
+        } catch (Exception e) {
+            System.out.println("Wrong answer！！");
+        }
+    }
+*/

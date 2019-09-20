@@ -68,19 +68,19 @@ public class SmallPulley extends TreeOperator {
         Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
         t_k = daughter.getHeight();//node time of daughter
 
-        int nodeN02 = son.getNr();//node number of son
-        if (nodeN02 == branchCount) {
-            nodeN02 = son.getTree().getRoot().getNr();
+        int sonNr = son.getNr();//node number of son
+        if (sonNr == branchCount) {
+            sonNr = son.getTree().getRoot().getNr();
         }
 
-        int nodeN03 = daughter.getNr(); // node time of daughter
-        if (nodeN03 == branchCount) {
-            nodeN03 = daughter.getTree().getRoot().getNr();
+        int dauNr = daughter.getNr(); // node time of daughter
+        if (dauNr == branchCount) {
+            dauNr = daughter.getTree().getRoot().getNr();
         }
 
         // get the rates on branches linked to root
-        r_j = rates.getValues()[nodeN02];
-        r_k = rates.getValues()[nodeN03];
+        r_j = rates.getValues()[sonNr];
+        r_k = rates.getValues()[dauNr];
         //d3: the distance to be proposed
         //distance on the branch above son
         double d = r_j * (t_x - t_j);
@@ -100,8 +100,8 @@ public class SmallPulley extends TreeOperator {
         r_k_ = (D - d_) / (t_x - t_k);
 
         //Step 4: set the proposed new rates
-        rates.setValue(nodeN02, r_j_);
-        rates.setValue(nodeN03, r_k_);
+        rates.setValue(sonNr, r_j_);
+        rates.setValue(dauNr, r_k_);
 
         //Step5: calculate the Hastings ratio
         /*
