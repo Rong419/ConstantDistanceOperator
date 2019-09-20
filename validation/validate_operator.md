@@ -106,3 +106,7 @@ Using categories (primates1.xml), continuous rates with ConstantDistance operato
 ```
 cd /validation/primates_data/
 ```
+Run LogAnalyser to get ESS.
+```
+/Applications/BEAST\ 2.4.7/bin/loganalyser -oneline /Users/rzha419/Desktop/efficiency/RSV2/logs/*.log
+```
