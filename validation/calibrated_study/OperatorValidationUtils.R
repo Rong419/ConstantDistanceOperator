@@ -36,7 +36,7 @@ get.calibrated.plot <- function(true.df,log.df, n.sim, x.min, x.max, y.min, y.ma
      p <- ggplot() + 
      geom_linerange(false.df,mapping=aes(x=false.df$true, ymax=false.df$upper, ymin=false.df$lower), color="red", alpha=.4, size=1) +
      geom_linerange(data=true.df[plot.hdi,],mapping=aes(x=true.df$true, ymax=true.df$upper, ymin=true.df$lower), color="lightblue", alpha=.4, size=1) +
-     geom_point(data.df,mapping=aes(x=data.df$true, y=data.df$mean),shape=20,size=2) + 
+     geom_point(full.df,mapping=aes(x=full.df$true, y=full.df$mean),shape=20,size=2) + 
      geom_abline(slope=1, linetype="dotted") + 
      coord_cartesian(xlim=c(x.min, x.max),ylim=c(y.min, y.max)) +
      xlab("True value") + ylab("Posterior mean") +
