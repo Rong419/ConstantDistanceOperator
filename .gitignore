@@ -1,6 +1,6 @@
 #IntelliJ files
 /.DS_Store
-/validation/sample_prior/internal_nodes/xml/
+/validation/sampleprior/internal_nodes/xml/
 /optimization/other_three_datasets/template/xml/
 /.idea
 /ConstantDistanceOperator.iml
