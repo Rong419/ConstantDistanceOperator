@@ -7,7 +7,7 @@
 
     <data spec='beast.app.seqgen.SimulatedAlignment' id="calsim"
 	  sequencelength="5000"
-	  outputFileName="simulated_alignment.xml">
+	  outputFileName="simulated_alignment20taxa_SIM.xml">
 
 
       <tree id='tree' spec='beast.util.TreeParser'
@@ -65,7 +65,7 @@
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
     <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-    <run id="mcmc" spec="MCMC" chainLength="10000000"  >
+    <run id="mcmc" spec="MCMC" chainLength="10000000">
         <state id="state" storeEvery="5000">
             <tree id="Tree.t:calsim" name="stateNode">
                 <taxonset id="TaxonSet.calsim" spec="TaxonSet">
@@ -143,7 +143,9 @@
         <operator id="RatesRandomWalk.c:calsim" spec="RealRandomWalkOperator" parameter="@rates.c:calsim" weight="10.0" windowSize="0.1"/>
 
         <operator id="RatesSwapOperator.c:calsim" spec="SwapOperator" parameter="@rates.c:calsim" weight="10.0"/>
-
+        
+        <operator id="RatesScaleOperator.c:calsim" spec="ScaleOperator" parameter="@rates.c:calsim" weight="10.0"/>
+        
         <operator id="YuleTreeScaler.t:calsim" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:calsim" weight="10.0"/>
 
         <operator id="YuleTreeRootScaler.t:calsim" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:calsim" weight="5.0"/>
@@ -166,7 +168,8 @@
             <parameter idref="freqParameter.t:calsim"/>
         </operator>
 
-        <operator id="ucldStdevScaler.c:calsim" spec="ScaleOperator" parameter="@ucldStdev.c:calsim" scaleFactor="0.5" weight="5.0"/>
+        <operator id="ucldStdevScaler.c:calsim" spec="consoperators.UcldScalerOperator"
+                  rates="@rates.c:calsim" stdev="@ucldStdev.c:calsim" distr="@LogNormalDistribution2" scaleFactor="0.5" weight="5.0"/>
 
         <logger id="tracelog" fileName="calibrated20taxa_SIM.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>

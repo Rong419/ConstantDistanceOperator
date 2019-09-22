@@ -11,15 +11,15 @@ do
    for sim in {1..100}
    do
 
-   tree=$( sed -n ${sim}p ./output/${taxa}taxa/trees.txt)
+   tree=$( sed -n ${sim}p ./true/${taxa}taxa/trees.txt)
 
-   freq=$( sed -n ${sim}p ./output/${taxa}taxa/Freq.txt)
+   freq=$( sed -n ${sim}p ./true/${taxa}taxa/Freq.txt)
 
-   kappa=$( sed -n ${sim}p ./output/${taxa}taxa/Kap.txt)
+   kappa=$( sed -n ${sim}p ./true/${taxa}taxa/Kap.txt)
 
-   ucld=$( sed -n ${sim}p ./output/${taxa}taxa/Ucld.txt)
+   ucld=$( sed -n ${sim}p ./true/${taxa}taxa/Ucld.txt)
 
-   sed "s/TREE/${tree}/g; s/FREQUENCIES/${freq}/g; s/KAPPA/${kappa}/g; s/UCLDSTD/${ucld}/g; s/SIM/${sim}/g" ./${TEMPLATE} > ./output/${taxa}taxa/xml/Calibrated_${taxa}taxa_${sim}.xml
+   sed "s/TREE/${tree}/g; s/FREQUENCIES/${freq}/g; s/KAPPA/${kappa}/g; s/UCLDSTD/${ucld}/g; s/SIM/${sim}/g" ./${TEMPLATE} > ./xml/${taxa}taxa/Calibrated_${taxa}taxa_${sim}.xml
 
    done
 done

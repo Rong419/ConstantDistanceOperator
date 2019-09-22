@@ -181,7 +181,7 @@
                 <LogNormal id="LogNormalDistribution0" S="0.6"  M="-1.0" meanInRealSpace="false"  name="distr"/>
             </prior>
 
-            <prior id="RatePrior.t::simSeq" name="distribution" x="@rates.c:simSeq">
+            <prior id="RatePrior.t:simSeq" name="distribution" x="@rates.c:simSeq">
                 <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:simSeq"  M="1.0" meanInRealSpace="true" name="distr"/>
             </prior>
 
@@ -200,7 +200,7 @@
             <log idref="rates.c:simSeq"/>
         </logger>
 
-        <logger id="treelog.t:simSeq" fileName="$(tree)_120taxa.trees" logEvery="1000" mode="tree">
+        <logger id="treelog.t:simSeq" fileName="simSeq_120taxa.trees" logEvery="1000" mode="tree">
             <log idref="Tree.t:simSeq"/>
         </logger>
 
