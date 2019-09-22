@@ -11,7 +11,7 @@ get.95 <- function(a.vector) {
   return(c(res[[1]], res[[2]], mean(a.vector)))
 }
 
-get.calibrated.plot <- function(true.df,log.df, n.sim, x.min, x.max, y.min, y.max,prior.mean) {
+get.calibrated.plot <- function(true.df,log.df, n.sim, x.min, x.max, y.min, y.max,parameter) {
      full.df <- data.frame(cbind(true.df,log.df))
      colnames(full.df) <- c("true","lower","upper","mean")
      full.df[,1] <- jitter(full.df[,1],factor=1)
@@ -20,7 +20,7 @@ get.calibrated.plot <- function(true.df,log.df, n.sim, x.min, x.max, y.min, y.ma
      T = 0
      F = 0
      for (i in 1:n.sim) {
-        if (full.df[i,3] >= true.df[i] & true.df[i] >= full.df[i,2]) {
+        if (full.df[i,3] >= true.df[i,1] & true.df[i,1] >= full.df[i,2]) {
             plot.hdi[i] <- TRUE
             T <- T + 1
         } else {
@@ -39,8 +39,8 @@ get.calibrated.plot <- function(true.df,log.df, n.sim, x.min, x.max, y.min, y.ma
      geom_point(full.df,mapping=aes(x=full.df$true, y=full.df$mean),shape=20,size=2) + 
      geom_abline(slope=1, linetype="dotted") + 
      coord_cartesian(xlim=c(x.min, x.max),ylim=c(y.min, y.max)) +
-     xlab("True value") + ylab("Posterior mean") +
-     geom_abline(slope=0, intercept=prior.mean, color="blue") +
+     labs(x=c("True value"),y=c("Posterior mean"),title=parameter) + 
+     #geom_abline(slope=0, intercept=prior.mean, color="blue") +
      geom_abline(slope=1, linetype="dotted") +
      scale_x_continuous(breaks=seq(x.min,x.max,1)) +
      scale_y_continuous(breaks=seq(y.min,y.max,1)) +

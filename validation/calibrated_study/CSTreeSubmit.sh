@@ -1,8 +1,8 @@
 #!/bin/sh
-TEMPLATE=Treetemplate.sl
+TEMPLATE=Treetemplate.sh
 
-#for taxa in {20,120}
-#do
+for taxa in {20,120}
+do
     for sim in {1..100}
     do
     sed "s/FILE/calibrated${taxa}taxa_${sim}/g" ${TEMPLATE} > ./Treerandom.sl 

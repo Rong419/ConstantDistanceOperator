@@ -13,4 +13,4 @@
 module load beagle-lib/3.0.1-gimkl-2017a
 module load Java/1.8.0_144
 
-srun java -Xmx2800m -Djava.library.path=$BEAGLE_LIB_PATH -jar /nesi/project/nesi00390/rong/operator/ConstantDistanceOperator.jar -threads 8 -beagle_SSE /nesi/project/nesi00390/rong/operator/calibrated/xml/TAXAtaxa/Calibrated_TAXAtaxa_SIM.xml
+srun java -Xmx2800m -Djava.library.path=$BEAGLE_LIB_PATH -jar /nesi/project/nesi00390/rong/operator/ConstantDistanceOperator.jar -threads 8 -beagle_SSE /nesi/project/nesi00390/rong/operator/calibrated/xml/Calibrated_TAXAtaxa_SIM.xml

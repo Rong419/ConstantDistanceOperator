@@ -1,10 +1,9 @@
 #!/bin/sh
-TEMPLATE=template.sh
+TEMPLATE=CStemplate.sh
 
 
-#for  taxa in {20,120}
-#do 
-    taxa=20
+for  taxa in {20,120}
+do 
     for sim in {1..100}
     do
     sed "s/TAXA/${taxa}/g; s/SIM/${sim}/g" ${TEMPLATE} > ./temp.sl 
@@ -13,5 +12,5 @@ TEMPLATE=template.sh
     rm -f temp.sl 
     sleep 5
     done
-#done
+done
 
