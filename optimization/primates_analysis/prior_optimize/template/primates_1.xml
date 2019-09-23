@@ -177,11 +177,11 @@ This xml uses normal operators to sample rate categories
 
     <operator id="ucldStdevScaler.c:journal" spec="ScaleOperator" parameter="@ucldStdev.c:journal" scaleFactor="0.5" weight="3.0"/>
 
-    <operator id="CategoriesRandomWalk.c:journal" spec="IntRandomWalkOperator" parameter="@rateCategories.c:journal" weight="20.0" windowSize="1"/>
+    <operator id="CategoriesRandomWalk.c:journal" spec="IntRandomWalkOperator" parameter="@rateCategories.c:journal" weight="10.0" windowSize="1"/>
 
-    <operator id="CategoriesSwapOperator.c:journal" spec="SwapOperator" intparameter="@rateCategories.c:journal" weight="20.0"/>
+    <operator id="CategoriesSwapOperator.c:journal" spec="SwapOperator" intparameter="@rateCategories.c:journal" weight="10.0"/>
 
-    <operator id="CategoriesUniform.c:journal" spec="UniformOperator" parameter="@rateCategories.c:journal" weight="20.0"/>
+    <operator id="CategoriesUniform.c:journal" spec="UniformOperator" parameter="@rateCategories.c:journal" weight="10.0"/>
 
     <operator id="BirthDeathTreeScaler.t:journal" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:journal" weight="5.0"/>
 
