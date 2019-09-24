@@ -272,7 +272,7 @@
                   rates="@rates.c:calsim" stdev="@ucldStdev.c:calsim" distr="@LogNormalDistribution2" scaleFactor="0.5" weight="5.0"/>
 
 
-        <logger id="tracelog" fileName="calibrated120taxa_SIM.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <logger id="tracelog" fileName="calibrated120taxa_SIM.log" logEvery="20000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>
             <log idref="likelihood"/>
             <log idref="prior"/>
@@ -285,14 +285,14 @@
             <log idref="BirthRate.t:calsim"/>
         </logger>
 
-        <logger id="screenlog" logEvery="10000">
+        <logger id="screenlog" logEvery="100000">
             <log idref="posterior"/>
             <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
             <log idref="likelihood"/>
             <log idref="prior"/>
         </logger>
 
-        <logger id="treelog.t:calsim" fileName="calibrated120taxa_SIM.trees" logEvery="2000" mode="tree">
+        <logger id="treelog.t:calsim" fileName="calibrated120taxa_SIM.trees" logEvery="20000" mode="tree">
             <log id="TreeWithMetaDataLogger.t:calsim" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:calsim" tree="@Tree.t:calsim"/>
         </logger>
 
