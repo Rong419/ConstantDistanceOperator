@@ -2,6 +2,7 @@
 /.DS_Store
 /validation/sampleprior/internal_nodes/xml/
 /optimization/other_three_datasets/template/xml/
+optimization/primates_analysis/prior_optimize/template/xml/
 /.idea
 /ConstantDistanceOperator.iml
 /out
