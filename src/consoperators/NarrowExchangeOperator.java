@@ -9,6 +9,7 @@ import beast.evolution.tree.Tree;
 import beast.util.Randomizer;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 @Description("Implements the NARROW variety in Exchange operator in beas2" +
@@ -27,7 +28,7 @@ public class NarrowExchangeOperator extends TreeOperator {
     public double proposal() {
         final Tree tree = treeInput.get(this);
 
-        //System.out.println("r = "+ Arrays.toString(rates.getValues()));
+        System.out.println("r = "+ Arrays.toString(rates.getValues()));
         // get the number of internal nodes
         final int internalNodes = tree.getInternalNodeCount();
         if (internalNodes <= 1) {
@@ -82,24 +83,28 @@ public class NarrowExchangeOperator extends TreeOperator {
         double ru = rates.getValue(uncle.getNr());
         double rc = rates.getValue(child.getNr());
         double rp = rates.getValue(parent.getNr());
-        //System.out.println("rc="+rc+",ru="+ru+",rp="+rp);
+        System.out.println("rc="+rc+",ru="+ru+",rp="+rp);
         // exchange child and uncle, child.e. child <--> uncle
         exchangeNodes(child, uncle, parent, grandParent);
 
-        // propose  new rates
+        // propose new rates
         double upper = rc * (tp - tc) / (tgp - tc);
         double rc_ = Randomizer.uniform(0,upper);
-        //System.out.println("upper="+upper);
+        System.out.println("upper="+upper+",rc_="+rc_);
+        if (rc_ <= 0 || rc_ >= upper) {
+            return Double.NEGATIVE_INFINITY;
+        }
+
         double ru_ = (ru * (tgp - tu) + rp * (tgp - tp)) / (tp - tu);
 
         double rp_ = (rc * (tp - tc) - rc_ * (tgp - tc)) / (tgp - tp);
 
-        //System.out.println("rc'="+rc_+",ru'="+ru_+",rp'="+rp_);
+        System.out.println("rc'="+rc_+",ru'="+ru_+",rp'="+rp_);
         // set the new rates
         rates.setValue(child.getNr(),rc_);
         rates.setValue(uncle.getNr(),ru_);
         rates.setValue(parent.getNr(),rp_);
-
+        System.out.println("r'="+Arrays.toString(rates.getValues()));
         // the probability of going back to the original state
         // = 1 / (the number of all valid grandParent nodes in the proposed tree)
         final int validGPafter = validGP - c2 + sisg(parent) + sisg(uncle);
@@ -108,7 +113,7 @@ public class NarrowExchangeOperator extends TreeOperator {
         double R1 = (float)validGP/validGPafter;
         double R2 = (rc * (tgp- tu) * (tp - tc)) / (ru_ * (tp - tu) * (tgp - tc));
         //System.out.println("R1="+R1+",R2="+R2);
-        return Math.log(R1 * R2);
+        return Math.log(R1*R2);
     }
 
     private int isg(final Node n) {

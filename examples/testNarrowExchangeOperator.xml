@@ -7,7 +7,7 @@
     <sequence id="seq_U" taxon="U" totalcount="4" value="?"/>
 </data>
 -->
-
+<!-- -seed 1569410438475 -->
 <data id="dna" name="alignment">
     <sequence id="seq_A" taxon="A" totalcount="4" value="?"/>
     <sequence id="seq_B" taxon="B" totalcount="4" value="?"/>
@@ -27,7 +27,7 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="10000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="4305" sampleFromPrior="true">
    <state id="state" storeEvery="5000">
     <!--
     <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
@@ -84,7 +84,7 @@
     <operator id="FastRatesSwapOperator.c:dna" spec="SwapOperator" parameter="@rates.c:dna" weight="10.0"/>
     -->
 
-    <logger id="tracelog" fileName="testNarrow.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="testNarrow.log" logEvery="1" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -101,7 +101,7 @@
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:dna" fileName="testNarrow.trees" logEvery="2000" mode="tree">
+    <logger id="treelog.t:dna" fileName="testNarrow.trees" logEvery="1" mode="tree">
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna"/>
     </logger>
 
