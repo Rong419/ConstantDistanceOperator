@@ -28,7 +28,7 @@ public class NarrowExchangeOperator extends TreeOperator {
     public double proposal() {
         final Tree tree = treeInput.get(this);
 
-        System.out.println("r = "+ Arrays.toString(rates.getValues()));
+
         // get the number of internal nodes
         final int internalNodes = tree.getInternalNodeCount();
         if (internalNodes <= 1) {
@@ -78,42 +78,51 @@ public class NarrowExchangeOperator extends TreeOperator {
         final int c2 = sisg(parent) + sisg(uncle);
 
 
-
         // rates in original state
+        Double [] r = rates.getValues();
         double ru = rates.getValue(uncle.getNr());
         double rc = rates.getValue(child.getNr());
         double rp = rates.getValue(parent.getNr());
-        System.out.println("rc="+rc+",ru="+ru+",rp="+rp);
+
         // exchange child and uncle, child.e. child <--> uncle
         exchangeNodes(child, uncle, parent, grandParent);
 
         // propose new rates
-        double upper = rc * (tp - tc) / (tgp - tc);
-        double rc_ = Randomizer.uniform(0,upper);
-        System.out.println("upper="+upper+",rc_="+rc_);
-        if (rc_ <= 0 || rc_ >= upper) {
+        double upper = rc * (tp - tc) / (tgp - tp);
+        double rp_ = Randomizer.uniform(0,upper);
+
+        if (rp_ <= 0 || rp_ >= upper) {
             return Double.NEGATIVE_INFINITY;
         }
 
         double ru_ = (ru * (tgp - tu) + rp * (tgp - tp)) / (tp - tu);
 
-        double rp_ = (rc * (tp - tc) - rc_ * (tgp - tc)) / (tgp - tp);
+        double rc_ = (rc * (tp - tc) - rp_ * (tgp - tp)) / (tgp - tc);
 
-        System.out.println("rc'="+rc_+",ru'="+ru_+",rp'="+rp_);
+
         // set the new rates
         rates.setValue(child.getNr(),rc_);
         rates.setValue(uncle.getNr(),ru_);
         rates.setValue(parent.getNr(),rp_);
-        System.out.println("r'="+Arrays.toString(rates.getValues()));
+
         // the probability of going back to the original state
         // = 1 / (the number of all valid grandParent nodes in the proposed tree)
         final int validGPafter = validGP - c2 + sisg(parent) + sisg(uncle);
 
         // return the hastings ratio in log space
         double R1 = (float)validGP/validGPafter;
-        double R2 = (rc * (tgp- tu) * (tp - tc)) / (ru_ * (tp - tu) * (tgp - tc));
+        double R2 = (rc * rp * (tp - tc)) / (rp_ * ru_ * (tp - tu));
+
+        System.out.println("r = "+ Arrays.toString(r));
+        System.out.println("rc="+rc+",ru="+ru+",rp="+rp);
+        System.out.println("upper="+upper+",rp_="+rp_);
+        System.out.println("rc'="+rc_+",ru'="+ru_+",rp'="+rp_);
+        System.out.println("r'=" + Arrays.toString(rates.getValues()));
+        System.out.println("R2="+R2);
+
         //System.out.println("R1="+R1+",R2="+R2);
-        return Math.log(R1*R2);
+        double J = ((tp - tc) * (tgp - tu)) / ((tgp - tc) * (tp - tu));
+        return Math.log(R1*R2*J);
     }
 
     private int isg(final Node n) {

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.4">
 
-<!--
 <data id="dna" name="alignment">
     <sequence id="seq_C" taxon="C" totalcount="4" value="?"/>
     <sequence id="seq_S" taxon="S" totalcount="4" value="?"/>
     <sequence id="seq_U" taxon="U" totalcount="4" value="?"/>
 </data>
--->
+
 <!-- -seed 1569410438475 -->
+<!--
 <data id="dna" name="alignment">
     <sequence id="seq_A" taxon="A" totalcount="4" value="?"/>
     <sequence id="seq_B" taxon="B" totalcount="4" value="?"/>
     <sequence id="seq_C" taxon="C" totalcount="4" value="?"/>
     <sequence id="seq_D" taxon="D" totalcount="4" value="?"/>
 </data>
+-->
 
 <map name="Uniform" >beast.math.distributions.Uniform</map>
 <map name="Exponential" >beast.math.distributions.Exponential</map>
@@ -27,16 +28,17 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="4305" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="164021" sampleFromPrior="true">
    <state id="state" storeEvery="5000">
-    <!--
+
     <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
           newick="(U:10,(C:5,S:5):5)" taxa="@dna"/>
     <parameter id="rates.c:dna" name="stateNode" value="0.1 0.2 0.03 0.04"/>
-    -->
+<!--
    <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
           newick="((A:2,B:2):8,(C:5,D:5):5)" taxa="@dna"/>
-   <parameter id="rates.c:dna" name="stateNode" value="0.2 0.3 0.1 0.4 0.15 0.25"/>
+   <parameter id="rates.c:dna" name="stateNode" value="0.2 0.3 1.0 0.8 0.15 0.25"/>
+-->
    </state>
 
   <distribution id="posterior" spec="util.CompoundDistribution">
@@ -84,7 +86,7 @@
     <operator id="FastRatesSwapOperator.c:dna" spec="SwapOperator" parameter="@rates.c:dna" weight="10.0"/>
     -->
 
-    <logger id="tracelog" fileName="testNarrow.log" logEvery="1" model="@posterior" sanitiseHeaders="true" sort="smart">
+    <logger id="tracelog" fileName="testNarrow.log" logEvery="100" model="@posterior" sanitiseHeaders="true" sort="smart">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
@@ -101,7 +103,7 @@
         <log idref="prior"/>
     </logger>
 
-    <logger id="treelog.t:dna" fileName="testNarrow.trees" logEvery="1" mode="tree">
+    <logger id="treelog.t:dna" fileName="testNarrow.trees" logEvery="100" mode="tree">
         <log id="TreeWithMetaDataLogger.t:dna" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:dna" tree="@Tree.t:dna"/>
     </logger>
 
