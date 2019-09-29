@@ -1,4 +1,4 @@
-# conoperators: Validation of ConstantDistance Operator
+# consoperators: Validation of ConstantDistance Operator
 
 This file will guide you through reproducing the simulations of validating the ConstantDistance Operator, as is detailed in the paper.
 
