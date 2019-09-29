@@ -33,7 +33,7 @@
 
     <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
           newick="(U:10,(C:5,S:5):5)" taxa="@dna"/>
-    <parameter id="rates.c:dna" name="stateNode" value="1.2 0.8 0.3 0.4"/>
+    <parameter id="rates.c:dna" name="stateNode" value="1.0 1.0 0.3 0.4"/>
 <!--
    <tree spec="beast.util.TreeParser" id="Tree.t:dna" name="stateNode" IsLabelledNewick="true"
           newick="((A:2,B:2):8,(C:5,D:5):5)" taxa="@dna"/>
@@ -73,7 +73,7 @@
   </distribution>
 
     <operator id="NarrowExchangeOperator.c:dna" spec="NarrowExchangeOperator"
-              tree="@Tree.t:dna" rates="@rates.c:dna" weight="10"/>
+              tree="@Tree.t:dna" rates="@rates.c:dna" rwindowSize="0.1" weight="10"/>
     <!--
     <operator id="CoalescentConstantTreeScaler.c:dna" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:dna" weight="10.0"/>
 
