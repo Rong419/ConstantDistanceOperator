@@ -7,8 +7,6 @@ import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
 import beast.util.Randomizer;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
@@ -91,6 +89,7 @@ public class NarrowExchangeOperator extends TreeOperator {
         double upper = rc * (tp - tc) / (tgp - tp);
         double rp_ = Randomizer.uniform(0,upper);
 
+
         if (rp_ <= 0 || rp_ >= upper) {
             return Double.NEGATIVE_INFINITY;
         }
@@ -112,17 +111,18 @@ public class NarrowExchangeOperator extends TreeOperator {
         // return the hastings ratio in log space
         double R1 = (float)validGP/validGPafter;
         double R2 = (rc * rp * (tp - tc)) / (rp_ * ru_ * (tp - tu));
-
+        //double R3 = Math.log(1/scale);
+        /*
         System.out.println("r = "+ Arrays.toString(r));
         System.out.println("rc="+rc+",ru="+ru+",rp="+rp);
         System.out.println("upper="+upper+",rp_="+rp_);
         System.out.println("rc'="+rc_+",ru'="+ru_+",rp'="+rp_);
         System.out.println("r'=" + Arrays.toString(rates.getValues()));
-        System.out.println("R2="+R2);
+        System.out.println("R1="+R1+",R2="+R2);
+        */
 
-        //System.out.println("R1="+R1+",R2="+R2);
         double J = ((tp - tc) * (tgp - tu)) / ((tgp - tc) * (tp - tu));
-        return Math.log(R1*R2*J);
+        return Math.log(R1 * R2);
     }
 
     private int isg(final Node n) {
@@ -140,4 +140,6 @@ public class NarrowExchangeOperator extends TreeOperator {
         replace(jP, j, i);
         // postcondition p -> j & p -> i
     }
+
+
 }
