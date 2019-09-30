@@ -131,8 +131,8 @@
 	    IsLabelledNewick="true"/>
 	    
 	  <run spec="beast.app.seqgen.SequenceSimulator" id="seqgen"
-         data='@input_alignment' tree='@tree' sequencelength='5000'
-         outputFileName="simulated_alignment.xml">
+         data='@input_alignment' tree='@tree' sequencelength='20000'
+         outputFileName="120taxaAlignmentLength_20000.xml">
 
       <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
       <substModel spec='HKY' id='hky'>

@@ -1,0 +1,157 @@
+<beast version='2.0'
+       namespace='beast.evolution.alignment:beast.core:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood'>
+
+    <!-- This xml uses a yule tree to simulate the sequences: 120 taxa  -->
+
+      <data spec='Alignment' id="input_alignment" dataType="nucleotide">
+          <sequence taxon="1">?</sequence>
+          <sequence taxon="2">?</sequence>
+          <sequence taxon="3">?</sequence>
+          <sequence taxon="4">?</sequence>
+          <sequence taxon="5">?</sequence>
+          <sequence taxon="6">?</sequence>
+          <sequence taxon="7">?</sequence>
+          <sequence taxon="8">?</sequence>
+          <sequence taxon="9">?</sequence>
+          <sequence taxon="10">?</sequence>
+          <sequence taxon="11">?</sequence>
+          <sequence taxon="12">?</sequence>
+          <sequence taxon="13">?</sequence>
+          <sequence taxon="14">?</sequence>
+          <sequence taxon="15">?</sequence>
+          <sequence taxon="16">?</sequence>
+          <sequence taxon="17">?</sequence>
+          <sequence taxon="18">?</sequence>
+          <sequence taxon="19">?</sequence>
+          <sequence taxon="20">?</sequence>
+          <sequence taxon="21">?</sequence>
+          <sequence taxon="22">?</sequence>
+          <sequence taxon="23">?</sequence>
+          <sequence taxon="24">?</sequence>
+          <sequence taxon="25">?</sequence>
+          <sequence taxon="26">?</sequence>
+          <sequence taxon="27">?</sequence>
+          <sequence taxon="28">?</sequence>
+          <sequence taxon="29">?</sequence>
+          <sequence taxon="30">?</sequence>
+          <sequence taxon="31">?</sequence>
+          <sequence taxon="32">?</sequence>
+          <sequence taxon="33">?</sequence>
+          <sequence taxon="34">?</sequence>
+          <sequence taxon="35">?</sequence>
+          <sequence taxon="36">?</sequence>
+          <sequence taxon="37">?</sequence>
+          <sequence taxon="38">?</sequence>
+          <sequence taxon="39">?</sequence>
+          <sequence taxon="40">?</sequence>
+          <sequence taxon="41">?</sequence>
+          <sequence taxon="42">?</sequence>
+          <sequence taxon="43">?</sequence>
+          <sequence taxon="44">?</sequence>
+          <sequence taxon="45">?</sequence>
+          <sequence taxon="46">?</sequence>
+          <sequence taxon="47">?</sequence>
+          <sequence taxon="48">?</sequence>
+          <sequence taxon="49">?</sequence>
+          <sequence taxon="50">?</sequence>
+          <sequence taxon="51">?</sequence>
+          <sequence taxon="52">?</sequence>
+          <sequence taxon="53">?</sequence>
+          <sequence taxon="54">?</sequence>
+          <sequence taxon="55">?</sequence>
+          <sequence taxon="56">?</sequence>
+          <sequence taxon="57">?</sequence>
+          <sequence taxon="58">?</sequence>
+          <sequence taxon="59">?</sequence>
+          <sequence taxon="60">?</sequence>
+          <sequence taxon="61">?</sequence>
+          <sequence taxon="62">?</sequence>
+          <sequence taxon="63">?</sequence>
+          <sequence taxon="64">?</sequence>
+          <sequence taxon="65">?</sequence>
+          <sequence taxon="66">?</sequence>
+          <sequence taxon="67">?</sequence>
+          <sequence taxon="68">?</sequence>
+          <sequence taxon="69">?</sequence>
+          <sequence taxon="70">?</sequence>
+          <sequence taxon="71">?</sequence>
+          <sequence taxon="72">?</sequence>
+          <sequence taxon="73">?</sequence>
+          <sequence taxon="74">?</sequence>
+          <sequence taxon="75">?</sequence>
+          <sequence taxon="76">?</sequence>
+          <sequence taxon="77">?</sequence>
+          <sequence taxon="78">?</sequence>
+          <sequence taxon="79">?</sequence>
+          <sequence taxon="80">?</sequence>
+          <sequence taxon="81">?</sequence>
+          <sequence taxon="82">?</sequence>
+          <sequence taxon="83">?</sequence>
+          <sequence taxon="84">?</sequence>
+          <sequence taxon="85">?</sequence>
+          <sequence taxon="86">?</sequence>
+          <sequence taxon="87">?</sequence>
+          <sequence taxon="88">?</sequence>
+          <sequence taxon="89">?</sequence>
+          <sequence taxon="90">?</sequence>
+          <sequence taxon="91">?</sequence>
+          <sequence taxon="92">?</sequence>
+          <sequence taxon="93">?</sequence>
+          <sequence taxon="94">?</sequence>
+          <sequence taxon="95">?</sequence>
+          <sequence taxon="96">?</sequence>
+          <sequence taxon="97">?</sequence>
+          <sequence taxon="98">?</sequence>
+          <sequence taxon="99">?</sequence>
+          <sequence taxon="100">?</sequence>
+          <sequence taxon="101">?</sequence>
+          <sequence taxon="102">?</sequence>
+          <sequence taxon="103">?</sequence>
+          <sequence taxon="104">?</sequence>
+          <sequence taxon="105">?</sequence>
+          <sequence taxon="106">?</sequence>
+          <sequence taxon="107">?</sequence>
+          <sequence taxon="108">?</sequence>
+          <sequence taxon="109">?</sequence>
+          <sequence taxon="110">?</sequence>
+          <sequence taxon="111">?</sequence>
+          <sequence taxon="112">?</sequence>
+          <sequence taxon="113">?</sequence>
+          <sequence taxon="114">?</sequence>
+          <sequence taxon="115">?</sequence>
+          <sequence taxon="116">?</sequence>
+          <sequence taxon="117">?</sequence>
+          <sequence taxon="118">?</sequence>
+          <sequence taxon="119">?</sequence>
+          <sequence taxon="120">?</sequence>
+      </data>
+      
+      <tree id='tree' spec='beast.util.TreeParser'
+	    newick="((((((((1:0.1083537556227049,100:0.1083537556227049):0.12824517308816086,61:0.23659892871086577):0.5623850828673094,(17:0.28635699704774814,69:0.28635699704774814):0.512627014530427):0.12557607663248993,(((13:0.16918910990303931,42:0.16918910990303931):0.10277171530759105,45:0.27196082521063036):0.520035447933061,((((30:0.14222491139702084,75:0.14222491139702084):0.009773913596114098,(72:0.0276249457653446,114:0.0276249457653446):0.12437387922779033):0.04146363824046556,31:0.1934624632336005):0.4161464670162026,(38:0.46482834547253593,43:0.46482834547253593):0.14478058477726719):0.18238734289388825):0.13256381506697368):0.06765962165890271,(26:0.4918869067900869,(29:0.18237687811971143,(85:0.059138215211266006,111:0.059138215211266006):0.12323866290844543):0.30951002867037547):0.5003328030794809):0.4414439944230777,(((23:0.16397577024346557,33:0.16397577024346557):0.4872392985711047,(76:0.3591676129572073,79:0.3591676129572073):0.29204745585736297):0.3054467387063422,70:0.9566618075209125):0.477001896771733):0.003325963663489029,(((((((2:0.09813088689895069,96:0.09813088689895069):0.28901259434063686,(15:0.22971070228667168,(51:0.15033614967672532,87:0.15033614967672532):0.07937455260994636):0.1574327789529159):0.22608389642065646,94:0.613227377660244):0.16114839761177435,101:0.7743757752720184):0.16952532978362578,((11:0.5935792165229146,(36:0.1804368821581519,(44:0.018023164048028586,117:0.018023164048028586):0.1624137181101233):0.41314233436476266):0.08545289553700808,(((59:0.1195442869717301,(66:0.09848921381785594,93:0.09848921381785594):0.021055073153874157):0.3162494498607895,71:0.4357937368325196):0.24077629986854648,((65:0.009463280642522953,119:0.009463280642522953):0.531879580474458,88:0.541342861116981):0.13522717558408504):0.0024620753588565636):0.26486899299572153):0.30685040352378723,(((((3:0.09056495692055436,86:0.09056495692055436):0.3519738600643876,((92:0.1662882183825029,109:0.1662882183825029):0.2082950692113389,97:0.3745832875938418):0.06795552939110017):0.03384197988627852,91:0.4763807968712205):0.4005699435216662,41:0.8769507403928867):0.025656998534802522,(((((16:0.004870482984083471,116:0.004870482984083471):0.24898882857093033,(35:0.028055022458471066,108:0.028055022458471066):0.2258042890965427):0.07196297223335502,(22:0.027170486423853828,60:0.027170486423853828):0.29865179736451497):0.03240652647828646,83:0.35822881026665526):0.3328050597600241,(48:0.6898578248910373,(77:0.04342442799549241,104:0.04342442799549241):0.6464333968955449):0.0011760451356420676):0.21157386890100982):0.3481437696517422):0.15787514783296608,74:1.4086266564123975):0.028363011543736993):0.14908379912749425,((((4:1.3499611672376266,(((((((((((6:0.15627641276332066,((56:0.015195398407944847,89:0.015195398407944847):0.047911248491742206,113:0.06310664689968705):0.09316976586363361):0.014675302853738498,(9:0.08946134876090242,53:0.08946134876090242):0.08149036685615674):0.0423287388214936,((52:0.0023013103081929573,67:0.0023013103081929573):0.1704581476913834,106:0.17275945799957634):0.040520996438976414):0.05585873974481592,((63:0.1757506740651307,118:0.1757506740651307):0.0708272771853018,(68:0.055418230005968475,99:0.055418230005968475):0.191159721244464):0.022561242932936182):0.13608403305951822,((57:0.008699446624341868,95:0.008699446624341868):0.06706981812406822,107:0.07576926474841009):0.3294539624944768):0.3109224048434462,62:0.7161456320863331):0.16373526680740513,98:0.8798808988937382):0.07008702238702502,((((14:0.046765553700984105,84:0.046765553700984105):0.05431642463938739,78:0.1010819783403715):0.0589141216454154,64:0.1599960999857869):0.20378864549273296,(27:0.19329984697531086,82:0.19329984697531086):0.170484898503209):0.5861831758022433):0.052492356303485144,((((8:0.0729430982995142,40:0.0729430982995142):0.045544654415809155,102:0.11848775271532336):0.0633999115685635,58:0.18188766428388686):0.09323503695947855,((12:0.056155291640403296,34:0.056155291640403296):0.06494297252459187,47:0.12109826416499517):0.15402443707837024):0.7273375763408829):0.06892212111863594,((19:0.42177338676625886,(25:0.06207692211705864,110:0.06207692211705864):0.35969646464920024):0.07078927942148616,90:0.492562666187745):0.5788197325151393):0.18792785605986917,(((10:0.4560076826693045,105:0.4560076826693045):0.4331569650787756,(32:0.02825086498556722,81:0.02825086498556722):0.860913782762513):0.08579102188927634,20:0.9749556696373565):0.284354585125397):0.09065091247487311):0.007630177073689959,(24:0.05136419158242268,(28:0.03973662768814067,54:0.03973662768814067):0.01162756389428201):1.3062271527288938):0.028700084331276132,((5:0.5414967897501325,(112:0.1748328388084258,115:0.1748328388084258):0.3666639509417067):0.6428459995466252,(39:0.6111114698831165,46:0.6111114698831165):0.5732313194136412):0.20194863934583496):0.05475692129624066,(((((7:0.019170586030276958,73:0.019170586030276958):0.5084429022384366,103:0.5276134882687136):0.1719147727177356,(((18:0.26546266100908433,50:0.26546266100908433):0.08416699819525109,80:0.3496296592043354):0.2280762818790757,(21:0.4605834870375217,55:0.4605834870375217):0.11712245404588939):0.12182231990303805):0.209133677884195,120:0.9086619388706442):0.21326682993690527,(37:0.42816184543403296,49:0.42816184543403296):0.6937669233735164):0.3191195811312839):0.14502511714479538):0.0;"
+	    IsLabelledNewick="true"/>
+	    
+	  <run spec="beast.app.seqgen.SequenceSimulator" id="seqgen"
+         data='@input_alignment' tree='@tree' sequencelength='LENGTH'
+         outputFileName="120taxaAlignmentLength_LENGTH.xml">
+
+      <siteModel spec='SiteModel' id="siteModel" gammaCategoryCount='1'>
+      <substModel spec='HKY' id='hky'>
+      <parameter name='kappa' id="hky.kappa" value="0.621420928451635" lower="0.0"/>
+      <frequencies id='freqs' spec='Frequencies' frequencies="0.380952295987225 0.135429904709809 0.321084934922603 0.162532864380363"/>
+      </substModel>
+      </siteModel>
+      
+      <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
+      <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
+      <parameter id="branchrates" name="rateCategories" spec="parameter.IntegerParameter" dimension="238">1</parameter>
+      <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
+      <parameter name='M' id='M' value="1.0"/>
+      <parameter name='S' id='ucld.stdev' value="0.192075412912459"/>
+      </distr>
+      </branchRateModel>
+
+
+
+    </run>
+
+</beast>

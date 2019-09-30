@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="BEAST v2.5.0" version="2.5">
+
+    <!-- This xml uses ConstantDistance Operator to samole the simulated short sequences  -->
+
+<data
+    id="simulated"
+    name="alignment">
+    [DataHere]
+    </data>
+
+    <map name="Uniform" >beast.math.distributions.Uniform</map>
+    <map name="Exponential" >beast.math.distributions.Exponential</map>
+    <map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+    <map name="Normal" >beast.math.distributions.Normal</map>
+    <map name="Beta" >beast.math.distributions.Beta</map>
+    <map name="Gamma" >beast.math.distributions.Gamma</map>
+    <map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+    <map name="prior" >beast.math.distributions.Prior</map>
+    <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+    <map name="OneOnX" >beast.math.distributions.OneOnX</map>
+    <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
+
+    <run id="mcmc" spec="MCMC" chainLength="10000000"  >
+        <state id="state" storeEvery="5000">
+            <tree id="Tree.t:simulated" name="stateNode">
+                <taxonset id="TaxonSet.simulated" spec="TaxonSet">
+                    <alignment idref="simulated"/>
+                </taxonset>
+            </tree>
+    <parameter id="ucldStdev.c:simulated" lower="0.0" name="stateNode">0.2</parameter>
+        <stateNode id="rates.c:simulated" spec="parameter.RealParameter" dimension="238">1.0</stateNode>
+        <parameter id="BirthRate.t:simulated" name="stateNode">2.0</parameter>
+        <parameter id="kappa.t:simulated" lower="0.0" name="stateNode">2.0</parameter>
+        <parameter id="freqParameter.t:simulated" dimension="4" name="stateNode">0.25</parameter>
+        </state>
+
+        <init id="RandomTree.t:simulated" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:simulated" taxa="@simulated">
+            <populationModel id="ConstantPopulation0.t:simulated" spec="ConstantPopulation">
+                <parameter id="randomPopSize.t:simulated" name="popSize">1.0</parameter>
+            </populationModel>
+        </init>
+
+        <distribution id="posterior" spec="util.CompoundDistribution">
+            <distribution id="prior" spec="util.CompoundDistribution">
+            <distribution id="YuleModel.t:simulated" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:simulated" tree="@Tree.t:simulated"/>
+            <prior id="BirthRatePrior.t:simulated" name="distribution" x="@BirthRate.t:simulated">
+                <LogNormal id="LogNormalDistribution1" S="0.2"  M="0.7" meanInRealSpace="false" name="distr">
+                </LogNormal>
+            </prior>
+
+            <prior id="FrequencyPrior.t:simulated" name="distribution" x="@freqParameter.t:simulated">
+                <Dirichlet id="Dirichlet1" alpha="10 10 10 10" name="distr"/>
+            </prior>
+
+            <prior id="KappaPrior.t:simulated" name="distribution" x="@kappa.t:simulated">
+                <LogNormal id="LogNormalDistribution0" S="0.6"  M="-1.0" meanInRealSpace="false"  name="distr"/>
+            </prior>
+
+            <prior id="RatePrior.t:simulated" name="distribution" x="@rates.c:simulated">
+                <LogNormal id="LogNormalDistribution2" S="@ucldStdev.c:simulated"  M="1.0" meanInRealSpace="true" name="distr"/>
+            </prior>
+
+            <prior id="ucldStdevPrior.c:simulated" name="distribution" x="@ucldStdev.c:simulated">
+                <LogNormal id="LogNormalDistribution3" S="0.35"  M="-1.5" meanInRealSpace="false" name="distr"/>
+            </prior>
+            </distribution>
+
+            <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+                <distribution id="treeLikelihood.simulated" spec="ThreadedTreeLikelihood" data="@simulated" tree="@Tree.t:simulated">
+                    <siteModel id="SiteModel.t:simulated" spec="SiteModel">
+                        <parameter id="mutationRate.t:simulated" estimate="false" name="mutationRate">1.0</parameter>
+                        <parameter id="gammaShape.t:simulated" estimate="false" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.t:simulated" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="hky.t:simulated" spec="HKY" kappa="@kappa.t:simulated">
+                            <frequencies id="estimatedFreqs.t:simulated" spec="Frequencies" frequencies="@freqParameter.t:simulated"/>
+                        </substModel>
+                    </siteModel>
+                    <branchRateModel id="RelaxedClock.c:simulated" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
+                                     rates="@rates.c:simulated" tree="@Tree.t:simulated" distr="@LogNormalDistribution2">
+                        <parameter id="ucldMean.c:simulated" estimate="false" name="clock.rate">1.0</parameter>
+                    </branchRateModel>
+                </distribution>
+            </distribution>
+        </distribution>
+
+        <operator id="InternalnodesOperator.c:simulated" spec="InConstantDistanceOperator"
+                  twindowSize="0.017"  tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="10.0"/>
+
+        <operator id="RootOperator1.c:simulated" spec="SimpleDistance"
+                  twindowSize="0.055" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="1.0"/>
+
+        <operator id="RootOperator2.c:simulated" spec="SmallPulley"
+                  dwindowSize="0.038" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="1.0"/>
+
+        <operator id="RootOperator3.c:simulated" spec="BigPulley"
+                  twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="1.0"/>
+
+        <operator id="RatesRandomWalk.c:simulated" spec="RealRandomWalkOperator" parameter="@rates.c:simulated" weight="10.0" windowSize="0.1"/>
+
+        <operator id="RatesSwapOperator.c:simulated" spec="SwapOperator" parameter="@rates.c:simulated" weight="10.0"/>
+        
+        <operator id="RatesScaleOperator.c:simulated" spec="ScaleOperator" parameter="@rates.c:simulated" weight="10.0"/>
+        
+        <operator id="YuleTreeScaler.t:simulated" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:simulated" weight="10.0"/>
+
+        <operator id="YuleTreeRootScaler.t:simulated" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:simulated" weight="5.0"/>
+
+        <operator id="YuleBirthRateScaler.t:simulated" spec="ScaleOperator" parameter="@BirthRate.t:simulated" scaleFactor="0.75" weight="10.0"/>
+
+        <operator id="YuleModelUniformOperator.t:simulated" spec="Uniform" tree="@Tree.t:simulated" weight="10.0"/>
+
+        <operator id="YuleModelSubtreeSlide.t:simulated" spec="SubtreeSlide" tree="@Tree.t:simulated" weight="5.0"/>
+
+        <operator id="YuleModelhNarrow.t:simulated" spec="Exchange" tree="@Tree.t:simulated" weight="5.0"/>
+
+        <operator id="YuleModelWide.t:simulated" spec="Exchange" isNarrow="false" tree="@Tree.t:simulated" weight="5.0"/>
+
+        <operator id="YuleModelWilsonBalding.t:simulated" spec="WilsonBalding" tree="@Tree.t:simulated" weight="5.0"/>
+
+        <operator id="KappaScaler.s:simulated" spec="ScaleOperator" parameter="@kappa.t:simulated" scaleFactor="0.5" weight="1.0"/>
+
+        <operator id="FrequenciesExchanger.s:simulated" spec="DeltaExchangeOperator" delta="0.01" weight="0.2">
+            <parameter idref="freqParameter.t:simulated"/>
+        </operator>
+
+        <operator id="ucldStdevScaler.c:simulated" spec="consoperators.UcldScalerOperator"
+                  rates="@rates.c:simulated" stdev="@ucldStdev.c:simulated" distr="@LogNormalDistribution2" scaleFactor="0.5" weight="5.0"/>
+
+        <logger id="tracelog" fileName="ShortCons120taxa_[SimHere].log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+            <log idref="treeLikelihood.simulated"/>
+            <log id="TreeLength.t:simulated" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:simulated"/>
+            <log id="rate.c:simulated" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:simulated" tree="@Tree.t:simulated"/>
+            <log idref="kappa.t:simulated"/>
+            <log idref="freqParameter.t:simulated"/>
+            <log idref="ucldStdev.c:simulated"/>
+            <log idref="BirthRate.t:simulated"/>
+        </logger>
+
+        <logger id="screenlog" logEvery="10000">
+            <log idref="posterior"/>
+            <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+        </logger>
+        
+       <logger id="treelog.t:simulated" fileName="ShortCons120taxa_[SimHere].trees" logEvery="2000" mode="tree">
+            <log id="TreeWithMetaDataLogger.t:simulated" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:simulated" tree="@Tree.t:simulated"/>
+        </logger>
+    </run>
+
+</beast>
