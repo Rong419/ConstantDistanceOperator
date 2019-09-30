@@ -1,5 +1,6 @@
 #IntelliJ files
 /.DS_Store
+/validation/efficiency/simulated/data/xml/
 /validation/sampleprior/internal_nodes/xml/
 /validation/efficiency/simulated/xmls/xml/
 /optimization/other_three_datasets/template/xml/
