@@ -19,7 +19,7 @@ do
 
    ucld=$( sed -n ${sim}p ./true/${taxa}taxa/Ucld.txt)
 
-   sed "s/TREE/${tree}/g; s/FREQUENCIES/${freq}/g; s/KAPPA/${kappa}/g; s/UCLDSTD/${ucld}/g; s/SIM/${sim}/g" ./${TEMPLATE} > ./xml/${taxa}taxa/Calibrated_${taxa}taxa_${sim}.xml
+   sed "s/TREE/${tree}/g; s/FREQUENCIES/${freq}/g; s/KAPPA/${kappa}/g; s/UCLDSTD/${ucld}/g; s/SIM/${sim}/g" ./${TEMPLATE} > ./xml/Calibrated_${taxa}taxa_${sim}.xml
 
    done
 done
