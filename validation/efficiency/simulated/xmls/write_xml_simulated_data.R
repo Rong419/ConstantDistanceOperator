@@ -3,7 +3,7 @@ args = commandArgs(trailingOnly=TRUE)
 n.sim <- as.numeric(args[1])
 template.path <- args[2]
 xml.folder <- args[3]
-
+data.folder <- args[4]
 
 #template.folder <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/efficiency/simulated/xmls/"
 #xml.folder <- "/Users/rzha419/Workspace/ConstantDistanceOperator/validation/efficiency/simulated/xmls/xml/"

@@ -20,7 +20,7 @@
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
     <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-    <run id="mcmc" spec="MCMC" chainLength="10000000"  >
+    <run id="mcmc" spec="MCMC" chainLength="50000000">
         <state id="state" storeEvery="5000">
             <tree id="Tree.t:simulated" name="stateNode">
                 <taxonset id="TaxonSet.simulated" spec="TaxonSet">
@@ -84,22 +84,22 @@
         </distribution>
 
         <operator id="InternalnodesOperator.c:simulated" spec="InConstantDistanceOperator"
-                  twindowSize="0.017"  tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="10.0"/>
+                  twindowSize="0.017"  tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="7.0"/>
 
         <operator id="RootOperator1.c:simulated" spec="SimpleDistance"
-                  twindowSize="0.055" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="1.0"/>
+                  twindowSize="0.055" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="0.5"/>
 
         <operator id="RootOperator2.c:simulated" spec="SmallPulley"
-                  dwindowSize="0.038" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="1.0"/>
+                  dwindowSize="0.038" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="0.5"/>
 
         <operator id="RootOperator3.c:simulated" spec="BigPulley"
-                  twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="1.0"/>
+                  twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="0.5"/>
 
-        <operator id="RatesRandomWalk.c:simulated" spec="RealRandomWalkOperator" parameter="@rates.c:simulated" weight="10.0" windowSize="0.1"/>
+        <operator id="RatesRandomWalk.c:simulated" spec="RealRandomWalkOperator" parameter="@rates.c:simulated" weight="7.0" windowSize="0.1"/>
 
-        <operator id="RatesSwapOperator.c:simulated" spec="SwapOperator" parameter="@rates.c:simulated" weight="10.0"/>
+        <operator id="RatesSwapOperator.c:simulated" spec="SwapOperator" parameter="@rates.c:simulated" weight="7.0"/>
         
-        <operator id="RatesScaleOperator.c:simulated" spec="ScaleOperator" parameter="@rates.c:simulated" weight="10.0"/>
+        <operator id="RatesScaleOperator.c:simulated" spec="ScaleOperator" parameter="@rates.c:simulated" weight="7.0"/>
         
         <operator id="YuleTreeScaler.t:simulated" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:simulated" weight="10.0"/>
 
@@ -126,7 +126,7 @@
         <operator id="ucldStdevScaler.c:simulated" spec="consoperators.UcldScalerOperator"
                   rates="@rates.c:simulated" stdev="@ucldStdev.c:simulated" distr="@LogNormalDistribution2" scaleFactor="0.5" weight="5.0"/>
 
-        <logger id="tracelog" fileName="ShortCons120taxa_[SimHere].log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <logger id="tracelog" fileName="ShortCons120taxa_[SimHere].log" logEvery="5000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>
             <log idref="likelihood"/>
             <log idref="prior"/>
@@ -139,14 +139,14 @@
             <log idref="BirthRate.t:simulated"/>
         </logger>
 
-        <logger id="screenlog" logEvery="10000">
+        <logger id="screenlog" logEvery="50000">
             <log idref="posterior"/>
             <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
             <log idref="likelihood"/>
             <log idref="prior"/>
         </logger>
         
-       <logger id="treelog.t:simulated" fileName="ShortCons120taxa_[SimHere].trees" logEvery="2000" mode="tree">
+       <logger id="treelog.t:simulated" fileName="ShortCons120taxa_[SimHere].trees" logEvery="5000" mode="tree">
             <log id="TreeWithMetaDataLogger.t:simulated" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:simulated" tree="@Tree.t:simulated"/>
         </logger>
     </run>
