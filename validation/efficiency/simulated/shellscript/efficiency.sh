@@ -1,5 +1,6 @@
 echo "Times" > look.txt
 for taxa in {20,120}
+do
 	for model in {Cons,Category}
 	do
 		for length in {Long,Short,Medium}
