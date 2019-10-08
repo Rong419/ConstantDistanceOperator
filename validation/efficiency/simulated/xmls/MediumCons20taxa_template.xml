@@ -92,7 +92,7 @@
         <operator id="RootOperator2.c:simulated" spec="SmallPulley"
                   dwindowSize="0.038" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="0.5"/>
 
-        <operator id="RootOperator3.c:simulated" spec="BigPulley" branchRateModel="@RelaxedClock.c:simulated"
+        <operator id="RootOperator3.c:simulated" spec="BigPulley" 
                   twindowSize="0.017" dwindowSize="0.032" tree="@Tree.t:simulated" rates="@rates.c:simulated"  weight="0.5"/>
 
         <operator id="RatesRandomWalk.c:simulated" spec="RealRandomWalkOperator" parameter="@rates.c:simulated" weight="7.0" windowSize="0.1"/>
