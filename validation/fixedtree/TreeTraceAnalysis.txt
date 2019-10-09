@@ -1,0 +1,9 @@
+Input file  = /Users/rzha419/Desktop/dna.trees
+translation map size = 7
+# total number of trees used = 4501
+# 
+# 99.0% credible set (3 unique tree topologies, 4501 trees in total)
+Rank	Count	Percent	Running	Tree
+1	3899	86.63%	86.63%	(((((CASS,EMU),KIWI),OST),(ANDI,DIGI)),RHEA)
+2	337	7.49%	94.11%	(((((CASS,EMU),KIWI),OST),RHEA),(ANDI,DIGI))
+3	265	5.89%	100.00%	((((CASS,EMU),KIWI),OST),((ANDI,DIGI),RHEA))

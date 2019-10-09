@@ -1,0 +1,172 @@
+
+
+
+
+
+
+                                 ..........................                                      
+ ooooooooooooooooooooooooooooo        CURRENT SETTINGS        ooooooooooooooooooooooooooooooooooo
+                                 ..........................                                      
+
+                . Sequence filename:				 ratites_phy
+                . Data type:					 dna
+                . Alphabet size:				 4
+                . Sequence format:				 interleaved
+                . Number of data sets:				 1
+                . Nb of bootstrapped data sets:			 0
+                . Compute approximate likelihood ratio test:	 yes (SH-like branch supports)
+                . Model name:					 GTR
+                . Proportion of invariable sites:		 estimated
+                . Number of subst. rate categs:			 4
+                . Gamma distribution parameter:			 estimated
+                . 'Middle' of each rate class:			 mean
+                . Nucleotide equilibrium frequencies:		 empirical
+                . Optimise tree topology:			 yes
+                . Tree topology search:				 NNIs
+                . Starting tree:				 BioNJ
+                . Add random input tree:			 no
+                . Optimise branch lengths:			 yes
+                . Optimise substitution model parameters:	 yes
+                . Run ID:					 none
+                . Random seed:					 1534741217
+                . Subtree patterns aliasing:			 no
+                . Version:					 20120412
+
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+
+. 921 patterns found (out of a total of 10764 sites). 
+
+. 6922 sites without polymorphism (64.31%).
+
+. Computing pairwise distances...
+
+. Building BioNJ tree...
+
+. This analysis requires at least 2 Mo of memory space.
+
+. Refining the input tree...
+
+. Maximizing likelihood (using NNI moves)...
+
+. (    6 sec) [    -41038.7014] [GTR parameters     ]
+. (    7 sec) [    -40929.6668] [Alpha              ][  0.370800]
+. (    7 sec) [    -40929.6668] [P-inv              ][  0.178061]
+. (   11 sec) [    -40929.6668] [Topology           ][# nnis=  0]
+. (   15 sec) [    -40929.6668] [Topology           ]
+. (   15 sec) [    -40929.6668] [Branch lengths     ]
+. (   15 sec) [    -40920.0569] [GTR parameters     ]
+. (   16 sec) [    -40915.7721] [Alpha              ][  0.346977]
+. (   16 sec) [    -40915.7721] [P-inv              ][  0.174964]
+. (   16 sec) [    -40915.7721] [Branch lengths     ]
+. (   16 sec) [    -40913.8807] [GTR parameters     ]
+. (   16 sec) [    -40912.8619] [Alpha              ][  0.337677]
+. (   16 sec) [    -40912.8619] [P-inv              ][  0.175067]
+. (   16 sec) [    -40912.8619] [Branch lengths     ]
+. (   17 sec) [    -40912.3214] [GTR parameters     ]
+. (   17 sec) [    -40912.0208] [Alpha              ][  0.334239]
+. (   17 sec) [    -40912.0208] [P-inv              ][  0.177125]
+. (   17 sec) [    -40912.0208] [Branch lengths     ]
+. (   17 sec) [    -40911.8548] [GTR parameters     ]
+. (   19 sec) [    -40911.6046] [Alpha              ][  0.341063]
+. (   19 sec) [    -40911.6046] [P-inv              ][  0.197236]
+. (   19 sec) [    -40911.6046] [Branch lengths     ]
+. (   19 sec) [    -40911.4103] [GTR parameters     ]
+. (   21 sec) [    -40909.0156] [Alpha              ][  0.417786]
+. (   21 sec) [    -40909.0156] [P-inv              ][  0.286110]
+. (   21 sec) [    -40909.0156] [Branch lengths     ]
+. (   21 sec) [    -40908.7200] [GTR parameters     ]
+. (   23 sec) [    -40903.4651] [Alpha              ][  0.578296]
+. (   23 sec) [    -40903.4651] [P-inv              ][  0.388134]
+. (   23 sec) [    -40903.4651] [Branch lengths     ]
+. (   23 sec) [    -40903.3147] [GTR parameters     ]
+. (   24 sec) [    -40898.6255] [Alpha              ][  0.834470]
+. (   24 sec) [    -40898.6255] [P-inv              ][  0.461207]
+. (   24 sec) [    -40898.6255] [Branch lengths     ]
+. (   25 sec) [    -40898.5499] [GTR parameters     ]
+. (   26 sec) [    -40897.4278] [Alpha              ][  1.150343]
+. (   26 sec) [    -40897.4278] [P-inv              ][  0.499362]
+. (   26 sec) [    -40897.4278] [Branch lengths     ]
+. (   26 sec) [    -40896.9302] [GTR parameters     ]
+. (   27 sec) [    -40896.8122] [Alpha              ][  1.143853]
+. (   27 sec) [    -40896.8122] [P-inv              ][  0.499362]
+. (   27 sec) [    -40896.8122] [Branch lengths     ]
+. (   27 sec) [    -40896.7775] [GTR parameters     ]
+. (   27 sec) [    -40896.7547] [Alpha              ][  1.151461]
+. (   27 sec) [    -40896.7547] [P-inv              ][  0.499362]
+. (   27 sec) [    -40896.7547] [Branch lengths     ]
+. (   27 sec) [    -40896.7442] [GTR parameters     ]
+. (   28 sec) [    -40896.7373] [Alpha              ][  1.155283]
+. (   28 sec) [    -40896.7373] [P-inv              ][  0.499362]
+. (   28 sec) [    -40896.7373] [Branch lengths     ]
+. (   28 sec) [    -40896.7349] [GTR parameters     ]
+. (   28 sec) [    -40896.7330] [Alpha              ][  1.157654]
+. (   28 sec) [    -40896.7330] [P-inv              ][  0.499362]
+. (   28 sec) [    -40896.7330] [Branch lengths     ]
+. (   28 sec) [    -40896.7319] [GTR parameters     ]
+. (   29 sec) [    -40896.7315] [Alpha              ][  1.158811]
+. (   29 sec) [    -40896.7315] [P-inv              ][  0.499362]
+. (   29 sec) [    -40896.7315] [Branch lengths     ]
+. (   29 sec) [    -40896.7313] [GTR parameters     ]
+. (   29 sec) [    -40896.7309] [Alpha              ][  1.159970]
+. (   29 sec) [    -40896.7309] [P-inv              ][  0.499362]
+. (   29 sec) [    -40896.7308] [GTR parameters     ]
+. (   29 sec) [    -40896.7308] [Alpha              ][  1.159970]
+. (   29 sec) [    -40896.7308] [P-inv              ][  0.499362]
+
+. Checking for NNIs, optimizing five branches...
+
+. (   31 sec) [    -40896.5598] [Topology           ]
+. (   31 sec) [    -40896.5598] [Branch lengths     ]
+. (   31 sec) [    -40896.5467] [GTR parameters     ]
+. (   32 sec) [    -40896.5317] [Alpha              ][  1.170269]
+. (   32 sec) [    -40896.5317] [P-inv              ][  0.500833]
+. (   32 sec) [    -40896.5317] [Branch lengths     ]
+. (   32 sec) [    -40896.5281] [GTR parameters     ]
+. (   33 sec) [    -40896.4973] [Alpha              ][  1.213866]
+. (   33 sec) [    -40896.4973] [P-inv              ][  0.505220]
+. (   33 sec) [    -40896.4973] [Branch lengths     ]
+. (   33 sec) [    -40896.4923] [GTR parameters     ]
+. (   33 sec) [    -40896.4901] [Alpha              ][  1.217923]
+. (   33 sec) [    -40896.4901] [P-inv              ][  0.505220]
+. (   33 sec) [    -40896.4901] [Branch lengths     ]
+. (   33 sec) [    -40896.4895] [GTR parameters     ]
+. (   34 sec) [    -40896.4889] [Alpha              ][  1.219399]
+. (   34 sec) [    -40896.4889] [P-inv              ][  0.505220]
+. (   34 sec) [    -40896.4889] [Branch lengths     ]
+. (   34 sec) [    -40896.4888] [GTR parameters     ]
+. (   34 sec) [    -40896.4887] [Alpha              ][  1.220618]
+. (   34 sec) [    -40896.4887] [P-inv              ][  0.505220]
+. (   34 sec) [    -40896.4887] [GTR parameters     ]
+. (   34 sec) [    -40896.4887] [Alpha              ][  1.220618]
+. (   34 sec) [    -40896.4887] [P-inv              ][  0.505220]
+
+. Checking for NNIs, optimizing five branches...
+
+. (   36 sec) [    -40891.7639] [Topology           ]
+. (   36 sec) [    -40891.7639] [Branch lengths     ]
+. (   37 sec) [    -40891.7473] [GTR parameters     ]
+. (   38 sec) [    -40891.7434] [Alpha              ][  1.226514]
+. (   38 sec) [    -40891.7434] [P-inv              ][  0.505220]
+. (   38 sec) [    -40891.7434] [Branch lengths     ]
+. (   38 sec) [    -40891.7434] [GTR parameters     ]
+. (   38 sec) [    -40891.7434] [Alpha              ][  1.226514]
+. (   38 sec) [    -40891.7434] [P-inv              ][  0.505220]
+. (   38 sec) [    -40891.7434] [GTR parameters     ]
+. (   38 sec) [    -40891.7434] [Alpha              ][  1.226514]
+. (   38 sec) [    -40891.7434] [P-inv              ][  0.505220]
+
+. Checking for NNIs, optimizing five branches...
+
+
+
+. Log likelihood of the current tree: -40891.743386.
+
+. Compute fast branch supports on the most likely tree...
+
+. Printing the most likely tree in file 'ratites_phy_phyml_tree.txt'...
+
+. Time used 0h0m47s
+
+oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
