@@ -4,18 +4,24 @@ library(ape)
 args = commandArgs(trailingOnly=TRUE)
 
 log.file.path <- args[1]
-tree.file.folder <- args[2]
-output.figure.folder <- args[3]
+output.figure.folder <- args[2]
 
 #log.file.path <- "~/Desktop/validation/correlation/"
-#tree.file.path <- "~/Desktop/validation/correlation/ratites/"
 #output.figure.folder <- "~/Desktop/validation/correlation/"
 
 ExtRates.log <- read.table(file = paste0(log.file.path, "ExtRates.log"), sep = "\t", header = T)
 IntRates.log <- read.table(file = paste0(log.file.path, "IntRates.log"), sep = "\t", header = T)
 
-External.Rates <- ExtRates.log[,2:8]
+r_ANDI = ExtRates.log$Branch.Rate.1
+r_CASS = ExtRates.log$Branch.Rate.2
+r_DIGI = ExtRates.log$Branch.Rate.3
+r_EMU = ExtRates.log$Branch.Rate.4
+r_KIWI = ExtRates.log$Branch.Rate.5
+r_OST = ExtRates.log$Branch.Rate.6
+r_RHEA = ExtRates.log$Branch.Rate.7
+External.Rates <- data.frame(cbind(r_ANDI,r_DIGI,r_CASS,r_EMU,r_KIWI,r_OST,r_RHEA))
 Internal.Rates <- IntRates.log[,2:6]
+
 TreeHeight <- ExtRates.log$Tree.Height
 t.AD <-  ExtRates.log$tMRCA.AD.
 t.CE <- ExtRates.log$tMRCA.CE.
@@ -38,22 +44,28 @@ pdf(paste(output.figure.folder,"RatesAndTimeCorrelation.pdf"), height=10, width=
 corrgram(plot.df)
 dev.off()
 
-s.trees <- read.nexus(paste0(tree.file.path,"ratites.subst.trees"))
+d1 = r_ANDI * t.AD 
+d2 = r_DIGI * t.AD 
+d3 = r_CASS * t.CE
+d4 = r_EMU * t.CE
+d5 = r_KIWI * t.CEK
+d6 = r_OST * t.CEKO
+d7 = r_RHEA * TreeHeight
+d8 = Internal.Rates$Branch.Rate.1 * (t.ADKCEKO - t.AD)
+d9 = Internal.Rates$Branch.Rate.2 * (t.CEK - t.CE)
+d10 = Internal.Rates$Branch.Rate.3 * (t.CEKO - t.CEK)
+d11 = Internal.Rates$Branch.Rate.4 * (t.ADKCEKO - t.CEKO)
+d12 = Internal.Rates$Branch.Rate.5 * (TreeHeight - t.ADKCEKO)
 
-d1 <- sapply(strees, function(x) {x$edge.length[1]})
-d2 <- sapply(strees, function(x) {x$edge.length[2]})
-d3 <- sapply(strees, function(x) {x$edge.length[3]})
-d4 <- sapply(strees, function(x) {x$edge.length[4]})
-d5 <- sapply(strees, function(x) {x$edge.length[5]})
-d6 <- sapply(strees, function(x) {x$edge.length[6]})
-d7 <- sapply(strees, function(x) {x$edge.length[7]})
-d8 <- sapply(strees, function(x) {x$edge.length[8]})
-d9 <- sapply(strees, function(x) {x$edge.length[9]})
-d10 <- sapply(strees, function(x) {x$edge.length[10]})
-d11 <- sapply(strees, function(x) {x$edge.length[11]})
-d12 <- sapply(strees, function(x) {x$edge.length[12]})
+distance.df <- cbind(d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,Monophyly)
+U1 <- distance.df[which(data.df$Monophyly.AD.==1) ,]
+U2 <- U1[which(U1$Monophyly.ADCEKO.==1),]
+U3 <- U2[which(U2$Monophyly.CE.==1),]
+U4 <- U3[which(U3$Monophyly.CEK.==1),]
+U5 <- U4[which(U4$Monophyly.CEKO.==1),]
 
-distance.df <- cbind(d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12)
+plot.distance.df <- U5[,1:12]
+
 pdf(paste(output.figure.folder,"DistanceCorrelation.pdf"), height=10, width=10)
-corrgram(distance.df)
+corrgram(plot.distance.df)
 dev.off()
