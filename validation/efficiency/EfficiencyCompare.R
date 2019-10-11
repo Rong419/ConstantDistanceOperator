@@ -17,12 +17,16 @@ for (model in Model) {
   
 simulated.folder = paste0(folder.path,data.name,model,"/")
 
-if (model == "Cons") {
-  model.Nr = 2
+if (data.name=="RSV2" || data.name=="Shankarappa" || data.name == "anolis") {
+  if (model == "Cons") {
+    model.Nr = 2
+  } else {
+    model.Nr = 1
+  }
+  output.txt.folder = paste0(simulated.folder,"output/output_",data.name, "_", model.Nr,"_")
 } else {
-  model.Nr = 1
+  output.txt.folder = paste0(simulated.folder,"output/output_",data.name, model,"20taxa_")
 }
-output.txt.folder = paste0(simulated.folder,"output/output_",data.name, "_", model.Nr,"_")
 
 #calculation time in screen log file
 Time.df <- c()
@@ -33,12 +37,13 @@ for (sim in 1:n.sim) {
 }
 
 #read loganalyser output of all simulations
-ESS.txt <- read.table(paste0(folder.path,"ess/ESS_",data.name ,model,".txt"),sep="\t", header=T)
+ESS.txt <- read.table(paste0(folder.path,"ess/ESS_",data.name,model,".txt"),sep="\t", header=T)
 
 #ESS of paramaters of interest
-if (data.name == "simulated") {
+if (data.name == "Short" || data.name == "Medium") {
 assign(paste0(model,".Efficiency.df"), get.simulated.efficiency(ESS.txt,Time.df))
 }
+
 if (data.name == "RSV2") {
   assign(paste0(model,".Efficiency.df"), get.RSV2.efficiency(ESS.txt,Time.df))
 }
@@ -48,6 +53,7 @@ if (data.name == "Shankarappa") {
 if (data.name == "anolis") {
   assign(paste0(model,".Efficiency.df"), get.anolis.efficiency(ESS.txt,Time.df))
 }
+
 }
 
 ratio.df <- Cons.Efficiency.df/Category.Efficiency.df
