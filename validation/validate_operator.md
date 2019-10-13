@@ -39,14 +39,14 @@ We further verify the ConstantDistance Operator by a well-calibrated simulation 
 ```
 cd /validation/calibrated
 java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/calibrated/getPriorSamplesFor20Taxa.xml
-java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/calibrated/getPriorSamplesFor20Taxa.xml
+java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/calibrated/getPriorSamplesFor120Taxa.xml
 ```
 ### (2.2) Write .xml files for simulation
 Run R scripts to get true values of parameters (true tree) from prior samples.
 ```
 cd /validation/calibrated 
-Rscript getTrueValue.R "validation/well_calibrated/priors/" "validation/well_calibrated/true/" 
-Rscript getTrueTree.R "validation/well_calibrated/priors/" "validation/well_calibrated/true/" 
+Rscript getTrueValue.R "validation/calibrated/priors/" "validation/calibrated/true/" 
+Rscript getTrueTree.R "validation/calibrated/priors/" "validation/calibrated/true/" 
 ```
 
 Run shell script to write .xml files by using the templates.
@@ -68,27 +68,7 @@ Rscript OperatorCalibratedPlot.R 100 20 "/validation/calibrated/logs/" "/validat
 Rscript OperatorCalibratedPlot.R 100 120 "/validation/calibrated/logs/" "/validation/calibrated/true/" "/validation/calibrated/figures/"
 ```
 
-## 3. Correlation analysis
-We use a data set with sequence of seven ratites.
-```
-cd /validation/ratites_data/
-```
-### (3.1) Run BEAST analysis using bModelTest as substitution model
-```
-java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/ratites_data/ratites1.xml
-```
-### (3.2) Run BEAST analysis using GTR+I+gamma as substitution model
-```
-java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/ratites_data/ratites2.xml
-```
-### (3.3) Run BEAST analysis by sampling the fixed tree using ConstantDistance operator
-```
-java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/ratites_data/ratites3.xml
-```
-
-
-
-## 4. Efficiency comparison
+## 3. Efficiency comparison
 ## (3.1) Simulated data sets
 ### 20 taxa
 ### 120 taxa
@@ -119,3 +99,41 @@ Run LogAnalyser to get ESS.
 ```
 /Applications/BEAST\ 2.4.7/bin/loganalyser -oneline /Users/rzha419/Desktop/efficiency/RSV2/logs/*.log
 ```
+
+## 4. Correlation analysis
+We use a data set with sequence of seven ratites to study the relationships among rates and node times.
+```
+cd /validation/correlation/
+```
+### (4.1) Run BEAST analysis using bModelTest as substitution model
+```
+java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/correlation/ratites.xml
+```
+
+### (4.2) Extract rates and node times from MCMC samples
+After BEAST2 finishes running the .xml, we will get "ratites.log" and "ratites.trees". Use TreeAnnotator to summarise the "ratites.trees", which provides us the most credibility tree in "summary_ratites.trees".
+
+Then, according to the clades in "summary_ratites.trees", we use TreeStat to filter all the tree samples in "ratites.trees", so that we get the rates and node times in the trees that have the same clades as the most credibility tree.
+
+Finally, the node times, internal rates and external rates are written in "IntRates.log" and "ExtRates.log".
+
+### (4.3) Make figures of correlation
+Run the R script and we will get two separate figures, i.e., "RatesAndTimeCorrelation.pdf" and "DistanceCorrelation.pdf".
+```
+Rscript CorrelationFigurePlot.R "/validation/correlation/" "~/Desktop/validation/correlation/figures/"
+```
+
+## 5. Fixed tree analysis
+In this section, we try to test the ConstantDisance operator by using a fixed tree whose distances are given by a maximum likelihood method. 
+### (5.1) Run online software 
+We 
+
+Unrooted tree to a rooted time tree.
+
+### (5.2) Run BEAST analysis by sampling the fixed tree using ConstantDistance operator
+```
+java -jar /path/to/jar_file/ConstantDistanceOperator.jar /validation/fixedtree/FixedRatites.xml
+```
+
+### (5.3) Analyse trees
+Output "FixedRatites.trees". TreeTraceAnalysis
