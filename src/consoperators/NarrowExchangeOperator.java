@@ -16,6 +16,9 @@ public class NarrowExchangeOperator extends TreeOperator {
     public final  Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
     public final Input<Double> rwindowSizeInput =
             new Input<>("rwindowSize", "the size of the window when proposing branch rate for node 'parent'", Input.Validate.REQUIRED);
+    public final Input<Boolean> subtreeOnlyInput =
+            new Input<>("subtreeOnly", "whether to maintain the distance in the subtree only. If false, the distance between the unchanged node and out group taxa will also be maintained.", true);
+
 
     private RealParameter rates;
     private double rwindowSize;
@@ -89,7 +92,8 @@ public class NarrowExchangeOperator extends TreeOperator {
 
         // Step4: propose new rates
         double upper = rc * (tp - tc) / (tgp - tp);
-        double rp_ = Randomizer.uniform(-rwindowSize,rwindowSize) + rp;
+        double alpha = Randomizer.uniform(-rwindowSize, rwindowSize);
+        double rp_ = alpha + rp;
 
         if (rp_ <= 0 || rp_ >= upper) {
             return Double.NEGATIVE_INFINITY;
@@ -117,6 +121,19 @@ public class NarrowExchangeOperator extends TreeOperator {
 
         // the determinant of jacobian matrix
         double Jacobian = ((tp - tc) * (tgp - tu)) / ((tgp - tc) * (tp - tu));
+
+        // deal with out group taxa
+        if (!subtreeOnlyInput.get()) {
+            // original rate
+            double rgp = rates.getValue(grandParent.getNr());
+
+            // node time at common ancestor of (child, child's sibling, uncle, parent and grandParent
+            double t_commonAcestor = grandParent.getParent().getHeight();
+
+            // propose new rate
+            double rgp_ = (rgp * (t_commonAcestor - tgp) + (-alpha) * (tgp - tp)) / (t_commonAcestor - tgp);
+            rates.setValue(grandParent.getNr(),rgp_);
+        }
 
         // the Green's corrected hastings ratio
         return Math.log(hastingsRatio * Jacobian);
