@@ -119,11 +119,11 @@ name="alignment">
             </taxonset>
         </tree>
         <parameter id="kappa.t:primates" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
+        <parameter id="freqParameter.s:primates" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
         <parameter id="ucldStdev.c:primates" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.2</parameter>
         <parameter id="ucldMean.c:primates" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
         <parameter id="rates.c:primates" spec="parameter.RealParameter" dimension="164" name="stateNode">1.0</parameter>
-        <parameter id="BDBirthRate.t:primates" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
-        <parameter id="BDDeathRate.t:primates" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.5</parameter>
+        <parameter id="birthRate.t:primates" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
     </state>
 
     <init id="RandomTree.t:primates" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:primates" taxa="@primates">
@@ -134,15 +134,12 @@ name="alignment">
 
     <distribution id="posterior" spec="util.CompoundDistribution">
         <distribution id="prior" spec="util.CompoundDistribution">
-            <distribution id="BirthDeath.t:primates" spec="beast.evolution.speciation.BirthDeathGernhard08Model" birthDiffRate="@BDBirthRate.t:primates" relativeDeathRate="@BDDeathRate.t:primates" tree="@Tree.t:primates"/>
-            <prior id="BirthRatePrior.t:primates" name="distribution" x="@BDBirthRate.t:primates">
-                <LogNormal id="LogNormalDistribution1" meanInRealSpace="true" name="distr">
-                    <parameter id="RealParameter" spec="parameter.RealParameter" lower="0.0" name="M" upper="0.0">10000.0</parameter>
-                    <parameter id="RealParameter1" spec="parameter.RealParameter" lower="0.0" name="S" upper="0.0">3.0</parameter>
+            <distribution id="YuleModel.t:primates" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@birthRate.t:primates" tree="@Tree.t:primates"/>
+            <prior id="YuleBirthRatePrior.t:primates" name="distribution" x="@birthRate.t:primates">
+                <LogNormal id="LogNormalDistributionModel.1" meanInRealSpace="true" name="distr">
+                    <parameter id="RealParameter.0" estimate="false" name="M">10000.0</parameter>
+                    <parameter id="RealParameter.1" estimate="false" name="S">3.0</parameter>
                 </LogNormal>
-            </prior>
-            <prior id="DeathRatePrior.t:primates" name="distribution" x="@BDDeathRate.t:primates">
-                <Uniform id="Uniform.5" name="distr" upper="Infinity"/>
             </prior>
             <prior id="KappaPrior.t:primates" name="distribution" x="@kappa.t:primates">
                 <LogNormal id="LogNormalDistribution0" meanInRealSpace="true" name="distr">
@@ -169,7 +166,7 @@ name="alignment">
                     <parameter id="gammaShape.t:primates" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
                     <parameter id="proportionInvariant.t:primates" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
                     <substModel id="hky.t:primates" spec="HKY" kappa="@kappa.t:primates">
-                        <frequencies id="empiricalFreqs.s:primates" spec="Frequencies" data="@primates"/>
+                        <frequencies id="estimatedFreqs.t:primates" spec="Frequencies" frequencies="@freqParameter.s:primates"/>
                     </substModel>
                 </siteModel>
                 <branchRateModel id="RelaxedClock.c:primates" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@ucldMean.c:primates" rates="@rates.c:primates" tree="@Tree.t:primates">
@@ -195,25 +192,27 @@ name="alignment">
 
     <operator id="RatesSwapOperator.c:primates" spec="SwapOperator" parameter="@rates.c:primates" weight="7.0"/>
 
-    <operator id="FastUcldStdevScaler.c:primates" spec="consoperators.UcldScalerOperator" distr="@LogNormalDistributionModel.c:primates" rates="@rates.c:primates" scaleFactor="0.5" stdev="@ucldStdev.c:primates" weight="3.0"/>
+    <operator id="FastUcldStdevScaler.c:primates" spec="consoperators.UcldScalerOperator" distr="@LogNormalDistributionModel.c:primates" rates="@rates.c:primates" scaleFactor="0.5" stdev="@ucldStdev.c:primates" weight="5.0"/>
 
-    <operator id="BirthDeathTreeScaler.t:primates" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:primates" weight="5.0"/>
+    <operator id="YuleModelTreeScaler.t:primates" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:primates" weight="5.0"/>
 
-    <operator id="BirthDeathTreeRootScaler.t:primates" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:primates" weight="8.0"/>
+    <operator id="YuleModelTreeRootScaler.t:primates" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:primates" weight="8.0"/>
 
-    <operator id="BirthDeathUniformOperator.t:primates" spec="Uniform" tree="@Tree.t:primates" weight="30.0"/>
+    <operator id="YuleModelUniformOperator.t:primates" spec="Uniform" tree="@Tree.t:primates" weight="30.0"/>
 
-    <operator id="BirthDeathSubtreeSlide.t:primates" spec="SubtreeSlide" tree="@Tree.t:primates" weight="15.0"/>
+    <operator id="YuleModelSubtreeSlide.t:primates" spec="SubtreeSlide" tree="@Tree.t:primates" weight="15.0"/>
 
-    <operator id="BirthDeathNarrow.t:primates" spec="Exchange" tree="@Tree.t:primates" weight="15.0"/>
+    <operator id="YuleModelNarrow.t:primates" spec="Exchange" tree="@Tree.t:primates" weight="15.0"/>
 
-    <operator id="BirthDeathWide.t:primates" spec="Exchange" isNarrow="false" tree="@Tree.t:primates" weight="10.0"/>
+    <operator id="YuleModelWidet:primates" spec="Exchange" isNarrow="false" tree="@Tree.t:primates" weight="10.0"/>
 
-    <operator id="BirthDeathWilsonBalding.t:primates" spec="WilsonBalding" tree="@Tree.t:primates" weight="10.0"/>
+    <operator id="YuleModelWilsonBalding.t:primates" spec="WilsonBalding" tree="@Tree.t:primates" weight="10.0"/>
 
-    <operator id="BirthRateScaler.t:primates" spec="ScaleOperator" parameter="@BDBirthRate.t:primates" scaleFactor="0.75" weight="3.0"/>
+    <operator id="YuleBirthRateScaler.t:primates" spec="ScaleOperator" parameter="@birthRate.t:primates" scaleFactor="0.75" weight="3.0"/>
 
-    <operator id="DeathRateScaler.t:primates" spec="ScaleOperator" parameter="@BDDeathRate.t:primates" scaleFactor="0.75" weight="3.0"/>
+    <operator id="FrequenciesExchanger.s:primates" spec="DeltaExchangeOperator" delta="0.01" weight="0.2">
+        <parameter idref="freqParameter.s:primates"/>
+    </operator>
 
     <operator id="KappaScaler.s:primates" spec="ScaleOperator" parameter="@kappa.t:primates" scaleFactor="0.5" weight="2.0"/>
 
@@ -226,9 +225,8 @@ name="alignment">
         <log idref="ucldStdev.c:primates"/>
         <log idref="ucldMean.c:primates"/>
         <log id="rate.c:primates" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:primates" tree="@Tree.t:primates"/>
-        <log idref="BirthDeath.t:primates"/>
-        <log idref="BDBirthRate.t:primates"/>
-        <log idref="BDDeathRate.t:primates"/>
+        <log idref="YuleModel.t:primates"/>
+        <log idref="birthRate.t:primates"/>
         <log idref="kappa.t:primates"/>
     </logger>
 
