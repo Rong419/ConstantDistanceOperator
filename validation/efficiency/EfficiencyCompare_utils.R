@@ -37,7 +37,7 @@ get.RSV2.efficiency <- function(txt.df, time.df) {
   likelihood = txt.df$likelihood.ESS / time.df
   prior = txt.df$prior.ESS / time.df
   fbd = txt.df$FBD.ESS / time.df
-  tree.height = txt.df$Tree.height.ESS / time.df
+  tree.height = txt.df$TreeHeight.ESS / time.df
   ucld.stdev = txt.df$ucldStdev.ESS / time.df
   ucld.mean = txt.df$ucldMean.ESS / time.df
   rate.mean = txt.df$rate.mean.ESS / time.df
@@ -57,7 +57,7 @@ get.Shankarappa.efficiency <- function(txt.df, time.df) {
   likelihood = txt.df$likelihood.ESS / time.df
   prior = txt.df$prior.ESS / time.df
   pop.size = txt.df$popSize.ESS / time.df
-  tree.height = txt.df$Tree.height.ESS / time.df
+  tree.height = txt.df$TreeHeight.ESS / time.df
   ucld.stdev = txt.df$ucldStdev.ESS / time.df
   ucld.mean = txt.df$ucldMean.ESS / time.df
   rate.mean = txt.df$rate.mean.ESS / time.df
@@ -78,7 +78,7 @@ get.anolis.efficiency <- function(txt.df, time.df) {
   prior = txt.df$prior.ESS / time.df
   birth.rate = txt.df$BDBirthRate.ESS / time.df
   death.rate = txt.df$BDDeathRate.ESS / time.df
-  tree.height = txt.df$Tree.height.ESS / time.df
+  tree.height = txt.df$TreeHeight.ESS / time.df
   ucld.stdev = txt.df$ucldStdev.ESS / time.df
   rate.mean = txt.df$rate.mean.ESS / time.df
   rate.variance = txt.df$rate.variance.ESS / time.df
