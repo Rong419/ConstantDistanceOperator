@@ -232,6 +232,7 @@ name="alignment">
         <log idref="YuleModel.t:primates"/>
         <log idref="birthRate.t:primates"/>
         <log idref="kappa.t:primates"/>
+        <log idref="freqParameter.s:primates"/>
     </logger>
 
     <logger id="screenlog" spec="Logger" logEvery="50000">
@@ -240,11 +241,11 @@ name="alignment">
         <log idref="likelihood"/>
         <log idref="prior"/>
     </logger>
-
+<!--
     <logger id="treelog.t:primates" spec="Logger" fileName="primatesMC3_FILE.trees" logEvery="10000" mode="tree">
         <log id="TreeWithMetaDataLogger.t:primates" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:primates" tree="@Tree.t:primates"/>
     </logger>
-
+-->
     <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
 
 </run>
