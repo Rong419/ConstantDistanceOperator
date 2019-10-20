@@ -18,8 +18,8 @@
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
     <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
 
-    <run id="mcmc" spec="MCMC" chainLength="10000000">
-        <state id="state" storeEvery="2000">
+    <run id="mcmc" spec="MCMC" chainLength="50000000">
+        <state id="state" storeEvery="10000">
             <tree id="Tree.t:simulated" name="stateNode">
                 <taxonset id="TaxonSet.simulated" spec="TaxonSet">
                     <alignment idref="simulated"/>
@@ -109,7 +109,7 @@
 
         <operator id="ucldStdevScaler.c:simulated" spec="ScaleOperator" parameter="@ucldStdev.c:simulated" scaleFactor="0.5" weight="5.0"/>
 
-        <logger id="tracelog" fileName="MediumCategory20taxa_[SimHere].log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <logger id="tracelog" fileName="MediumCategory20taxa_[SimHere].log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>
             <log idref="likelihood"/>
             <log idref="prior"/>
@@ -122,17 +122,17 @@
             <log idref="BirthRate.t:simulated"/>
         </logger>
 
-        <logger id="screenlog" logEvery="10000">
+        <logger id="screenlog" logEvery="50000">
             <log idref="posterior"/>
             <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
             <log idref="likelihood"/>
             <log idref="prior"/>
         </logger>
-
+<!--
         <logger id="treelog.t:simulated" fileName="MediumCategory20taxa_[SimHere].trees" logEvery="2000" mode="tree">
             <log id="TreeWithMetaDataLogger.t:simulated" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:simulated" tree="@Tree.t:simulated"/>
         </logger>
-
+-->
     </run>
 
 </beast>
