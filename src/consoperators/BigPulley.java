@@ -281,6 +281,10 @@ public class BigPulley extends TreeOperator {
             double t_Ch1 = Child1.getHeight();
             double t_Ch2 = Child2.getHeight();
 
+            if ((newtOlder <= t_Ch1) || (newtOlder <= t_Ch2)) {
+                return Double.NEGATIVE_INFINITY;
+            }
+
             double r_Ch1 = rates.getValues()[getNodeNr(Child1)];
             double r_Ch2 = rates.getValues()[getNodeNr(Child2)];
             double d_Ch1 = r_Ch1 * (tOlder - t_Ch1);
