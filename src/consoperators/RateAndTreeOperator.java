@@ -123,16 +123,24 @@ abstract public class RateAndTreeOperator extends TreeOperator {
         // use cached rates
         double v = q * (rates.length - 1);
         int i = (int) v;
-        if (rates[i] == 0.0 && i > 0) {
+        if (rates[i] == 0.0) {
 	        try {
-	            rates[i] = distribution.inverseCumulativeProbability(((double)i) / rates.length);
+	        	if (i > 0) {
+	        		rates[i] = distribution.inverseCumulativeProbability(((double)i) /(rates.length - 1));
+	        	} else {
+	        		rates[i] = distribution.inverseCumulativeProbability(0.1 / (rates.length - 1));
+	        	}
 	        } catch (MathException e) {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	        }
         }
-        if (rates[i + 1] == 0.0) {
+        if (i < rates.length - 1 && rates[i + 1] == 0.0) {
 	        try {
-	            rates[i + 1] = distribution.inverseCumulativeProbability(((double)(i + 1)) / rates.length);
+	        	if (i < rates.length - 2) {
+	        		rates[i + 1] = distribution.inverseCumulativeProbability(((double)(i + 1)) / (rates.length - 1));
+	        	} else {
+	        		rates[i + 1] = distribution.inverseCumulativeProbability((rates.length - 1 - 0.1) / (rates.length - 1));
+	        	}
 	        } catch (MathException e) {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	        }
@@ -152,16 +160,24 @@ abstract public class RateAndTreeOperator extends TreeOperator {
     	
         double v = qNew * (rates.length - 1);
         int i = (int) v;
-        if (rates[i] == 0.0 && i > 0) {
+        if (rates[i] == 0.0) {
 	        try {
-	            rates[i] = distribution.inverseCumulativeProbability(((double)i) / rates.length);
+	        	if (i > 0) {
+	        		rates[i] = distribution.inverseCumulativeProbability(((double)i) / (rates.length - 1));
+	        	} else {
+	        		rates[i] = distribution.inverseCumulativeProbability(0.1 / (rates.length - 1));
+	        	}
 	        } catch (MathException e) {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	        }
         }
-        if (rates[i + 1] == 0.0) {
+        if (i < rates.length - 1 && rates[i + 1] == 0.0) {
 	        try {
-	            rates[i + 1] = distribution.inverseCumulativeProbability(((double)(i + 1)) / rates.length);
+	        	if (i < rates.length - 2) {
+	        		rates[i + 1] = distribution.inverseCumulativeProbability(((double)(i + 1)) / (rates.length - 1));
+	        	} else {
+	        		rates[i + 1] = distribution.inverseCumulativeProbability((rates.length - 1 - 0.1) / (rates.length - 1));
+	        	}
 	        } catch (MathException e) {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	        }
@@ -170,19 +186,29 @@ abstract public class RateAndTreeOperator extends TreeOperator {
         // test boundary: r should be between rates[i] and rates[i+1]
         // but due to numerical errors in the piecewise linear approximation could
         // fall just outside, so make sure the condition is met, and rates are calculated
-        while (r < rates[i]) {
+        while (i > 0 && r < rates[i]) {
         	i--;
-	        try {
-	            rates[i] = distribution.inverseCumulativeProbability(((double)i) / rates.length);
-	        } catch (MathException e) {
-	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
-	        }
-        }
-        while (r > rates[i+1]) {
-        	i++;
-            if (rates[i + 1] == 0.0) {
+            if (i > 0 && rates[i] == 0.0) {
     	        try {
-    	            rates[i + 1] = distribution.inverseCumulativeProbability(((double)(i + 1)) / rates.length);
+    	        	if (i > 0) {
+    	        		rates[i] = distribution.inverseCumulativeProbability(((double)i) / (rates.length - 1));
+    	        	} else {
+    	        		rates[i] = distribution.inverseCumulativeProbability(0.1 / (rates.length - 1));
+    	        	}
+    	        } catch (MathException e) {
+    	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
+    	        }
+            }
+        }
+        while (i < rates.length - 1 && r > rates[i+1]) {
+        	i++;
+            if (i < rates.length - 1 && rates[i + 1] == 0.0) {
+    	        try {
+    	        	if (i < rates.length - 2) {
+    	        		rates[i + 1] = distribution.inverseCumulativeProbability(((double)(i + 1)) / (rates.length - 1));
+    	        	} else {
+    	        		rates[i + 1] = distribution.inverseCumulativeProbability((rates.length - 0.1) / (rates.length - 1));
+    	        	}
     	        } catch (MathException e) {
     	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
     	        }
