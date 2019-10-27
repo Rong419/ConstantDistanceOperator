@@ -71,46 +71,46 @@ abstract public class RateAndTreeOperator extends TreeOperator {
 	 * 2. for log normal, special case is worked out efficiently
 	 * 3. for other distributions, numerical approximation is used
 	 * 
-	 * @param r proposed rate
+	 * @param rNew proposed rate
 	 * @param qOld original quantile
 	 * @param qNew proposed quantile
 	 * @return log of HR
 	 */
-    protected double calculateHastingsRatio(double r, double qOld, double qNew) {
+    public double calculateHastingsRatio(double rNew, double qOld, double qNew) {
     	double [] rates = clockModel.getRates();
 
     	if (rates == null) {
     		// special case for log normal distribution
-    		if (distribution instanceof LogNormalDistributionModel) {
-		        double stdev = ((LogNormalDistributionModel) distribution).SParameterInput.get().getValue();
-		        double variance = FastMath.exp(stdev * stdev) - 1; // sigma square of lognormal
-		        double miu = - 0.5 * FastMath.log(1 + variance); // miu of lognormal
-		
-		        double a = erfInv(2 * qOld - 1);
-		        double b = FastMath.log(r);
-		        double c = 2 * stdev * stdev;
-		        double x = b - miu;
-		        double x_sq = x * x / c;
-		        double d = Math.sqrt(c);
-		        return -b - (x_sq/c) + miu + (d * a) + (a * a);
+    		if (false && distribution instanceof LogNormalDistributionModel) {
+    	        double stdev = ((LogNormalDistributionModel) distribution).SParameterInput.get().getValue();
+    	        double variance = FastMath.exp(stdev * stdev) -1; // sigma square of lognormal
+    	        double miu = - 0.5 * FastMath.log(1 + variance); // miu of lognormal
+
+    	        double a = erfInv(2 * qOld - 1);
+    	        double b = FastMath.log(rNew);
+    	        double c = 2 * stdev * stdev;
+    	        double x = b - miu;
+    	        double x_sq = x * x / c;
+    	        double d = Math.sqrt(c);
+    	        return -b - (x_sq/c) + miu + (d * a) + (a * a);
     		}
-        	// use numeric approximation of derivatuve
+        	// use numeric approximation of derivative
     		double logHR = 0;
 	        try {
 	        	double r0 = distribution.inverseCumulativeProbability(qOld);
 	        	double r0h = distribution.inverseCumulativeProbability(qOld + EPSILON);
 	        	logHR += FastMath.log((r0h - r0) / EPSILON);
-	        	double q0 = distribution.cumulativeProbability(r);
-        		double q0h = distribution.cumulativeProbability(r + EPSILON);
+	        	double q0 = distribution.cumulativeProbability(rNew);
+        		double q0h = distribution.cumulativeProbability(rNew + EPSILON);
         		logHR += FastMath.log((q0h - q0) / EPSILON);
 	        } catch (MathException e) {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	        }
-	        return logHR;
+	        return -logHR;
     	}
     	double logHR = FastMath.log(getDerivativeAtQuantile(qOld, rates));
-    	logHR += FastMath.log(getDerivativeAtQuantileInverse(r, qNew, rates));
-    	return logHR;
+    	logHR += FastMath.log(getDerivativeAtQuantileInverse(rNew, qNew, rates));
+    	return -logHR;
     }
 	
 	
@@ -123,6 +123,10 @@ abstract public class RateAndTreeOperator extends TreeOperator {
         // use cached rates
         double v = q * (rates.length - 1);
         int i = (int) v;
+        if (i == rates.length) {
+        	int h = 3;
+        	h++;
+        }
         if (rates[i] == 0.0) {
 	        try {
 	        	if (i > 0) {
@@ -145,8 +149,11 @@ abstract public class RateAndTreeOperator extends TreeOperator {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	        }
         }
-        double r = (rates[i+1] - rates[i]) / (1.0/(rates.length - 1));
-        return r;
+        if (i < rates.length - 1) {
+        	double r = (rates[i+1] - rates[i]) / (1.0/(rates.length - 1));
+        	return r;
+        }
+        return 0;
     }
     
 	/**
@@ -215,8 +222,11 @@ abstract public class RateAndTreeOperator extends TreeOperator {
             }
         }
 
-        double derivative = (1.0/(rates.length - 1))/(rates[i+1] - rates[i]);
-        return derivative;        	
+        if (i < rates.length - 1) {
+            double derivative = (1.0/(rates.length - 1))/(rates[i+1] - rates[i]);
+            return derivative;        	
+        }
+        return 0;
     }
  
 
