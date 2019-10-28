@@ -225,6 +225,20 @@ public class InConstantDistanceOperator extends TreeOperator {
         return -b - (x_sq/c) + miu + (d * a) + (a * a);
     }
 
+    
+    public static double calculateHastingsRatio(double r, double q, double stdev) {
+        double variance = FastMath.exp(stdev * stdev) -1; // sigma square of lognormal
+        double miu = - 0.5 * FastMath.log(1 + variance); // miu of lognormal
+
+        double a = erfInv(2 * q - 1);
+        double b = FastMath.log(r);
+        double c = 2 * stdev * stdev;
+        double x = b - miu;
+        double x_sq = x * x / c;
+        double d = Math.sqrt(c);
+        return -b - (x_sq/c) + miu + (d * a) + (a * a);
+    }
+
     /*
     Tuning the parameter: twindowsize represents the range of Uniform distribution
      */
