@@ -9,8 +9,9 @@ import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.evolution.operators.TreeOperator;
-import beast.math.distributions.LogNormalDistributionModel;
+import beast.math.distributions.ApproxLogNormalDistributionModel;
 import beast.math.distributions.ParametricDistribution;
+import beast.math.distributions.PiecewiseLinearDistribution;
 
 @Description("Operator on tree and rates for relaxed clock")
 abstract public class RateAndTreeOperator extends TreeOperator {
@@ -63,7 +64,8 @@ abstract public class RateAndTreeOperator extends TreeOperator {
 
     // step size in numeric approximation of derivatives
 	final static private double EPSILON = 1e-8;
-	
+    final private static double SQRT2 = Math.sqrt(2.0);
+
 	/**
 	 * calculate contribution to HR due to quantile => rate => quantile transformations
 	 * Special cases:
@@ -81,18 +83,19 @@ abstract public class RateAndTreeOperator extends TreeOperator {
 
     	if (rates == null) {
     		// special case for log normal distribution
-    		if (false && distribution instanceof LogNormalDistributionModel) {
-    	        double stdev = ((LogNormalDistributionModel) distribution).SParameterInput.get().getValue();
-    	        double variance = FastMath.exp(stdev * stdev) -1; // sigma square of lognormal
-    	        double miu = - 0.5 * FastMath.log(1 + variance); // miu of lognormal
+    		if (distribution instanceof ApproxLogNormalDistributionModel) {
+    	        double stdev = ((ApproxLogNormalDistributionModel) distribution).SParameterInput.get().getValue();
+    	        double miu = - 0.5 * stdev * stdev;
 
-    	        double a = erfInv(2 * qOld - 1);
     	        double b = FastMath.log(rNew);
     	        double c = 2 * stdev * stdev;
     	        double x = b - miu;
     	        double x_sq = x * x / c;
-    	        double d = Math.sqrt(c);
-    	        return -b - (x_sq/c) + miu + (d * a) + (a * a);
+    	        double rateHR = b + x_sq;
+
+    	        double a = erfInv(2 * qOld - 1);
+    	        double quantileHR = miu + SQRT2 * stdev * a + a * a;
+    	        return quantileHR - rateHR;
     		}
         	// use numeric approximation of derivative
     		double logHR = 0;
@@ -100,6 +103,7 @@ abstract public class RateAndTreeOperator extends TreeOperator {
 	        	double r0 = distribution.inverseCumulativeProbability(qOld);
 	        	double r0h = distribution.inverseCumulativeProbability(qOld + EPSILON);
 	        	logHR += FastMath.log((r0h - r0) / EPSILON);
+	        	
 	        	double q0 = distribution.cumulativeProbability(rNew);
         		double q0h = distribution.cumulativeProbability(rNew + EPSILON);
         		logHR += FastMath.log((q0h - q0) / EPSILON);
@@ -108,9 +112,15 @@ abstract public class RateAndTreeOperator extends TreeOperator {
 	        }
 	        return -logHR;
     	}
-    	double logHR = FastMath.log(getDerivativeAtQuantile(qOld, rates));
-    	logHR += FastMath.log(getDerivativeAtQuantileInverse(rNew, qNew, rates));
-    	return -logHR;
+
+    	if (distribution instanceof PiecewiseLinearDistribution) {
+			PiecewiseLinearDistribution pld = (PiecewiseLinearDistribution) distribution;
+			double logHR = Math.log(pld.getDerivativeAtQuantile(qOld));
+			logHR +=  Math.log(pld.getDerivativeAtQuantileInverse(rNew, qNew));
+			return logHR;
+		}
+    	
+    	throw new IllegalArgumentException("rates should be specified or PiecewiseLinearDistribution should be used");
     }
 	
 	

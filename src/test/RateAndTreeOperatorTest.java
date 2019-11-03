@@ -13,6 +13,7 @@ import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
 import beast.math.distributions.LogNormalDistributionModel;
+import beast.math.distributions.PiecewiseLinearDistribution;
 import beast.util.Randomizer;
 import consoperators.InConstantDistanceOperator;
 import consoperators.RateAndTreeOperator;
@@ -24,6 +25,23 @@ public class RateAndTreeOperatorTest extends TestCase {
 	// check that HR = 0 when rate == invCummulative(quantile)
 	@Test
 	public void testHR() throws Exception {
+//		int n = 10000000;
+//		long start = System.currentTimeMillis();
+//		double sum = 0;
+//		for (int i = 0; i < n; i++) {
+//			sum += Math.exp(Randomizer.nextDouble());
+//		}
+//		long end = System.currentTimeMillis();
+//		System.out.println(sum + " " + (start-end) + " ms");
+//		sum = 0;
+//		for (int i = 0; i < n; i++) {
+//			sum += FastMath.exp(Randomizer.nextDouble());
+//		}
+//		long end2 = System.currentTimeMillis();
+//		System.out.println(sum + " " + (end-end2) + " ms");
+		
+		
+		
 		double stdev0 = 0.5;
         Alignment data = BEASTTestCase.getAlignment();
         Tree tree = BEASTTestCase.getTree(data);
@@ -36,13 +54,17 @@ public class RateAndTreeOperatorTest extends TestCase {
         UCRelaxedClockModel clockModel = new UCRelaxedClockModel();
         clockModel.initByName("tree", tree, "distr", distr, "clock.rate", "1.0", "rateQuantiles", quantiles);//, "numberOfDiscreteRates", 100);
 
-        double q = 0.5/100;
+        //double q = 0.5/100;
+        double q = 0.01;
         Node node = tree.getNode(0);
-        quantiles.setValue(0, q);
-        double rate = clockModel.getRateForBranch(node);
+        while (q < 1) {
+        	quantiles.setValue(0, q);
+        	double rate = clockModel.getRateForBranch(node);
         
-        double HR = InConstantDistanceOperator.calculateHastingsRatio(rate, q, stdev0);
-        assertEquals(HR, 0, 1e-16);
+        	double HR = InConstantDistanceOperator.calculateHastingsRatio(rate, q, stdev0);
+        	assertEquals(0, HR, 1e-9);
+        	q = q * 2;
+        }
     }	
 	
 	
@@ -71,8 +93,10 @@ public class RateAndTreeOperatorTest extends TestCase {
         RealParameter quantiles = new RealParameter("0.0");
 
         RealParameter stdev = new RealParameter(stdev0 + "");
-        LogNormalDistributionModel distr = new LogNormalDistributionModel();
-        distr.initByName("M", "1.0", "meanInRealSpace", true, "S", stdev);
+        PiecewiseLinearDistribution distr = new PiecewiseLinearDistribution();
+        LogNormalDistributionModel lognormal = new LogNormalDistributionModel();
+        lognormal.initByName("M", "1.0", "meanInRealSpace", true, "S", stdev);
+        distr.initByName("distr", lognormal);
     
         UCRelaxedClockModel clockModel = new UCRelaxedClockModel();
         clockModel.initByName("tree", tree, "distr", distr, "clock.rate", "1.0", "rateQuantiles", quantiles, "numberOfDiscreteRates", 100);
@@ -174,8 +198,10 @@ public class RateAndTreeOperatorTest extends TestCase {
         RealParameter quantiles = new RealParameter("0.0");
 
         RealParameter stdev = new RealParameter(stdev0 + "");
-        LogNormalDistributionModel distr = new LogNormalDistributionModel();
-        distr.initByName("M", "1.0", "meanInRealSpace", true, "S", stdev);
+        PiecewiseLinearDistribution distr = new PiecewiseLinearDistribution();
+        LogNormalDistributionModel lognormal = new LogNormalDistributionModel();
+        lognormal.initByName("M", "1.0", "meanInRealSpace", true, "S", stdev);
+        distr.initByName("distr", lognormal);
     
         UCRelaxedClockModel clockModel = new UCRelaxedClockModel();
         clockModel.initByName("tree", tree, "distr", distr, "clock.rate", "1.0", "rateQuantiles", quantiles, "numberOfDiscreteRates", 100);
@@ -254,8 +280,10 @@ public class RateAndTreeOperatorTest extends TestCase {
         RealParameter quantiles = new RealParameter("0.0");
 
         RealParameter stdev = new RealParameter(stdev0 + "");
-        LogNormalDistributionModel distr = new LogNormalDistributionModel();
-        distr.initByName("M", "1.0", "meanInRealSpace", true, "S", stdev);
+        PiecewiseLinearDistribution distr = new PiecewiseLinearDistribution();
+        LogNormalDistributionModel lognormal = new LogNormalDistributionModel();
+        lognormal.initByName("M", "1.0", "meanInRealSpace", true, "S", stdev);
+        distr.initByName("distr", lognormal);
     
         UCRelaxedClockModel clockModel = new UCRelaxedClockModel();
         clockModel.initByName("tree", tree, "distr", distr, "clock.rate", "1.0", "rateQuantiles", quantiles, "numberOfDiscreteRates", 100);
