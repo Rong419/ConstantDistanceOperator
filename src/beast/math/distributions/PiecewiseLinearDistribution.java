@@ -75,7 +75,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
         	// Return exact cdf using piecewise linear approximation
             int i = getIntervalFor(x);
             if (i < rates.length-1) {
-            	double cdf = (i + (rates[i+1] - x) / (rates[i+1] - rates[i])) / (rates.length-1);
+            	double cdf = (i + (x - rates[i]) / (rates[i+1] - rates[i])) / (rates.length-1);
             	cdf = Math.max(0, cdf);
             	return cdf;
             }

@@ -68,6 +68,20 @@ public class RateAndTreeOperatorTest extends TestCase {
     }	
 	
 	
+	public void testPWLA() throws Exception {
+		double stdev = 0.25;
+        PiecewiseLinearDistribution distr = new PiecewiseLinearDistribution();
+        LogNormalDistributionModel lognormal = new LogNormalDistributionModel();
+        lognormal.initByName("M", "1.0", "meanInRealSpace", true, "S", stdev + "");
+        distr.initByName("distr", lognormal);
+        
+        for (int i = 0; i < 1000; i++) {
+        	double q = Randomizer.nextDouble();
+        	double q2 = distr.cumulativeProbability(distr.inverseCumulativeProbability(q));
+        	assertEquals(q, q2, 1e-9);
+        }
+	}
+
 	
 	final static int N = 32;
 	// CubicSplineFast cubicApprox = new CubicSplineFast(N);
@@ -265,9 +279,9 @@ public class RateAndTreeOperatorTest extends TestCase {
 		double stdev = 0.01;
 		while (stdev < 1.5) {
 			double maxRelErr = testDerivativeAt0(stdev);
-			// allow up to 5% error
-			assertTrue(maxRelErr < 1e-7);
 			System.err.println("Stdev:" + stdev + " error: " + maxRelErr);
+			// allow up to 5% error
+		    assertTrue(maxRelErr < 1e-5);
 			stdev *= 2;
 		}
 		System.err.println("testDerivativeAt0 done");	
