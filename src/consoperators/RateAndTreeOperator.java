@@ -1,5 +1,6 @@
 package consoperators;
 
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math3.util.FastMath;
 
@@ -9,7 +10,7 @@ import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.evolution.operators.TreeOperator;
-import beast.math.distributions.ApproxLogNormalDistributionModel;
+import beast.math.distributions.LogNormalDistributionModel;
 import beast.math.distributions.ParametricDistribution;
 import beast.math.distributions.PiecewiseLinearDistribution;
 
@@ -83,8 +84,8 @@ abstract public class RateAndTreeOperator extends TreeOperator {
 
     	if (rates == null) {
     		// special case for log normal distribution
-    		if (distribution instanceof ApproxLogNormalDistributionModel) {
-    	        double stdev = ((ApproxLogNormalDistributionModel) distribution).SParameterInput.get().getValue();
+    		if (distribution instanceof LogNormalDistributionModel) {
+    	        double stdev = ((LogNormalDistributionModel) distribution).SParameterInput.get().getValue();
     	        double miu = - 0.5 * stdev * stdev;
 
     	        double b = FastMath.log(rNew);
