@@ -21,11 +21,11 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 
     LinearPiecewiseImpl dist = new LinearPiecewiseImpl();
     ContinuousDistribution underlyingDistr = new NormalDistributionImpl();
-
+    
     // ParametricDistribution distribution;
     
-    private double[] rates; //the output rates
-    private double[] storedRates; //
+    protected double[] rates; //the output rates
+    protected double[] storedRates; //
 
 
     public PiecewiseLinearDistribution() {}
@@ -200,7 +200,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	        }
 	        return i;
 		}
-    } // class LogNormalImpl
+    } // class LinearPiecewiseImpl
 
     @Override
     protected double getMeanWithoutOffset() {
@@ -219,15 +219,19 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
         rates = storedRates;
         storedRates = tmp;
         
-        underlyingDistr = (ContinuousDistribution) distrInput.get().getDistribution();
+        underlyingDistr = getUnderlyingDistr();
         
     	super.restore();
     }
 
-    @Override
+    protected ContinuousDistribution getUnderlyingDistr() {
+    	return (ContinuousDistribution) distrInput.get().getDistribution();
+	}
+
+	@Override
     protected boolean requiresRecalculation() {
     	
-    	if (distrInput.get().isDirtyCalculation()) {
+    	if (distrInput.get() != null && distrInput.get().isDirtyCalculation()) {
     		Arrays.fill(rates, 0.0);
     		underlyingDistr = (ContinuousDistribution) distrInput.get().getDistribution();
     		return true;
