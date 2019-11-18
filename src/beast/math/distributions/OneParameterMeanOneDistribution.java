@@ -5,12 +5,7 @@ package beast.math.distributions;
 import java.util.Arrays;
 
 import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.AbstractContinuousDistribution;
-import org.apache.commons.math.distribution.ContinuousDistribution;
-import org.apache.commons.math.distribution.Distribution;
-import org.apache.commons.math.distribution.GammaDistributionImpl;
-import org.apache.commons.math.distribution.NormalDistributionImpl;
-import org.apache.commons.math.distribution.WeibullDistributionImpl;
+import org.apache.commons.math.distribution.*;
 import org.apache.commons.math.special.Gamma;
 
 import beast.core.Description;
@@ -75,7 +70,7 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
 				if (i > 0) {
 					k = 10.0 - i/100.0;
 				} else {
-					i = -2-i;
+					i = -i-1;
 					k = 10.0 - (i/100.0 + 0.01 * (S - weibullCache[i]) / (weibullCache[i+1] - weibullCache[i]));
 				}
 			}
@@ -195,9 +190,14 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
             if (p == 1) {
                 return Double.POSITIVE_INFINITY;
             }
-            return super.inverseCumulativeProbability(p);
+            // this is what R thinks
+            final org.apache.commons.math.distribution.GammaDistribution g = new GammaDistributionImpl(alpha, beta);
+            return 1/g.inverseCumulativeProbability(1-p);
+            // return super.inverseCumulativeProbability(p);
         }
 
+
+        
         @Override
         public double density(double x) {
             double logP = logDensity(x);
