@@ -7,8 +7,9 @@ import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
 import beast.util.Randomizer;
-import org.apache.commons.math3.distribution.AbstractRealDistribution;
-import org.apache.commons.math3.distribution.BetaDistribution;
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.distribution.BetaDistribution;
+import org.apache.commons.math.distribution.BetaDistributionImpl;
 
 import java.text.DecimalFormat;
 
@@ -29,6 +30,11 @@ public class ConsInternalNode extends TreeOperator {
 
     private double twindowSize;
     private RealParameter rates;
+
+    enum Style {
+        RANDOM_WALK, UNIFORM, BACTRIAN, BETA
+    }
+
     private Boolean random = false;
     private Boolean uniform = false;
     private Boolean bactrian = false;
@@ -52,6 +58,8 @@ public class ConsInternalNode extends TreeOperator {
             }
         }
     }
+
+    BetaDistribution betaDistr = new BetaDistributionImpl(1,1);
 
     @Override
     public double proposal() {
@@ -146,17 +154,23 @@ public class ConsInternalNode extends TreeOperator {
             double m = (t_x - oldChildHeight) / (upper - oldChildHeight);
             double aBeta = twindowSize * m + 1.0;
             double bBeta = twindowSize * (1.0 - m) + 1.0;
-            BetaDistribution betaDistr = new BetaDistribution(aBeta , bBeta);
-            double new_m = betaDistr.inverseCumulativeProbability(Randomizer.nextDouble());
+            betaDistr.setAlpha(aBeta);
+            betaDistr.setBeta(bBeta);
+            double new_m = 0;
+            try {
+                new_m = betaDistr.inverseCumulativeProbability(Randomizer.nextDouble());
+            } catch (MathException e) {
+                e.printStackTrace();
+            }
             t_x_ = (upper - oldChildHeight) * new_m + oldChildHeight;
 
             // hastings ratio
             double forward = betaDistr.density(new_m);
             double new_aBeta = twindowSize * new_m + 1.0;
             double new_bBeta = twindowSize * (1.0 - new_m) + 1.0;
-            BetaDistribution new_betaDistr = new BetaDistribution(new_aBeta , new_bBeta);
-            double backward =  new_betaDistr.density(m);
-            hastingsRatio = Math.log(backward / forward);
+            //BetaDistribution new_betaDistr = new BetaDistribution(new_aBeta , new_bBeta);
+            //double backward =  new_betaDistr.density(m);
+            //hastingsRatio = Math.log(backward / forward);
         }
 
         //reject the proposal if exceeds the boundary
