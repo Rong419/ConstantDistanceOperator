@@ -3,19 +3,12 @@ package consoperators;
 import beast.core.Description;
 import beast.core.Input;
 import beast.core.parameter.RealParameter;
-import beast.evolution.branchratemodel.BranchRateModel;
-import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.math.distributions.ParametricDistribution;
 import beast.util.Randomizer;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math3.util.FastMath;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 @Description("For internal nodes: propose a new node time")
 public class ConsInternalNode extends TreeOperator {
@@ -27,15 +20,17 @@ public class ConsInternalNode extends TreeOperator {
             new Input<>("random", "use random walk proposal for node time.");
     final public Input<Boolean> useUniformInput =
             new Input<>("uniform", "use uniform proposal for node time.");
-    final public Input<Boolean> useBactrainInput =
+    final public Input<Boolean> useBactrianInput =
             new Input<>("bactrian", "use bactrian proposal for node time.");
-
+    final public Input<Boolean> useBetaInput =
+            new Input<>("beta", "use beta proposal for node time.");
 
     private double twindowSize;
     private RealParameter rates;
     private Boolean random;
     private Boolean uniform;
     private Boolean bactrian;
+    private Boolean beta;
 
     @Override
     public void initAndValidate() {
@@ -50,7 +45,7 @@ public class ConsInternalNode extends TreeOperator {
             uniform = true;
             random = false;
             bactrian = false;
-        } else if (useBactrainInput.get()!=null){
+        } else if (useBactrianInput.get()!=null){
             bactrian =true;
             random = false;
             uniform = false;
