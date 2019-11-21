@@ -7,6 +7,8 @@ import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
 import beast.util.Randomizer;
+import org.apache.commons.math3.distribution.AbstractRealDistribution;
+import org.apache.commons.math3.distribution.BetaDistribution;
 
 import java.text.DecimalFormat;
 
@@ -27,31 +29,28 @@ public class ConsInternalNode extends TreeOperator {
 
     private double twindowSize;
     private RealParameter rates;
-    private Boolean random;
-    private Boolean uniform;
-    private Boolean bactrian;
-    private Boolean beta;
+    private Boolean random = false;
+    private Boolean uniform = false;
+    private Boolean bactrian = false;
+    private Boolean beta = false;
 
     @Override
     public void initAndValidate() {
         rates = rateInput.get();
 
-        if (useRandomInput.get()!= null) {
-            random = true;
-            uniform = false;
-            bactrian = false;
-            twindowSize = twindowSizeInput.get();
-        } else if (useUniformInput.get()!=null) {
+        if (useUniformInput.get() != null) {
             uniform = true;
-            random = false;
-            bactrian = false;
-        } else if (useBactrianInput.get()!=null){
-            bactrian =true;
-            random = false;
-            uniform = false;
+        } else {
             twindowSize = twindowSizeInput.get();
-        }
 
+            if (useRandomInput.get() != null) {
+                random = true;
+            } else if (useBactrianInput.get() != null) {
+                bactrian = true;
+            } else if (useBetaInput.get() != null) {
+                beta = true;
+            }
+        }
     }
 
     @Override
@@ -75,55 +74,57 @@ public class ConsInternalNode extends TreeOperator {
         double r_k;
         double r_j;
 
+        double hastingsRatio = 0.0;
+
         //the proposed node time
         double t_x_ = 1.0;
 
         //Step 1: randomly select an internal node, denoted by node x.
         // Avoid fake nodes used to connect direct ancestors into tree.
-       do {
+        do {
             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
             node = tree.getNode(nodeNr);
-       } while (node.isRoot() || node.isLeaf() || node.isFake());
+        } while (node.isRoot() || node.isLeaf() || node.isFake());
 
-       // the number of this node
+        // the number of this node
         int nodeNr = node.getNr();
         // if this node has max number, then use the free index stored in root node to get rate.
         if (nodeNr == branchCount) {
             nodeNr = node.getTree().getRoot().getNr();
         }
 
-       //rate and time for this node
-       t_x = node.getHeight();
-       double r_node = rates.getValues()[nodeNr];
+        //rate and time for this node
+        t_x = node.getHeight();
+        double r_node = rates.getValues()[nodeNr];
 
-       //Step 2: Access to the child nodes of this node
-       // son
-       Node son = node.getChild(0);//get the left child of this node, i.e. son
-       t_j = son.getHeight();//node time of son
+        //Step 2: Access to the child nodes of this node
+        // son
+        Node son = node.getChild(0);//get the left child of this node, i.e. son
+        t_j = son.getHeight();//node time of son
 
-       int sonNr = son.getNr();// node number of son
-       if (sonNr == branchCount) {
-           sonNr = son.getTree().getRoot().getNr();
+        int sonNr = son.getNr();// node number of son
+        if (sonNr == branchCount) {
+            sonNr = son.getTree().getRoot().getNr();
         }
 
-       r_j = rates.getValues()[sonNr]; // rate of branch above son
-       d_j = r_j * (t_x - t_j); // distance of branch above son
+        r_j = rates.getValues()[sonNr]; // rate of branch above son
+        d_j = r_j * (t_x - t_j); // distance of branch above son
 
 
-       // daughter
-       Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
-       t_k = daughter.getHeight();//node time of daughter
+        // daughter
+        Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
+        t_k = daughter.getHeight();//node time of daughter
 
-       int dauNr = daughter.getNr(); // node time of daughter
-       if (dauNr == branchCount) {
+        int dauNr = daughter.getNr(); // node time of daughter
+        if (dauNr == branchCount) {
             dauNr = daughter.getTree().getRoot().getNr();
-       }
+        }
 
-       r_k = rates.getValues()[dauNr];// rate of branch above daughter
-       d_k = r_k * (t_x - t_k);// distance of branch above daughter
+        r_k = rates.getValues()[dauNr];// rate of branch above daughter
+        d_k = r_k * (t_x - t_k);// distance of branch above daughter
 
 
-       //Step3: to propose a new node time
+        //Step3: to propose a new node time
         double upper = node.getParent().getHeight();
         double lower = Math.max(t_j, t_k);
         if (random) {
@@ -131,19 +132,46 @@ public class ConsInternalNode extends TreeOperator {
         }
 
         if (uniform) {
-            t_x_ = Randomizer.uniform(lower,upper);
+            t_x_ = Randomizer.uniform(lower, upper);
         }
 
-        if(bactrian) {
+        if (bactrian) {
             double mu1 = t_x + twindowSize;
             double mu2 = t_x - twindowSize;
             t_x_ = 0.5 * (0.1 * Randomizer.nextGaussian() + mu1) + 0.5 * (0.1 * Randomizer.nextGaussian() + mu2);
         }
 
-       //reject the proposal if exceeds the boundary
-       if (t_x_<= lower || t_x_ >= upper) {
-            return Double.NEGATIVE_INFINITY;
+        if (beta) {
+            double oldChildHeight = Math.max(t_j, t_k);
+            double m = (t_x - oldChildHeight) / (upper - oldChildHeight);
+            double aBeta = twindowSize * m + 1.0;
+            double bBeta = twindowSize * (1.0 - m) + 1.0;
+            BetaDistribution betaDistr = new BetaDistribution(aBeta , bBeta);
+            double new_m = betaDistr.inverseCumulativeProbability(Randomizer.nextDouble());
+            t_x_ = (upper - oldChildHeight) * new_m + oldChildHeight;
+
+            // hastings ratio
+            double forward = betaDistr.density(new_m);
+            double new_aBeta = twindowSize * new_m + 1.0;
+            double new_bBeta = twindowSize * (1.0 - new_m) + 1.0;
+            BetaDistribution new_betaDistr = new BetaDistribution(new_aBeta , new_bBeta);
+            double backward =  new_betaDistr.density(m);
+            hastingsRatio = Math.log(backward / forward);
         }
+
+        //reject the proposal if exceeds the boundary
+        //if (t_x_<= lower || t_x_ >= upper) {
+        //return Double.NEGATIVE_INFINITY;
+        //}
+        do {
+            if (t_x_ <= lower) {
+                t_x_ = 2 * lower - t_x_;
+            }
+            if (t_x_ >= upper) {
+            t_x_ = 2 * upper - t_x_;
+            }
+        } while (t_x_<= lower || t_x_ >= upper);
+
         node.setHeight(t_x_);
 
 
@@ -175,7 +203,8 @@ public class ConsInternalNode extends TreeOperator {
          */
        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
-       return Math.log(nu /de);
+       hastingsRatio = hastingsRatio + Math.log(nu / de);
+       return hastingsRatio;
 }
 
 

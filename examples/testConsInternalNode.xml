@@ -103,13 +103,17 @@
 <!--
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
               twindowSize="0.002" random="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
-
-    <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
-              random="uniform" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
 -->
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
+              uniform="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
+<!--
+    <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
               twindowSize="0.002" bactrian="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
-
+-->
+    <!--
+    <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
+              twindowSize="0.002" beta="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
+-->
     <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" distr="@FastLogNormalDistributionModel.c:dna" scaleFactor="0.5" weight="10.0"/>
 
