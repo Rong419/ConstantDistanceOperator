@@ -30,34 +30,39 @@ public class ConsInternalNode extends TreeOperator {
 
     private double twindowSize;
     private RealParameter rates;
-    /*
+
     enum Style {
         RANDOM_WALK, UNIFORM, BACTRIAN, BETA
     }
-    */
-    private Boolean random = false;
-    private Boolean uniform = false;
-    private Boolean bactrian = false;
-    private Boolean beta = false;
+
+    private Boolean RANDOM_WALK;
+    private Boolean UNIFORM;
+    private Boolean BACTRIAN;
+    private Boolean BETA;
+    Style style = Style.RANDOM_WALK;
 
     @Override
     public void initAndValidate() {
         rates = rateInput.get();
+        UNIFORM = useUniformInput.get();
+        RANDOM_WALK = useRandomInput.get();
+        BACTRIAN = useBactrianInput.get();
+        BETA = useBetaInput.get();
+        twindowSize = twindowSizeInput.get();
 
-        if (useUniformInput.get() != null) {
-            uniform = true;
-        } else {
-            twindowSize = twindowSizeInput.get();
-
-            if (useRandomInput.get() != null) {
-                random = true;
-            } else if (useBactrianInput.get() != null) {
-                bactrian = true;
-            } else if (useBetaInput.get() != null) {
-                beta = true;
+        if(RANDOM_WALK == null) {
+            if (UNIFORM != null) {
+                style = Style.UNIFORM;
+            } else if (BACTRIAN != null) {
+                style = Style.BACTRIAN;
+            } else {
+                style = Style.BETA;
+            }
+        } else{
+                style = Style.RANDOM_WALK;
             }
         }
-    }
+
 
     private BetaDistribution betaDistr = new BetaDistributionImpl(1,1);
     private BetaDistribution new_betaDistr = new BetaDistributionImpl(1,1);
@@ -136,56 +141,59 @@ public class ConsInternalNode extends TreeOperator {
         //Step3: to propose a new node time
         double upper = node.getParent().getHeight();
         double lower = Math.max(t_j, t_k);
-        if (random) {
-            t_x_ = t_x + Randomizer.uniform(-twindowSize, twindowSize);
-        }
-
-        if (uniform) {
-            t_x_ = Randomizer.uniform(lower, upper);
-        }
-
-        if (bactrian) {
-            Node oldChild;
-            if (t_j >= t_k) {
-                oldChild = son;
-            } else {
-                oldChild = daughter;
+        switch (style) {
+            case RANDOM_WALK: {
+                t_x_ = t_x + Randomizer.uniform(-twindowSize, twindowSize);
             }
+            break;
 
-            double branchLength = node.getLength() + oldChild.getLength();
-
-            double mu1 = t_x + (branchLength * twindowSize);
-            double mu2 = t_x - (branchLength * twindowSize);
-            double sigma = branchLength * 0.5 * twindowSize;
-
-            t_x_ = 0.5 * (sigma * Randomizer.nextGaussian() + mu1) + 0.5 * (sigma * Randomizer.nextGaussian() + mu2);
-        }
-
-        if (beta) {
-            double oldChildHeight = Math.max(t_j, t_k);
-            double m = (t_x - oldChildHeight) / (upper - oldChildHeight);
-            double aBeta = twindowSize * m + 1.0;
-            double bBeta = twindowSize * (1.0 - m) + 1.0;
-            betaDistr.setAlpha(aBeta);
-            betaDistr.setBeta(bBeta);
-            double new_m = 0;
-            try {
-                new_m = betaDistr.inverseCumulativeProbability(Randomizer.nextDouble());
-            } catch (MathException e) {
-                e.printStackTrace();
+            case UNIFORM: {
+                    t_x_ = Randomizer.uniform(lower, upper);
             }
-            t_x_ = (upper - oldChildHeight) * new_m + oldChildHeight;
+            break;
 
-            // hastings ratio
-            double forward = betaDistr.density(new_m);
-            double new_aBeta = twindowSize * new_m + 1.0;
-            double new_bBeta = twindowSize * (1.0 - new_m) + 1.0;
-            new_betaDistr.setAlpha(new_aBeta);
-            new_betaDistr.setBeta(new_bBeta);
-            double backward =  new_betaDistr.density(m);
-            hastingsRatio = Math.log(backward / forward);
+            case BACTRIAN: {
+                Node oldChild;
+                if (t_j >= t_k) {
+                    oldChild = son;
+                } else {
+                    oldChild = daughter;
+                }
+
+                double branchLength = node.getLength() + oldChild.getLength();
+                double mu1 = t_x + (branchLength * twindowSize);
+                double mu2 = t_x - (branchLength * twindowSize);
+                double sigma = branchLength * 0.5 * twindowSize;
+
+                t_x_ = 0.5 * (sigma * Randomizer.nextGaussian() + mu1) + 0.5 * (sigma * Randomizer.nextGaussian() + mu2);
+            }
+            break;
+
+            case BETA: {
+                double oldChildHeight = Math.max(t_j, t_k);
+                double m = (t_x - oldChildHeight) / (upper - oldChildHeight);
+                double aBeta = twindowSize * m + 1.0;
+                double bBeta = twindowSize * (1.0 - m) + 1.0;
+                betaDistr.setAlpha(aBeta);
+                betaDistr.setBeta(bBeta);
+                double new_m = 0;
+                try {
+                    new_m = betaDistr.inverseCumulativeProbability(Randomizer.nextDouble());
+                } catch (MathException e) {
+                    e.printStackTrace();
+                }
+                t_x_ = (upper - oldChildHeight) * new_m + oldChildHeight;
+
+                // hastings ratio
+                double forward = betaDistr.density(new_m);
+                double new_aBeta = twindowSize * new_m + 1.0;
+                double new_bBeta = twindowSize * (1.0 - new_m) + 1.0;
+                new_betaDistr.setAlpha(new_aBeta);
+                new_betaDistr.setBeta(new_bBeta);
+                double backward = new_betaDistr.density(m);
+                hastingsRatio = Math.log(backward / forward);
+            }
         }
-
         //reject the proposal if exceeds the boundary
         //if (t_x_<= lower || t_x_ >= upper) {
         //return Double.NEGATIVE_INFINITY;
