@@ -30,11 +30,11 @@ public class ConsInternalNode extends TreeOperator {
 
     private double twindowSize;
     private RealParameter rates;
-
+    /*
     enum Style {
         RANDOM_WALK, UNIFORM, BACTRIAN, BETA
     }
-
+    */
     private Boolean random = false;
     private Boolean uniform = false;
     private Boolean bactrian = false;
@@ -59,7 +59,8 @@ public class ConsInternalNode extends TreeOperator {
         }
     }
 
-    BetaDistribution betaDistr = new BetaDistributionImpl(1,1);
+    private BetaDistribution betaDistr = new BetaDistributionImpl(1,1);
+    private BetaDistribution new_betaDistr = new BetaDistributionImpl(1,1);
 
     @Override
     public double proposal() {
@@ -144,9 +145,20 @@ public class ConsInternalNode extends TreeOperator {
         }
 
         if (bactrian) {
-            double mu1 = t_x + twindowSize;
-            double mu2 = t_x - twindowSize;
-            t_x_ = 0.5 * (0.1 * Randomizer.nextGaussian() + mu1) + 0.5 * (0.1 * Randomizer.nextGaussian() + mu2);
+            Node oldChild;
+            if (t_j >= t_k) {
+                oldChild = son;
+            } else {
+                oldChild = daughter;
+            }
+
+            double branchLength = node.getLength() + oldChild.getLength();
+
+            double mu1 = t_x + (branchLength * twindowSize);
+            double mu2 = t_x - (branchLength * twindowSize);
+            double sigma = branchLength * 0.5 * twindowSize;
+
+            t_x_ = 0.5 * (sigma * Randomizer.nextGaussian() + mu1) + 0.5 * (sigma * Randomizer.nextGaussian() + mu2);
         }
 
         if (beta) {
@@ -168,9 +180,10 @@ public class ConsInternalNode extends TreeOperator {
             double forward = betaDistr.density(new_m);
             double new_aBeta = twindowSize * new_m + 1.0;
             double new_bBeta = twindowSize * (1.0 - new_m) + 1.0;
-            //BetaDistribution new_betaDistr = new BetaDistribution(new_aBeta , new_bBeta);
-            //double backward =  new_betaDistr.density(m);
-            //hastingsRatio = Math.log(backward / forward);
+            new_betaDistr.setAlpha(new_aBeta);
+            new_betaDistr.setBeta(new_bBeta);
+            double backward =  new_betaDistr.density(m);
+            hastingsRatio = Math.log(backward / forward);
         }
 
         //reject the proposal if exceeds the boundary
