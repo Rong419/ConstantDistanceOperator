@@ -146,6 +146,9 @@ public class InConstantDistanceOperator extends TreeOperator {
        double r_node_ = r_node * (upper - t_x) / (upper - t_x_);
        double r_j_ = d_j / (t_x_ - t_j);
        double r_k_ = d_k / (t_x_ - t_k);
+       if(r_j_ == 0.0 || r_k_ == 0.0 || r_node_ == 0.0) {
+           return Double.NEGATIVE_INFINITY;
+       }
 
        // set the proposed new rates
        //rates.setValue(nodeNr, r_node_);
