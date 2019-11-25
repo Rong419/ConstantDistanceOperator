@@ -195,9 +195,10 @@ public class ConsInternalNode extends TreeOperator {
             }
         }
         //reject the proposal if exceeds the boundary
-        //if (t_x_<= lower || t_x_ >= upper) {
-        //return Double.NEGATIVE_INFINITY;
-        //}
+        /*
+        if (t_x_ == lower || t_x_ == upper) {
+            return Double.NEGATIVE_INFINITY;
+        }
         do {
             if (t_x_ <= lower) {
                 t_x_ = 2 * lower - t_x_;
@@ -206,6 +207,27 @@ public class ConsInternalNode extends TreeOperator {
             t_x_ = 2 * upper - t_x_;
             }
         } while (t_x_<= lower || t_x_ >= upper);
+        */
+        double e; double n; double r;
+        if (t_x_ > upper) {
+            e = t_x_ - upper;
+            n = Math.floor(e / (upper - lower));
+            r = e - n * (upper - lower);
+            if (n % 2 == 0) {
+                t_x_ = upper - r;
+            } else {
+                t_x_ = lower + r;
+            }
+        } else if (t_x_ < lower) {
+            e = lower - t_x_;
+            n = Math.floor(e / (upper - lower));
+            r = e - n * (upper - lower);
+            if (n % 2 == 0) {
+                t_x_ = lower + r;
+            } else {
+                t_x_ = upper - r;
+            }
+        }
 
         node.setHeight(t_x_);
 

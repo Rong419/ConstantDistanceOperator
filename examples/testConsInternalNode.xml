@@ -103,18 +103,18 @@
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
               twindowSize="0.02"  tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
 -->
-<!--
+
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
               twindowSize="0.002" random="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
--->
+
 <!--
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
               uniform="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
  -->
-
+<!--
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
               twindowSize="0.25" bactrian="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
-
+-->
 <!--
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.ConsInternalNode"
               twindowSize="0.2" beta="true" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="15.0"/>
