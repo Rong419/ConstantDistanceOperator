@@ -195,10 +195,11 @@ public class ConsInternalNode extends TreeOperator {
             }
         }
         //reject the proposal if exceeds the boundary
-        /*
+
         if (t_x_ == lower || t_x_ == upper) {
             return Double.NEGATIVE_INFINITY;
         }
+        /*
         do {
             if (t_x_ <= lower) {
                 t_x_ = 2 * lower - t_x_;

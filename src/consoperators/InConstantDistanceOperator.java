@@ -134,10 +134,30 @@ public class InConstantDistanceOperator extends TreeOperator {
        double upper = node.getParent().getHeight();
        double lower = Math.max(t_j, t_k);
 
-       if (t_x_<= lower || t_x_ >= upper) {
+        if (t_x_ == lower || t_x_ == upper) {
             return Double.NEGATIVE_INFINITY;
         }
-        node.setHeight(t_x + a);
+        double e; double n; double r;
+        if (t_x_ > upper) {
+            e = t_x_ - upper;
+            n = Math.floor(e / (upper - lower));
+            r = e - n * (upper - lower);
+            if (n % 2 == 0) {
+                t_x_ = upper - r;
+            } else {
+                t_x_ = lower + r;
+            }
+        } else if (t_x_ < lower) {
+            e = lower - t_x_;
+            n = Math.floor(e / (upper - lower));
+            r = e - n * (upper - lower);
+            if (n % 2 == 0) {
+                t_x_ = lower + r;
+            } else {
+                t_x_ = upper - r;
+            }
+        }
+        node.setHeight(t_x_);
 
 
        //Step4: propose the new rates
