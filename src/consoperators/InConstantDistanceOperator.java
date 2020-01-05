@@ -10,6 +10,7 @@ import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
 import beast.math.distributions.LogNormalDistributionModel;
 import beast.math.distributions.ParametricDistribution;
+import beast.math.distributions.PiecewiseLinearDistribution;
 import beast.util.Randomizer;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math3.util.FastMath;
@@ -25,24 +26,31 @@ public class InConstantDistanceOperator extends TreeOperator {
             new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
     final public Input<RealParameter> quantileInput = new Input<>("quantiles", "the quantiles of each branch rate.", Input.Validate.XOR,rateInput);
-    final public Input<ParametricDistribution> rateDistInput = new Input<>("distr", "the distribution governing the rates among branches.");
+    final public Input<UCRelaxedClockModel> clockModelInput = new Input<>("clockModel", "relaxed clock model used to deal with quantiles", Input.Validate.REQUIRED);
+
+    final private static double SQRT2 = Math.sqrt(2.0);
+    final static private double EPSILON = 1e-8;
 
     private double twindowSize;
+    private ParametricDistribution rateDistribution;
     private RealParameter rates;
     private RealParameter quantiles;
-    private LogNormalDistributionModel LN ;
-    protected ParametricDistribution distribution;
+    private enum rateMode {
+        quantiles,
+        rates
+    }
+    private rateMode mode = rateMode.rates;
 
     @Override
     public void initAndValidate() {
+        rateDistribution = clockModelInput.get().rateDistInput.get();
         twindowSize = twindowSizeInput.get();
-
-        distribution = rateDistInput.get();
-
-        if (quantileInput.get() == null) {
-            rates = rateInput.get();
-        } else {
+        if (rateInput.get() == null) {
             quantiles = quantileInput.get();
+            mode = rateMode.quantiles;
+        } else {
+            rates = rateInput.get();
+            mode = rateMode.rates;
         }
     }
 
@@ -52,30 +60,25 @@ public class InConstantDistanceOperator extends TreeOperator {
         int nodeCount = tree.getNodeCount(); //return the number of nodes in the tree
         int branchCount = nodeCount - 1; //the number of branches of the tree
 
-        if(distribution instanceof LogNormalDistributionModel) {
-            LN = (LogNormalDistributionModel) distribution;
-        }
-
-
-        //the chosen node to work on
+        // the chosen node to work on
         Node node;
 
-        //the original node times
-        double t_x;
-        double t_j;
-        double t_k;
-        //the original distances
-        double d_j;
-        double d_k;
-        //the original rates
-        double r_k;
-        double r_j;
+        // the original node times
+        double t_x, t_j, t_k;
 
-        //the proposed node time
-        double t_x_;
+        // the original rates
+        double r_x, r_k, r_j;
 
-        //Step 1: randomly select an internal node, denoted by node x.
-        // Avoid fake nodes used to connect direct ancestors into tree.
+        // the original quantiles
+        double q_x = 0.5; double q_k = 0.5; double q_j = 0.5;
+
+        // the proposed quantiles
+        double q_x_ = 0.5; double q_k_ = 0.5; double q_j_ = 0.5;
+
+        double hastingsRatio = 0.0;
+
+        // Step 1: randomly select an internal node, denoted by node x.
+        // avoid fake nodes used to connect direct ancestors into tree.
        do {
             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
             node = tree.getNode(nodeNr);
@@ -88,179 +91,223 @@ public class InConstantDistanceOperator extends TreeOperator {
             nodeNr = node.getTree().getRoot().getNr();
         }
 
-       //rate and time for this node
+       // time for this node
        t_x = node.getHeight();
-       //double r_node = rates.getValues()[nodeNr];
-        double r_node = getRateForNode(nodeNr);
 
-       //Step 2: Access to the child nodes of this node
+
+       // Step 2: Access to the child nodes of this node
        // son
-       Node son = node.getChild(0);//get the left child of this node, i.e. son
-       t_j = son.getHeight();//node time of son
-
-       int sonNr = son.getNr();// node number of son
+       Node son = node.getChild(0); // get the left child of this node, i.e. son
+       t_j = son.getHeight(); // node time of son
+       int sonNr = son.getNr(); // node number of son
        if (sonNr == branchCount) {
            sonNr = son.getTree().getRoot().getNr();
         }
 
-       //r_j = rates.getValues()[sonNr]; // rate of branch above son
-       r_j = getRateForNode(sonNr);
-       d_j = r_j * (t_x - t_j); // distance of branch above son
-
-
        // daughter
-       Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
-       t_k = daughter.getHeight();//node time of daughter
-
-       int dauNr = daughter.getNr(); // node time of daughter
+       Node daughter = node.getChild(1); //get the right child of this node, i.e. daughter
+       t_k = daughter.getHeight(); // node time of daughter
+       int dauNr = daughter.getNr(); // node number of daughter
        if (dauNr == branchCount) {
             dauNr = daughter.getTree().getRoot().getNr();
        }
 
-       //r_k = rates.getValues()[dauNr];// rate of branch above daughter
-       r_k = getRateForNode(dauNr);
-       d_k = r_k * (t_x - t_k);// distance of branch above daughter
+       switch (mode) {
+           case rates: {
+               r_x = rates.getValues()[nodeNr]; // rate of branch above this node
+               r_j = rates.getValues()[sonNr]; // rate of branch above son
+               r_k = rates.getValues()[dauNr]; // rate of branch above daughter
+               break;
+           }
 
-       double q_node = 1.0; double q_j = 1.0; double q_k = 1.0;
-       if (quantileInput.get()!=null) {
-          q_node = quantiles.getValues()[nodeNr];
-          q_j = quantiles.getValues()[sonNr];
-          q_k = quantiles.getValues()[dauNr];
+           case quantiles: {
+               q_x = quantiles.getValues()[nodeNr];
+               q_j = quantiles.getValues()[sonNr];
+               q_k = quantiles.getValues()[dauNr];
+               try {
+                   r_x = rateDistribution.inverseCumulativeProbability(q_x);
+                   r_j = rateDistribution.inverseCumulativeProbability(q_j);
+                   r_k = rateDistribution.inverseCumulativeProbability(q_k);
+               } catch (MathException e) {
+                   e.printStackTrace();
+                   return Double.NEGATIVE_INFINITY;
+               }
+               break;
+           }
+
+           default: {
+               return Double.NEGATIVE_INFINITY;
+           }
        }
 
-       //Step3: to propose a new node time for this node
-       double a = Randomizer.uniform(-twindowSize, twindowSize);
-       t_x_ = t_x + a;
 
-       //reject the proposal if exceeds the boundary
+       // Step3: to propose a new node time for this node
+       double a = Randomizer.uniform(-twindowSize, twindowSize);
+       double t_x_ = t_x + a;
+
+       // deal with the boundary cases
        double upper = node.getParent().getHeight();
        double lower = Math.max(t_j, t_k);
 
         if (t_x_ == lower || t_x_ == upper) {
             return Double.NEGATIVE_INFINITY;
         }
-        double e; double n; double r;
+        // fold the proposed node time
+        double err; double n; double r;
         if (t_x_ > upper) {
-            e = t_x_ - upper;
-            n = Math.floor(e / (upper - lower));
-            r = e - n * (upper - lower);
+            err = t_x_ - upper;
+            n = Math.floor(err / (upper - lower));
+            r = err - n * (upper - lower);
             if (n % 2 == 0) {
                 t_x_ = upper - r;
             } else {
                 t_x_ = lower + r;
             }
         } else if (t_x_ < lower) {
-            e = lower - t_x_;
-            n = Math.floor(e / (upper - lower));
-            r = e - n * (upper - lower);
+            err = lower - t_x_;
+            n = Math.floor(err / (upper - lower));
+            r = err - n * (upper - lower);
             if (n % 2 == 0) {
                 t_x_ = lower + r;
             } else {
                 t_x_ = upper - r;
             }
         }
+
+        // set the proposed node time
         node.setHeight(t_x_);
 
 
-       //Step4: propose the new rates
-       //there are three rates in total
-       //r_node, r_i, r_x
-       double r_node_ = r_node * (upper - t_x) / (upper - t_x_);
-       double r_j_ = d_j / (t_x_ - t_j);
-       double r_k_ = d_k / (t_x_ - t_k);
+       // Step4: propose the new rates
+       // there are three rates in total
+       // r_x_, r_j_, r_k_
+       double r_x_ = r_x * (upper - t_x) / (upper - t_x_);
+       double r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j);
+       double r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k);
 
 
-       // set the proposed new rates
-       //rates.setValue(nodeNr, r_node_);
-       //rates.setValue(sonNr, r_j_);
-       //rates.setValue(dauNr, r_k_);
-        assignRateForNode(r_node_,nodeNr);
-        assignRateForNode(r_j_,sonNr);
-        assignRateForNode(r_k_,dauNr);
+       // set the proposed new rates or quantiles
+        switch (mode) {
+            case rates: {
+                // set rates directly
+                rates.setValue(nodeNr, r_x_);
+                rates.setValue(sonNr, r_j_);
+                rates.setValue(dauNr, r_k_);
+                break;
+            }
 
-       //Step4: calculate the Hastings ratio
-        /*
-         *input:t_x,r_node,r_j,r_k
-         *
-         *f:the function
-         *f(t_x,r_node,r_j,r_k)
-         *
-         *output:t_x_,r_node_,r_j_,r_k_
-         *t_x_ = t_x + a
-         *r_j_ = r_j * (t_x - t_j) / (t_x_ - t_j)
-         *r_k_ = r_k * (t_x - t_k) / (t_x_ - t_k)
-         *r_node_ = r_node * (upper - t_x) / (upper - t_x_)
-         */
-       double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
-       double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
-       double JD = Math.log(nu /de);
-       if (quantileInput.get() != null) {
-           JD = JD + calculateHastingsRatio(r_node_,q_node) + calculateHastingsRatio(r_j_,q_j) + calculateHastingsRatio(r_k_, q_k);
-       }
-       return JD;
+            case quantiles: {
+                try {
+                    // new quantiles of proposed rates
+                    q_x_ = rateDistribution.cumulativeProbability(r_x_);
+                    q_j_ = rateDistribution.cumulativeProbability(r_j_);
+                    q_k_ = rateDistribution.cumulativeProbability(r_k_);
+
+                    // set quantiles
+                    quantiles.setValue(nodeNr, q_x_);
+                    quantiles.setValue(sonNr, q_j_);
+                    quantiles.setValue(dauNr, q_k_);
+
+                } catch (MathException e) {
+                    e.printStackTrace();
+                    return Double.NEGATIVE_INFINITY;
+                }
+                break;
+            }
+
+            default: {
+
+            }
+
+        }
+
+
+        // Step4: calculate the Hastings ratio
+        switch (mode) {
+            case rates: {
+                double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
+                double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
+                hastingsRatio = Math.log(nu / de);
+                break;
+            }
+
+            case quantiles: {
+                if (rateDistribution instanceof LogNormalDistributionModel) {
+                    hastingsRatio = getHRForLN(r_x_, q_x) + getHRForLN(r_j_, q_j) + getHRForLN(r_k_, q_k);
+                }
+
+                else if (rateDistribution instanceof PiecewiseLinearDistribution) {
+                    hastingsRatio = getHRForPieceWise(r_x_, q_x, q_x_) + getHRForPieceWise(r_j_, q_j, q_j_) + getHRForPieceWise(r_k_, q_k, q_k_);
+                }
+
+                else {
+                    hastingsRatio = getHRUseNumericApproximation(r_x_, q_x) + getHRUseNumericApproximation(r_j_, q_j) + getHRUseNumericApproximation(r_k_, q_k);
+                }
+
+                break;
+            }
+
+            default: {
+
+            }
+
+        }
+        return hastingsRatio;
 }
 
-    private double getRateForNode(int nodeNr) {
-        if (quantileInput.get() == null) {
-            return rates.getValues()[nodeNr];
+        private  double getHRForLN (double rNew, double qOld) {
+            double stdev = ((LogNormalDistributionModel) rateDistribution).SParameterInput.get().getValue();
+            double miu = - 0.5 * stdev * stdev;
+
+            double b = FastMath.log(rNew);
+            double c = 2 * stdev * stdev;
+            double x = b - miu;
+            double x_sq = x * x / c;
+            double rateHR = b + x_sq;
+
+            double a = erfInv(2 * qOld - 1);
+            double quantileHR = miu + SQRT2 * stdev * a + a * a;
+            return quantileHR - rateHR;
         }
-        else {
-            return getRealRate(quantiles.getValues()[nodeNr]);
+
+        private double getHRForPieceWise (double rNew, double qOld, double qNew) {
+            PiecewiseLinearDistribution pld = (PiecewiseLinearDistribution) rateDistribution;
+            double logHR = Math.log(pld.getDerivativeAtQuantile(qOld));
+            logHR +=  Math.log(pld.getDerivativeAtQuantileInverse(rNew, qNew));
+            return logHR;
         }
-    }
 
-    private void assignRateForNode(double rate, int nodeNr) {
-        if (quantileInput.get() == null) {
-            rates.setValue(nodeNr,rate);
-        } else {
-            quantiles.setValue(nodeNr,getRateQuantiles(rate));
+        private double getHRUseNumericApproximation (double rNew, double qOld) {
+            double logHR = 0;
+            try {
+                double r0 = rateDistribution.inverseCumulativeProbability(qOld);
+                double r0h = rateDistribution.inverseCumulativeProbability(qOld + EPSILON);
+                logHR += FastMath.log((r0h - r0) / EPSILON);
+
+                double q0 = rateDistribution.cumulativeProbability(rNew);
+                double q0h = rateDistribution.cumulativeProbability(rNew + EPSILON);
+                logHR += FastMath.log((q0h - q0) / EPSILON);
+            } catch (MathException e) {
+                throw new RuntimeException("Failed to compute inverse cumulative probability!");
+            }
+            return -logHR;
         }
-    }
 
-    private double getRateQuantiles (double r) {
-        try {
-            return LN.cumulativeProbability(r);
-        } catch (MathException e) {
-            throw new RuntimeException("Failed to compute cumulative probability because rate =" + r);
+
+        // To test the hastings ratio under lognormal distribution
+        public static double calculateHastingsRatio(double r, double q, double stdev) {
+            double miu = - 0.5 * stdev * stdev; // miu of lognormal
+            double a = erfInv(2 * q - 1);
+            double b = FastMath.log(r);
+            double c = 2 * stdev * stdev;
+            double x = b - miu;
+            double x_sq = x * x / c;
+            double d = Math.sqrt(c);
+            return -b - x_sq + miu + (d * a) + (a * a);
         }
-    }
 
-    private double getRealRate (double q) {
-        try {
-            return LN.inverseCumulativeProbability(q);
-        } catch (MathException e) {
-            throw new RuntimeException("Failed to compute inverse cumulative probability because quantile = " + q);
-        }
-    }
 
-    private double calculateHastingsRatio(double r, double q) {
-        double stdev = LN.SParameterInput.get().getValue();
-        double miu = - 0.5 * stdev * stdev; // miu of lognormal
-
-        double a = erfInv(2 * q - 1);
-        double b = FastMath.log(r);
-        double c = 2 * stdev * stdev;
-        double x = b - miu;
-        double x_sq = x * x / c;
-        double d = Math.sqrt(c);
-        return -b - x_sq + miu + (d * a) + (a * a);
-    }
-
-    
-    public static double calculateHastingsRatio(double r, double q, double stdev) {
-        double miu = - 0.5 * stdev * stdev; // miu of lognormal
-        double a = erfInv(2 * q - 1);
-        double b = FastMath.log(r);
-        double c = 2 * stdev * stdev;
-        double x = b - miu;
-        double x_sq = x * x / c;
-        double d = Math.sqrt(c);
-        return -b - x_sq + miu + (d * a) + (a * a);
-    }
-
-    /*
-    Tuning the parameter: twindowsize represents the range of Uniform distribution
-     */
+    // Tuning the parameter: twindowsize represents the range of Uniform distribution
     @Override
     public double getCoercableParameterValue() {
         return twindowSize;
