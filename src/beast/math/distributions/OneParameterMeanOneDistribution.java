@@ -17,7 +17,7 @@ import beast.math.distributions.ParametricDistribution;
 public class OneParameterMeanOneDistribution extends ParametricDistribution {
     final public Input<RealParameter> shapeInput = new Input<>("sigma", "variance parameter that gouverns the distribution");
     
-    enum Mode {weibull, gamma, invgamma, lognormal};
+    enum Mode {weibull, gamma, invgamma, lognormal, exp};
     final public Input<Mode> modeInput = new Input<>("mode", "which distribution to use. One of " + Arrays.toString(Mode.values()), 
     		Mode.weibull, Mode.values());
 
@@ -35,6 +35,9 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
 			break;
 		case gamma:
 			dist = new GammaDistributionImpl(1.0, 1.0);
+			break;
+		case exp:
+			dist = new ExponentialDistributionImpl(1.0);
 			break;
 		case invgamma:
 			dist = new InverseGammaDistributionImpl(2.0, 1.0);
@@ -83,6 +86,8 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
 			double betaG = S;
 			((GammaDistributionImpl)dist).setAlpha(alphaG);
 			((GammaDistributionImpl)dist).setBeta(betaG);
+			break;
+		case exp:
 			break;
 		case invgamma:
 			double alphaIG = 2.0 + 1.0 / S;

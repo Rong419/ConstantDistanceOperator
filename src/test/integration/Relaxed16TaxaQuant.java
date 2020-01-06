@@ -103,7 +103,7 @@ public class Relaxed16TaxaQuant {
 		sitemodel.initByName("gammaCategoryCount", 1, "substModel", hky, "shape", "1.0", "proportionInvariant", "0.0");
 		
 		MergeDataWith mergewith = new beast.app.seqgen.MergeDataWith();
-		mergewith.initByName("template", wdir + "/analysis16relaxedQ.xml", "output", dir + "/analysis-out" + i + ".xml");
+		mergewith.initByName("template", wdir + "/analysis16relaxedQLinear.xml", "output", dir + "/analysis-out" + i + ".xml");
 
 		SequenceSimulator sim = new beast.app.seqgen.SequenceSimulator();
 		sim.initByName("data", data, "tree", tree, "sequencelength", 1000, "outputFileName", 
@@ -134,7 +134,7 @@ public class Relaxed16TaxaQuant {
 		parser.parseFile(fin);
 		trees = parser.trees;
 
-		process(wdir + "/quant16/");
+		process(wdir + "/quant16Linear/");
 		
 		System.err.println("Done");
 

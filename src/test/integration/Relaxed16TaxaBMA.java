@@ -41,7 +41,7 @@ public class Relaxed16TaxaBMA {
 		Double [] freqParameter3 = trace.getTrace("freqParameter.3");
 		Double [] freqParameter4 = trace.getTrace("freqParameter.4");
 		Double [] s = trace.getTrace("ucldStdev");
-		Double [] index = trace.getTrace("index");
+		Double [] index = trace.getTrace("clockModelIindex");
 		
 		Double [][] quantilesX = new Double[30][];
 		for (int i = 0; i < 30; i++) {
@@ -90,27 +90,32 @@ public class Relaxed16TaxaBMA {
 		
 		IntegerParameter index_ = new IntegerParameter(((int)(double)index[i]) + "");
 		
+//		OneParameterMeanOneDistribution pdistr1 = new OneParameterMeanOneDistribution();
+//		pdistr1.initByName("mode","weibull", "sigma", s[i]+"");
+//		OneParameterMeanOneDistribution pdistr2 = new OneParameterMeanOneDistribution();
+//		pdistr2.initByName("mode","gamma", "sigma", s[i]+"");
+//		OneParameterMeanOneDistribution pdistr3 = new OneParameterMeanOneDistribution();
+//		pdistr3.initByName("mode","invgamma", "sigma", s[i]+"");
+//		OneParameterMeanOneDistribution pdistr4 = new OneParameterMeanOneDistribution();
+//		pdistr4.initByName("mode","lognormal", "sigma", s[i]+"");
+
 		OneParameterMeanOneDistribution pdistr1 = new OneParameterMeanOneDistribution();
-		pdistr1.initByName("mode","weibull", "sigma", s[i]+"");
+		pdistr1.initByName("mode","lognormal", "sigma", s[i]+"");
 		OneParameterMeanOneDistribution pdistr2 = new OneParameterMeanOneDistribution();
-		pdistr2.initByName("mode","gamma", "sigma", s[i]+"");
-		OneParameterMeanOneDistribution pdistr3 = new OneParameterMeanOneDistribution();
-		pdistr3.initByName("mode","invgamma", "sigma", s[i]+"");
-		OneParameterMeanOneDistribution pdistr4 = new OneParameterMeanOneDistribution();
-		pdistr4.initByName("mode","lognormal", "sigma", s[i]+"");
+		pdistr2.initByName("mode","exp", "sigma", s[i]+"");
 		
 		IndexedPieceWiseLinearDistribution distr = new IndexedPieceWiseLinearDistribution();
 		distr.initByName("index", index_, 
 				"paramdistr", pdistr1,
-				"paramdistr", pdistr2,
-				"paramdistr", pdistr3,
-				"paramdistr", pdistr4
+				"paramdistr", pdistr2//,
+//				"paramdistr", pdistr3,
+//				"paramdistr", pdistr4
 				);		
 		
 		RealParameter  rateQuantiles = new beast.core.parameter.RealParameter("0.5");
 		
 		UCRelaxedClockModel clockmodel = new beast.evolution.branchratemodel.UCRelaxedClockModel();
-		clockmodel.initByName("distr", distr, "rateQuantiles", rateQuantiles, "tree", tree, "numberOfDiscreteRates", 100);
+		clockmodel.initByName("distr", distr, "rateQuantiles", rateQuantiles, "tree", tree);
 
 		// set quantile values, randomly initialised by clockmodel, so need to be set after UCRelaxedClockModel is initialised
 		for (int j = 0; j < 30; j++) {
@@ -136,7 +141,7 @@ public class Relaxed16TaxaBMA {
 
 
 	static List<Tree> trees;
-	static String wdir = "/Users/remco/workspace/ConstantDistanceOperator/validation/quantiles";
+	static String wdir = "/Users/remco/workspace/ConstantDistanceOperator/validation/quantiles/bma2";
 
 			public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException, XMLParserException {
 		
