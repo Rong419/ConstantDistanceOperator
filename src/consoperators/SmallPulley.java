@@ -5,9 +5,11 @@ import beast.core.Input;
 import beast.core.Operator;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.BranchRateModel;
+import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.evolution.tree.Tree;
 import beast.math.distributions.LogNormalDistributionModel;
 import beast.math.distributions.ParametricDistribution;
+import beast.math.distributions.PiecewiseLinearDistribution;
 import beast.math.distributions.Uniform;
 import beast.util.Randomizer;
 import beast.evolution.tree.Node;
@@ -22,53 +24,68 @@ public class SmallPulley extends TreeOperator {
     final public  Input<Double> dwindowSizeInput =
             new Input<>("dwindowSize", "the size of the window in Big Pulley");
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
+    final public Input<RealParameter> quantileInput = new Input<>("quantiles", "the quantiles of each branch rate.", Input.Validate.XOR,rateInput);
+    final public Input<UCRelaxedClockModel> clockModelInput = new Input<>("clockModel", "relaxed clock model used to deal with quantiles", Input.Validate.REQUIRED);
 
 
     private double dwindowSize;
     private RealParameter rates;
+    private RealParameter quantiles;
+    private enum rateMode {
+        quantiles,
+        rates
+    }
+    private rateMode mode = rateMode.rates;
 
 
     @Override
     public void initAndValidate() {
         dwindowSize = dwindowSizeInput.get();
-        rates = rateInput.get();
+        if (rateInput.get() == null) {
+            quantiles = quantileInput.get();
+            mode = rateMode.quantiles;
+        } else {
+            rates = rateInput.get();
+            mode = rateMode.rates;
+        }
 
     }
 
     @Override
     public double proposal() {
         final Tree tree = treeInput.get(this);
+        ParametricDistribution rateDistribution = clockModelInput.get().rateDistInput.get();
         int branchCount = tree.getNodeCount() - 1; //the number of branches of the tree
-        //original rates
-        double r_j;
-        double r_k;
 
-        //proposed rates
-        double r_j_;
-        double r_k_;
+        // original rates
+        double r_j; double r_k;
 
-        //the chosen node to work on
-        Node node;
+        // the original node time
+        double t_x, t_j, t_k;
 
-        //the original node time
-        double t_x;
-        double t_j;
-        double t_k;
+        // the original quantiles
+        double q_j = 0.5; double q_k = 0.5;
+
+        // the proposed quantiles
+        double q_j_ = 0.5; double q_k_ = 0.5;
+
+        double hastingsRatio = 0.0;
 
         // Step1: get the root of the tree
-        node = tree.getRoot();
+        Node node = tree.getRoot();
         // root time
         t_x = node.getHeight();//get the time of this node
 
+        // Step2: access to the child nodes of the root
         // son
-        Node son = node.getChild(0);//get the left child of this node, i.e. son
-        t_j = son.getHeight();//node time of son
+        Node son = node.getChild(0); // get the left child of this node, i.e. son
+        t_j = son.getHeight(); // node time of son
 
         // daughter
-        Node daughter = node.getChild(1);//get the right child of this node, i.e. daughter
-        t_k = daughter.getHeight();//node time of daughter
+        Node daughter = node.getChild(1); // get the right child of this node, i.e. daughter
+        t_k = daughter.getHeight(); // node time of daughter
 
-        int sonNr = son.getNr();//node number of son
+        int sonNr = son.getNr(); // node number of son
         if (sonNr == branchCount) {
             sonNr = son.getTree().getRoot().getNr();
         }
@@ -78,46 +95,132 @@ public class SmallPulley extends TreeOperator {
             dauNr = daughter.getTree().getRoot().getNr();
         }
 
-        // get the rates on branches linked to root
-        r_j = rates.getValues()[sonNr];
-        r_k = rates.getValues()[dauNr];
-        //d3: the distance to be proposed
-        //distance on the branch above son
-        double d = r_j * (t_x - t_j);
-        //D = d3 + d4
-        //d4: distance on the branch above daughter
-        double D = r_k * (t_x - t_k) + d;
+        // get the rates on branches above son and daughter
+        switch (mode) {
+            case rates: {
+                r_j = rates.getValues()[sonNr]; // rate of branch above son
+                r_k = rates.getValues()[dauNr]; // rate of branch above daughter
+                break;
+            }
 
-        //Step2: propose new genetic distance
-        double b = Randomizer.uniform(-dwindowSize, dwindowSize);
-        double d_ = d + b;
-        if (d_ <= 0.0 || d_ >= D) {
-        return Double.NEGATIVE_INFINITY;
+            case quantiles: {
+                q_j = quantiles.getValues()[sonNr];
+                q_k = quantiles.getValues()[dauNr];
+                try {
+                    r_j = rateDistribution.inverseCumulativeProbability(q_j);
+                    r_k = rateDistribution.inverseCumulativeProbability(q_k);
+                } catch (MathException e) {
+                    e.printStackTrace();
+                    return Double.NEGATIVE_INFINITY;
+                }
+                break;
+            }
+
+            default: {
+                return Double.NEGATIVE_INFINITY;
+            }
         }
 
-        //Step 3: make changes on the rates
-        r_j_ = d_ / (t_x - t_j);
-        r_k_ = (D - d_) / (t_x - t_k);
+        // d: the distance to be proposed
+        // i.e. distance on the branch above son
+        double d = r_j * (t_x - t_j);
+        // D: total distances of branches above son and daughter
+        double D = r_k * (t_x - t_k) + d;
+
+        // Step3: propose new genetic distance
+        double b = Randomizer.uniform(-dwindowSize, dwindowSize);
+        double d_ = d + b;
+        if (d_ == 0.0 || d_ == D) {
+        return Double.NEGATIVE_INFINITY;
+        }
+        // reflect the proposed distance
+        double err; double n; double r;
+        if (d_ > D) {
+            err = d_ - D;
+            n = Math.floor(err / D);
+            r = err - n * D;
+            if (n % 2 == 0) {
+                d_ = D - r;
+            } else {
+                d_ = r;
+            }
+        } else if (d_ < 0.0) {
+            err = - d_;
+            n = Math.floor(err / D);
+            r = err - n * D;
+            if (n % 2 == 0) {
+                d_ = r;
+            } else {
+                d_ = - r;
+            }
+        }
+
+        //Step 3: propose new rates
+        double r_j_ = d_ / (t_x - t_j);
+        double r_k_ = (D - d_) / (t_x - t_k);
 
         //Step 4: set the proposed new rates
-        rates.setValue(sonNr, r_j_);
-        rates.setValue(dauNr, r_k_);
+        switch (mode) {
+            case rates: {
+                // set rates directly
+                rates.setValue(sonNr, r_j_);
+                rates.setValue(dauNr, r_k_);
+                break;
+            }
+
+            case quantiles: {
+                try {
+                    // new quantiles of proposed rates
+                    q_j_ = rateDistribution.cumulativeProbability(r_j_);
+                    q_k_ = rateDistribution.cumulativeProbability(r_k_);
+
+                    // set quantiles
+                    quantiles.setValue(sonNr, q_j_);
+                    quantiles.setValue(dauNr, q_k_);
+
+                } catch (MathException e) {
+                    e.printStackTrace();
+                    return Double.NEGATIVE_INFINITY;
+                }
+                break;
+            }
+
+            default: {
+
+            }
+        }
 
         //Step5: calculate the Hastings ratio
-        /*
-         r_j_ = d_ / (t_x - t_j)
-              = [r_j * (t_x - t_j) + b ] / (t_x - t_j)
-              = r_j + [b  / (t_x - t_j)]
-         *
-         r_k_ = (D - d_) / (t_x - t_k)
-              = {[r_k * (t_x - t_k) + d] - (d + b)} / (t_x - t_k)
-              = r_k - [b  / (t_x - t_k)]
-         *
-         J = [1 0; 0 1]
-         Det(J) = 1
-         */
+        switch (mode) {
+            case rates: {
+                break;
+            }
 
-        return  0.0;
+            case quantiles: {
+                if (rateDistribution instanceof LogNormalDistributionModel) {
+                    hastingsRatio = ConsOperatorUtils.getHRForLN(r_j_, q_j, rateDistribution)
+                            + ConsOperatorUtils.getHRForLN(r_k_, q_k, rateDistribution);
+                }
+
+                else if (rateDistribution instanceof PiecewiseLinearDistribution) {
+                    hastingsRatio = ConsOperatorUtils.getHRForPieceWise(r_j_, q_j, q_j_, rateDistribution)
+                            + ConsOperatorUtils.getHRForPieceWise(r_k_, q_k, q_k_, rateDistribution);
+                }
+
+                else {
+                    hastingsRatio = ConsOperatorUtils.getHRUseNumericApproximation(r_j_, q_j, rateDistribution)
+                            + ConsOperatorUtils.getHRUseNumericApproximation(r_k_, q_k, rateDistribution);
+                }
+
+                break;
+            }
+
+            default: {
+
+            }
+
+        }
+        return hastingsRatio;
     }
 
 
