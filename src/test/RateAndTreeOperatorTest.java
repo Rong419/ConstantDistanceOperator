@@ -2,6 +2,7 @@ package test;
 
 import java.text.DecimalFormat;
 
+import consoperators.ConsOperatorUtils;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.*;
 import org.apache.commons.math3.util.FastMath;
@@ -61,7 +62,7 @@ public class RateAndTreeOperatorTest extends TestCase {
         	quantiles.setValue(0, q);
         	double rate = clockModel.getRateForBranch(node);
         
-        	double HR = InConstantDistanceOperator.calculateHastingsRatio(rate, q, stdev0);
+        	double HR = ConsOperatorUtils.calculateHastingsRatio(rate, q, stdev0);
         	assertEquals(0, HR, 1e-9);
         	q = q * 2;
         }
