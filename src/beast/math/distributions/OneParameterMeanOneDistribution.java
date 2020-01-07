@@ -17,7 +17,7 @@ import beast.math.distributions.ParametricDistribution;
 public class OneParameterMeanOneDistribution extends ParametricDistribution {
     final public Input<RealParameter> shapeInput = new Input<>("sigma", "variance parameter that gouverns the distribution");
     
-    enum Mode {weibull, gamma, invgamma, lognormal, exp};
+    enum Mode {weibull, gamma, invgamma, lognormal, exp, strict};
     final public Input<Mode> modeInput = new Input<>("mode", "which distribution to use. One of " + Arrays.toString(Mode.values()), 
     		Mode.weibull, Mode.values());
 
@@ -44,6 +44,9 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
 			break;
 		case lognormal:
 			dist = new LogNormalImpl(1.0, 1.0);
+			break;
+		case strict:
+			dist = new DeltaDistrImpl();
 			break;
 		}
 		
@@ -115,7 +118,40 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
 		return dist.inverseCumulativeProbability(p);
 	}
 	
-	
+		
+    public class DeltaDistrImpl implements ContinuousDistribution {
+		@Override
+		public double cumulativeProbability(double x) throws MathException {
+			if (x < 1)
+				return 0;
+			return 1;
+		}
+
+		@Override
+		public double cumulativeProbability(double x0, double x1) throws MathException {
+			return cumulativeProbability(x1) - cumulativeProbability(x0);
+		}
+
+		@Override
+		public double inverseCumulativeProbability(double p) throws MathException {
+			return 1;
+		}
+
+		@Override
+		public double density(double x) {
+			if (x == 1) {
+				return 1;
+			}		
+			return 0;
+		}
+
+		@Override
+		public double logDensity(double x) {
+			return Math.log(density(x));
+		}
+    	
+    }
+    
     public class LogNormalImpl implements ContinuousDistribution {
         double m_fMean;
         double m_fStdDev;

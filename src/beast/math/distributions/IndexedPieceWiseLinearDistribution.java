@@ -61,6 +61,7 @@ public class IndexedPieceWiseLinearDistribution extends PiecewiseLinearDistribut
 		}
     }
 
+    @Override
     protected ContinuousDistribution getUnderlyingDistr() {
     	return distrs.get(index.getValue());
 	}

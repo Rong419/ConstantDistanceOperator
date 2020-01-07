@@ -233,7 +233,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	
     	if (distrInput.get() != null && distrInput.get().isDirtyCalculation()) {
     		Arrays.fill(rates, 0.0);
-    		underlyingDistr = (ContinuousDistribution) distrInput.get().getDistribution();
+    		underlyingDistr = getUnderlyingDistr();
     		return true;
     	}
     	
