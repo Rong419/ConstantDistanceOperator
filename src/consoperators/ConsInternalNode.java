@@ -165,7 +165,18 @@ public class ConsInternalNode extends TreeOperator {
                 double mu2 = t_x - (branchLength * twindowSize);
                 double sigma = branchLength * 0.5 * twindowSize;
 
-                t_x_ = 0.5 * (sigma * Randomizer.nextGaussian() + mu1) + 0.5 * (sigma * Randomizer.nextGaussian() + mu2);
+                // index of going up or going down
+                double bactrianIndex = Randomizer.uniform(0, 1);
+
+                if (bactrianIndex <= 0.5 ) {
+                    // half of probability to go up
+                    t_x_ = sigma * Randomizer.nextGaussian() + mu1;
+                } else {
+                    // half of probability to go down
+                    t_x_ = sigma * Randomizer.nextGaussian() + mu2;
+                }
+
+                //t_x_ = 0.5 * (sigma * Randomizer.nextGaussian() + mu1) + 0.5 * (sigma * Randomizer.nextGaussian() + mu2);
             }
             break;
 
@@ -194,8 +205,8 @@ public class ConsInternalNode extends TreeOperator {
                 hastingsRatio = Math.log(backward / forward);
             }
         }
-        //reject the proposal if exceeds the boundary
 
+        //reject the proposal if meets the boundary
         if (t_x_ == lower || t_x_ == upper) {
             return Double.NEGATIVE_INFINITY;
         }
