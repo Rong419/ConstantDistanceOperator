@@ -1,5 +1,8 @@
 #IntelliJ files
 /.DS_Store
+/validation/quantiles/speed/speed.synctex.gz
+/validation/quantiles/speed/speed.pdf
+/validation/quantiles/speed/speed.aux
 /validation/efficiency/simulated/data/xml/
 /validation/sampleprior/internal_nodes/xml/
 /validation/efficiency/simulated/xmls/xml/
