@@ -189,6 +189,16 @@ public class InConstantDistanceOperator extends TreeOperator {
 
             case quantiles: {
                 try {
+                    // reject rates if exceeding piecewise approximation's range
+                    if (rateDistribution instanceof PiecewiseLinearDistribution) {
+                        PiecewiseLinearDistribution piecewise = (PiecewiseLinearDistribution) rateDistribution;
+                        double rmin = piecewise.getRangeMin();
+                        double rmax = piecewise.getRangeMax();
+                        if (r_x_ < rmin || r_x_ > rmax) return Double.NEGATIVE_INFINITY;
+                        if (r_j_ < rmin || r_j_ > rmax) return Double.NEGATIVE_INFINITY;
+                        if (r_k_ < rmin || r_k_ > rmax) return Double.NEGATIVE_INFINITY;
+                    }
+
                     // new quantiles of proposed rates
                     q_x_ = rateDistribution.cumulativeProbability(r_x_);
                     q_j_ = rateDistribution.cumulativeProbability(r_j_);
