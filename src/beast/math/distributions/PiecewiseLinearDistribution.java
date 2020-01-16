@@ -26,6 +26,8 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     
     protected double[] rates; //the output rates
     protected double[] storedRates; //
+    
+    private double limit_0 = 0.1; // limit_0 / (numberOfDiscreteRates-1) is the minimum quantile
 
 
     public PiecewiseLinearDistribution() {}
@@ -98,7 +100,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	        	if (i > 0) {
     	        		rates[i] = underlyingDistr.inverseCumulativeProbability(((double)i) / (rates.length-1));
     	        	} else {
-    	        		rates[i] = underlyingDistr.inverseCumulativeProbability(0.1 / (rates.length-1));
+    	        		rates[i] = underlyingDistr.inverseCumulativeProbability(limit_0 / (rates.length-1));
     	        	}
     	        } catch (MathException e) {
     	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -109,7 +111,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	        	if (i < rates.length - 2) {
     	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability(((double)(i + 1)) / (rates.length-1));
     	        	} else {
-    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 1 - 0.1) / (rates.length-1));
+    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 1 - limit_0) / (rates.length-1));
     	        	}
     	        } catch (MathException e) {
     	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -149,7 +151,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 		        	if (i > 0) {
 		        		rates[i] = underlyingDistr.inverseCumulativeProbability(((double)i) / (rates.length - 1));
 		        	} else {
-		        		rates[i] = underlyingDistr.inverseCumulativeProbability(0.1 / (rates.length - 1));
+		        		rates[i] = underlyingDistr.inverseCumulativeProbability(limit_0 / (rates.length - 1));
 		        	}
 		        } catch (MathException e) {
 		            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -160,7 +162,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 		        	if (i < rates.length - 2) {
 		        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability(((double)(i + 1)) / (rates.length - 1));
 		        	} else {
-		        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 1 - 0.1) / (rates.length - 1));
+		        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 1 - limit_0) / (rates.length - 1));
 		        	}
 		        } catch (MathException e) {
 		            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -177,7 +179,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	    	        	if (i > 0) {
 	    	        		rates[i] = underlyingDistr.inverseCumulativeProbability(((double)i) / (rates.length - 1));
 	    	        	} else {
-	    	        		rates[i] = underlyingDistr.inverseCumulativeProbability(0.1 / (rates.length - 1));
+	    	        		rates[i] = underlyingDistr.inverseCumulativeProbability(limit_0 / (rates.length - 1));
 	    	        	}
 	    	        } catch (MathException e) {
 	    	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -191,7 +193,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	    	        	if (i < rates.length - 2) {
 	    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability(((double)(i + 1)) / (rates.length - 1));
 	    	        	} else {
-	    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 0.1) / (rates.length - 1));
+	    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - limit_0) / (rates.length - 1));
 	    	        	}
 	    	        } catch (MathException e) {
 	    	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -254,7 +256,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	        	if (i > 0) {
 	        		rates[i] = underlyingDistr.inverseCumulativeProbability(((double)i) /(rates.length - 1));
 	        	} else {
-	        		rates[i] = underlyingDistr.inverseCumulativeProbability(0.1 / (rates.length - 1));
+	        		rates[i] = underlyingDistr.inverseCumulativeProbability(limit_0 / (rates.length - 1));
 	        	}
 	        } catch (MathException e) {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -265,7 +267,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	        	if (i < rates.length - 2) {
 	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability(((double)(i + 1)) / (rates.length - 1));
 	        	} else {
-	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 1 - 0.1) / (rates.length - 1));
+	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 1 - limit_0) / (rates.length - 1));
 	        	}
 	        } catch (MathException e) {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -295,4 +297,35 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
         }
         return 0;
     }
+    
+    
+    
+    /**
+     * @return The minimum rate supported by the function 
+     * @throws MathException 
+     */
+    public double getRangeMin() throws MathException {
+    	if (rates[0] == 0.0) {
+    		rates[0] = underlyingDistr.inverseCumulativeProbability(limit_0 / (rates.length - 1));
+    	}
+    	return rates[0];
+    	//return getDerivativeAtQuantile(limit_0 / (rates.length - 1));
+    }
+    
+    
+    /**
+     * @return The maximum rate supported by the function 
+     * @throws MathException 
+     */
+    public double getRangeMax() throws MathException {
+    	if (rates[rates.length-1] == 0.0) {
+    		rates[rates.length-1] = underlyingDistr.inverseCumulativeProbability((rates.length - limit_0 - 1) / (rates.length - 1));
+    	}
+    	return rates[rates.length-1];
+    	//return getDerivativeAtQuantile((rates.length - 1 - limit_0) / (rates.length - 1));
+    }
+    
+    
+    
+    
  }

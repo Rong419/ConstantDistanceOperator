@@ -17,3 +17,4 @@ optimization/primates_analysis/prior_optimize/template/xml/
 .DS_Store
 /release
 /build
+/bin/
