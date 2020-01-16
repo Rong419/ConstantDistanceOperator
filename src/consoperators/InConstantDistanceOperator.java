@@ -224,29 +224,30 @@ public class InConstantDistanceOperator extends TreeOperator {
 
 
         // Step4: calculate the Hastings ratio
+        double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
+        double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
+        hastingsRatio = Math.log(nu / de);
         switch (mode) {
             case rates: {
-                double nu =(upper - t_x) * (t_x - t_j) * (t_x - t_k) ;
-                double de = (upper - t_x_) * (t_x_ - t_j) * (t_x_ - t_k);
-                hastingsRatio = Math.log(nu / de);
+
                 break;
             }
 
             case quantiles: {
                 if (rateDistribution instanceof LogNormalDistributionModel) {
-                    hastingsRatio = ConsOperatorUtils.getHRForLN(r_x_, q_x, rateDistribution)
+                    hastingsRatio += ConsOperatorUtils.getHRForLN(r_x_, q_x, rateDistribution)
                                   + ConsOperatorUtils.getHRForLN(r_j_, q_j, rateDistribution)
                                   + ConsOperatorUtils.getHRForLN(r_k_, q_k, rateDistribution);
                 }
 
                 else if (rateDistribution instanceof PiecewiseLinearDistribution) {
-                    hastingsRatio = ConsOperatorUtils.getHRForPieceWise(r_x_, q_x, q_x_, rateDistribution)
+                    hastingsRatio += ConsOperatorUtils.getHRForPieceWise(r_x_, q_x, q_x_, rateDistribution)
                                   + ConsOperatorUtils.getHRForPieceWise(r_j_, q_j, q_j_, rateDistribution)
                                   + ConsOperatorUtils.getHRForPieceWise(r_k_, q_k, q_k_, rateDistribution);
                 }
 
                 else {
-                    hastingsRatio = ConsOperatorUtils.getHRUseNumericApproximation(r_x_, q_x, rateDistribution)
+                    hastingsRatio += ConsOperatorUtils.getHRUseNumericApproximation(r_x_, q_x, rateDistribution)
                                   + ConsOperatorUtils.getHRUseNumericApproximation(r_j_, q_j, rateDistribution)
                                   + ConsOperatorUtils.getHRUseNumericApproximation(r_k_, q_k, rateDistribution);
                 }
