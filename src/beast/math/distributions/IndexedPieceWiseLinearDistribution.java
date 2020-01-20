@@ -55,6 +55,7 @@ public class IndexedPieceWiseLinearDistribution extends PiecewiseLinearDistribut
 		index = indexInput.get();
 		index.setLower(0);
 		index.setUpper(distrs.size()-1);
+		underlyingDistr = distrsInput.get().get(index.getValue());
 		
 		if (offsetInput.get() != 0.0) {
 			throw new IllegalArgumentException("Offset should be set on inputs of this IndexedDistribution, not on the IndexedDistribution itself");
