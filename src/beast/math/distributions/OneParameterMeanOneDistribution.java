@@ -102,6 +102,8 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
 			double m =  - (0.5 * s * s);
 			((LogNormalImpl)dist).setMeanAndStdDev(m, s);
 			break;
+		case strict:
+			break;
 		}
 	}
 
@@ -274,26 +276,26 @@ public class OneParameterMeanOneDistribution extends ParametricDistribution {
 
 	@Override
 	protected double getMeanWithoutOffset() {
-		switch (modeInput.get()) {
-		case weibull:
-			double shape = ((WeibullDistributionImpl)dist).getShape();
-			double scale = ((WeibullDistributionImpl)dist).getScale();
-			return scale * org.apache.commons.math3.special.Gamma.gamma(1 + 1.0 / shape);
-		case gamma:
-			double alpha = ((GammaDistributionImpl)dist).getAlpha();
-			double beta = ((GammaDistributionImpl)dist).getBeta();
-			return alpha * beta;
-		case invgamma:
-			double a = ((InverseGammaDistributionImpl)dist).alpha;
-			double b = ((InverseGammaDistributionImpl)dist).beta;
-			return b / (a-1);
-		case lognormal:
-			double m = ((LogNormalImpl)dist).m_fMean;
-			double s = ((LogNormalImpl)dist).m_fStdDev;
-    		return Math.exp(m + s * s/2.0);
-		}
-		return 0;
+		// OneParameterMeanOneDistribution should have mean = 1...
+		return 1;
 	}
 	
+	@Override
+	protected void restore() {
+		requiresRecalculation(); // refreshes for any distribution not exp or strict
+	}
+
+	
+	@Override
+	protected boolean requiresRecalculation() {
+		switch (modeInput.get()) {
+		case exp:
+		case strict:
+			return false;
+		default:
+			refresh();
+			return true;
+		}
+	}
 }
 
