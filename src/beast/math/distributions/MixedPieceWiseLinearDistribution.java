@@ -204,7 +204,6 @@ public class MixedPieceWiseLinearDistribution extends ParametricDistribution {
 	    			cumProb += allweights[j3]/n;
 	    			j3++;
 		    		if (j3 == allrates.length) {
-		    			j3--;
 		    			break;
 		    		}
 	    		}
@@ -213,6 +212,9 @@ public class MixedPieceWiseLinearDistribution extends ParametricDistribution {
 	    			j3--;
 	    		}
 	    		rates[i] = allrates[j3-1] + (allrates[j3] - allrates[j3-1]) * (target - p)/(cumProb - p);
+	    		if (rates[i] < 0) {
+	    			System.out.println("Panick: negative rate " + rates[i]);
+	    		}
 	    	}
 	    	rates[rates.length - 1] = allrates[allrates.length - 1];
 	    	
