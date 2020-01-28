@@ -101,14 +101,17 @@
     </distribution>
 
 
-    <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
-              twindowSize="0.02"  tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="6.0"/>
+    <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator" twindowSize="0.02"  tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="6.0" clockModel="@FastRelaxedClock.c:dna">
+	<kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance"
-              twindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
+    <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance" twindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5" clockModel="@FastRelaxedClock.c:dna">
+	<kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley"
-              dwindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
+    <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley" dwindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5" clockModel="@FastRelaxedClock.c:dna">
+	<kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
     <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"
               twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>

@@ -14,6 +14,8 @@ import beast.math.distributions.Uniform;
 import beast.util.Randomizer;
 import beast.evolution.tree.Node;
 import org.apache.commons.math.MathException;
+
+import beast.evolution.operators.KernelDistribution;
 import beast.evolution.operators.TreeOperator;
 
 import java.text.DecimalFormat;
@@ -26,7 +28,11 @@ public class SmallPulley extends TreeOperator {
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
     final public Input<RealParameter> quantileInput = new Input<>("quantiles", "the quantiles of each branch rate.", Input.Validate.XOR,rateInput);
     final public Input<UCRelaxedClockModel> clockModelInput = new Input<>("clockModel", "relaxed clock model used to deal with quantiles", Input.Validate.REQUIRED);
-
+    final public Input<KernelDistribution> proposalKernelInput = new Input<>("kernelDistribution", "Proposal kernel for a random walk on the genetic distances.");
+	
+    
+    // Proposal kernel
+    private KernelDistribution kernel;
 
     private double dwindowSize;
     private RealParameter rates;
@@ -48,7 +54,7 @@ public class SmallPulley extends TreeOperator {
             rates = rateInput.get();
             mode = rateMode.rates;
         }
-
+        kernel = proposalKernelInput.get();
     }
 
     @Override
@@ -128,7 +134,9 @@ public class SmallPulley extends TreeOperator {
         double D = r_k * (t_x - t_k) + d;
 
         // Step3: propose new genetic distance
-        double b = Randomizer.uniform(-dwindowSize, dwindowSize);
+        double b;
+        if (kernel != null) b = kernel.getRandomDelta(dwindowSize);
+        else b = Randomizer.uniform(-dwindowSize, dwindowSize);
         double d_ = d + b;
         if (d_ == 0.0 || d_ == D) {
         return Double.NEGATIVE_INFINITY;

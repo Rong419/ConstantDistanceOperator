@@ -4,6 +4,7 @@ import beast.core.Description;
 import beast.core.Input;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.UCRelaxedClockModel;
+import beast.evolution.operators.KernelDistribution;
 import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
@@ -22,7 +23,13 @@ public class InConstantDistanceOperator extends TreeOperator {
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
     final public Input<RealParameter> quantileInput = new Input<>("quantiles", "the quantiles of each branch rate.", Input.Validate.XOR,rateInput);
     final public Input<UCRelaxedClockModel> clockModelInput = new Input<>("clockModel", "relaxed clock model used to deal with quantiles", Input.Validate.REQUIRED);
-
+    final public Input<KernelDistribution> proposalKernelInput = new Input<>("kernelDistribution", "Proposal kernel for a random walk on the internal node height.");
+	
+    
+    
+    // Proposal kernel
+    private KernelDistribution kernel;
+    
     private double twindowSize;
     private RealParameter rates;
     private RealParameter quantiles;
@@ -42,6 +49,7 @@ public class InConstantDistanceOperator extends TreeOperator {
             rates = rateInput.get();
             mode = rateMode.rates;
         }
+        kernel = proposalKernelInput.get();
     }
 
     @Override
@@ -133,7 +141,9 @@ public class InConstantDistanceOperator extends TreeOperator {
 
 
        // Step3: to propose a new node time for this node
-       double a = Randomizer.uniform(-twindowSize, twindowSize);
+       double a;
+       if (kernel != null) a = kernel.getRandomDelta(twindowSize);
+       else a = Randomizer.uniform(-twindowSize, twindowSize);
        double t_x_ = t_x + a;
 
        // deal with the boundary cases
