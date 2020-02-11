@@ -18,6 +18,11 @@ import beast.core.parameter.RealParameter;
 public class PiecewiseLinearDistribution extends ParametricDistribution {
     final public Input<ParametricDistribution> distrInput = new Input<>("distr", "Underlying parametric distribution that is approximated.", Validate.REQUIRED);
     final public Input<Integer> numberOfDiscreteRates = new Input<>("bins", "number of bins used to approximate the distribution piecewise linearly. (default 100)", 100);
+    
+    final public Input<Double> limitInput = new Input<>("limit", "fraction of bins at end of distribution to be cut off -- should be between 0 and 1", 0.1);
+    final public Input<Boolean> cutOffEndInput = new Input<>("cutOffEnd", "approximate values below for quantiles close to 0 and 1 with rate at limit/bins and (1-limit/bins) respectively."
+    		+ "If false, for quantiles below limit/bins and above (1-limit/bins) the inverseCumulativeProbability methods of the underlying parametric distribution is called"
+    		+ "(which is slower, but should not happen very often).", true);
 
     LinearPiecewiseImpl dist = new LinearPiecewiseImpl();
     ContinuousDistribution underlyingDistr = new NormalDistributionImpl();
@@ -28,6 +33,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     protected double[] storedRates; //
     
     private double limit_0 = 0.1; // limit_0 / (numberOfDiscreteRates-1) is the minimum quantile
+    private boolean cutOffEnd;
 
 
     public PiecewiseLinearDistribution() {}
@@ -51,6 +57,11 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	} else {
     		throw new IllegalArgumentException("Expected parametric distribution that is continuous");
     	}
+    	limit_0 = limitInput.get();
+    	if (limit_0 <= 0 || limit_0 >= 1) {
+    		throw new IllegalArgumentException("limit should be between 0 and 1");
+    	}
+    	cutOffEnd = cutOffEndInput.get();
         refresh();
     }
 
@@ -74,6 +85,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 
         @Override
         public double cumulativeProbability(double x) throws MathException {
+        	// TODO: implement !cutOffEnd
         	// Return exact cdf using piecewise linear approximation
             int i = getIntervalFor(x);
             if (i < rates.length-1) {
@@ -91,6 +103,9 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 
         @Override
         public double inverseCumulativeProbability(double q) throws MathException {
+        	if (!cutOffEnd && (q < limit_0 || q > 1-limit_0)) {
+        		return underlyingDistr.inverseCumulativeProbability(q);
+        	}
             double v = q * (rates.length - 1);
             int i = (int) v;
             
@@ -118,6 +133,13 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	        }
             }
             
+            if (cutOffEnd) {
+            	if (i == 0) {
+            		v = (v-limit_0) / (1-limit_0);
+            	} else if (i == rates.length-1) {
+            		v = i + (v - i) / (1-limit_0);
+            	}
+            }
             // return piecewise linear approximation
             double r = rates[i];
             if (i < rates.length - 1) {
@@ -248,7 +270,9 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	 * @return derivative of rate distribution at quantile q
 	 */
 	public double getDerivativeAtQuantile(double q) {
-        // use cached rates
+    	// TODO: implement !cutOffEnd
+
+		// use cached rates
         double v = q * (rates.length - 1);
         int i = (int) v;
         if (rates[i] == 0.0) {
@@ -305,6 +329,9 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
      * @throws MathException 
      */
     public double getRangeMin() throws MathException {
+    	if (!cutOffEnd) {
+    		return underlyingDistr.inverseCumulativeProbability(0.0);
+    	}
     	if (rates[0] == 0.0) {
     		rates[0] = underlyingDistr.inverseCumulativeProbability(limit_0 / (rates.length - 1));
     	}
@@ -318,6 +345,9 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
      * @throws MathException 
      */
     public double getRangeMax() throws MathException {
+    	if (!cutOffEnd) {
+    		return underlyingDistr.inverseCumulativeProbability(1.0);
+    	}
     	if (rates[rates.length-1] == 0.0) {
     		rates[rates.length-1] = underlyingDistr.inverseCumulativeProbability((rates.length - limit_0 - 1) / (rates.length - 1));
     	}
