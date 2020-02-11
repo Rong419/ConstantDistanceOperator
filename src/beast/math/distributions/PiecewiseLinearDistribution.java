@@ -33,6 +33,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     protected double[] storedRates; //
     
     private double limit_0 = 0.1; // limit_0 / (numberOfDiscreteRates-1) is the minimum quantile
+    private double limitLow, limitUp;
     private boolean cutOffEnd;
 
 
@@ -61,6 +62,8 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	if (limit_0 <= 0 || limit_0 >= 1) {
     		throw new IllegalArgumentException("limit should be between 0 and 1");
     	}
+    	limitLow = limit_0 / dim;
+    	limitUp = 1.0 - limit_0 / dim;
     	cutOffEnd = cutOffEndInput.get();
         refresh();
     }
@@ -103,7 +106,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 
         @Override
         public double inverseCumulativeProbability(double q) throws MathException {
-        	if (!cutOffEnd && (q < limit_0 || q > 1-limit_0)) {
+        	if (!cutOffEnd && (q < limitLow  || q > limitUp)) {
         		return underlyingDistr.inverseCumulativeProbability(q);
         	}
             double v = q * (rates.length - 1);
