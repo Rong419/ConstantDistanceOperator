@@ -88,9 +88,25 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 
         @Override
         public double cumulativeProbability(double x) throws MathException {
-        	// TODO: implement !cutOffEnd
         	// Return exact cdf using piecewise linear approximation
             int i = getIntervalFor(x);
+
+            if (!cutOffEnd) {
+            	// TODO: needs testing
+            	if (i == 0) {
+            		if (x < rates[0]) {
+                		return underlyingDistr.cumulativeProbability(x);
+            		}
+                	double cdf = (limitLow + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) / (rates.length-1);
+            		return cdf;
+            	} else if (i == rates.length-1) {
+            		return underlyingDistr.cumulativeProbability(x);
+            	} else if (i == rates.length-2) {
+                	double cdf = (i + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) / (rates.length-1);
+            		return cdf;
+            	}
+            }
+            
             if (i < rates.length-1) {
             	double cdf = (i + (x - rates[i]) / (rates[i+1] - rates[i])) / (rates.length-1);
             	cdf = Math.max(0, cdf);
@@ -272,8 +288,19 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	 * @param q quantile
 	 * @return derivative of rate distribution at quantile q
 	 */
+	final static private double EPSILON = 1e-8;
 	public double getDerivativeAtQuantile(double q) {
-    	// TODO: implement !cutOffEnd
+    	if (!cutOffEnd && (q < limitLow  || q > limitUp)) {
+        	// TODO: needs testing
+			try {
+	    		double r = underlyingDistr.inverseCumulativeProbability(q);
+	    		double rPlusH = underlyingDistr.inverseCumulativeProbability(q + EPSILON);
+	    		double dR = (rPlusH - r) / EPSILON;
+	    		return dR;
+			} catch (MathException e) {
+	            throw new RuntimeException("Failed to compute inverse cumulative probability!" + e.getMessage());
+			}
+    	}
 
 		// use cached rates
         double v = q * (rates.length - 1);
@@ -300,6 +327,12 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	        }
         }
+        if (!cutOffEnd) {
+        	if (i == 0 || i == rates.length - 2) {
+            	double r = (rates[i+1] - rates[i]) / ((1.0 - limit_0)/(rates.length - 1));
+            	return r;        		
+            }
+        }
         if (i < rates.length - 1) {
         	double r = (rates[i+1] - rates[i]) / (1.0/(rates.length - 1));
         	return r;
@@ -316,6 +349,8 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     public double getDerivativeAtQuantileInverse(double r, double qNew) {
     	// TODO: verify the following is correct
     	// return 1.0 / getDerivativeAtQuantile(qNew);
+    	
+    	// TODO: implement !cutOffEnd version
     	
     	int i = dist.getIntervalFor(r, qNew);
         if (i < rates.length - 1) {
