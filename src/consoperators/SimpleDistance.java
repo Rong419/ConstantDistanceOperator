@@ -158,8 +158,8 @@ public class SimpleDistance extends TreeOperator {
                         PiecewiseLinearDistribution piecewise = (PiecewiseLinearDistribution) rateDistribution;
                         double rmin = piecewise.getRangeMin();
                         double rmax = piecewise.getRangeMax();
-                        if (r_j_ < rmin || r_j_ > rmax) return Double.NEGATIVE_INFINITY;
-                        if (r_k_ < rmin || r_k_ > rmax) return Double.NEGATIVE_INFINITY;
+                        if (r_j_ <= rmin || r_j_ >= rmax) return Double.NEGATIVE_INFINITY;
+                        if (r_k_ <= rmin || r_k_ >= rmax) return Double.NEGATIVE_INFINITY;
                     }
 
                     // new quantiles of proposed rates

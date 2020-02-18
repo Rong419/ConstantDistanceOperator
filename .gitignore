@@ -18,3 +18,5 @@ optimization/primates_analysis/prior_optimize/template/xml/
 /release
 /build
 /bin/
+.project
+.classpath
