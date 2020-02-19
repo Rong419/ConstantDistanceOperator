@@ -2,6 +2,8 @@ package consoperators;
 
 import beast.core.Description;
 import beast.core.Input;
+import beast.core.StateNode;
+import beast.core.parameter.CompoundRealParameter;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.UCRelaxedClockModel;
 import beast.evolution.operators.KernelDistribution;
@@ -14,6 +16,8 @@ import beast.math.distributions.PiecewiseLinearDistribution;
 import beast.util.Randomizer;
 import org.apache.commons.math.MathException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Description("For internal nodes: propose a new node time")
@@ -120,9 +124,9 @@ public class InConstantDistanceOperator extends TreeOperator {
            }
 
            case quantiles: {
-               q_x = quantiles.getValues()[nodeNr];
-               q_j = quantiles.getValues()[sonNr];
-               q_k = quantiles.getValues()[dauNr];
+               q_x = quantiles.getValue(nodeNr);
+               q_j = quantiles.getValue(sonNr);
+               q_k = quantiles.getValue(dauNr);
                try {
                    r_x = rateDistribution.inverseCumulativeProbability(q_x);
                    r_j = rateDistribution.inverseCumulativeProbability(q_j);
@@ -323,5 +327,26 @@ public class InConstantDistanceOperator extends TreeOperator {
     }
 
 
+    
+    @Override
+    public List<StateNode> listStateNodes() {
+    	List<StateNode> stateNodes = super.listStateNodes();
+    	boolean hasCompoundRealParameter = true;
+    	while (hasCompoundRealParameter) {
+    		hasCompoundRealParameter = false;
+        	for (int i = 0; i < stateNodes.size(); i++) {
+        		StateNode s = stateNodes.get(i);
+        		if (s instanceof CompoundRealParameter) {
+        			CompoundRealParameter c = (CompoundRealParameter) s;
+        			stateNodes.remove(i);
+        			stateNodes.addAll(c.parameterListInput.get());
+        			i--;
+        			hasCompoundRealParameter = true;
+        		}
+        	}
+    	}
+    	return stateNodes;
+    }
+    
 }
 
