@@ -117,9 +117,9 @@ public class InConstantDistanceOperator extends TreeOperator {
 
        switch (mode) {
            case rates: {
-               r_x = rates.getValues()[nodeNr]; // rate of branch above this node
-               r_j = rates.getValues()[sonNr]; // rate of branch above son
-               r_k = rates.getValues()[dauNr]; // rate of branch above daughter
+               r_x = rates.getValue(nodeNr); // rate of branch above this node
+               r_j = rates.getValue(sonNr); // rate of branch above son
+               r_k = rates.getValue(dauNr); // rate of branch above daughter
                break;
            }
 

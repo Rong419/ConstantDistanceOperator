@@ -3,6 +3,8 @@ package consoperators;
 import beast.core.Description;
 import beast.core.Input;
 import beast.core.Operator;
+import beast.core.StateNode;
+import beast.core.parameter.CompoundRealParameter;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.BranchRateModel;
 import beast.evolution.branchratemodel.UCRelaxedClockModel;
@@ -104,14 +106,14 @@ public class SmallPulley extends TreeOperator {
         // get the rates on branches above son and daughter
         switch (mode) {
             case rates: {
-                r_j = rates.getValues()[sonNr]; // rate of branch above son
-                r_k = rates.getValues()[dauNr]; // rate of branch above daughter
+                r_j = rates.getValue(sonNr); // rate of branch above son
+                r_k = rates.getValue(dauNr); // rate of branch above daughter
                 break;
             }
 
             case quantiles: {
-                q_j = quantiles.getValues()[sonNr];
-                q_k = quantiles.getValues()[dauNr];
+                q_j = quantiles.getValue(sonNr);
+                q_k = quantiles.getValue(dauNr);
                 try {
                     r_j = rateDistribution.inverseCumulativeProbability(q_j);
                     r_k = rateDistribution.inverseCumulativeProbability(q_k);
@@ -288,6 +290,30 @@ public class SmallPulley extends TreeOperator {
             return "Try setting window size to about " + formatter.format(newWindowSize);
         } else return "";
     }
+    
+    
+    @Override
+    public List<StateNode> listStateNodes() {
+    	List<StateNode> stateNodes = super.listStateNodes();
+    	boolean hasCompoundRealParameter = true;
+    	while (hasCompoundRealParameter) {
+    		hasCompoundRealParameter = false;
+        	for (int i = 0; i < stateNodes.size(); i++) {
+        		StateNode s = stateNodes.get(i);
+        		if (s instanceof CompoundRealParameter) {
+        			CompoundRealParameter c = (CompoundRealParameter) s;
+        			stateNodes.remove(i);
+        			stateNodes.addAll(c.parameterListInput.get());
+        			i--;
+        			hasCompoundRealParameter = true;
+        		}
+        	}
+    	}
+    	return stateNodes;
+    }
+    
+    
+    
 }
 
 
