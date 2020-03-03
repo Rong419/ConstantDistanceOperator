@@ -155,6 +155,9 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
             if (cutOffEnd) {
             	if (i == 0) {
             		v = (v-limit_0) / (1-limit_0);
+            		if (v < 0) {
+            			v = 0;
+            		}
             	} else if (i == rates.length-1) {
             		v = i + (v - i) / (1-limit_0);
             	}
