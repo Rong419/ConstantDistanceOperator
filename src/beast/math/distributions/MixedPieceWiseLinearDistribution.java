@@ -173,6 +173,7 @@ public class MixedPieceWiseLinearDistribution extends ParametricDistribution {
 	    	//double [] r = new double[m]; // current rate
 	    	int [] j2 = new int[m]; // index of current rate
 	    	
+	    	// find minimum rate
 	    	allrates[0] = drates[0][1];
     		for (int a = 1; a < m; a++) {
     			allrates[0] = Math.min(allrates[0], drates[a][1]);
@@ -188,7 +189,11 @@ public class MixedPieceWiseLinearDistribution extends ParametricDistribution {
 	    		}
 	    		allrates[i] = min;
 	    		for (int a = 0; a < m; a++) {
-	    			allweights[i] += weights[a] * (allrates[i] - allrates[i-1]) / (drates[a][j2[a]+1] - drates[a][j2[a]]);
+	    			if (drates[a][j2[a]+1] != drates[a][j2[a]]) {
+	    				allweights[i] += weights[a] * (allrates[i] - allrates[i-1]) / (drates[a][j2[a]+1] - drates[a][j2[a]]);
+	    			} else {
+	    				allweights[i] += weights[a];
+	    			}
 	    		}
 	    		j2[minIndex]++;
 	    	}
@@ -212,6 +217,9 @@ public class MixedPieceWiseLinearDistribution extends ParametricDistribution {
 	    			j3--;
 	    		}
 	    		rates[i] = allrates[j3-1] + (allrates[j3] - allrates[j3-1]) * (target - p)/(cumProb - p);
+	    		if (Double.isNaN(rates[i])) {
+	    			System.out.println("Panick: NaN rate " + rates[i]);
+	    		}
 	    		if (rates[i] < 0) {
 	    			System.out.println("Panick: negative rate " + rates[i]);
 	    		}
