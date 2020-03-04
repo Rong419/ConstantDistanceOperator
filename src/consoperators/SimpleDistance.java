@@ -127,7 +127,7 @@ public class SimpleDistance extends TreeOperator {
 
         // Step3: propose a new node time for root
         double a;
-        if (kernel != null) a = kernel.getRandomDelta(twindowSize);
+        if (kernel != null) a = kernel.getRandomDelta(1, twindowSize);
         else a = Randomizer.uniform(-twindowSize, twindowSize);
 
         double t_x_ = t_x + a;

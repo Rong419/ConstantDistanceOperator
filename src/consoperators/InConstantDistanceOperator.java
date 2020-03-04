@@ -146,7 +146,7 @@ public class InConstantDistanceOperator extends TreeOperator {
 
        // Step3: to propose a new node time for this node
        double a;
-       if (kernel != null) a = kernel.getRandomDelta(twindowSize);
+       if (kernel != null) a = kernel.getRandomDelta(1, twindowSize);
        else a = Randomizer.uniform(-twindowSize, twindowSize);
        double t_x_ = t_x + a;
 

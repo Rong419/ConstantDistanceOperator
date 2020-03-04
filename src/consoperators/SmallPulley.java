@@ -137,7 +137,7 @@ public class SmallPulley extends TreeOperator {
 
         // Step3: propose new genetic distance
         double b;
-        if (kernel != null) b = kernel.getRandomDelta(dwindowSize);
+        if (kernel != null) b = kernel.getRandomDelta(1, dwindowSize);
         else b = Randomizer.uniform(-dwindowSize, dwindowSize);
         double d_ = d + b;
         if (d_ == 0.0 || d_ == D) {
