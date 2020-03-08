@@ -16,9 +16,9 @@ import beast.math.distributions.ParametricDistribution;
 
 @Description("Distribution with mean one gouverned by a single variance parameter")
 public class OneParameterMeanOneDistribution extends ParametricDistribution {
-    final public Input<RealParameter> shapeInput = new Input<>("sigma", "variance parameter that gouverns the distribution");
+    final public Input<RealParameter> shapeInput = new Input<>("sigma", "variance parameter that governs the distribution");
     
-    enum Mode {weibull, gamma, invgamma, lognormal, exp, strict};
+    public enum Mode {weibull, gamma, invgamma, lognormal, exp, strict};
     final public Input<Mode> modeInput = new Input<>("mode", "which distribution to use. One of " + Arrays.toString(Mode.values()), 
     		Mode.weibull, Mode.values());
 

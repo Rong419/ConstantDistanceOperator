@@ -34,7 +34,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     
     private double limit_0 = 0.1; // limit_0 / (numberOfDiscreteRates-1) is the minimum quantile
     private double limitLow, limitUp;
-    private boolean cutOffEnd;
+    protected boolean cutOffEnd = true;
 
 
     public PiecewiseLinearDistribution() {}
