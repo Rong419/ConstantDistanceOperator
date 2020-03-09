@@ -95,6 +95,7 @@ public class IndexChangeConstantRate extends Operator {
 		
 		// The original clock model
 		OneParameterMeanOneDistribution originalDist = (OneParameterMeanOneDistribution) distr.getUnderlyingDistr();
+		int originalIndex = index.getValue();
 		
 		
 		// Get the rates under the original clock model
@@ -154,6 +155,8 @@ public class IndexChangeConstantRate extends Operator {
 				double rate = rates_original[i];
 				if (rate <= rmin || rate >= rmax) {
 					if (DEBUG) System.out.println("Rates out of range: " + rmin + " < " + rate + " < " + rmax);
+					index.setValue(originalIndex);
+					distr.requiresRecalculation();
 					return Double.NEGATIVE_INFINITY;
 				}
 			}
@@ -169,7 +172,11 @@ public class IndexChangeConstantRate extends Operator {
 				// Propose a new quantile such that the rate remains constant
 				double q = distr.cumulativeProbability(rate);
 				
-				if (q <= 0 || q >= 1) return Double.NEGATIVE_INFINITY;
+				if (q <= 0 || q >= 1) {
+					index.setValue(originalIndex);
+					distr.requiresRecalculation();
+					return Double.NEGATIVE_INFINITY;
+				}
 				
 				logHR += Math.log(distr.getDerivativeAtQuantileInverse(rate, q));
 				if (DEBUG) System.out.println("qq_old = " + quantiles.getArrayValue(i) + ", rate = " + rate + ", q_new = " + q);
@@ -188,6 +195,8 @@ public class IndexChangeConstantRate extends Operator {
 			
 		} catch (MathException e) {
 			Log.warning(e.getMessage());
+			index.setValue(originalIndex);
+			distr.requiresRecalculation();
 			return Double.NEGATIVE_INFINITY;
 		}
 

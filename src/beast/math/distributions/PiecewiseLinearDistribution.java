@@ -89,6 +89,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 
         @Override
         public double cumulativeProbability(double x) throws MathException {
+        	underlyingDistr = getUnderlyingDistr();
         	// Return exact cdf using piecewise linear approximation
             int i = getIntervalFor(x);
 
@@ -123,6 +124,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 
         @Override
         public double inverseCumulativeProbability(double q) throws MathException {
+        	underlyingDistr = getUnderlyingDistr();
         	if (!cutOffEnd && (q < limitLow  || q > limitUp)) {
         		return underlyingDistr.inverseCumulativeProbability(q);
         	}
@@ -266,28 +268,30 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     protected void store() {
         System.arraycopy(rates, 0, storedRates, 0, rates.length);
         underlyingDistr = getUnderlyingDistr();
-System.err.println("PLD  store" + ((BEASTInterface)underlyingDistr).getInput("mode").get() + " " + Arrays.toString(storedRates));
+//System.err.println("PLD  store" + ((BEASTInterface)underlyingDistr).getInput("mode").get() + " " + Arrays.toString(storedRates));
         super.store();
 
         sanitycheck();
     }
 
     private void sanitycheck() {
-
-        for (int i = 1; i < rates.length; i++) {
-			if (rates[i-1] > 0) {
-				int j = i;
-				while (j < rates.length && rates[j] == 0) {
-					j++;
-				}
-				if (j < rates.length && rates[i-1] > rates[j]) {
-					int h = 43;
-		 			h--;
-				}
-			}
-        }
-
-        
+//    	if (underlyingDistr != getUnderlyingDistr()) {
+//			int h = 43;
+// 			h--;    		
+//    	}
+//
+//        for (int i = 1; i < rates.length; i++) {
+//			if (rates[i-1] > 0) {
+//				int j = i;
+//				while (j < rates.length && rates[j] == 0) {
+//					j++;
+//				}
+//				if (j < rates.length && rates[i-1] > rates[j]) {
+//					int h = 43;
+//		 			h--;
+//				}
+//			}
+//        }
     }
     
     @Override
@@ -298,7 +302,7 @@ System.err.println("PLD  store" + ((BEASTInterface)underlyingDistr).getInput("mo
         
         underlyingDistr = getUnderlyingDistr();
         
-        System.err.println("PLDrestore " + ((BEASTInterface)underlyingDistr).getInput("mode").get() + " " + Arrays.toString(rates));
+        // System.err.println("PLDrestore " + ((BEASTInterface)underlyingDistr).getInput("mode").get() + " " + Arrays.toString(rates));
     	super.restore();
     }
 
