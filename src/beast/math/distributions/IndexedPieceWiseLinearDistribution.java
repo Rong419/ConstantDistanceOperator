@@ -58,7 +58,14 @@ public class IndexedPieceWiseLinearDistribution extends PiecewiseLinearDistribut
 		underlyingDistr = distrsInput.get().get(index.getValue());
 		
 		cutOffEnd = cutOffEndInput.get();
-		
+
+    	limit_0 = limitInput.get();
+    	if (limit_0 <= 0 || limit_0 >= 1) {
+    		throw new IllegalArgumentException("limit should be between 0 and 1");
+    	}
+		limitLow = limit_0 / dim;
+    	limitUp = 1.0 - limit_0 / dim;
+
 		if (offsetInput.get() != 0.0) {
 			throw new IllegalArgumentException("Offset should be set on inputs of this IndexedDistribution, not on the IndexedDistribution itself");
 		}
@@ -72,9 +79,9 @@ public class IndexedPieceWiseLinearDistribution extends PiecewiseLinearDistribut
     @Override
     public boolean requiresRecalculation() {
     	
-    	if (index.somethingIsDirty() || distrs.get(index.getValue()).isDirtyCalculation()) {
+		underlyingDistr = distrs.get(index.getValue());
+    	if (index.somethingIsDirty() || ((ParametricDistribution) underlyingDistr).isDirtyCalculation()) {
     		Arrays.fill(rates, 0.0);
-    		underlyingDistr = distrs.get(index.getValue());
     		return true;
     	}
     	

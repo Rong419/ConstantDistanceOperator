@@ -7,6 +7,7 @@ import org.apache.commons.math.distribution.ContinuousDistribution;
 import org.apache.commons.math.distribution.Distribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
+import beast.core.BEASTInterface;
 import beast.core.Description;
 import beast.core.Input;
 import beast.core.Input.Validate;
@@ -32,8 +33,8 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     protected double[] rates; //the output rates
     protected double[] storedRates; //
     
-    private double limit_0 = 0.1; // limit_0 / (numberOfDiscreteRates-1) is the minimum quantile
-    private double limitLow, limitUp;
+    protected double limit_0 = 0.1; // limit_0 / (numberOfDiscreteRates-1) is the minimum quantile
+    protected double limitLow, limitUp;
     protected boolean cutOffEnd = true;
 
 
@@ -151,6 +152,9 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
     	        }
             }
+
+
+            sanitycheck();
             
             if (cutOffEnd) {
             	if (i == 0) {
@@ -224,6 +228,10 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	    	        		rates[i] = underlyingDistr.inverseCumulativeProbability(((double)i) / (rates.length - 1));
 	    	        	} else {
 	    	        		rates[i] = underlyingDistr.inverseCumulativeProbability(limit_0 / (rates.length - 1));
+	    	        		if (rates[i] > rates[i+1] &&  rates[i+1]!= 0) {
+	    	        			int h = 43;
+	    	        			h--;
+	    	        		}
 	    	        	}
 	    	        } catch (MathException e) {
 	    	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
@@ -237,13 +245,14 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	    	        	if (i < rates.length - 2) {
 	    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability(((double)(i + 1)) / (rates.length - 1));
 	    	        	} else {
-	    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - limit_0) / (rates.length - 1));
+	    	        		rates[i + 1] = underlyingDistr.inverseCumulativeProbability((rates.length - 1 - limit_0) / (rates.length - 1));
 	    	        	}
 	    	        } catch (MathException e) {
 	    	            throw new RuntimeException("Failed to compute inverse cumulative probability!");
 	    	        }
 	            }
 	        }
+            sanitycheck();
 	        return i;
 		}
     } // class LinearPiecewiseImpl
@@ -256,7 +265,29 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     @Override
     protected void store() {
         System.arraycopy(rates, 0, storedRates, 0, rates.length);
+        underlyingDistr = getUnderlyingDistr();
+System.err.println("PLD  store" + ((BEASTInterface)underlyingDistr).getInput("mode").get() + " " + Arrays.toString(storedRates));
         super.store();
+
+        sanitycheck();
+    }
+
+    private void sanitycheck() {
+
+        for (int i = 1; i < rates.length; i++) {
+			if (rates[i-1] > 0) {
+				int j = i;
+				while (j < rates.length && rates[j] == 0) {
+					j++;
+				}
+				if (j < rates.length && rates[i-1] > rates[j]) {
+					int h = 43;
+		 			h--;
+				}
+			}
+        }
+
+        
     }
     
     @Override
@@ -267,6 +298,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
         
         underlyingDistr = getUnderlyingDistr();
         
+        System.err.println("PLDrestore " + ((BEASTInterface)underlyingDistr).getInput("mode").get() + " " + Arrays.toString(rates));
     	super.restore();
     }
 
