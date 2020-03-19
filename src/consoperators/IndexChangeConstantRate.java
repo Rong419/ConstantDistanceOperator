@@ -107,11 +107,11 @@ public class IndexChangeConstantRate extends Operator {
 				try {
 					rates_original[i] = distr.inverseCumulativeProbability(q);
 					logHR += Math.log(distr.getDerivativeAtQuantile(q));
-					if (DEBUG) System.out.println( originalDist.modeInput.get() + " rate = " + rates_original[i] + " distr.getDerivativeAtQuantile(q) = " + distr.getDerivativeAtQuantile(q) + " q =  " + q + " logHR = " + logHR);
-				
+					
 					if (distr.getDerivativeAtQuantile(q) < 0) {
 						double x = distr.getDerivativeAtQuantile(q);
-						double y = x;
+						if (DEBUG) System.out.println( originalDist.modeInput.get() + " rate = " + rates_original[i] + " distr.getDerivativeAtQuantile(q) = " + distr.getDerivativeAtQuantile(q) + " q =  " + q + " logHR = " + logHR);
+						
 					}
 				
 				} catch (MathException e) {
@@ -133,12 +133,10 @@ public class IndexChangeConstantRate extends Operator {
 		OneParameterMeanOneDistribution proposedDist = (OneParameterMeanOneDistribution) distr.getUnderlyingDistr();
 		distr.requiresRecalculation();
 		
-		//if (DEBUG) System.out.println("Transiting from " + originalDist.modeInput.get() + " to " + proposedDist.modeInput.get());
 		
 		// If either the original or the proposed model is a strict clock, then finish the proposal now
 		if (originalDist.modeInput.get() == OneParameterMeanOneDistribution.Mode.strict) return 0;
 		if (proposedDist.modeInput.get() == OneParameterMeanOneDistribution.Mode.strict) return 0;
-		//if (true) return 0;
 		
 
 		
@@ -154,7 +152,7 @@ public class IndexChangeConstantRate extends Operator {
 				
 				double rate = rates_original[i];
 				if (rate <= rmin || rate >= rmax) {
-					if (DEBUG) System.out.println("Rates out of range: " + rmin + " < " + rate + " < " + rmax);
+					//if (DEBUG) System.out.println("Rates out of range: " + rmin + " !< " + rate + " !< " + rmax);
 					index.setValue(originalIndex);
 					distr.requiresRecalculation();
 					return Double.NEGATIVE_INFINITY;
@@ -179,8 +177,8 @@ public class IndexChangeConstantRate extends Operator {
 				}
 				
 				logHR += Math.log(distr.getDerivativeAtQuantileInverse(rate, q));
-				if (DEBUG) System.out.println("qq_old = " + quantiles.getArrayValue(i) + ", rate = " + rate + ", q_new = " + q);
-				//quantiles.setValue(i, q);
+				//if (DEBUG) System.out.println("q_old = " + quantiles.getArrayValue(i) + ", rate = " + rate + ", q_new = " + q);
+				quantiles.setValue(i, q);
 				
 				
 				//double temp = distr.getDerivativeAtQuantile(q);
