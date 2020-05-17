@@ -47,24 +47,30 @@
     </prior>
 
 
-    <operator id="FastInternalnodesOperator.c:$(n)" spec="consoperators.InConstantDistanceOperator" twindowSize="0.02"  tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="5.0"/>
+    <operator id="FastInternalnodesOperator.c:$(n)" spec="consoperators.InConstantDistanceOperator" twindowSize="0.02" clockModel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="20.0">
+        <kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="FastRootOperator1.c:$(n)" spec="consoperators.SimpleDistance" twindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="1.0"/>
+    <operator id="FastRootOperator1.c:$(n)" spec="consoperators.SimpleDistance" twindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)" clockModel="@FastRelaxedClock.c:$(n)" weight="1.0">
+        <kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="FastRootOperator2.c:$(n)" spec="consoperators.SmallPulley" dwindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="1.0"/>
+    <operator id="FastRootOperator2.c:$(n)" spec="consoperators.SmallPulley" dwindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)" clockModel="@FastRelaxedClock.c:$(n)" weight="1.0">
+       <kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="FastRootOperator3.c:$(n)" spec="consoperators.BigPulley" twindowSize="0.02" dwindowSize="0.002" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="1.0"/>
+    <operator id="FastRootOperator3.c:$(n)" spec="consoperators.BigPulley" twindowSize="0.02" dwindowSize="0.002" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="0.1"/>
 
     <operator id="fastUcldStdevScaler.c:$(n)" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:$(n)" stdev="@fastUcldStdev.c:$(n)" distr="@FastLogNormalDistributionModel.c:$(n)" scaleFactor="0.5" weight="5.0"/>
 
     <operator id="fastUcldMeanScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldMean.c:$(n)" scaleFactor="0.5" weight="5.0"/>
 
-    <operator id="RatesRandomWalk.c:$(n)" spec="RealRandomWalkOperator" parameter="@fastRates.c:$(n)" weight="5.0" windowSize="0.1"/>
+    <operator id="RatesRandomWalk.c:$(n)" spec="RealRandomWalkOperator" parameter="@fastRates.c:$(n)" weight="3.0" windowSize="0.1"/>
 
-    <operator id="RatesSwapOperator.c:$(n)" spec="SwapOperator" parameter="@fastRates.c:$(n)" weight="5.0"/>
+    <operator id="RatesSwapOperator.c:$(n)" spec="SwapOperator" parameter="@fastRates.c:$(n)" weight="3.0"/>
 
-    <operator id="RatesScaleOperator.c:$(n)" spec="ScaleOperator" parameter="@fastRates.c:$(n)" weight="5.0"/>
+    <operator id="RatesScaleOperator.c:$(n)" spec="ScaleOperator" parameter="@fastRates.c:$(n)" weight="3.0"/>
 
 	<log id="fastRatesStat.c:$(n)" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)"/>
 ]]>
