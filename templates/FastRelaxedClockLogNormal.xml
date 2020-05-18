@@ -16,23 +16,38 @@
                      beast.evolution.branchratemodel.UCRelaxedClockModel.distr,
                      beast.evolution.branchratemodel.UCRelaxedClockModel.rateQuantiles'>
             <![CDATA[
+<!--
+    <branchRateModel id="FastRelaxedClock.c:$(n)" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
+         rateQuantiles="@fastRates.c:$(n)" tree="@Tree.t:$(n)">
+        <distr id="ApproxLogNormal.c:$(n)" spec="beast.math.distributions.PiecewiseLinearDistribution">
+            <LogNormal id="FastLogNormalDistributionModel.c:$(n)" S="@fastUcldStdev.c:$(n)" meanInRealSpace="true" name="distr">
+        	    <M spec="parameter.RealParameter" estimate="false">1</M>
+            </LogNormal>
+        </distr>
+        <parameter id="fastUcldMean.c:$(n)" estimate="false" name="clock.rate">1.0</parameter>
+    </branchRateModel>
+-->
 
     <branchRateModel id="FastRelaxedClock.c:$(n)" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
          rates="@fastRates.c:$(n)" tree="@Tree.t:$(n)">
-        <LogNormal id="FastLogNormalDistributionModel.c:$(n)" S="@fastUcldStdev.c:$(n)" meanInRealSpace="true" name="distr">
-        	<M spec="parameter.RealParameter" estimate="false">1</M>
-        </LogNormal>
+            <LogNormal id="FastLogNormalDistributionModel.c:$(n)" S="@fastUcldStdev.c:$(n)" meanInRealSpace="true" name="distr">
+        	    <M spec="parameter.RealParameter" estimate="false">1</M>
+            </LogNormal>
         <parameter id="fastUcldMean.c:$(n)" estimate="false" name="clock.rate">1.0</parameter>
     </branchRateModel>
 
+
     <parameter id="fastUcldStdev.c:$(n)" name="stateNode">0.2</parameter>
-    <parameter id="fastRates.c:$(n)" name="stateNode">1</parameter>
+    <parameter id="fastRates.c:$(n)" name="stateNode">0.5</parameter>
+
 
     <prior id="FastRatePriorDistrbution.c:$(n)" name="distribution" x="@fastRates.c:$(n)">
     	<LogNormal S="@fastUcldStdev.c:$(n)"  meanInRealSpace="true" name="distr">
         	<M spec="parameter.RealParameter" estimate="false">1</M>
 	    </LogNormal>
     </prior>
+
+
     <prior id="fastUcldStdevPrior.c:$(n)" name="distribution" x="@fastUcldStdev.c:$(n)">
 
         <!-- this prior has a median of 0.1 and 97.5% of its probability is below S=1 -->
@@ -42,21 +57,22 @@
         </distr>
 
     </prior>
+
     <prior id="fastUcldMeanPrior.c:$(n)" name="distribution" x="@fastUcldMean.c:$(n)">
         <Gamma alpha="0.1" beta="100.0" name="distr"/>
     </prior>
 
 
-    <operator id="FastInternalnodesOperator.c:$(n)" spec="consoperators.InConstantDistanceOperator" twindowSize="0.02" clockModel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="20.0">
-        <kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    <operator id="FastInternalnodesOperator.c:$(n)" spec="consoperators.InConstantDistanceOperator" twindowSize="0.02" clockModel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)" weight="20.0">
+        <kernel id="KernelDistribution$Bactrian.0" spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
     </operator>
 
     <operator id="FastRootOperator1.c:$(n)" spec="consoperators.SimpleDistance" twindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)" clockModel="@FastRelaxedClock.c:$(n)" weight="1.0">
-        <kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+        <kernel id="KernelDistribution$Bactrian.1" spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
     </operator>
 
     <operator id="FastRootOperator2.c:$(n)" spec="consoperators.SmallPulley" dwindowSize="0.02" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)" clockModel="@FastRelaxedClock.c:$(n)" weight="1.0">
-       <kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+       <kernel id="KernelDistribution$Bactrian.2" spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
     </operator>
 
     <operator id="FastRootOperator3.c:$(n)" spec="consoperators.BigPulley" twindowSize="0.02" dwindowSize="0.002" tree="@Tree.t:$(n)" rates="@fastRates.c:$(n)"  weight="0.1"/>
@@ -64,6 +80,21 @@
     <operator id="fastUcldStdevScaler.c:$(n)" spec="consoperators.UcldScalerOperator"
               rates="@fastRates.c:$(n)" stdev="@fastUcldStdev.c:$(n)" distr="@FastLogNormalDistributionModel.c:$(n)" scaleFactor="0.5" weight="5.0"/>
 
+<!--
+    <operator id="FastInternalnodesOperator.c:$(n)" spec="consoperators.InConstantDistanceOperator" twindowSize="0.02" clockModel="@FastRelaxedClock.c:$(n)" tree="@Tree.t:$(n)" quantiles="@fastRates.c:$(n)" weight="20.0">
+        <kernel id="KernelDistribution$Bactrian.0" spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
+
+    <operator id="FastRootOperator1.c:$(n)" spec="consoperators.SimpleDistance" twindowSize="0.02" tree="@Tree.t:$(n)" quantiles="@fastRates.c:$(n)" clockModel="@FastRelaxedClock.c:$(n)" weight="1.0">
+        <kernel id="KernelDistribution$Bactrian.1" spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
+
+    <operator id="FastRootOperator2.c:$(n)" spec="consoperators.SmallPulley" dwindowSize="0.02" tree="@Tree.t:$(n)" quantiles="@fastRates.c:$(n)" clockModel="@FastRelaxedClock.c:$(n)" weight="1.0">
+       <kernel id="KernelDistribution$Bactrian.2" spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
+
+    <operator id="fastUcldStdevScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldStdev.c:$(n)" scaleFactor="0.5" weight="3.0"/>
+-->
     <operator id="fastUcldMeanScaler.c:$(n)" spec="ScaleOperator" parameter="@fastUcldMean.c:$(n)" scaleFactor="0.5" weight="5.0"/>
 
     <operator id="RatesRandomWalk.c:$(n)" spec="RealRandomWalkOperator" parameter="@fastRates.c:$(n)" weight="3.0" windowSize="0.1"/>
