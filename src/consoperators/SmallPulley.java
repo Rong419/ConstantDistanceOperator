@@ -1,9 +1,6 @@
 package consoperators;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.Operator;
-import beast.core.StateNode;
+import beast.core.*;
 import beast.core.parameter.CompoundRealParameter;
 import beast.core.parameter.RealParameter;
 import beast.evolution.branchratemodel.BranchRateModel;
@@ -24,6 +21,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 @Description("Small pulley: Propose a new genetic distance")
+@Citation(value =
+        "Zhang, R., Drummond, A. (2020) Improving the performance of Bayesian phylogenetic inference\n" +
+                "  under relaxed clock models. BMC Evol Biol 20, 54", DOI = "https://doi.org/10.1186/s12862-020-01609-4",
+        year = 2020, firstAuthorSurname = "Zhang")
 public class SmallPulley extends TreeOperator {
     final public  Input<Double> dwindowSizeInput =
             new Input<>("dwindowSize", "the size of the window in Big Pulley");

@@ -1,5 +1,6 @@
 package consoperators;
 
+import beast.core.Citation;
 import beast.core.Description;
 import beast.core.Input;
 import beast.core.StateNode;
@@ -21,6 +22,10 @@ import java.util.List;
 
 
 @Description("For internal nodes: propose a new node time")
+@Citation(value =
+        "Zhang, R., Drummond, A. (2020) Improving the performance of Bayesian phylogenetic inference\n" +
+                "  under relaxed clock models. BMC Evol Biol 20, 54", DOI = "https://doi.org/10.1186/s12862-020-01609-4",
+        year = 2020, firstAuthorSurname = "Zhang")
 public class InConstantDistanceOperator extends TreeOperator {
     public final Input<Double> twindowSizeInput =
             new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
