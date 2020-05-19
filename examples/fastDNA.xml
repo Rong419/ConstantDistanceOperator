@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
 
+<!--
+This xml uses real rates under uncorrelated relaxed clock model.
+ConstantDistance operator is included.
+-->
 
     <data id="dna" spec="Alignment" name="alignment">
         <sequence id="seq_Carp" spec="Sequence" taxon="Carp" totalcount="4" value="ATGGCACACCCAACGCAACTAGGTTTCAAGGACGCGGCCATACCCGTTATAGAGGAACTTCTTCACTTCCACGACCACGCATTAATAATTGTGCTCCTAATTAGCACTTTAGTTTTATATATTATTACTGCAATGGTATCAACTAAACTTACTAATAAATATATTCTAGACTCCCAAGAAATCGAAATCGTATGAACCATTCTACCAGCCGTCATTTTAGTACTAATCGCCCTGCCCTCCCTACGCATCCTGTACCTTATAGACGAAATTAACGACCCTCACCTGACAATTAAAGCAATAGGACACCAATGATACTGAAGTTACGAGTATACAGACTATGAAAATCTAGGATTCGACTCCTATATAGTACCAACCCAAGACCTTGCCCCCGGACAATTCCGACTTCTGGAAACAGACCACCGAATAGTTGTTCCAATAGAATCCCCAGTCCGTGTCCTAGTATCTGCTGAAGACGTGCTACATTCTTGAGCTGTTCCATCCCTTGGCGTAAAAATGGACGCAGTCCCAGGACGACTAAATCAAGCCGCCTTTATTGCCTCACGCCCAGGGGTCTTTTACGGACAATGCTCTGAAATTTGTGGAGCTAATCACAGCTTTATACCAATTGTAGTTGAAGCAGTACCTCTCGAACACTTCGAAAACTGATCCTCATTAATACTAGAAGACGCCTCGCTAGGAAGCTAA"/>
@@ -102,15 +106,15 @@
 
 
     <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator" twindowSize="0.02"  tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="6.0" clockModel="@FastRelaxedClock.c:dna">
-	<kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+	<kernel spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
     </operator>
 
     <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance" twindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5" clockModel="@FastRelaxedClock.c:dna">
-	<kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+	<kernel spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
     </operator>
 
     <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley" dwindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5" clockModel="@FastRelaxedClock.c:dna">
-	<kernelDistribution spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+	<kernel spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
     </operator>
 
     <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
 
+<!--
+This xml uses rate quantiles under uncorrelated relaxed clock model.
+ConstantDistance operator is included.
+-->
 
     <data id="dna" spec="Alignment" name="alignment">
         <sequence id="seq_Carp" spec="Sequence" taxon="Carp" totalcount="4" value="ATGGCACACCCAACGCAACTAGGTTTCAAGGACGCGGCCATACCCGTTATAGAGGAACTTCTTCACTTCCACGACCACGCATTAATAATTGTGCTCCTAATTAGCACTTTAGTTTTATATATTATTACTGCAATGGTATCAACTAAACTTACTAATAAATATATTCTAGACTCCCAAGAAATCGAAATCGTATGAACCATTCTACCAGCCGTCATTTTAGTACTAATCGCCCTGCCCTCCCTACGCATCCTGTACCTTATAGACGAAATTAACGACCCTCACCTGACAATTAAAGCAATAGGACACCAATGATACTGAAGTTACGAGTATACAGACTATGAAAATCTAGGATTCGACTCCTATATAGTACCAACCCAAGACCTTGCCCCCGGACAATTCCGACTTCTGGAAACAGACCACCGAATAGTTGTTCCAATAGAATCCCCAGTCCGTGTCCTAGTATCTGCTGAAGACGTGCTACATTCTTGAGCTGTTCCATCCCTTGGCGTAAAAATGGACGCAGTCCCAGGACGACTAAATCAAGCCGCCTTTATTGCCTCACGCCCAGGGGTCTTTTACGGACAATGCTCTGAAATTTGTGGAGCTAATCACAGCTTTATACCAATTGTAGTTGAAGCAGTACCTCTCGAACACTTCGAAAACTGATCCTCATTAATACTAGAAGACGCCTCGCTAGGAAGCTAA"/>
@@ -26,7 +30,7 @@
 <map name="OneOnX" >beast.math.distributions.OneOnX</map>
 
 
-<run id="mcmc" spec="MCMC" chainLength="3000000" sampleFromPrior="true">
+<run id="mcmc" spec="MCMC" chainLength="3000000">
     <state id="state" spec="State" storeEvery="5000">
         <tree id="Tree.t:dna" spec="beast.evolution.tree.Tree" name="stateNode">
             <taxonset id ="TaxonSet.dna" spec="TaxonSet">
@@ -58,11 +62,7 @@
             <prior id="DeathRatePrior.t:dna" name="distribution" x="@BDDeathRate.t:dna">
                 <Uniform id="Uniform.5" name="distr" upper="Infinity"/>
             </prior>
-<!--
-            <prior id="FastRatePriorDistrbution.c:dna" name="distribution" x="@fastRates.c:dna">
-                <LogNormal id="LogNormalDistributionModel" S="@fastUcldStdev.c:dna" M="1" meanInRealSpace="true" name="distr"/>
-            </prior>
--->
+
             <prior id="fastUcldStdevPrior.c:dna" name="distribution" x="@fastUcldStdev.c:dna">
                 <Gamma id="Gamma.10" name="distr">
                     <parameter id="RealParameter.47" spec="parameter.RealParameter" estimate="false" name="alpha">0.5396</parameter>
@@ -92,38 +92,40 @@
                     </substModel>
                 </siteModel>
                 <branchRateModel id="FastRelaxedClock.c:dna" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@fastUcldMean.c:dna" rateQuantiles="@fastRates.c:dna" tree="@Tree.t:dna">
+                    <distr id="ApproxLogNormal.c:dna" spec="beast.math.distributions.PiecewiseLinearDistribution">
                     <LogNormal id="FastLogNormalDistributionModel.c:dna" S="@fastUcldStdev.c:dna" meanInRealSpace="true" name="distr">
                         <parameter id="RealParameter3" spec="parameter.RealParameter" estimate="false" name="M">1.0</parameter>
                     </LogNormal>
+                    </distr>
                 </branchRateModel>
             </distribution>
         </distribution>
     </distribution>
 
 
-    <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
-              twindowSize="0.02"  tree="@Tree.t:dna" quantiles="@fastRates.c:dna" distr="@FastLogNormalDistributionModel.c:dna" weight="10.0"/>
-<!--
-    <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance"
-              twindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
+    <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator" clockModel="@FastRelaxedClock.c:dna"
+              twindowSize="0.02"  tree="@Tree.t:dna" quantiles="@fastRates.c:dna" weight="10.0">
+    <kernel spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley"
-              dwindowSize="0.02" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
+    <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance" clockModel="@FastRelaxedClock.c:dna"
+              twindowSize="0.02" tree="@Tree.t:dna" quantiles="@fastRates.c:dna"  weight="0.5">
+        <kernel spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"
-              twindowSize="0.02" dwindowSize="0.032" tree="@Tree.t:dna" rates="@fastRates.c:dna"  weight="0.5"/>
+    <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley" clockModel="@FastRelaxedClock.c:dna"
+              dwindowSize="0.02" tree="@Tree.t:dna" quantiles="@fastRates.c:dna"  weight="0.5">
+        <kernel spec="beast.evolution.operators.KernelDistribution$Bactrian" m="0.95" mode="bactrian_normal"/>
+    </operator>
 
-    <operator id="FastUcldStdevScaler.c:dna" spec="consoperators.UcldScalerOperator"
-              rates="@fastRates.c:dna" stdev="@fastUcldStdev.c:dna" distr="@FastLogNormalDistributionModel.c:dna" scaleFactor="0.5" weight="10.0"/>
--->
     <operator id="UcldStdevScaler.c:dna" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastUcldStdev.c:dna" weight="3.0"/>
 
     <operator id="RatesRandomWalk.c:dna" spec="RealRandomWalkOperator" parameter="@fastRates.c:dna" weight="10.0" windowSize="0.1"/>
-<!--
+
     <operator id="RatesScaleOperator.c:dna" spec="ScaleOperator" scaleFactor="0.5" parameter="@fastRates.c:dna" weight="10.0"/>
 
     <operator id="RatesSwapOperator.c:dna" spec="SwapOperator" parameter="@fastRates.c:dna" weight="10.0"/>
--->
+
     <operator id="BirthRateScaler.t:dna" spec="ScaleOperator" parameter="@BDBirthRate.t:dna" scaleFactor="0.75" weight="4.0"/>
 
     <operator id="DeathRateScaler.t:dna" spec="ScaleOperator" parameter="@BDDeathRate.t:dna" scaleFactor="0.75" weight="4.0"/>

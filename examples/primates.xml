@@ -217,13 +217,13 @@ name="alignment">
         </distribution>
     </distribution>
 
-    <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator"
+    <operator id="InternalnodesOperator.c:dna" spec="consoperators.InConstantDistanceOperator" clockModel="@FastRelaxedClock.c:primates"
               twindowSize="0.02"  tree="@Tree.t:primates" rates="@fastRates.c:primates"  weight="5"/>
 
-    <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance"
+    <operator id="RootOperator1.c:dna" spec="consoperators.SimpleDistance" clockModel="@FastRelaxedClock.c:primates"
               twindowSize="0.02" tree="@Tree.t:primates" rates="@fastRates.c:primates"  weight="2"/>
 
-    <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley"
+    <operator id="RootOperator2.c:dna" spec="consoperators.SmallPulley" clockModel="@FastRelaxedClock.c:primates"
               dwindowSize="0.02" tree="@Tree.t:primates" rates="@fastRates.c:primates"  weight="2"/>
 
     <operator id="RootOperator3.c:dna" spec="consoperators.BigPulley"
