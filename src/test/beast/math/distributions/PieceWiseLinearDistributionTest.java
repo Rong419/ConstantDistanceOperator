@@ -63,56 +63,56 @@ public class PieceWiseLinearDistributionTest extends TestCase {
 		assertEquals(derivativeE, derivativeA, accuracy);
 	}
 
-//	@Test
-//	public void testInverseDerivative() throws MathException {
-//		ParametricDistribution distr = new LogNormalDistributionModel();
-//		distr.initByName("M", "1.0", "S", "1.0", "meanInRealSpace", true);
-//		
-//		PiecewiseLinearDistribution pwld = new PiecewiseLinearDistribution();
-//		pwld.initByName("distr", distr, "cutOffEnd", false);
-////		pwld.initByName("distr", distr, "cutOffEnd", true);
-//
-//		double x = 0.00001;
-//		while (x < 0.01) {
-//			System.out.println(x + " " + distr.inverseCumulativeProbability(x) + " " + pwld.inverseCumulativeProbability(x));
-//			x += 0.0005;
-//		}
-//		while (x < 0.99) {
-//			System.out.println(x + " " + distr.inverseCumulativeProbability(x) + " " + pwld.inverseCumulativeProbability(x));
-//			x += 0.01;
-//		}
-//		while (x < 1) {
-//			System.out.println(x + " " + distr.inverseCumulativeProbability(x) + " " + pwld.inverseCumulativeProbability(x));
-//			x += 0.0005;
-//		}
-//		
-//		
-//		
-//		testInverseDerivativeAt(0.5, distr, pwld, 1e-3);
-//		testInverseDerivativeAt(0.01, distr, pwld, 1.3);
-//		testInverseDerivativeAt(0.25, distr, pwld, 1e-2);
-//		testInverseDerivativeAt(0.1, distr, pwld, 1e-2);
-//		testInverseDerivativeAt(0.75, distr, pwld, 7e-2);
-//		testInverseDerivativeAt(0.9, distr, pwld, 1e-0);
-//
-//		// cases outside cut-off
-//		testInverseDerivativeAt(0.0001, distr, pwld, 1e-8);
-//		testInverseDerivativeAt(0.9999, distr, pwld, 1e-8);
-//
-//		testInverseDerivativeAt(0.9991, distr, pwld, 1e-3);
-//		testInverseDerivativeAt(0.0011, distr, pwld, 4.5);
-//		testInverseDerivativeAt(0.99, distr, pwld, 550);
-//	}
-//	
-//	private void testInverseDerivativeAt(double q, ParametricDistribution distr, PiecewiseLinearDistribution pwld, double accuracy) throws MathException {
-//		double h = 1e-8;
-//		double x = distr.inverseCumulativeProbability(q);
-//		double xh = distr.inverseCumulativeProbability(q+h);
-//		double derivativeE = (xh-x)/h;
-//		
-//		double derivativeA = pwld.getDerivativeAtQuantileInverse(r, qNew);
-//		
-//		assertEquals(derivativeE, derivativeA, accuracy);
-//	}
+	@Test
+	public void testInverseDerivative() throws MathException {
+		ParametricDistribution distr = new LogNormalDistributionModel();
+		distr.initByName("M", "1.0", "S", "1.0", "meanInRealSpace", true);
+		
+		PiecewiseLinearDistribution pwld = new PiecewiseLinearDistribution();
+		pwld.initByName("distr", distr, "cutOffEnd", false);
+//		pwld.initByName("distr", distr, "cutOffEnd", true);
+
+		double x = 0.00001;
+		while (x < 0.01) {
+			System.out.println(x + " " + distr.inverseCumulativeProbability(x) + " " + pwld.inverseCumulativeProbability(x));
+			x += 0.0005;
+		}
+		while (x < 0.99) {
+			System.out.println(x + " " + distr.inverseCumulativeProbability(x) + " " + pwld.inverseCumulativeProbability(x));
+			x += 0.01;
+		}
+		while (x < 1) {
+			System.out.println(x + " " + distr.inverseCumulativeProbability(x) + " " + pwld.inverseCumulativeProbability(x));
+			x += 0.0005;
+		}
+		
+		
+		
+		testInverseDerivativeAt(0.5, distr, pwld, 1e-3);
+		testInverseDerivativeAt(0.01, distr, pwld, 1.3);
+		testInverseDerivativeAt(0.25, distr, pwld, 1e-2);
+		testInverseDerivativeAt(0.1, distr, pwld, 1e-2);
+		testInverseDerivativeAt(0.75, distr, pwld, 7e-2);
+		testInverseDerivativeAt(0.9, distr, pwld, 1e-0);
+
+		// cases outside cut-off
+		testInverseDerivativeAt(0.0001, distr, pwld, 1e-8);
+		testInverseDerivativeAt(0.9999, distr, pwld, 1e-8);
+
+		testInverseDerivativeAt(0.9991, distr, pwld, 1e-3);
+		testInverseDerivativeAt(0.0011, distr, pwld, 4.5);
+		testInverseDerivativeAt(0.99, distr, pwld, 550);
+	}
+	
+	private void testInverseDerivativeAt(double q, ParametricDistribution distr, PiecewiseLinearDistribution pwld, double accuracy) throws MathException {
+		double h = 1e-8;
+		double x = distr.inverseCumulativeProbability(q);
+		double xh = distr.inverseCumulativeProbability(q+h);
+		double derivativeE = 1.0/((xh-x)/h);
+		
+		double derivativeA = pwld.getDerivativeAtQuantileInverse(x, q);
+		
+		assertEquals(derivativeE, derivativeA, accuracy);
+	}
 
 }

@@ -330,7 +330,6 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	final static private double EPSILON = 1e-8;
 	public double getDerivativeAtQuantile(double q) {
     	if (!cutOffEnd && (q < limitLow  || q > limitUp)) {
-        	// TODO: needs testing
 			try {
 	    		double r = underlyingDistr.inverseCumulativeProbability(q);
 	    		double rPlusH = underlyingDistr.inverseCumulativeProbability(q + EPSILON);
@@ -387,16 +386,25 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	 */
     public double getDerivativeAtQuantileInverse(double r, double qNew) {
     	// TODO: verify the following is correct
-    	// return 1.0 / getDerivativeAtQuantile(qNew);
+    	return 1.0 / getDerivativeAtQuantile(qNew);
     	
-    	// TODO: implement !cutOffEnd version
-    	
-    	int i = dist.getIntervalFor(r, qNew);
-        if (i < rates.length - 1) {
-            double derivative = (1.0/(rates.length - 1))/(rates[i+1] - rates[i]);
-            return derivative;        	
-        }
-        return 0;
+//    	if (!cutOffEnd && (qNew < limitLow  || qNew > limitUp)) {
+//			try {
+//				double r0 = underlyingDistr.inverseCumulativeProbability(qNew);
+//	    		double rPlusH = underlyingDistr.inverseCumulativeProbability(qNew + EPSILON);
+//	    		double dR = 1.0/((rPlusH - r0) / EPSILON);
+//	    		return dR;
+//			} catch (MathException e) {
+//				e.printStackTrace();
+//			}
+//    	}
+//
+//    	int i = dist.getIntervalFor(r, qNew);
+//        if (i < rates.length - 1) {
+//            double derivative = (1.0/(rates.length - 1))/(rates[i+1] - rates[i]);
+//            return derivative;        	
+//        }
+//        return 0;
     }
     
     
