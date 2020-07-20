@@ -7,7 +7,6 @@ import org.apache.commons.math.distribution.ContinuousDistribution;
 import org.apache.commons.math.distribution.Distribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
-import beast.core.BEASTInterface;
 import beast.core.Description;
 import beast.core.Input;
 import beast.core.Input.Validate;
@@ -97,12 +96,16 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
             	// TODO: needs testing
             	if (i == 0) {
             		if (x < rates[0]) {
-                		return underlyingDistr.cumulativeProbability(x);
+                		double cdf = underlyingDistr.cumulativeProbability(x);
+                		cdf = Math.max(cdf,  1e-256);
+                		return cdf;
             		}
                 	double cdf = (limitLow + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) / (rates.length-1);
             		return cdf;
             	} else if (i == rates.length-1) {
-            		return underlyingDistr.cumulativeProbability(x);
+            		double cdf = underlyingDistr.cumulativeProbability(x);
+            		cdf = Math.min(cdf,  0.9999999999999999);
+            		return cdf;
             	} else if (i == rates.length-2) {
                 	double cdf = (i + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) / (rates.length-1);
             		return cdf;
@@ -327,7 +330,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	 * @param q quantile
 	 * @return derivative of rate distribution at quantile q
 	 */
-	final static private double EPSILON = 1e-8;
+	final static private double EPSILON = 1e-12;
 	public double getDerivativeAtQuantile(double q) {
     	if (!cutOffEnd && (q < limitLow  || q > limitUp)) {
 			try {
