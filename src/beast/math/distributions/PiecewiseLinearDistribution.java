@@ -336,6 +336,9 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
 	public double getDerivativeAtQuantile(double q) {
     	if (!cutOffEnd && (q < limitLow  || q > limitUp)) {
 			try {
+				if (q + EPSILON >= 1.0) {
+					return Double.POSITIVE_INFINITY;
+				}
 	    		double r = underlyingDistr.inverseCumulativeProbability(q);
 	    		double rPlusH = underlyingDistr.inverseCumulativeProbability(q + EPSILON);
 	    		double dR = (rPlusH - r) / EPSILON;
