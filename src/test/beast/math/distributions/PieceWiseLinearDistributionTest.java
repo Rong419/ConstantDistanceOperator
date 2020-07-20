@@ -9,6 +9,18 @@ import beast.math.distributions.PiecewiseLinearDistribution;
 import junit.framework.TestCase;
 
 public class PieceWiseLinearDistributionTest extends TestCase {
+
+	@Test
+	public void testLargeSDSmallQ() throws MathException {
+		ParametricDistribution distr = new LogNormalDistributionModel();
+		distr.initByName("M", "1.0", "S", "2.4787", "meanInRealSpace", true);
+		
+		PiecewiseLinearDistribution pwld = new PiecewiseLinearDistribution();
+		pwld.initByName("distr", distr, "cutOffEnd", true);
+		double x = 5.250608795069572E-4;
+		System.out.println(x + " " + distr.inverseCumulativeProbability(x) + " " + pwld.inverseCumulativeProbability(x));
+	}
+
 	
 	@Test
 	public void testDerivative() throws MathException {
