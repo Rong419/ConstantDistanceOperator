@@ -61,7 +61,7 @@ public class CachedDistribution extends ParametricDistribution {
         public double cumulativeProbability(double x0, double x1) throws MathException {
             return cumulativeProbability(x1) - cumulativeProbability(x0);
         }
-
+		
         @Override
         public double inverseCumulativeProbability(double q) throws MathException {
         	if (q >= 1) {
@@ -101,6 +101,7 @@ public class CachedDistribution extends ParametricDistribution {
     
     @Override
     protected void store() {
+//		cache.clear();
     	storedcache.clear();
     	for (Double d : cache.values()) {
     		storedcache.put(d, cache.get(d));
@@ -111,6 +112,7 @@ public class CachedDistribution extends ParametricDistribution {
     
     @Override
     protected void restore() {
+//		cache.clear();
     	Map<Double,Double> tmp = storedcache;
     	storedcache = cache;
     	cache = tmp;
@@ -125,6 +127,7 @@ public class CachedDistribution extends ParametricDistribution {
 	@Override
     protected boolean requiresRecalculation() {
     	
+        underlyingDistr = getUnderlyingDistr();
     	if (distrInput.get().isDirtyCalculation()) {
     		cache.clear();
     		return true;

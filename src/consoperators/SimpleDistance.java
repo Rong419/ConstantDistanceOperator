@@ -11,6 +11,7 @@ import beast.evolution.operators.KernelDistribution;
 import beast.evolution.operators.TreeOperator;
 import beast.evolution.tree.Node;
 import beast.evolution.tree.Tree;
+import beast.math.distributions.CachedDistribution;
 import beast.math.distributions.LogNormalDistributionModel;
 import beast.math.distributions.ParametricDistribution;
 import beast.math.distributions.PiecewiseLinearDistribution;
@@ -201,7 +202,11 @@ public class SimpleDistance extends TreeOperator {
             }
 
             case quantiles: {
-                if (rateDistribution instanceof LogNormalDistributionModel) {
+                if (rateDistribution instanceof CachedDistribution && ((CachedDistribution)rateDistribution).distrInput.get() instanceof LogNormalDistributionModel) {
+                    hastingsRatio = ConsOperatorUtils.getHRForLN(r_j_, q_j, ((CachedDistribution)rateDistribution).distrInput.get())
+                            + ConsOperatorUtils.getHRForLN(r_k_, q_k, ((CachedDistribution)rateDistribution).distrInput.get());
+
+                } else if (rateDistribution instanceof LogNormalDistributionModel) {
                     hastingsRatio = ConsOperatorUtils.getHRForLN(r_j_, q_j, rateDistribution)
                                   + ConsOperatorUtils.getHRForLN(r_k_, q_k, rateDistribution);
                 }

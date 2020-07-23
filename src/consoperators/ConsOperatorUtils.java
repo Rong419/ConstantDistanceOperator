@@ -41,7 +41,11 @@ public class ConsOperatorUtils {
 
             double q0 = distribution.cumulativeProbability(rNew);
             double q0h = distribution.cumulativeProbability(rNew + EPSILON);
-            logHR += FastMath.log((q0h - q0) / EPSILON);
+            if (q0h != q0) {
+            	logHR += FastMath.log((q0h - q0) / EPSILON);
+            } else {
+            	logHR = Double.POSITIVE_INFINITY;
+            }
         } catch (MathException e) {
             throw new RuntimeException("Failed to compute inverse cumulative probability!");
         }
