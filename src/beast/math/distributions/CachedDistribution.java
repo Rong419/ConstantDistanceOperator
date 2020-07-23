@@ -1,6 +1,5 @@
 package beast.math.distributions;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,19 +13,20 @@ import beast.core.Input.Validate;
 
 @Description("Caches parametric distribution for inverscumulative methods.")
 public class CachedDistribution extends ParametricDistribution {
-    final public Input<ParametricDistribution> distrInput = new Input<>("distr", "Underlying parametric distribution that is approximated.", Validate.REQUIRED);
+    final public Input<ParametricDistribution> distrInput = new Input<>("distr", "Underlying parametric distribution that is cached.", Validate.REQUIRED);
     
     ContinuousDistribution dist;
-    
-    // ParametricDistribution distribution;
+	ContinuousDistribution underlyingDistr;
     
     Map<Double, Double> cache = new HashMap<>(); 
     Map<Double, Double> storedcache = new HashMap<>(); 
-    
+
     @Override
 	public void initAndValidate() {
     	dist = new CachedImpl();
+        underlyingDistr = getUnderlyingDistr();
     }
+
 
     /**
      * make sure internal state is up to date *
@@ -41,10 +41,8 @@ public class CachedDistribution extends ParametricDistribution {
     }
 
     public class CachedImpl implements ContinuousDistribution {
-    	ContinuousDistribution underlyingDistr;
     	
         public CachedImpl() {
-        	underlyingDistr = getUnderlyingDistr();
         }
 
         @Override
@@ -93,7 +91,10 @@ public class CachedDistribution extends ParametricDistribution {
         }
     } // class CachedImpl
 
-    @Override
+    @Override//        	if (cache.containsKey(qD)) {
+//	return cache.get(qD);
+//}
+
     protected double getMeanWithoutOffset() {
     	throw new IllegalArgumentException("not implemented yet");
     }
@@ -105,10 +106,15 @@ public class CachedDistribution extends ParametricDistribution {
     		storedcache.put(d, cache.get(d));
     	}
         super.store();
+        underlyingDistr = getUnderlyingDistr();
     }
     
     @Override
     protected void restore() {
+    	Map<Double,Double> tmp = storedcache;
+    	storedcache = cache;
+    	cache = tmp;
+        underlyingDistr = getUnderlyingDistr();
     	super.restore();
     }
 
@@ -119,7 +125,7 @@ public class CachedDistribution extends ParametricDistribution {
 	@Override
     protected boolean requiresRecalculation() {
     	
-    	if (distrInput.get() != null && distrInput.get().isDirtyCalculation()) {
+    	if (distrInput.get().isDirtyCalculation()) {
     		cache.clear();
     		return true;
     	}
