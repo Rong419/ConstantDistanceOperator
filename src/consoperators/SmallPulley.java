@@ -194,6 +194,9 @@ public class SmallPulley extends TreeOperator {
                     // new quantiles of proposed rates
                     q_j_ = rateDistribution.cumulativeProbability(r_j_);
                     q_k_ = rateDistribution.cumulativeProbability(r_k_);
+                    
+                    if (q_j_ <= 0 || q_j_ >= 1) return Double.NEGATIVE_INFINITY;
+                    if (q_k_ <= 0 || q_k_ >= 1) return Double.NEGATIVE_INFINITY;
 
                     // set quantiles
                     quantiles.setValue(sonNr, q_j_);
