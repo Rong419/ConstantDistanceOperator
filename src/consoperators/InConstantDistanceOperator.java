@@ -271,9 +271,15 @@ public class InConstantDistanceOperator extends TreeOperator {
                 }
 
                 else if (rateDistribution instanceof PiecewiseLinearDistribution) {
-                    hastingsRatio += ConsOperatorUtils.getHRForPieceWise(r_x_, q_x, q_x_, rateDistribution)
+                    if (((PiecewiseLinearDistribution)rateDistribution).distrInput.get() instanceof LogNormalDistributionModel) {
+                        hastingsRatio += ConsOperatorUtils.getHRForLN(r_x_, q_x, ((PiecewiseLinearDistribution)rateDistribution).distrInput.get())
+                                + ConsOperatorUtils.getHRForLN(r_j_, q_j, ((PiecewiseLinearDistribution)rateDistribution).distrInput.get())
+                                + ConsOperatorUtils.getHRForLN(r_k_, q_k, ((PiecewiseLinearDistribution)rateDistribution).distrInput.get());
+                    } else {
+                    	hastingsRatio += ConsOperatorUtils.getHRForPieceWise(r_x_, q_x, q_x_, rateDistribution)
                                   + ConsOperatorUtils.getHRForPieceWise(r_j_, q_j, q_j_, rateDistribution)
                                   + ConsOperatorUtils.getHRForPieceWise(r_k_, q_k, q_k_, rateDistribution);
+                    }
                 }
 
                 else {

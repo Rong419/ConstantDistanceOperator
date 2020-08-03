@@ -27,7 +27,79 @@ public class PieceWiseLinearDistributionTest extends TestCase {
 		testDerivative(false);
 		//testDerivative(true);
 	}
+
 	
+	@Test
+	public void testInverseCumulativeProbabilityError() throws MathException {
+		testInverseCumulativeProbabilityError(false);
+		testInverseCumulativeProbabilityError(true);
+	}
+
+	public void testInverseCumulativeProbabilityError(boolean cutoff) throws MathException {
+		ParametricDistribution distr = new LogNormalDistributionModel();
+		distr.initByName("M", "1.0", "S", "1.0", "meanInRealSpace", true);
+		
+		PiecewiseLinearDistribution pwld = new PiecewiseLinearDistribution();
+		pwld.initByName("distr", distr, "cutOffEnd", cutoff);
+
+		double error;
+		
+		error = inverseCumulativeProbabilityError(distr, pwld, 0.0, 0.01);
+		assertEquals(0, error, 0.0001);
+		error = inverseCumulativeProbabilityError(distr, pwld, 0.01, 0.99);
+		assertEquals(0, error, 0.002);
+		error = inverseCumulativeProbabilityError(distr, pwld, 0.99, 1.0);
+		assertEquals(0, error, 0.03);
+		
+	}
+
+	private double inverseCumulativeProbabilityError(ParametricDistribution distr, PiecewiseLinearDistribution pwld, double start, double end) throws MathException {
+		double x = start;
+		double delta = 0.00001;
+		double error = 0;
+		while (x < end) {
+			error += delta * Math.abs(distr.inverseCumulativeProbability(x) - pwld.inverseCumulativeProbability(x));
+			x += delta;
+		}
+		return error;
+	}
+
+
+	
+	@Test
+	public void testCumulativeProbabilityError() throws MathException {
+		testCumulativeProbabilityError(false);
+		testCumulativeProbabilityError(true);
+	}
+
+	public void testCumulativeProbabilityError(boolean cutoff) throws MathException {
+		ParametricDistribution distr = new LogNormalDistributionModel();
+		distr.initByName("M", "1.0", "S", "1.0", "meanInRealSpace", true);
+		
+		PiecewiseLinearDistribution pwld = new PiecewiseLinearDistribution();
+		pwld.initByName("distr", distr, "cutOffEnd", cutoff);
+
+		double error;
+		
+		error = cumulativeProbabilityError(distr, pwld, 0.01, 0.1);
+		assertEquals(0, error, 0.00004);
+		error = cumulativeProbabilityError(distr, pwld, 0.1, 5.0);
+		assertEquals(0, error, 0.001);
+		error = cumulativeProbabilityError(distr, pwld, 5.0, 10.0);
+		assertEquals(0, error, 0.011);
+		
+	}
+
+	private double cumulativeProbabilityError(ParametricDistribution distr, PiecewiseLinearDistribution pwld, double start, double end) throws MathException {
+		double x = start;
+		double delta = 0.0001;
+		double error = 0;
+		while (x < end) {
+			error += delta * Math.abs(distr.cumulativeProbability(x) - pwld.cumulativeProbability(x));
+			x += delta;
+		}
+		return error;
+	}
 	public void testDerivative(boolean cutoff) throws MathException {
 
 		ParametricDistribution distr = new LogNormalDistributionModel();

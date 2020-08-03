@@ -1,6 +1,8 @@
 package beast.math.distributions;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ContinuousDistribution;
@@ -11,6 +13,7 @@ import beast.core.Description;
 import beast.core.Input;
 import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
+import beast.math.distributions.CachedDistribution.CachedImpl;
 
 
 
@@ -38,6 +41,8 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     protected int rateCountMin1;
     protected double intervalSize;
 
+    Map<Double, Double> cache = new HashMap<>(); 
+    Map<Double, Double> storedcache = new HashMap<>(); 
 
     public PiecewiseLinearDistribution() {}
     
@@ -70,6 +75,10 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	}
     	limitLow = limit_0 / dim;
     	limitUp = 1.0 - limit_0 / dim;
+
+    	limitLow = 1.0 / dim;
+    	limitUp = 1.0 - 1.0 / dim;
+    	
     	cutOffEnd = cutOffEndInput.get();
         refresh();
     }
@@ -101,20 +110,20 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
             if (!cutOffEnd) {
             	// TODO: needs testing
             	if (i == 0) {
-            		if (x < rates[0]) {
+//            		if (x < rates[0]) {
                 		double cdf = underlyingDistr.cumulativeProbability(x);
                 		cdf = Math.max(cdf,  1e-256);
                 		return cdf;
-            		}
-                	double cdf = (limitLow + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) * intervalSize;
-            		return cdf;
-            	} else if (i == rateCountMin1) {
+//            		}
+//                	double cdf = (limitLow + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) * intervalSize;
+//            		return cdf;
+            	} else if (i >= rateCountMin1 - 1) {
             		double cdf = underlyingDistr.cumulativeProbability(x);
             		cdf = Math.min(cdf,  0.9999999999999999);
             		return cdf;
-            	} else if (i == rateCountMin1-1) {
-                	double cdf = (i + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) * intervalSize;
-            		return cdf;
+//            	} else if (i == rateCountMin1-1) {
+//                	double cdf = (i + (1-limit_0) * (x - rates[i]) / (rates[i+1] - rates[i])) * intervalSize;
+//            		return cdf;
             	}
             }
             
@@ -134,8 +143,14 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
         @Override
         public double inverseCumulativeProbability(double q) throws MathException {
         	underlyingDistr = getUnderlyingDistr();
-        	if (!cutOffEnd && (q < limitLow  || q > limitUp)) {
-        		return underlyingDistr.inverseCumulativeProbability(q);
+        	if (!cutOffEnd && (q <= limitLow  || q >= limitUp)) {        		
+            	final Double qD = q;
+            	if (cache.containsKey(qD)) {
+            		return cache.get(qD);
+            	}
+            	double x = underlyingDistr.inverseCumulativeProbability(q);
+            	cache.put(qD, x);
+        		return x;
         	}
             double v = q * rateCountMin1;
             int i = (int) v;
@@ -273,6 +288,10 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     protected void store() {
         System.arraycopy(rates, 0, storedRates, 0, rates.length);
         underlyingDistr = getUnderlyingDistr();
+    	storedcache.clear();
+    	for (Double d : cache.values()) {
+    		storedcache.put(d, cache.get(d));
+    	}
 //System.err.println("PLD  store" + ((BEASTInterface)underlyingDistr).getInput("mode").get() + " " + Arrays.toString(storedRates));
         super.store();
 
@@ -304,6 +323,10 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
         double[] tmp = rates;
         rates = storedRates;
         storedRates = tmp;
+
+        Map<Double,Double> tmp2 = storedcache;
+    	storedcache = cache;
+    	cache = tmp2;
         
         underlyingDistr = getUnderlyingDistr();
         
@@ -320,6 +343,7 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	
     	if (distrInput.get() != null && distrInput.get().isDirtyCalculation()) {
     		Arrays.fill(rates, 0.0);
+    		cache.clear();
     		underlyingDistr = getUnderlyingDistr();
     		return true;
     	}
