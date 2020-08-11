@@ -126,8 +126,8 @@ public class CachedDistribution extends ParametricDistribution {
 
 	@Override
     protected boolean requiresRecalculation() {
-    	
-        
+
+		
     	if (distrInput.get().isDirtyCalculation()) {
     		cache.clear();
     		underlyingDistr = getUnderlyingDistr();

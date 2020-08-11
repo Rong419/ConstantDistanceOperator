@@ -4,10 +4,13 @@ import beast.core.Description;
 import beast.core.Input;
 import beast.core.parameter.RealParameter;
 import beast.core.Operator;
+import beast.math.distributions.CachedDistribution;
 import beast.math.distributions.LogNormalDistributionModel;
 import beast.math.distributions.ParametricDistribution;
+import beast.math.distributions.PiecewiseLinearDistribution;
 import beast.util.Randomizer;
 import org.apache.commons.math.MathException;
+import org.apache.commons.math3.special.Erf;
 import org.apache.commons.math3.util.FastMath;
 import java.text.DecimalFormat;
 
@@ -15,47 +18,81 @@ import java.text.DecimalFormat;
 @Description("For standard deviation of the lognormal distribution of branch rates in uncorrelated relaxed clock model: " +
               "a scale operation on ucldstdev and proposing rates that maintain the same probability.")
 public class UcldScalerOperator extends Operator {
-    final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.REQUIRED);
-    final public Input<RealParameter> stdevInput = new Input<>("stdev", "the distribution governing the rates among branches.");
-    final public  Input<Double> scaleFactorInput = new Input<>("scaleFactor", "scaling factor: larger means more bold proposals", 1.0);
-    final public Input<ParametricDistribution> rateDistInput = new Input<>("distr", "the distribution governing the rates among branches.", Input.Validate.REQUIRED);
-
-
-
-    private RealParameter rates;
-    private RealParameter ucldStdev;
-    private double m_fScaleFactor;
-
-    protected ParametricDistribution distribution;
-    private  LogNormalDistributionModel LN ;
-
-
-    @Override
-    public void initAndValidate() {
-        rates = rateInput.get();
-        m_fScaleFactor = scaleFactorInput.get();
-        ucldStdev=stdevInput.get();
-        distribution = rateDistInput.get();
-    }
-
+	
+	final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.",Input.Validate.REQUIRED);
+	final public Input<RealParameter> quantileInput = new Input<>("quantiles", "the quantiles of each branch rate.", Input.Validate.XOR,rateInput);
+	final public Input<RealParameter> stdevInput = new Input<>("stdev", "the distribution governing the rates among branches.");
+	final public  Input<Double> scaleFactorInput = new Input<>("scaleFactor", "scaling factor: larger means more bold proposals", 1.0);
+	final public Input<ParametricDistribution> rateDistInput = new Input<>("distr", "the distribution governing the rates among branches.", Input.Validate.REQUIRED);
+	
+	
+	private boolean usingRates;
+	
+	private RealParameter rates;
+	private RealParameter quantilesParam;
+	private int nrates;
+	private RealParameter ucldStdev;
+	private double m_fScaleFactor;
+	
+	protected ParametricDistribution distribution;
+	private  LogNormalDistributionModel LN ;
+	
+	
+	final double LOGROOT2PI = Math.log(Math.sqrt(2 * Math.PI));
+	final double SQRT2 = Math.sqrt(2);
+	
+	
+	@Override
+	public void initAndValidate() {
+	    rates = rateInput.get();
+	    quantilesParam = quantileInput.get();
+	    usingRates = rates != null;
+	    m_fScaleFactor = scaleFactorInput.get();
+	    ucldStdev=stdevInput.get();
+	    distribution = rateDistInput.get();
+	    
+	    this.nrates = usingRates ? rates.getDimension() : quantilesParam.getDimension();
+	    
+	    
+	}
+	
     @Override
     public double proposal() {
         double hastingsRatio;
         double new_stdev;
-        double[] quantiles = new double[rates.getDimension()];
-        double[] real_rates = new double[rates.getDimension()];
+        
+        this.nrates = usingRates ? rates.getDimension() : quantilesParam.getDimension();
+        
+        double[] quantiles = new double[this.nrates];
+        double[] real_rates = new double[this.nrates];
 
         if(distribution instanceof LogNormalDistributionModel) {
             LN = (LogNormalDistributionModel) distribution;
         }
 
-        // Step1: calculate quantiles for real rates given the current ucldStdev
-        for (int idx = 0; idx < rates.getDimension(); idx++) {
-            double r = rates.getValue(idx);
-            real_rates[idx] = r;
-            double q = getRateQuantiles(r);
-            quantiles[idx] = q;
-
+        // Step1: calculate rates/quantiles for real rates given the current ucldStdev
+        if (this.usingRates) {
+        	
+        	// Rates -> quantiles
+	        for (int idx = 0; idx < this.nrates; idx++) {
+	            double r = rates.getValue(idx);
+	            real_rates[idx] = r;
+	            double q = getRateQuantiles(r);
+	            quantiles[idx] = q;
+	
+	        }
+	        
+        }else {
+        	
+        	// Quantiles -> rates
+        	for (int idx = 0; idx < this.nrates; idx++) {
+	            double q = this.quantilesParam.getValue(idx);
+	            quantiles[idx] = q;
+	            double r = getRealRate(q);
+	            real_rates[idx] = r;
+	
+	        }
+        	
         }
 
         // Step2: use scale operation to propose a new_ucldStdev
@@ -67,8 +104,10 @@ public class UcldScalerOperator extends Operator {
         ucldStdev.setValue(new_stdev);
 
         // return the log hastings ratio for scale operation
-        hastingsRatio = Math.log(1/scale);
+        hastingsRatio = -Math.log(scale);
 
+        
+        
 
         // use mean (M=1) and variance (stdev square) to calculate miu and sigma square of lognormal in log space
         double variance = FastMath.exp(stdev * stdev) -1;
@@ -76,23 +115,60 @@ public class UcldScalerOperator extends Operator {
         double miu = - 0.5 * FastMath.log(1 + variance); // original miu of lognormal
         double new_miu = - 0.5 * FastMath.log(1 + new_variance); // new miu of lognormal
 
-        // Step3: calculate the new real rates under the proposed new_ucldStdev
-       for (int idx = 0; idx < rates.getDimension(); idx++) {
-            double r_ = getRealRate(quantiles[idx]);
+        // Step3: calculate the new rates or quantiles under the proposed new_ucldStdev
+        
+        // Rates
+        if (this.usingRates) {
+	       for (int idx = 0; idx < this.nrates; idx++) {
+	            double r_ = getRealRate(quantiles[idx]);
+	
+	            // to avoid numerical issues
+	            if (r_== 0.0 || r_ == Double.POSITIVE_INFINITY) {
+	                return Double.NEGATIVE_INFINITY;
+	            }
+	
+	            // partial derivative of icdf_s'(cdf_s(r)) / r
+	            hastingsRatio = hastingsRatio + getDicdf(real_rates[idx],quantiles[idx],miu,new_miu,stdev,new_stdev);
+	
+	            rates.setValue(idx, r_);
+	        }
+	       
+	    // Quantiles
+        }else {
+        	
+        	// Step3: calculate the new quantiles such that the rates remain constant
+    	
+        	for (int idx = 0; idx < this.nrates; idx++) {
+        		 
+        		// Original quantile
+        		double q = this.quantilesParam.getArrayValue(idx);
+        		
+        		// Original rate (want the new rate to be the same)
+				double r = real_rates[idx];
+				
+				// Propose q_ such that the rate is constant
+				double q_ = this.getRateQuantiles(r);
+        		if (q_ <= 0 || q_ >= 1) return Double.NEGATIVE_INFINITY;
+        		quantilesParam.setValue(idx, q_);
+        		
+        		
+        		// logHR
+        		double logHRBranch = this.getQuantHR(q, miu, new_miu, stdev, new_stdev);
+        		
+        		
+        		//System.out.println(stdev + " -> " + new_stdev + "; " + q + " -> " + q_ + "; HR: " + logHRBranch);
+        		hastingsRatio += logHRBranch;
+        		 
+        	}
+	        	
 
-            // to avoid numerical issues
-            if (r_== 0.0 || r_ == Double.POSITIVE_INFINITY) {
-                return Double.NEGATIVE_INFINITY;
-            }
-
-            // partial derivative of icdf_s'(cdf_s(r)) / r
-            hastingsRatio = hastingsRatio + getDicdf(real_rates[idx],quantiles[idx],miu,new_miu,stdev,new_stdev);
-
-            rates.setValue(idx, r_);
+        	
         }
+        
+        //System.out.println("HR " + hastingsRatio);
 
         return hastingsRatio;
-}
+    }
 
     private double getRateQuantiles (double r) {
         try {
@@ -109,6 +185,8 @@ public class UcldScalerOperator extends Operator {
             throw new RuntimeException("Failed to compute inverse cumulative probability because quantile = " + q);
         }
     }
+    
+    
 
     private double getDicdf(double r, double q, double u1, double u2, double s1, double s2 ) {
         // inverse error function of (2F -1), where F(r) = cdf_s(r)
@@ -118,6 +196,28 @@ public class UcldScalerOperator extends Operator {
         double d = u2 + Math.sqrt(2 * s2 * s2) * c + c * c - x_sq;
         double e = Math.log(s2) - Math.log(s1) - Math.log(r);
         return (d + e);
+    }
+    
+    
+    /**
+     * Compute the log derivative for the q -> q_ transition, as a result of the lognormal proposal s1->s2 and u1->u2
+     * @param q  The original quantile before the proposal
+     * @param u1 The original log-normal mu (log space)
+     * @param u2 The proposed log-normal mu (log space)
+     * @param s1 The original log-normal sigma (log space)
+     * @param s2 The proposed log-normal sigma (log space)
+     * @return
+     */
+    private double getQuantHR(double q, double u1, double u2, double s1, double s2) {
+    	
+    	// Compute the log derivative of cdf[ i-cdf(q|m1,s1) | m2,s2 ]
+    	// https://www.wolframalpha.com/input/?i=derivative+1%2F2+%2B+1%2F2*erf%28++%28erfinv%282x-1%29*sqrt%282%29*s%2Bm+-+n%29+%2F+%28sqrt%282%29*d%29+++%29
+    	double erfInvVal = erfInv(2*q-1);
+    	double errVal = erfInvVal*erfInvVal - Math.pow(this.SQRT2 * s1 * erfInvVal + u1 - u2, 2) / (2*s2*s2);
+    	double DCDF = FastMath.log(s1) - FastMath.log(s2) + errVal;
+    	
+    	return DCDF;
+    	
     }
 
 

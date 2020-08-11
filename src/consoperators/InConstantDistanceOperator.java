@@ -225,7 +225,7 @@ public class InConstantDistanceOperator extends TreeOperator {
                     q_k_ = rateDistribution.cumulativeProbability(r_k_);
                     
                     
-                    if (q_x_ <= 0 || q_x >= 1) return Double.NEGATIVE_INFINITY;
+                    if (q_x_ <= 0 || q_x_ >= 1) return Double.NEGATIVE_INFINITY;
                     if (q_j_ <= 0 || q_j_ >= 1) return Double.NEGATIVE_INFINITY;
                     if (q_k_ <= 0 || q_k_ >= 1) return Double.NEGATIVE_INFINITY;
 
