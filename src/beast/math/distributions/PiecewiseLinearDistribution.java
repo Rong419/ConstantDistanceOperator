@@ -73,13 +73,16 @@ public class PiecewiseLinearDistribution extends ParametricDistribution {
     	if (limit_0 <= 0 || limit_0 >= 1) {
     		throw new IllegalArgumentException("limit should be between 0 and 1");
     	}
-    	limitLow = limit_0 / dim;
-    	limitUp = 1.0 - limit_0 / dim;
-
-    	limitLow = 1.0 / dim;
-    	limitUp = 1.0 - 1.0 / dim;
-    	
     	cutOffEnd = cutOffEndInput.get();
+    	if (cutOffEnd) {
+	    	limitLow = limit_0 / dim;
+	    	limitUp = 1.0 - limit_0 / dim;
+    	} else {
+    		// mark the lowest and highest bin for
+    		// using the underlying distribution
+	    	limitLow = 1.0 / dim;
+	    	limitUp = 1.0 - 1.0 / dim;
+    	}
         refresh();
     }
 
