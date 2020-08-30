@@ -88,10 +88,7 @@ public class InConstantDistanceOperator extends TreeOperator {
 
         // Step 1: randomly select an internal node, denoted by node x.
         // avoid fake nodes used to connect direct ancestors into tree.
-       do {
-            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
-            node = tree.getNode(nodeNr);
-       } while (node.isRoot() || node.isLeaf() || node.isFake());
+        node = getTargetNode();
 
        // the number of this node
         int nodeNr = node.getNr();
@@ -297,9 +294,21 @@ public class InConstantDistanceOperator extends TreeOperator {
 
         }
         return hastingsRatio;
-}
+    }
 
-    // Tuning the parameter: twindowsize represents the range of Uniform distribution
+    protected Node getTargetNode() {
+    	Node node;
+    	Tree tree = treeInput.get();
+    	int nodeCount = tree.getNodeCount();
+        do {
+            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
+            node = tree.getNode(nodeNr);
+       } while (node.isRoot() || node.isLeaf() || node.isFake());
+		// TODO Auto-generated method stub
+		return node;
+	}
+
+	// Tuning the parameter: twindowsize represents the range of Uniform distribution
     @Override
     public double getCoercableParameterValue() {
         return twindowSize;
