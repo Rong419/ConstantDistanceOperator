@@ -105,7 +105,6 @@ public class InConstantDistanceOperator extends TreeOperator {
         // avoid fake nodes used to connect direct ancestors into tree.
         node = this.sampleNode(tree);
         if (node == null) return Double.NEGATIVE_INFINITY;
-        node = getTargetNode();
 
        // the number of this node
         int nodeNr = node.getNr();
@@ -313,20 +312,9 @@ public class InConstantDistanceOperator extends TreeOperator {
         return hastingsRatio;
     }
 
-    protected Node getTargetNode() {
-    	Node node;
-    	Tree tree = treeInput.get();
-    	int nodeCount = tree.getNodeCount();
-        do {
-            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
-            node = tree.getNode(nodeNr);
-       } while (node.isRoot() || node.isLeaf() || node.isFake());
-		// TODO Auto-generated method stub
-		return node;
-	}
 
 
-    private Node sampleNode(Tree tree) {
+    protected Node sampleNode(Tree tree) {
     	Node node = null;
     	int nodeCount = tree.getNodeCount();
     	
