@@ -1,0 +1,105 @@
+#
+#model:
+#
+#<?xml version="1.0" encoding="UTF-8" standalone="no"?><input id="posterior" spec="beast.core.util.CompoundDistribution">
+#    <distribution id="prior" spec="beast.core.util.CompoundDistribution">
+#        <distribution id="BirthDeath.t:primates" spec="beast.evolution.speciation.BirthDeathGernhard08Model">
+#            <parameter id="BDDeathRate.t:primates" lower="0.0" name="relativeDeathRate" spec="beast.core.parameter.RealParameter" upper="1.0">0.5</parameter>
+#            <parameter id="BDBirthRate.t:primates" lower="0.0" name="birthDiffRate" spec="beast.core.parameter.RealParameter" upper="10000.0">1.0</parameter>
+#            <tree id="Tree.t:primates" spec="beast.evolution.tree.Tree">
+#                <taxonset id="TaxonSet.primates" spec="beast.evolution.alignment.TaxonSet">
+#                </taxonset>
+#            </tree>
+#        </distribution>
+#        <prior id="BirthRatePrior.t:primates" name="distribution" x="@BDBirthRate.t:primates">
+#            <Uniform id="Uniform.4" name="distr" upper="1000.0"/>
+#        </prior>
+#        <prior id="DeathRatePrior.t:primates" name="distribution" x="@BDDeathRate.t:primates">
+#            <Uniform id="Uniform.5" name="distr"/>
+#        </prior>
+#        <prior id="FastRatePriorDistrbution.c:primates" name="distribution">
+#            <parameter dimension="172" id="fastRates.c:primates" lower="0.0" name="x" spec="beast.core.parameter.RealParameter" upper="5.0">1.0</parameter>
+#            <LogNormal id="LogNormalDistributionModel" meanInRealSpace="true" name="distr">
+#                <parameter estimate="false" id="RealParameter" name="M" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                <parameter id="fastUcldStdev.c:primates" lower="0.0" name="S" spec="beast.core.parameter.RealParameter">0.1</parameter>
+#            </LogNormal>
+#        </prior>
+#        <prior id="fastUcldStdevPrior.c:primates" name="distribution" x="@fastUcldStdev.c:primates">
+#            <LogNormal id="LogNormalDistributionModel1" meanInRealSpace="true" name="distr">
+#                <parameter estimate="false" id="RealParameter1" name="M" spec="beast.core.parameter.RealParameter">0.2</parameter>
+#                <parameter estimate="false" id="RealParameter2" name="S" spec="beast.core.parameter.RealParameter">0.2</parameter>
+#            </LogNormal>
+#        </prior>
+#        <prior id="fastUcldMeanPrior.c:Dengue4" name="distribution">
+#            <parameter id="fastUcldMean.c:primates" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Normal id="Gamma.87" name="distr">
+#                <parameter id="RealParameter3" lower="0.0" name="mean" spec="beast.core.parameter.RealParameter" upper="0.0">1.0</parameter>
+#                <parameter id="RealParameter4" lower="0.0" name="sigma" spec="beast.core.parameter.RealParameter" upper="0.0">0.2</parameter>
+#            </Normal>
+#        </prior>
+#        <prior id="FrequenciesPrior.s:primates" name="distribution">
+#            <parameter dimension="4" id="freqParameter.s:primates" lower="0.0" name="x" spec="beast.core.parameter.RealParameter" upper="1.0">0.25</parameter>
+#            <Uniform id="Uniform.3" name="distr"/>
+#        </prior>
+#        <prior id="RateACPrior.s:primates" name="distribution">
+#            <parameter id="rateAC.s:primates" lower="0.0" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Gamma id="Gamma.0" name="distr">
+#                <parameter estimate="false" id="RealParameter.1" name="alpha" spec="beast.core.parameter.RealParameter">0.05</parameter>
+#                <parameter estimate="false" id="RealParameter.2" name="beta" spec="beast.core.parameter.RealParameter">10.0</parameter>
+#            </Gamma>
+#        </prior>
+#        <prior id="RateAGPrior.s:primates" name="distribution">
+#            <parameter id="rateAG.s:primates" lower="0.0" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Gamma id="Gamma.1" name="distr">
+#                <parameter estimate="false" id="RealParameter.3" name="alpha" spec="beast.core.parameter.RealParameter">0.05</parameter>
+#                <parameter estimate="false" id="RealParameter.4" name="beta" spec="beast.core.parameter.RealParameter">20.0</parameter>
+#            </Gamma>
+#        </prior>
+#        <prior id="RateATPrior.s:primates" name="distribution">
+#            <parameter id="rateAT.s:primates" lower="0.0" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Gamma id="Gamma.2" name="distr">
+#                <parameter estimate="false" id="RealParameter.5" name="alpha" spec="beast.core.parameter.RealParameter">0.05</parameter>
+#                <parameter estimate="false" id="RealParameter.6" name="beta" spec="beast.core.parameter.RealParameter">10.0</parameter>
+#            </Gamma>
+#        </prior>
+#        <prior id="RateCGPrior.s:primates" name="distribution">
+#            <parameter id="rateCG.s:primates" lower="0.0" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Gamma id="Gamma.3" name="distr">
+#                <parameter estimate="false" id="RealParameter.7" name="alpha" spec="beast.core.parameter.RealParameter">0.05</parameter>
+#                <parameter estimate="false" id="RealParameter.8" name="beta" spec="beast.core.parameter.RealParameter">10.0</parameter>
+#            </Gamma>
+#        </prior>
+#        <prior id="RateGTPrior.s:primates" name="distribution">
+#            <parameter id="rateGT.s:primates" lower="0.0" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Gamma id="Gamma.5" name="distr">
+#                <parameter estimate="false" id="RealParameter.11" name="alpha" spec="beast.core.parameter.RealParameter">0.05</parameter>
+#                <parameter estimate="false" id="RealParameter.12" name="beta" spec="beast.core.parameter.RealParameter">10.0</parameter>
+#            </Gamma>
+#        </prior>
+#    </distribution>
+#    <distribution id="likelihood" spec="beast.core.util.CompoundDistribution" useThreads="true">
+#        <distribution data="@primates" id="treeLikelihood.primates" spec="beast.evolution.likelihood.ThreadedTreeLikelihood" tree="@Tree.t:primates">
+#            <siteModel id="SiteModel.s:primates" spec="beast.evolution.sitemodel.SiteModel">
+#                <parameter estimate="false" id="mutationRate.s:primates" name="mutationRate" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                <parameter estimate="false" id="gammaShape.s:primates" name="shape" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                <parameter estimate="false" id="proportionInvariant.s:primates" lower="0.0" name="proportionInvariant" spec="beast.core.parameter.RealParameter" upper="1.0">0.0</parameter>
+#                <substModel id="gtr.s:primates" rateAC="@rateAC.s:primates" rateAG="@rateAG.s:primates" rateAT="@rateAT.s:primates" rateCG="@rateCG.s:primates" rateGT="@rateGT.s:primates" spec="beast.evolution.substitutionmodel.GTR">
+#                    <parameter estimate="false" id="rateCT.s:primates" lower="0.0" name="rateCT" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                    <frequencies frequencies="@freqParameter.s:primates" id="estimatedFreqs.s:primates" spec="beast.evolution.substitutionmodel.Frequencies"/>
+#                </substModel>
+#            </siteModel>
+#            <branchRateModel clock.rate="@fastUcldMean.c:primates" id="FastRelaxedClock.c:primates" rates="@fastRates.c:primates" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@Tree.t:primates">
+#                <LogNormal S="@fastUcldStdev.c:primates" id="FastLogNormalDistributionModel.c:primates" meanInRealSpace="true" name="distr">
+#                    <parameter estimate="false" id="RealParameter31" name="M" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                </LogNormal>
+#            </branchRateModel>
+#        </distribution>
+#    </distribution>
+#</input>
+#
+Sample	posterior	likelihood	prior	treeLikelihood	TreeHeight	freqParameter.1	freqParameter.2	freqParameter.3	freqParameter.4	rateAC	rateAG	rateAT	rateCG	rateGT	BirthDeath	BDBirthRate	BDDeathRate	fastUcldMean	fastUcldStdev
+0	-1358568.6830915075	-1358746.6158437186	177.93275221108098	-1358746.6158437186	3.0535729558019695	0.25	0.25	0.25	0.25	1.0	1.0	1.0	1.0	1.0	36.79720227141715	1.0	0.5	1.0	0.1
+1000	-1048496.8394687987	-1048599.7654531628	102.92598436412193	-1048599.7654531628	0.4092959140307182	0.2552073171538544	0.24424966437571802	0.2447926828461456	0.25575033562428195	1.0	1.0	1.0	1.0	0.8482026398619149	156.07166218141793	2.566916261898185	0.9172216592738524	3.163132018778423	0.1831591684872477
+2000	-965101.6411369145	-965185.0698336957	83.42869678113067	-965185.0698336957	0.3336261666592743	0.2552073171538544	0.24424966437571802	0.2447926828461456	0.25575033562428195	1.0	1.0	1.0	0.7108708385408857	0.5150137696958854	150.7042631942997	2.516287296431138	0.8974089404504921	3.024966772017294	0.2179622469223658
+3000	-896893.9436650282	-896938.7184987281	44.77483369993175	-896938.7184987281	0.18435318803538814	0.2552073171538544	0.24424966437571802	0.2447926828461456	0.25575033562428195	1.0	1.0	1.0	0.6265846326827355	0.5150137696958854	153.38350204453047	5.764686838215265	0.7076884212032127	2.7575947359015873	0.2745454355382875
+4000	-855207.6716131913	-855235.057853904	27.38624071270549	-855235.057853904	0.1291715483089955	0.2552073171538544	0.24424966437571802	0.2447926828461456	0.25575033562428195	0.909555657660104	1.0	1.0	0.6265846326827355	0.5150137696958854	155.0528047157484	4.375158176333241	0.8521321379676203	2.751529223540082	0.2969777370997718

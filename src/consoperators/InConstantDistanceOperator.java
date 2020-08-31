@@ -28,18 +28,32 @@ import java.util.List;
                 "  under relaxed clock models. BMC Evol Biol 20, 54", DOI = "https://doi.org/10.1186/s12862-020-01609-4",
         year = 2020, firstAuthorSurname = "Zhang")
 public class InConstantDistanceOperator extends TreeOperator {
+	
+	
+	// Ensure this is always included among the two child branches
+	enum ChildInclusions {
+		none, 		// Operate on all any internal node (default)
+		leaf,		// Make sure that the internal node always has one or more leaf children
+		internal	// Make sure that the internal node always has one or more internal node children
+	}
+	
+	
     public final Input<Double> twindowSizeInput =
             new Input<>("twindowSize", "the size of the window when proposing new node time", Input.Validate.REQUIRED);
     final public Input<RealParameter> rateInput = new Input<>("rates", "the rates associated with nodes in the tree for sampling of individual rates among branches.", Input.Validate.REQUIRED);
     final public Input<RealParameter> quantileInput = new Input<>("quantiles", "the quantiles of each branch rate.", Input.Validate.XOR,rateInput);
     final public Input<UCRelaxedClockModel> clockModelInput = new Input<>("clockModel", "relaxed clock model used to deal with quantiles", Input.Validate.REQUIRED);
     final public Input<KernelDistribution> proposalKernelInput = new Input<>("kernel", "Proposal kernel for a random walk on the internal node height.");
+    
+    final public Input<ChildInclusions> includeInput = new Input<>("include", "Option flag to ensure that this operator always targets nodes which have a 'leaf' or 'internal' child. "
+    		+ "Default: no constraints 'none'.", ChildInclusions.none, ChildInclusions.values());
 	
     
     
     // Proposal kernel
     private KernelDistribution kernel;
     
+    private ChildInclusions include;
     private double twindowSize;
     private RealParameter rates;
     private RealParameter quantiles;
@@ -51,15 +65,16 @@ public class InConstantDistanceOperator extends TreeOperator {
 
     @Override
     public void initAndValidate() {
-        twindowSize = twindowSizeInput.get();
+    	this.twindowSize = twindowSizeInput.get();
         if (rateInput.get() == null) {
-            quantiles = quantileInput.get();
-            mode = rateMode.quantiles;
+        	this.quantiles = quantileInput.get();
+            this.mode = rateMode.quantiles;
         } else {
-            rates = rateInput.get();
-            mode = rateMode.rates;
+        	this.rates = rateInput.get();
+            this.mode = rateMode.rates;
         }
-        kernel = proposalKernelInput.get();
+        this.kernel = proposalKernelInput.get();
+        this.include = includeInput.get();
     }
 
     @Override
@@ -88,10 +103,8 @@ public class InConstantDistanceOperator extends TreeOperator {
 
         // Step 1: randomly select an internal node, denoted by node x.
         // avoid fake nodes used to connect direct ancestors into tree.
-       do {
-            final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
-            node = tree.getNode(nodeNr);
-       } while (node.isRoot() || node.isLeaf() || node.isFake());
+        node = this.sampleNode(tree);
+        if (node == null) return Double.NEGATIVE_INFINITY;
 
        // the number of this node
         int nodeNr = node.getNr();
@@ -299,7 +312,66 @@ public class InConstantDistanceOperator extends TreeOperator {
         return hastingsRatio;
 }
 
-    // Tuning the parameter: twindowsize represents the range of Uniform distribution
+    private Node sampleNode(Tree tree) {
+    	Node node = null;
+    	int nodeCount = tree.getNodeCount();
+    	
+    	
+    	if (tree.getLeafNodeCount() < 3) return null;
+    	
+    	switch (this.include) {
+    	
+    	
+    		// Sample an internal node uniformly at random
+	    	case none: {
+	    		
+	    		do {
+		             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
+		             node = tree.getNode(nodeNr);
+		        } while (node.isRoot() || node.isLeaf() || node.isFake());
+	    		
+	    		break;
+	    	}
+	    	
+	    	// Sample an internal node such that at least one of its children are leaves
+	    	case leaf:{
+	
+	    		boolean hasLeafChild;
+	    		do {
+		             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
+		             node = tree.getNode(nodeNr);
+		             hasLeafChild = node.getChild(0).isLeaf() || node.getChild(1).isLeaf();
+		        } while (node.isRoot() || node.isLeaf() || node.isFake() || !hasLeafChild);
+	    		
+	    		break;
+	    	}
+	    	
+	    	
+	    	// Sample an internal node such that at least one of its children are internal nodes
+	    	// As long as there are at least 5 leaves (in the binary tree), such a node will always exist
+	    	case internal:{
+	    		
+	    		if (tree.getLeafNodeCount() < 5) return null;
+	    		
+	    		boolean hasInternalChild;
+	    		do {
+		             final int nodeNr = nodeCount / 2 + 1 + Randomizer.nextInt(nodeCount / 2);
+		             node = tree.getNode(nodeNr);
+		             hasInternalChild = !node.getChild(0).isLeaf() || !node.getChild(1).isLeaf();
+	    		} while (node.isRoot() || node.isLeaf() || node.isFake() || !hasInternalChild);
+	    		
+	    		break;
+	    	}
+    	
+    	
+    	}
+    	
+    	
+    	 return node;
+    	 
+	}
+
+	// Tuning the parameter: twindowsize represents the range of Uniform distribution
     @Override
     public double getCoercableParameterValue() {
         return twindowSize;
@@ -326,6 +398,16 @@ public class InConstantDistanceOperator extends TreeOperator {
 
         delta += Math.log(twindowSize);
         twindowSize = Math.exp(delta);
+    }
+    
+    
+    @Override
+    public double getTargetAcceptanceProbability() {
+    	if (this.kernel == null) return super.getTargetAcceptanceProbability();
+    	else if (kernel instanceof KernelDistribution.Bactrian || kernel instanceof KernelDistribution.Mirror) {
+    		return 0.3;
+    	}
+    	return super.getTargetAcceptanceProbability();
     }
 
     @Override

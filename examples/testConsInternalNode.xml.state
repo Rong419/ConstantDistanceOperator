@@ -1,0 +1,29 @@
+<itsabeastystatewerein version='2.0' sample='34999'>
+<statenode id='Tree.t:dna'>((((0:0.10165492313319922,5:0.10165492313319922)15:0.07399711715282349,3:0.17565204028602271)17:0.03143294135428684,1:0.20708498164030956)16:0.03749811948861026,((((2:0.10333553192952454,9:0.10333553192952454)14:0.015292943045755805,8:0.11862847497528034)11:0.03011191184495321,(6:0.09133240881411953,7:0.09133240881411953)10:0.057407978006114024)13:0.059573225679268677,4:0.20831361249950223)12:0.03626948862941759)18:0.0</statenode>
+<statenode id='kappa.s:dna'>kappa.s:dna[1 1] (0.0,Infinity): 2.207704627180337 </statenode>
+<statenode id='fastUcldMean.c:dna'>fastUcldMean.c:dna[1 1] (-Infinity,Infinity): 1.0 </statenode>
+<statenode id='fastUcldStdev.c:dna'>fastUcldStdev.c:dna[1 1] (0.0,1.0): 0.0024541153311514984 </statenode>
+<statenode id='fastRates.c:dna'>fastRates.c:dna[18 1] (0.0,Infinity): 1.0028264859324698 1.0032299397843711 1.0029541299489606 0.9984149475511032 1.0000884245650257 1.0068576380687098 1.001096371939575 0.9995605303324777 0.999162238369651 1.0015072049093363 0.9991151027562035 1.003191378259791 1.0010363545351426 0.9993935782538372 0.999976912073577 0.9970223227408134 1.0039553151735845 1.0013591525784458 </statenode>
+<statenode id='BDBirthRate.t:dna'>BDBirthRate.t:dna[1 1] (0.0,Infinity): 3.342254983053921 </statenode>
+<statenode id='BDDeathRate.t:dna'>BDDeathRate.t:dna[1 1] (0.0,Infinity): 0.38158874452823616 </statenode>
+<statenode id='freqParameter.s:dna'>freqParameter.s:dna[4 1] (0.0,1.0): 0.27998913381540363 0.29052641481785796 0.14437353106666834 0.2851109203000703 </statenode>
+</itsabeastystatewerein>
+<!--
+{"operators":[
+{"id":"InternalnodesOperator.c:dna","p":0.0033949439563452748,"accept":3340,"reject":1176,"acceptFC":1004,"rejectFC":984,"rejectIv":0,"rejectOp":0},
+{"id":"FastUcldStdevScaler.c:dna","p":0.20599320403943128,"accept":874,"reject":2122,"acceptFC":445,"rejectFC":890,"rejectIv":251,"rejectOp":0},
+{"id":"RatesRandomWalk.c:dna","p":0.1428053504882115,"accept":928,"reject":552,"acceptFC":290,"rejectFC":392,"rejectIv":0,"rejectOp":0},
+{"id":"RatesSwapOperator.c:dna","p":"NaN","accept":804,"reject":683,"acceptFC":552,"rejectFC":136,"rejectIv":0,"rejectOp":0},
+{"id":"BirthRateScaler.t:dna","p":0.3100686458633042,"accept":809,"reject":406,"acceptFC":241,"rejectFC":315,"rejectIv":0,"rejectOp":0},
+{"id":"DeathRateScaler.t:dna","p":0.22255968817041,"accept":740,"reject":467,"acceptFC":206,"rejectFC":354,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathTreeScaler.t:dna","p":0.6503928825642028,"accept":77,"reject":747,"acceptFC":44,"rejectFC":319,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathTreeRootScaler.t:dna","p":0.6630515030029412,"accept":68,"reject":841,"acceptFC":34,"rejectFC":379,"rejectIv":249,"rejectOp":249},
+{"id":"KappaScaler.s:dna","p":0.5821824407792239,"accept":24,"reject":148,"acceptFC":12,"rejectFC":62,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathUniformOperator.t:dna","p":"NaN","accept":2110,"reject":6925,"acceptFC":1060,"rejectFC":3019,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathSubtreeSlide.t:dna","p":0.32431858061215274,"accept":100,"reject":4434,"acceptFC":62,"rejectFC":1992,"rejectIv":1910,"rejectOp":1910},
+{"id":"BirthDeathNarrow.t:dna","p":"NaN","accept":249,"reject":4230,"acceptFC":100,"rejectFC":1904,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathWide.t:dna","p":"NaN","accept":7,"reject":905,"acceptFC":2,"rejectFC":393,"rejectIv":473,"rejectOp":473},
+{"id":"BirthDeathWilsonBalding.t:dna","p":"NaN","accept":2,"reject":923,"acceptFC":0,"rejectFC":430,"rejectIv":288,"rejectOp":288},
+{"id":"FrequenciesExchanger.s:dna","p":0.0320999207847473,"accept":184,"reject":125,"acceptFC":64,"rejectFC":73,"rejectIv":0,"rejectOp":0}
+]}
+-->

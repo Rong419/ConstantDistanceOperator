@@ -1,0 +1,35 @@
+<itsabeastystatewerein version='2.0' sample='219999'>
+<statenode id='Tree.t:Dengue4'>((((((12:1.989006274020312,(((((6:0.0,1:2.0)19:0.04723803710777652,0:1.0472380371077765)17:0.385816378670226,5:3.4330544157780025)22:1.7492988067888735,2:15.182353222566876)25:0.31366042177884346,7:7.4960136443457195)20:1.4929926296745926)18:0.525969838164837,13:8.514976112185149)24:2.3019461219407553,4:2.8169222341259044)26:1.019628551620869,3:2.8365507857467733)28:34.06223566551638,((8:2.7005320103975734,(9:1.8079811978142786,10:21.80798119781428)21:8.892550812583295)31:9.201119245573693,(11:20.905118463404925,(15:6.019748828962424,16:12.019748828962424)23:14.885369634442501)27:12.996532792566342)30:4.997135195291889)32:6.861470024249648,14:30.760256475512804)29:0.0</statenode>
+<statenode id='FBDbirthRate'>FBDbirthRate[1 1] (-Infinity,Infinity): 0.10983415743916933 </statenode>
+<statenode id='FBDdeathRate'>FBDdeathRate[1 1] (-Infinity,Infinity): 0.10739493261705056 </statenode>
+<statenode id='FBDsamplingRate'>FBDsamplingRate[1 1] (-Infinity,Infinity): 0.017878024538392875 </statenode>
+<statenode id='FBDorigin'>FBDorigin[1 1] (-Infinity,Infinity): 94.76619135722196 </statenode>
+<statenode id='kappa.s:Dengue4'>kappa.s:Dengue4[1 1] (0.0,Infinity): 17.38593955958268 </statenode>
+<statenode id='fastUcldMean.c:Dengue4'>fastUcldMean.c:Dengue4[1 1] (-Infinity,Infinity): 8.046681850546829E-4 </statenode>
+<statenode id='fastUcldStdev.c:Dengue4'>fastUcldStdev.c:Dengue4[1 1] (-Infinity,1.0): 0.08147322181230698 </statenode>
+<statenode id='freqParameter.s:Dengue4'>freqParameter.s:Dengue4[4 1] (0.0,1.0): 0.2931118512121496 0.205620837303456 0.23190767040409155 0.269359641080303 </statenode>
+<statenode id='rateCategories.c:Dengue4'>rateCategories.c:Dengue4[32 1] (0,31): 5 16 20 13 31 9 15 30 19 11 17 10 26 31 25 25 20 29 2 27 12 18 23 13 19 0 0 19 29 10 1 30 </statenode>
+</itsabeastystatewerein>
+<!--
+{"operators":[
+{"id":"FBDoriginScaler","p":0.5696335733592075,"accept":1497,"reject":3764,"acceptFC":1067,"rejectFC":3310,"rejectIv":1204,"rejectOp":0},
+{"id":"FBDbirthRateScaler","p":0.38406404901200947,"accept":675,"reject":1097,"acceptFC":449,"rejectFC":1020,"rejectIv":0,"rejectOp":0},
+{"id":"FBDdeathRateScaler","p":0.37822434722284964,"accept":708,"reject":1084,"acceptFC":483,"rejectFC":1015,"rejectIv":0,"rejectOp":0},
+{"id":"FBDsamplingRateScaler","p":0.3105131686522803,"accept":6630,"reject":11032,"acceptFC":4290,"rejectFC":10316,"rejectIv":0,"rejectOp":0},
+{"id":"FBDLeafToSA","p":"NaN","accept":136,"reject":18027,"acceptFC":75,"rejectFC":15094,"rejectIv":11006,"rejectOp":10982},
+{"id":"FBDSAWilsonBalding","p":"NaN","accept":225,"reject":17737,"acceptFC":190,"rejectFC":14721,"rejectIv":654,"rejectOp":527},
+{"id":"FBDSAWide","p":"NaN","accept":239,"reject":17563,"acceptFC":207,"rejectFC":14598,"rejectIv":13619,"rejectOp":13619},
+{"id":"FBDSANarrow","p":"NaN","accept":2860,"reject":14667,"acceptFC":2545,"rejectFC":12056,"rejectIv":6797,"rejectOp":6797},
+{"id":"FBDSAUniformOperator","p":"NaN","accept":14386,"reject":21343,"acceptFC":12141,"rejectFC":17589,"rejectIv":0,"rejectOp":0},
+{"id":"FBDSATreeRootScaler","p":0.7956267767966251,"accept":475,"reject":1334,"acceptFC":452,"rejectFC":1068,"rejectIv":868,"rejectOp":573},
+{"id":"FBDSATreeScaler","p":0.8845147399254035,"accept":956,"reject":4487,"acceptFC":814,"rejectFC":3734,"rejectIv":2893,"rejectOp":2408},
+{"id":"FrequenciesExchanger.s:Dengue4","p":0.04626932669742549,"accept":377,"reject":554,"acceptFC":241,"rejectFC":505,"rejectIv":0,"rejectOp":0},
+{"id":"KappaScaler.s:Dengue4","p":0.4440636314486574,"accept":273,"reject":638,"acceptFC":221,"rejectFC":551,"rejectIv":0,"rejectOp":0},
+{"id":"fastUcldMeanScaler.c:Dengue4","p":0.6135378004064517,"accept":1457,"reject":7612,"acceptFC":1252,"rejectFC":6230,"rejectIv":0,"rejectOp":0},
+{"id":"UcldStdevScaler.c:dna","p":0.23185468770565001,"accept":2859,"reject":6106,"acceptFC":2746,"rejectFC":4723,"rejectIv":1162,"rejectOp":1162},
+{"id":"relaxedUpDownOperator.c:Dengue4","p":0.6839201799504498,"accept":324,"reject":5041,"acceptFC":298,"rejectFC":4194,"rejectIv":4385,"rejectOp":3683},
+{"id":"CategoriesSwapOperator.c:Dengue4","p":"NaN","accept":13500,"reject":4370,"acceptFC":12709,"rejectFC":2193,"rejectIv":0,"rejectOp":0},
+{"id":"CategoriesUniform.c:Dengue4","p":"NaN","accept":14708,"reject":3361,"acceptFC":13388,"rejectFC":1604,"rejectIv":0,"rejectOp":0},
+{"id":"CategoriesRandomWalk.c:Dengue4","p":"NaN","accept":11078,"reject":6820,"acceptFC":9469,"rejectFC":5354,"rejectIv":6388,"rejectOp":6388}
+]}
+-->

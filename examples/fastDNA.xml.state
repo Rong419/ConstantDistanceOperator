@@ -1,0 +1,33 @@
+<itsabeastystatewerein version='2.0' sample='49999'>
+<statenode id='Tree.t:dna'>((((0:0.10267357628805657,5:0.10267357628805657)15:0.07179585109506792,3:0.1744694273831245)13:0.053256991337699094,1:0.22772641872082358)17:0.02590878512859976,((((2:0.13483611023344313,9:0.13483611023344313)10:0.01129514470232948,8:0.14613125493577261)12:0.010316481086835694,(6:0.09868822461497215,7:0.09868822461497215)11:0.05775951140763616)16:0.07184054287393654,4:0.22828827889654485)14:0.02534692495287849)18:0.0</statenode>
+<statenode id='kappa.s:dna'>kappa.s:dna[1 1] (0.0,Infinity): 2.770944988981261 </statenode>
+<statenode id='fastUcldMean.c:dna'>fastUcldMean.c:dna[1 1] (-Infinity,Infinity): 1.0 </statenode>
+<statenode id='fastUcldStdev.c:dna'>fastUcldStdev.c:dna[1 1] (0.0,1.0): 0.20726115552270988 </statenode>
+<statenode id='fastRates.c:dna'>fastRates.c:dna[18 1] (0.0,Infinity): 1.0257920197844896 0.9237313889678582 0.8479180329886035 0.8420529127269551 1.2250397272967282 1.146532206083782 0.8405036822294549 0.9516829724485005 0.8683008319690814 0.8117216682033117 1.140578963840528 1.088333513711647 1.052789132768728 0.8803794249031017 1.0489256867778134 1.4400890477285393 0.7011699184929844 1.0285002059588002 </statenode>
+<statenode id='BDBirthRate.t:dna'>BDBirthRate.t:dna[1 1] (0.0,Infinity): 4.499287322222863 </statenode>
+<statenode id='BDDeathRate.t:dna'>BDDeathRate.t:dna[1 1] (0.0,Infinity): 0.15583181218456846 </statenode>
+<statenode id='freqParameter.s:dna'>freqParameter.s:dna[4 1] (0.0,1.0): 0.29640944571374833 0.30469764003540917 0.12238970050295704 0.2765032137478857 </statenode>
+</itsabeastystatewerein>
+<!--
+{"operators":[
+{"id":"InternalnodesOperator.c:dna","p":0.007690620004273567,"accept":370,"reject":1930,"acceptFC":323,"rejectFC":1163,"rejectIv":0,"rejectOp":0},
+{"id":"RootOperator1.c:dna","p":0.010056664347866739,"accept":15,"reject":206,"acceptFC":13,"rejectFC":122,"rejectIv":14,"rejectOp":14},
+{"id":"RootOperator2.c:dna","p":0.008636681514572688,"accept":13,"reject":193,"acceptFC":9,"rejectFC":118,"rejectIv":0,"rejectOp":0},
+{"id":"RootOperator3.c:dna","p":0.025460095359521286,"accept":0,"reject":173,"acceptFC":0,"rejectFC":98,"rejectIv":112,"rejectOp":103},
+{"id":"FastUcldStdevScaler.c:dna","p":0.1909382653947295,"accept":1591,"reject":2347,"acceptFC":685,"rejectFC":1774,"rejectIv":93,"rejectOp":0},
+{"id":"RatesRandomWalk.c:dna","p":0.2961253740225606,"accept":1648,"reject":2267,"acceptFC":978,"rejectFC":1460,"rejectIv":0,"rejectOp":0},
+{"id":"RatesScaleOperator.c:dna","p":0.6391300714557099,"accept":749,"reject":3226,"acceptFC":578,"rejectFC":1905,"rejectIv":0,"rejectOp":0},
+{"id":"RatesSwapOperator.c:dna","p":"NaN","accept":2819,"reject":1061,"acceptFC":1665,"rejectFC":721,"rejectIv":0,"rejectOp":0},
+{"id":"BirthRateScaler.t:dna","p":0.270275502386662,"accept":779,"reject":744,"acceptFC":307,"rejectFC":648,"rejectIv":0,"rejectOp":0},
+{"id":"DeathRateScaler.t:dna","p":0.3535144206685578,"accept":1077,"reject":519,"acceptFC":603,"rejectFC":382,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathTreeScaler.t:dna","p":0.712602976787936,"accept":142,"reject":1014,"acceptFC":103,"rejectFC":607,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathTreeRootScaler.t:dna","p":0.6533914308500003,"accept":101,"reject":1042,"acceptFC":70,"rejectFC":613,"rejectIv":304,"rejectOp":304},
+{"id":"KappaScaler.s:dna","p":0.6304827233417519,"accept":30,"reject":157,"acceptFC":23,"rejectFC":102,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathUniformOperator.t:dna","p":"NaN","accept":2966,"reject":8694,"acceptFC":1821,"rejectFC":5355,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathSubtreeSlide.t:dna","p":0.4718125626187688,"accept":91,"reject":5722,"acceptFC":70,"rejectFC":3538,"rejectIv":2533,"rejectOp":2533},
+{"id":"BirthDeathNarrow.t:dna","p":"NaN","accept":297,"reject":5261,"acceptFC":159,"rejectFC":3312,"rejectIv":0,"rejectOp":0},
+{"id":"BirthDeathWide.t:dna","p":"NaN","accept":1,"reject":1197,"acceptFC":0,"rejectFC":772,"rejectIv":650,"rejectOp":650},
+{"id":"BirthDeathWilsonBalding.t:dna","p":"NaN","accept":1,"reject":1161,"acceptFC":1,"rejectFC":731,"rejectIv":375,"rejectOp":375},
+{"id":"FrequenciesExchanger.s:dna","p":0.041758401032873795,"accept":197,"reject":199,"acceptFC":92,"rejectFC":156,"rejectIv":0,"rejectOp":0}
+]}
+-->

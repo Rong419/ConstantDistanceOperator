@@ -274,6 +274,16 @@ public class SmallPulley extends TreeOperator {
      *
      * @param logAlpha difference in posterior between previous state & proposed state + hasting ratio
      */
+    
+    
+    @Override
+    public double getTargetAcceptanceProbability() {
+    	if (this.kernel == null) return super.getTargetAcceptanceProbability();
+    	else if (kernel instanceof KernelDistribution.Bactrian || kernel instanceof KernelDistribution.Mirror) {
+    		return 0.3;
+    	}
+    	return super.getTargetAcceptanceProbability();
+    }
 
     @Override
     public void optimize(double logAlpha) {

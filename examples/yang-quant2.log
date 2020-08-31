@@ -1,0 +1,178 @@
+#
+#model:
+#
+#<?xml version="1.0" encoding="UTF-8" standalone="no"?><input id="posterior" spec="beast.core.util.CompoundDistribution">
+#    <distribution id="prior" spec="beast.core.util.CompoundDistribution">
+#        <distribution id="YuleModel.t:xMCMC" spec="beast.evolution.speciation.YuleModel">
+#            <parameter id="birthRate.t:xMCMC" name="birthDiffRate" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <tree id="Tree.t:xMCMC" spec="beast.evolution.tree.Tree">
+#                <taxonset id="TaxonSet.xMCMC" spec="beast.evolution.alignment.TaxonSet">
+#                </taxonset>
+#            </tree>
+#        </distribution>
+#        <prior id="YuleBirthRatePrior.t:xMCMC" name="distribution" x="@birthRate.t:xMCMC">
+#            <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
+#        </prior>
+#        <prior id="FrequenciesPrior.s:xMCMC" name="distribution">
+#            <parameter dimension="4" id="freqParameter.s:xMCMC" lower="0.0" name="x" spec="beast.core.parameter.RealParameter" upper="1.0">0.25</parameter>
+#            <Uniform id="Uniform.3" name="distr"/>
+#        </prior>
+#        <prior id="GammaShapePrior.s:xMCMC" name="distribution">
+#            <parameter id="gammaShape.s:xMCMC" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Exponential id="Exponential.0" name="distr">
+#                <parameter estimate="false" id="RealParameter.0" name="mean" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            </Exponential>
+#        </prior>
+#        <prior id="KappaPrior.s:xMCMC" name="distribution">
+#            <parameter id="kappa.s:xMCMC" lower="0.0" name="x" spec="beast.core.parameter.RealParameter">2.0</parameter>
+#            <LogNormal id="LogNormalDistributionModel.1" name="distr">
+#                <parameter estimate="false" id="RealParameter.7" name="M" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                <parameter estimate="false" id="RealParameter.8" name="S" spec="beast.core.parameter.RealParameter">1.25</parameter>
+#            </LogNormal>
+#        </prior>
+#        <prior id="MeanRatePrior.c:xMCMC" name="distribution">
+#            <parameter id="ucldMean.c:xMCMC" name="x" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#            <Uniform id="Uniform.12" name="distr" upper="Infinity"/>
+#        </prior>
+#        <prior id="ucldStdevPrior.c:xMCMC" name="distribution">
+#            <parameter id="ucldStdev.c:xMCMC" lower="0.0" name="x" spec="beast.core.parameter.RealParameter">0.1</parameter>
+#            <Gamma id="Gamma.8" name="distr">
+#                <parameter estimate="false" id="RealParameter.45" name="alpha" spec="beast.core.parameter.RealParameter">0.5396</parameter>
+#                <parameter estimate="false" id="RealParameter.46" name="beta" spec="beast.core.parameter.RealParameter">0.3819</parameter>
+#            </Gamma>
+#        </prior>
+#        <distribution id="FelidCanid.prior" monophyletic="true" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:xMCMC">
+#            <taxonset id="FelidCanid" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon id="Felis_catus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Canis_familiaris" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Ursus_americanus" spec="beast.evolution.alignment.Taxon"/>
+#            </taxonset>
+#            <Normal id="Normal.FC" name="distr">
+#                <parameter id="RealParameter.18" lower="0.0" name="mean" spec="beast.core.parameter.RealParameter" upper="0.0">55.0</parameter>
+#                <parameter id="RealParameter.19" lower="0.0" name="sigma" spec="beast.core.parameter.RealParameter" upper="0.0">5.0</parameter>
+#            </Normal>
+#        </distribution>
+#        <distribution id="HorseRhino.prior" monophyletic="true" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:xMCMC">
+#            <taxonset id="HorseRhino" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon id="Rhinoceros_unicornis" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Equus_caballus" spec="beast.evolution.alignment.Taxon"/>
+#            </taxonset>
+#            <Normal id="Normal.HR" name="distr">
+#                <parameter id="RealParameter.12" lower="0.0" name="mean" spec="beast.core.parameter.RealParameter" upper="0.0">54.0</parameter>
+#                <parameter id="RealParameter.13" lower="0.0" name="sigma" spec="beast.core.parameter.RealParameter" upper="0.0">2.0</parameter>
+#            </Normal>
+#        </distribution>
+#        <distribution id="HumanGorilla.prior" monophyletic="true" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:xMCMC">
+#            <taxonset id="HumanGorilla" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon id="Homo_sapiens" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Gorilla_gorilla" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Pan_troglodytes" spec="beast.evolution.alignment.Taxon"/>
+#            </taxonset>
+#            <Normal id="Normal.HG" name="distr">
+#                <parameter id="RealParameter.1" lower="0.0" name="mean" spec="beast.core.parameter.RealParameter" upper="0.0">10.0</parameter>
+#                <parameter id="RealParameter.9" lower="0.0" name="sigma" spec="beast.core.parameter.RealParameter" upper="0.0">1.0</parameter>
+#            </Normal>
+#        </distribution>
+#        <distribution id="MonkeyApe.prior" monophyletic="true" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:xMCMC">
+#            <taxonset id="MonkeyApe" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon idref="Homo_sapiens"/>
+#                <taxon idref="Gorilla_gorilla"/>
+#                <taxon idref="Pan_troglodytes"/>
+#                <taxon id="Macaca_mulatta" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Pongo_pygmaeus" spec="beast.evolution.alignment.Taxon"/>
+#            </taxonset>
+#            <Normal id="Normal.MA" name="distr">
+#                <parameter id="RealParameter.10" lower="0.0" name="mean" spec="beast.core.parameter.RealParameter" upper="0.0">35.0</parameter>
+#                <parameter id="RealParameter.11" lower="0.0" name="sigma" spec="beast.core.parameter.RealParameter" upper="0.0">1.5</parameter>
+#            </Normal>
+#        </distribution>
+#        <distribution id="Primates.prior" monophyletic="true" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:xMCMC">
+#            <taxonset id="Primates" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon id="Callithrix_jacchus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Cheirogaleus_medius" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Daubentonia_madagascariensis" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Eulemur_mongoz" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Galago_crassicaudatus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon idref="Gorilla_gorilla"/>
+#                <taxon id="Hapalemur_griseus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon idref="Homo_sapiens"/>
+#                <taxon id="Lemur_catta" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Lepilemur_edwardsi" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Loris_tardigradus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon idref="Macaca_mulatta"/>
+#                <taxon id="Microcebus_berthae" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_griseorufus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_murinus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_myoxinus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_ravelobensis" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_rufus_1" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_rufus_2" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_sambiranensis" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Microcebus_tavaratra" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Mirza_coquereli" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon idref="Pan_troglodytes"/>
+#                <taxon idref="Pongo_pygmaeus"/>
+#                <taxon id="Propithecus_tattersalli" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Varecia_variegata" spec="beast.evolution.alignment.Taxon"/>
+#            </taxonset>
+#            <Normal id="Normal.1" name="distr">
+#                <parameter estimate="false" id="RealParameter.65" name="mean" spec="beast.core.parameter.RealParameter">77.0</parameter>
+#                <parameter estimate="false" id="RealParameter.66" name="sigma" spec="beast.core.parameter.RealParameter">7.0</parameter>
+#            </Normal>
+#        </distribution>
+#        <distribution id="WhaleHippo.prior" monophyletic="true" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:xMCMC">
+#            <taxonset id="WhaleHippo" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon id="Physeter_macrocephalus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Balaenoptera_physalus" spec="beast.evolution.alignment.Taxon"/>
+#                <taxon id="Hippopotamus_amphibius" spec="beast.evolution.alignment.Taxon"/>
+#            </taxonset>
+#            <Normal id="Normal.WH" name="distr">
+#                <parameter id="RealParameter.16" lower="0.0" name="mean" spec="beast.core.parameter.RealParameter" upper="0.0">56.0</parameter>
+#                <parameter id="RealParameter.17" lower="0.0" name="sigma" spec="beast.core.parameter.RealParameter" upper="0.0">2.0</parameter>
+#            </Normal>
+#        </distribution>
+#        <distribution id="Whales.prior" monophyletic="true" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:xMCMC">
+#            <taxonset id="Whales" spec="beast.evolution.alignment.TaxonSet">
+#                <taxon idref="Physeter_macrocephalus"/>
+#                <taxon idref="Balaenoptera_physalus"/>
+#            </taxonset>
+#            <Normal id="Normal.W" name="distr">
+#                <parameter id="RealParameter.14" lower="0.0" name="mean" spec="beast.core.parameter.RealParameter" upper="0.0">37.0</parameter>
+#                <parameter id="RealParameter.15" lower="0.0" name="sigma" spec="beast.core.parameter.RealParameter" upper="0.0">2.0</parameter>
+#            </Normal>
+#        </distribution>
+#    </distribution>
+#    <distribution id="likelihood" spec="beast.core.util.CompoundDistribution" useThreads="true">
+#        <distribution data="@xMCMC" id="treeLikelihood.xMCMC" spec="beast.evolution.likelihood.ThreadedTreeLikelihood" tree="@Tree.t:xMCMC">
+#            <siteModel gammaCategoryCount="4" id="SiteModel.s:xMCMC" shape="@gammaShape.s:xMCMC" spec="beast.evolution.sitemodel.SiteModel">
+#                <parameter estimate="false" id="mutationRate.s:xMCMC" name="mutationRate" spec="beast.core.parameter.RealParameter">1.0</parameter>
+#                <parameter estimate="false" id="proportionInvariant.s:xMCMC" lower="0.0" name="proportionInvariant" spec="beast.core.parameter.RealParameter" upper="1.0">0.0</parameter>
+#                <substModel id="hky.s:xMCMC" kappa="@kappa.s:xMCMC" spec="beast.evolution.substitutionmodel.HKY">
+#                    <frequencies frequencies="@freqParameter.s:xMCMC" id="estimatedFreqs.s:xMCMC" spec="beast.evolution.substitutionmodel.Frequencies"/>
+#                </substModel>
+#            </siteModel>
+#            <branchRateModel clock.rate="@ucldMean.c:xMCMC" id="RelaxedClock.c:xMCMC" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@Tree.t:xMCMC">
+#                <distr id="ApproxLogNormal" spec="beast.math.distributions.PiecewiseLinearDistribution">
+#                    <LogNormal S="@ucldStdev.c:xMCMC" id="LogNormalDistributionModel.c:xMCMC" meanInRealSpace="true" name="distr">
+#                        <parameter estimate="false" id="RealParameter.44" lower="0.0" name="M" spec="beast.core.parameter.RealParameter" upper="1.0">1.0</parameter>
+#                    </LogNormal>
+#                </distr>
+#                <parameter dimension="68" id="rateQuantiles.c:xMCMC" lower="0.0" name="rateQuantiles" spec="beast.core.parameter.RealParameter" upper="1.0">0.5</parameter>
+#            </branchRateModel>
+#        </distribution>
+#    </distribution>
+#</input>
+#
+Sample	posterior	likelihood	prior	treeLikelihood.xMCMC	TreeHeight	YuleModel	birthRate	kappa	gammaShape	logP(mrca(HumanGorilla))	mrca.age(HumanGorilla)	logP(mrca(MonkeyApe))	mrca.age(MonkeyApe)	logP(mrca(Primates))	mrca.age(Primates)	logP(mrca(HorseRhino))	mrca.age(HorseRhino)	logP(mrca(Whales))	mrca.age(Whales)	logP(mrca(WhaleHippo))	mrca.age(WhaleHippo)	logP(mrca(FelidCanid))	mrca.age(FelidCanid)	YuleBirthRatePrior	FrequenciesPrior	GammaShapePrior	KappaPrior	ucldMean	ucldStdev	rate.mean	rate.variance	rate.coefficientOfVariation	freqParameter.1	freqParameter.2	freqParameter.3	freqParameter.4
+0	-43172.48212480022	-41831.76956979999	-1340.7125550002288	-41831.76956979999	4.280065018247689	-31.443498867451538	1.0	2.0	1.0	-44.484015499876996	0.6656465712217308	-254.75827336777695	1.2294149625878066	-59.62926729927794	2.4150616781929704	-364.79992889232665	0.09728443363455062	-164.83677419095835	0.8641797129558737	-362.2338997416898	2.2880412550109854	-56.25523985118459	3.170055274221151	0.0	0.0	-1.0	-1.8653600339742873	1.0	0.13431201177366325	0.992220748585768	0.013966924387163024	0.1189691133627524	0.25	0.25	0.25	0.25
+1000	-32021.3074089668	-30726.663457675233	-1294.643951291569	-30726.663457675233	16.820801130521108	-88.25993452649624	0.5905083717373742	2.0	1.0	-33.96156165816003	1.87071674439187	-237.08255592936652	2.4283607213846015	-41.817864710979066	15.214924368303391	-356.23954524292037	0.7363193514262787	-146.59275548976063	2.9434975634906353	-330.37727152691855	4.715289934472365	-54.34258288989104	4.100979162535816	0.0	0.0	-1.0	-1.8653600339742873	0.12874758724095847	1.1665836951040713	0.05743911747980712	0.025452081163856215	1.4442275766768562	0.25	0.25	0.25	0.25
+2000	-30444.158955014682	-29797.298411996686	-646.860543017996	-29797.298411996686	129.08958255228663	-295.10815161286166	0.24103935515945324	2.0	1.0	-22.997257996631177	16.64504619448601	-45.8071417394404	20.85177320504177	-27.842177422452917	126.47502619038121	-226.2517869634737	11.607576030643482	-2.229214960885206	34.7780562615213	-10.056594164528505	47.78075017984542	-10.424707351442436	35.13000892576488	0.0	0.0	-1.0	-1.8653600339742873	0.01611223043499577	1.2243900137500092	0.00598653371926705	2.2609831223665682E-4	1.2004151984293143	0.25	0.25	0.25	0.25
+3000	-29828.555180137944	-29348.94244638644	-479.6127337515012	-29348.94244638644	132.86509031300744	-166.66684847803333	0.07612984983877606	2.0	1.0	-16.22035095936346	15.531982000360953	-34.08747922174147	22.857766263494643	-31.452336095087603	129.92989482756514	-210.0856793332277	13.16143062060444	-2.284721000735907	34.68028400536395	-7.708332115967618	49.016449955959075	-4.963475741064056	43.965736781675716	0.0	0.0	-1.0	-1.8653600339742873	0.015531225734008544	1.2243900137500092	0.005329790390868229	2.5730578570752583E-4	1.3886710011152856	0.25	0.25	0.25	0.25
+4000	-29497.33670362613	-29065.402948997595	-431.93375462853686	-29065.402948997595	138.35241579699917	-151.91669647911442	0.035596851211584575	2.2397970897507204	1.0	-9.333131312776448	14.102241528621096	-19.193542868438165	26.03277487055979	-37.851998013886046	135.555449229763	-196.76654683515105	14.487524894394538	-1.7841147376943314	35.82687076950674	-3.4327689449139474	52.18352704068342	-5.451432984732982	42.91063165609094	0.0	0.0	-1.0	-1.9604630928789315	0.014512586500289368	1.2126785114472276	0.005140308062835906	2.265662723989971E-4	1.3456716170640328	0.25	0.25	0.24102587319571991	0.25897412680428006
+5000	-29342.317673704012	-28958.70790755342	-383.6097661505913	-28958.70790755342	143.15559894724282	-153.810948329578	0.03867466439922148	2.3871784445649866	1.0	-6.328981993304902	13.289390052912616	-8.818948687673156	29.192638059443734	-14.608938943338403	110.92522432623969	-185.13832290175034	15.682772836439666	-1.6616650338165744	37.62978929842897	-3.5706505594953803	52.04165201556936	-3.39433211082427	48.419894889952374	0.0	0.0	-1.0	-2.017592863101438	0.013760126770203513	1.2181252177765916	0.005050235436292185	2.0374335831058914E-4	1.3722554483591851	0.25	0.2522765150847048	0.24102587319571991	0.2566976117195753
+6000	-28977.6042922371	-28630.499572127585	-347.104720109516	-28630.499572127585	125.9379582362617	-153.8989594173017	0.030081053360530276	2.3871784445649866	0.7020098522655862	-7.237633301098562	13.554910622756609	-2.504603743022931	32.69546090124393	-4.3321297383527515	88.99139456014566	-165.5872345888381	17.781203899072132	-2.186679449380497	39.14400323808688	-2.3866957340536445	58.48935336228351	-3.062767948938732	49.83090190023463	0.0	0.0	-0.7020098522655862	-2.017592863101438	0.011911607754835898	1.1944694145361676	0.004979098216412446	1.5830489054938663E-4	1.376041950284605	0.25	0.2522765150847048	0.24102587319571991	0.2566976117195753
+7000	-28650.910395492305	-28316.113722320664	-334.7966731716412	-28316.113722320664	136.92571083303238	-156.8747690850678	0.02785582543763133	3.6646019602998643	0.7020098522655862	-1.42557567044586	11.006615256432354	-1.4535049406558533	35.762204596577305	-6.5496738598334066	96.0029699626715	-151.62001838467958	19.358067874794862	-3.911222487827873	41.28871708002592	-4.070835895050004	60.43508753580841	-2.53129300285928	54.61812585708722	0.0	0.0	-0.7020098522655862	-2.4693565197938785	0.011187156995767281	1.1944694145361676	0.004616722764064966	1.41570033152545E-4	1.3556338927469673	0.24981969864192832	0.2522765150847048	0.24102587319571991	0.25687791307764696
+8000	-28648.6947418121	-28320.03726261576	-328.6574791963428	-28320.03726261576	174.7891083506386	-159.9476000816288	0.026857655219565908	3.6646019602998643	0.7020098522655862	-1.684651057438984	11.237507595317549	-2.701856620838993	37.489686407535636	-6.485240968517315	95.83609418253207	-140.50712839805357	20.66592821939823	-3.262967445069795	40.634151049480664	-4.5159676083992615	60.81986049145379	-3.192287171174658	60.76155675809883	0.0	0.0	-0.7020098522655862	-2.4693565197938785	0.010899853839588776	1.1944694145361676	0.0042496528728740626	1.2570127940867435E-4	1.336682756798628	0.2498829134676966	0.2522765150847048	0.24096265836995165	0.25687791307764696
+9000	-28582.5290302673	-28256.44829512462	-326.0807351426763	-28256.44829512462	129.10835674012273	-156.05438833485255	0.024772227090500178	6.316093468503936	0.7020098522655862	-2.4022974102093726	11.722416254570712	-1.5717997984370204	36.055122128977885	-9.19700196869242	101.91086152806399	-143.9464975599859	20.255736861360116	-1.6149489072734926	37.1513457897366	-1.6668471891190715	55.33811496252323	-2.594269614971478	56.81511940836829	0.0	0.0	-0.7020098522655862	-3.2126450976012415	0.011389394426397881	1.1710685532967535	0.0051091907243409436	1.3233176684102004E-4	1.2866851686761547	0.2498829134676966	0.2522765150847048	0.24096265836995165	0.25687791307764696
+10000	-28321.622599735292	-28003.680850433568	-317.9417493017245	-28003.680850433568	138.18836521563398	-158.59930332982077	0.03538655258428128	6.316093468503936	0.4329188531291401	-1.8997463197968276	11.400576871572678	-3.233392707591884	37.930947082131595	-7.016653350347218	97.17118879671074	-132.55690639154355	21.633990585457845	-3.2576062726266395	40.628245370822675	-1.9889584402245248	57.736370297971966	-2.625589129774594	52.79531539516623	0.0	0.0	-0.4329188531291401	-3.2126450976012415	0.010868035762388411	1.1710685532967535	0.005183056263111311	1.5471274393502723E-4	1.3888426756641112	0.2498829134676966	0.2522765150847048	0.24096265836995165	0.25687791307764696
+11000	-28328.669894231294	-28012.264369512	-316.40552471929703	-28012.264369512	139.01382802702972	-157.53401888130279	0.0223364135869422	6.316093468503936	0.4329188531291401	-3.434430098213641	12.242985316496284	-4.801068423648471	38.95537501641884	-6.892191298046487	96.86654414705983	-130.98666015327115	21.828637027380204	-1.6228914295655545	36.70598345895598	-1.6239981803175265	55.69129345257467	-2.746672894932886	51.69624116123685	0.0	0.0	-0.4329188531291401	-3.2126450976012415	0.010762203131260951	1.1710685532967535	0.00513065635432483	1.5396103363957364E-4	1.426767682377731	0.2498829134676966	0.2522765150847048	0.24096265836995165	0.25687791307764696
