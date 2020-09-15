@@ -264,11 +264,11 @@ name="alignment">
 
     <operator id="fastUcldStdevScaler.c:xMCMC" spec="consoperators.UcldScalerOperator" distr="@FastLogNormalDistributionModel.c:xMCMC" rates="@fastRates.c:xMCMC" scaleFactor="0.5" stdev="@fastUcldStdev.c:xMCMC" weight="5.0"/>
 
-    <operator id="FastInternalnodesOperator.c:xMCMC" spec="consoperators.InConstantDistanceOperator" rates="@fastRates.c:xMCMC" tree="@Tree.t:xMCMC" twindowSize="0.02" weight="5.0"/>
+    <operator id="FastInternalnodesOperator.c:xMCMC" spec="consoperators.InConstantDistanceOperator" rates="@fastRates.c:xMCMC" tree="@Tree.t:xMCMC" twindowSize="0.02" weight="5.0" clockModel="@FastRelaxedClock.c:xMCMC"/>
 
-    <operator id="FastRootOperator1.c:xMCMC" spec="consoperators.SimpleDistance" rates="@fastRates.c:xMCMC" tree="@Tree.t:xMCMC" twindowSize="0.02" weight="1.0"/>
+    <operator id="FastRootOperator1.c:xMCMC" spec="consoperators.SimpleDistance" rates="@fastRates.c:xMCMC" tree="@Tree.t:xMCMC" twindowSize="0.02" weight="1.0" clockModel="@FastRelaxedClock.c:xMCMC"/>
 
-    <operator id="FastRootOperator2.c:xMCMC" spec="consoperators.SmallPulley" dwindowSize="0.02" rates="@fastRates.c:xMCMC" tree="@Tree.t:xMCMC" weight="1.0"/>
+    <operator id="FastRootOperator2.c:xMCMC" spec="consoperators.SmallPulley" dwindowSize="0.02" rates="@fastRates.c:xMCMC" tree="@Tree.t:xMCMC" weight="1.0" clockModel="@FastRelaxedClock.c:xMCMC"/>
 
     <operator id="FastRootOperator3.c:xMCMC" spec="consoperators.BigPulley" dwindowSize="0.002" rates="@fastRates.c:xMCMC" tree="@Tree.t:xMCMC" twindowSize="0.02" weight="1.0"/>
 
