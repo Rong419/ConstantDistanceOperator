@@ -26,8 +26,8 @@ public class CachedDistribution extends ParametricDistribution {
     	dist = new CachedImpl();
         underlyingDistr = getUnderlyingDistr();
     }
-
-
+    
+    
     /**
      * make sure internal state is up to date *
      */

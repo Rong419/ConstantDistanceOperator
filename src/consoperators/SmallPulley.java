@@ -163,13 +163,34 @@ public class SmallPulley extends TreeOperator {
             if (n % 2 == 0) {
                 d_ = r;
             } else {
-                d_ = - r;
+                d_ = D - r;
             }
         }
 
         //Step 3: propose new rates
         double r_j_ = d_ / (t_x - t_j);
         double r_k_ = (D - d_) / (t_x - t_k);
+        
+        if (d_ < 0) {
+        	System.out.println("t_x=" + t_x);
+        	System.out.println("t_j=" + t_j);
+        	System.out.println("t_k=" + t_k);
+        	System.out.println("r_j=" + r_j);
+        	System.out.println("r_j=" + r_k);
+        	System.out.println("D=" + D);
+        	System.out.println("d=" + d);
+        	System.out.println("b=" + b);
+        	
+        }
+        
+       if (r_j_ < 0) {
+    	   System.out.println("rj = " + r_j_);
+    	   System.exit(0);
+       }
+       if (r_k_ < 0) {
+    	   System.out.println("rk = " + r_k_);
+    	   System.exit(0);
+       }
 
         //Step 4: set the proposed new rates
         switch (mode) {
