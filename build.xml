@@ -1,8 +1,8 @@
 <!-- Build FastRelaxedClockLogNormal. It is also used by Hudson FastRelaxedClockLogNormal project. JUnit test is available for this build. -->
 <project basedir="." default="addon" name="BUILD_FastRelaxedClockLogNormal">
 	<description>
-	    Build FastRelaxedClockLogNormal. 
-            Also used by Hudson FastRelaxedClockLogNormal project. 
+	    Build FastRelaxedClockLogNormal.
+            Also used by Hudson FastRelaxedClockLogNormal project.
 	    JUnit test is available for this build.
 	    $Id: build_FastRelaxedClockLogNormal.xml $
 	</description>
@@ -18,7 +18,7 @@
 	<property name="srcBeast2" location="${beast2path}/src" />
 	<property name="beast2classpath" location="${beast2path}/build" />
 	<property name="Add_on_dir" value="${release_dir}/add-on" />
-	<property name="version" value="1.1.0" />
+	<property name="version" value="1.1.1" />
 
     <import file="${beast2path}/build.xml" />
 
@@ -75,7 +75,7 @@
 		<mkdir dir="${buildFastRelaxedClockLogNormal}" />
 
 		<!-- Compile the java code from ${srcFastRelaxedClockLogNormal} into ${buildFastRelaxedClockLogNormal} /bin -->
-		<javac srcdir="${srcFastRelaxedClockLogNormal}" destdir="${buildFastRelaxedClockLogNormal}" classpathref="classpath" 
+		<javac srcdir="${srcFastRelaxedClockLogNormal}" destdir="${buildFastRelaxedClockLogNormal}" classpathref="classpath"
 		       fork="true"
 		       memoryinitialsize="256m"
 		       memorymaximumsize="256m"
@@ -130,7 +130,7 @@
 		<java jar="${distFastRelaxedClockLogNormal}/FastRelaxedClockLogNormal.jar" fork="true" />
 	</target>
 
-	
+
 	<!-- JUnit test -->
 	<target name="junitFastRelaxedClockLogNormal">
 		<mkdir dir="${report}" />
@@ -144,17 +144,17 @@
 
 			<batchtest fork="yes" todir="${report}">
 				<fileset dir="${srcFastRelaxedClockLogNormal}">
-                    <include name="test/**/*Test.java"/>                                         
+                    <include name="test/**/*Test.java"/>
 				</fileset>
 				<fileset dir="${srcBeast2}">
-                    <include name="test/beast/integration/**/*Test.java"/>                                         
-                    <exclude name="test/beast/integration/**/ResumeTest.java"/>                                         
+                    <include name="test/beast/integration/**/*Test.java"/>
+                    <exclude name="test/beast/integration/**/ResumeTest.java"/>
 				</fileset>
 			</batchtest>
 		</junit>
 		<echo message="JUnit test finished." />
 	</target>
-    
+
     <target name="junitreport">
 		<junitreport todir="${report}">
 			<fileset dir="${report}" includes="*.xml"/>
