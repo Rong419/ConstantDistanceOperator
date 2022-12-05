@@ -3,9 +3,9 @@ package test.beast.math.distributions;
 import org.apache.commons.math.MathException;
 import org.junit.Test;
 
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.math.distributions.ParametricDistribution;
-import beast.math.distributions.PiecewiseLinearDistribution;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.inference.distribution.ParametricDistribution;
+import consoperators.distributions.PiecewiseLinearDistribution;
 import junit.framework.TestCase;
 
 public class PieceWiseLinearDistributionTest extends TestCase {

@@ -3,9 +3,9 @@ package test.beast.math.distributions;
 import org.apache.commons.math.MathException;
 import org.junit.Test;
 
-import beast.core.parameter.RealParameter;
-import beast.math.distributions.MixedPieceWiseLinearDistribution;
-import beast.math.distributions.Normal;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.inference.distribution.Normal;
+import consoperators.distributions.MixedPieceWiseLinearDistribution;
 import junit.framework.TestCase;
 
 public class MixedPieceWiseLinearDistributionTest extends TestCase {

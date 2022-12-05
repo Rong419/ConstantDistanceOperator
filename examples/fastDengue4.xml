@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.alignment:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="" version="2.6">
 
 <!--
 This xml uses real rates under uncorrelated relaxed clock model.
@@ -25,22 +25,22 @@ Tree is not sampled.
         <sequence id="seq_D4Thai84" spec="Sequence" taxon="D4Thai84" totalcount="4" value="ATGCGATGCGTAGGAGTAGGGAACAGAGACTTTGTAGAAGGAGTCTCAGGTGGAGCATGGGTCGATCTGGTGCTAGAACATGGAGGATGTGTCACAACCATGGCCCAGGGAAAACCAACCCTGGATTTTGAACTGATCAAGACAACAGCCAAGGAAGTGGCTCTGTTAAGAACCTATTGCATTGAAGCCTCCATATCAAACATAACCACGGCAACAAGATGTCCAACGCAAGGAGAGCCTTACCTCAAAGAGGAACAAGATCAACAGTACATCTGCCGGAGAGACGTGGTAGACAGAGGGTGGGGCAACGGCTGTGGCTTGTTTGGGAAAGGAGGAGTTGTGACATGTGCGAAGTTTTCATGCTCGGGGAAGATAACGGGCAACTTAGTCCAAATTGAGAACCTTGAATACACAGTGGTTGTAACAGTCCACAATGGAGACACCCATGCTGTAGGAAATGATACATCCAACCACGGAGTGACAGCCACGATAACCCCCAGGTCACCATCGGTAGAAGTTAAATTACCGGACTATGGAGAATTAACACTTGATTGTGAACCTAGGTCCGGAATTGATTTTAATGAGATGATTCTGATGAAAATGAAAAAGAAAACGTGGCTCGTGCACAAGCAATGGTTTTTGGATCTACCTCTACCATGGACAGCAGGAGCAGACACGTCAGAAGTTCACTGGAATCACAAAGAGAGAATGGTGACATTCAAGGTTCCTCATGCCAAGAGACAGGATGTGACAGTGCTAGGATCTCAGGAAGGAGCCATGCATTCAGCCCTCGCCGGAGCCACAGAAGTGGATTCCGGTGATGGAAACCATATGTTTGCAGGACACTTAAAGTGTAAAGTTCGTATGGAGAAATTGAGAATCAAGGGAATGTCATACACGATGTGCTCAGGAAAGTTCTCAATTGATAAAGAGATGGCAGAAACACAGCATGGAACAACAGTGGTAAAGGTCAAGTATGAAGGCACTGGAGCTCCATGTAAAGTCCCCATAGAGATAAGAGATGTGAACAAGGAAAAAGTGGTTGGGCGTATCATCTCATCTACCCCTTTGGCTGAGAATACCAACAGTGTGACCAATATAGAATTGGAACCTCCTTTTGGGGATAGCTACATAGTGATAGGTGTGGGAGACAGTGCATTAACACTCCATTGGTTCAGGAAAGGGAGCTCCATTGGCAAGATGTTTGAGTCCACATACAGAGGTGCAAAGCGCATGGCCATTCTAGGTGAAACAGCTTGGGATTTTGGTTCTGTTGGCGGACTGCTCACATCATTGGGAAAGGCTGTACACCAGGTTTTTGGCAGTGTGTATACAACTATGTTTGGAGGAGTCTCATGGATGGTTAGAATCCTAATCGGGTTCTTAGTGTTGTGGATTGGCACGAATTCAAGAAACACTTCAATGGCTATGTCGTGCATAGCTGTTGGAGGAATTACTCTGTTTCTGGGCTTCACAGTTCATGCA"/>
     </data>
 
-<map name="Uniform" >beast.math.distributions.Uniform</map>
-<map name="Exponential" >beast.math.distributions.Exponential</map>
-<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
-<map name="Normal" >beast.math.distributions.Normal</map>
-<map name="Beta" >beast.math.distributions.Beta</map>
-<map name="Gamma" >beast.math.distributions.Gamma</map>
-<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
-<map name="prior" >beast.math.distributions.Prior</map>
-<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
-<map name="OneOnX" >beast.math.distributions.OneOnX</map>
+<map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+<map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+<map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+<map name="Normal" >beast.base.inference.distribution.Normal</map>
+<map name="Beta" >beast.base.inference.distribution.Beta</map>
+<map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+<map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+<map name="prior" >beast.base.inference.distribution.Prior</map>
+<map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+<map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
 
 
 <run id="mcmc" spec="MCMC" chainLength="3000000">
     <state id="state" spec="State" storeEvery="5000">
-        <tree id="Tree.t:Dengue4" spec="beast.evolution.tree.Tree" name="stateNode">
-            <trait id="dateTrait.t:Dengue4" spec="beast.evolution.tree.TraitSet" traitname="date" value="D4Brazi82=82,D4ElSal83=83,D4ElSal94=94,D4Indon76=76,D4Indon77=77,D4Mexico84=84,D4NewCal81=81,D4Philip64=64,D4Philip56=56,D4Philip84=84,D4PRico86=86,D4SLanka78=78,D4Tahiti79=79,D4Tahiti85=85,D4Thai63=63,D4Thai78=78,D4Thai84=84">
+        <tree id="Tree.t:Dengue4" spec="beast.base.evolution.tree.Tree" name="stateNode">
+            <trait id="dateTrait.t:Dengue4" spec="beast.base.evolution.tree.TraitSet" traitname="date" value="D4Brazi82=82,D4ElSal83=83,D4ElSal94=94,D4Indon76=76,D4Indon77=77,D4Mexico84=84,D4NewCal81=81,D4Philip64=64,D4Philip56=56,D4Philip84=84,D4PRico86=86,D4SLanka78=78,D4Tahiti79=79,D4Tahiti85=85,D4Thai63=63,D4Thai78=78,D4Thai84=84">
                 <taxa id="TaxonSet.Dengue4" spec="TaxonSet">
                     <alignment idref="Dengue4"/>
                 </taxa>
@@ -58,33 +58,33 @@ Tree is not sampled.
         <parameter id="fastRates.c:Dengue4" spec="parameter.RealParameter"  name="stateNode">1.0</parameter>
     </state>
 
-    <init id="RandomTree.t:Dengue4" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:Dengue4" taxa="@Dengue4">
+    <init id="RandomTree.t:Dengue4" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:Dengue4" taxa="@Dengue4">
         <populationModel id="ConstantPopulation0.t:Dengue4" spec="ConstantPopulation">
             <parameter id="randomPopSize.t:Dengue4" spec="parameter.RealParameter" name="popSize">1.0</parameter>
         </populationModel>
     </init>
 
-    <distribution id="posterior" spec="util.CompoundDistribution">
-        <distribution id="prior" spec="util.CompoundDistribution">
+    <distribution id="posterior" spec="beast.base.inference.CompoundDistribution">
+        <distribution id="prior" spec="beast.base.inference.CompoundDistribution">
             <distribution id="FBD" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" birthRate="@FBDbirthRate" deathRate="@FBDdeathRate" samplingRate="@FBDsamplingRate" origin="@FBDorigin" tree="@Tree.t:Dengue4">
                 <parameter id="FBDremovalProb" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
                 <parameter id="FBDrho" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
             </distribution>
 
-            <distribution id="FBDbirthRatePrior" spec="beast.math.distributions.Prior" x="@FBDbirthRate">
-                <distr id="FBDbirthRateExponential" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.0125"/>
+            <distribution id="FBDbirthRatePrior" spec="beast.base.inference.distribution.Prior" x="@FBDbirthRate">
+                <distr id="FBDbirthRateExponential" spec="beast.base.inference.distribution.Exponential" offset="0.0" mean="0.0125"/>
             </distribution>
 
-            <distribution id="FBDdeathRatePrior" spec="beast.math.distributions.Prior" x="@FBDdeathRate">
-                <distr id="FBDdeathRateExponential" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.01"/>
+            <distribution id="FBDdeathRatePrior" spec="beast.base.inference.distribution.Prior" x="@FBDdeathRate">
+                <distr id="FBDdeathRateExponential" spec="beast.base.inference.distribution.Exponential" offset="0.0" mean="0.01"/>
             </distribution>
 
-            <distribution id="FBDsamplingRatePrior" spec="beast.math.distributions.Prior" x="@FBDsamplingRate">
-                <distr id="FBDsamplingRateExponential" spec="beast.math.distributions.Exponential" offset="0.0" mean="0.0066666"/>
+            <distribution id="FBDsamplingRatePrior" spec="beast.base.inference.distribution.Prior" x="@FBDsamplingRate">
+                <distr id="FBDsamplingRateExponential" spec="beast.base.inference.distribution.Exponential" offset="0.0" mean="0.0066666"/>
             </distribution>
 
-            <distribution id="FBDoriginPrior" spec="beast.math.distributions.Prior" x="@FBDorigin">
-                <distr id="FBDoriginExponential" spec="beast.math.distributions.Exponential" offset="0.0" mean="298.935669052568"/>
+            <distribution id="FBDoriginPrior" spec="beast.base.inference.distribution.Prior" x="@FBDorigin">
+                <distr id="FBDoriginExponential" spec="beast.base.inference.distribution.Exponential" offset="0.0" mean="298.935669052568"/>
             </distribution>
 
             <prior id="FrequenciesPrior.s:Dengue4" name="distribution" x="@freqParameter.s:Dengue4">
@@ -116,7 +116,7 @@ Tree is not sampled.
             </prior>
 
         </distribution>
-        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+        <distribution id="likelihood" spec="beast.base.inference.CompoundDistribution" useThreads="true">
             <distribution id="treeLikelihood.Dengue4" spec="ThreadedTreeLikelihood" data="@Dengue4" tree="@Tree.t:Dengue4">
                 <siteModel id="SiteModel.s:Dengue4" spec="SiteModel">
                     <parameter id="mutationRate.s:Dengue4" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
@@ -126,7 +126,7 @@ Tree is not sampled.
                         <frequencies id="estimatedFreqs.s:Dengue4" spec="Frequencies" frequencies="@freqParameter.s:Dengue4"/>
                     </substModel>
                 </siteModel>
-                <branchRateModel id="FastRelaxedClock.c:Dengue4" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@fastUcldMean.c:Dengue4"
+                <branchRateModel id="FastRelaxedClock.c:Dengue4" spec="beast.base.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@fastUcldMean.c:Dengue4"
                                  rates="@fastRates.c:Dengue4"  tree="@Tree.t:Dengue4">
                        <LogNormal id="LogNormal.3" S="@fastUcldStdev.c:Dengue4" M="1.0" meanInRealSpace="true" name="distr"/>
                 </branchRateModel>
@@ -138,13 +138,13 @@ Tree is not sampled.
     <operator id="FBDbirthRateScaler" spec="ScaleOperator" parameter="@FBDbirthRate" scaleFactor="0.75" weight="1.0"/>
     <operator id="FBDdeathRateScaler" spec="ScaleOperator" parameter="@FBDdeathRate" scaleFactor="0.75" weight="1.0"/>
     <operator id="FBDsamplingRateScaler" spec="ScaleOperator" parameter="@FBDsamplingRate" scaleFactor="0.75" weight="10.0"/>
-    <operator id="FBDLeafToSA" spec="LeafToSampledAncestorJump" tree="@Tree.t:Dengue4" weight="10.0"/>
-    <operator id="FBDSAWilsonBalding" spec="SAWilsonBalding" tree="@Tree.t:Dengue4" weight="10.0"/>
-    <operator id="FBDSAWide" spec="SAExchange" isNarrow="false" tree="@Tree.t:Dengue4" weight="10.0"/>
-    <operator id="FBDSANarrow" spec="SAExchange" tree="@Tree.t:Dengue4" weight="10.0"/>
-    <operator id="FBDSAUniformOperator" spec="SAUniform" tree="@Tree.t:Dengue4" weight="20.0"/>
-    <operator id="FBDSATreeRootScaler" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:Dengue4" weight="1.0"/>
-    <operator id="FBDSATreeScaler" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:Dengue4" weight="3.0"/>
+    <operator id="FBDLeafToSA" spec="sa.evolution.operators.LeafToSampledAncestorJump" tree="@Tree.t:Dengue4" weight="10.0"/>
+    <operator id="FBDSAWilsonBalding" spec="sa.evolution.operators.SAWilsonBalding" tree="@Tree.t:Dengue4" weight="10.0"/>
+    <operator id="FBDSAWide" spec="sa.evolution.operators.SAExchange" isNarrow="false" tree="@Tree.t:Dengue4" weight="10.0"/>
+    <operator id="FBDSANarrow" spec="sa.evolution.operators.SAExchange" tree="@Tree.t:Dengue4" weight="10.0"/>
+    <operator id="FBDSAUniformOperator" spec="sa.evolution.operators.SAUniform" tree="@Tree.t:Dengue4" weight="20.0"/>
+    <operator id="FBDSATreeRootScaler" spec="sa.evolution.operators.SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:Dengue4" weight="1.0"/>
+    <operator id="FBDSATreeScaler" spec="sa.evolution.operators.SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:Dengue4" weight="3.0"/>
 -->
     <operator id="FrequenciesExchanger.s:Dengue4" spec="DeltaExchangeOperator" delta="0.01" weight="0.5">
         <parameter idref="freqParameter.s:Dengue4"/>
@@ -182,7 +182,7 @@ Tree is not sampled.
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.Dengue4"/>
-        <log id="TreeHeight.t:Dengue4" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:Dengue4"/>
+        <log id="TreeHeight.t:Dengue4" spec="beast.base.evolution.tree.TreeHeightLogger" tree="@Tree.t:Dengue4"/>
         <log idref="FBD"/>
         <log idref="FBDbirthRate"/>
         <log idref="FBDdeathRate"/>
@@ -193,7 +193,7 @@ Tree is not sampled.
         <log idref="fastUcldMean.c:Dengue4"/>
         <log idref="fastUcldStdev.c:Dengue4"/>
         <log idref="freqParameter.s:Dengue4"/>
-        <log id="ratesStat.c:Dengue4" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@FastRelaxedClock.c:Dengue4" tree="@Tree.t:Dengue4"/>
+        <log id="ratesStat.c:Dengue4" spec="beast.base.evolution.RateStatistic" branchratemodel="@FastRelaxedClock.c:Dengue4" tree="@Tree.t:Dengue4"/>
     </logger>
 
     <logger id="screenlog" spec="Logger" logEvery="100000">
@@ -203,7 +203,7 @@ Tree is not sampled.
     </logger>
 
     <logger id="treelog.t:Dengue4" spec="Logger" fileName="f$(tree).trees" logEvery="1000" mode="tree">
-        <log id="TreeWithMetaDataLogger.t:Dengue4" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@FastRelaxedClock.c:Dengue4" tree="@Tree.t:Dengue4"/>
+        <log id="TreeWithMetaDataLogger.t:Dengue4" spec="beast.base.evolution.TreeWithMetaDataLogger" branchratemodel="@FastRelaxedClock.c:Dengue4" tree="@Tree.t:Dengue4"/>
     </logger>
 
 </run>

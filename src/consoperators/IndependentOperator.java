@@ -1,14 +1,14 @@
 package consoperators;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.Operator;
-import beast.core.parameter.RealParameter;
-import beast.core.util.Log;
-import beast.math.distributions.Exponential;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.math.distributions.ParametricDistribution;
-import beast.util.Randomizer;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.inference.Operator;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.core.Log;
+import beast.base.inference.distribution.Exponential;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.util.Randomizer;
 import org.apache.commons.math.MathException;
 
 
@@ -44,8 +44,8 @@ public class IndependentOperator extends Operator {
         //for rates follow a LogNormal distribution
         if(distribution instanceof LogNormalDistributionModel) {
             LogNormalDistributionModel L = (LogNormalDistributionModel) distribution;
-            M = L.MParameterInput.get().getValue();
-            S = L.SParameterInput.get().getValue();
+            M = L.MParameterInput.get().getArrayValue();
+            S = L.SParameterInput.get().getArrayValue();
             MeanInRealSpace = L.hasMeanInRealSpaceInput.get();
             r  = Randomizer.nextLogNormal(M,S,MeanInRealSpace);
         }
@@ -53,7 +53,7 @@ public class IndependentOperator extends Operator {
         //for rates follow an Exponential distribution
         else if(distribution instanceof LogNormalDistributionModel) {
             Exponential E = (Exponential) distribution;
-            lamda = E.lambdaInput.get().getValue();
+            lamda = E.lambdaInput.get().getArrayValue();
             r = Randomizer.nextExponential(lamda);
         }
         else {

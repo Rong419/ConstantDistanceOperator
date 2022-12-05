@@ -1,11 +1,11 @@
 package consoperators;
 
-import beast.core.Input;
-import beast.core.Operator;
-import beast.core.Input.Validate;
-import beast.core.parameter.IntegerParameter;
-import beast.core.parameter.Parameter;
-import beast.util.Randomizer;
+import beast.base.core.Input;
+import beast.base.inference.Operator;
+import beast.base.core.Input.Validate;
+import beast.base.inference.parameter.IntegerParameter;
+import beast.base.inference.parameter.Parameter;
+import beast.base.util.Randomizer;
 
 
 // A uniform operator which acts on integers and always samples a new value
@@ -18,12 +18,12 @@ public class UniformOperatorChange extends Operator {
 
     @Override
     public void initAndValidate() {
-        parameter = parameterInput.get(this);
+        parameter = parameterInput.get();
     }
 
     @Override
     public double proposal() {
-    	parameter = parameterInput.get(this);
+    	parameter = parameterInput.get();
         int lowerIndex = parameter.getLower();
         int upperIndex = parameter.getUpper();
         int range = upperIndex - lowerIndex + 1;

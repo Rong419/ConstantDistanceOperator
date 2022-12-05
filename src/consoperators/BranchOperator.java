@@ -1,13 +1,13 @@
 package consoperators;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.parameter.RealParameter;
-import beast.evolution.branchratemodel.BranchRateModel;
-import beast.evolution.operators.TreeOperator;
-import beast.evolution.tree.Tree;
-import beast.util.Randomizer;
-import beast.evolution.tree.Node;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.evolution.branchratemodel.BranchRateModel;
+import beast.base.evolution.operator.TreeOperator;
+import beast.base.evolution.tree.Tree;
+import beast.base.util.Randomizer;
+import beast.base.evolution.tree.Node;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class BranchOperator extends TreeOperator {
     @Override
     public double proposal() {
         //the tree to work with
-        Tree tree = treeInput.get(this);
+        Tree tree = treeInput.get();
 
         //hastings ratio to return
         double hastingsratio;

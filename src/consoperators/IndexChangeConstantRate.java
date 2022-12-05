@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.Distribution;
+import beast.base.inference.Distribution;
 
-import beast.core.Input;
-import beast.core.Input.Validate;
-import beast.core.Operator;
-import beast.core.parameter.IntegerParameter;
-import beast.core.parameter.RealParameter;
-import beast.core.util.Log;
-import beast.evolution.branchratemodel.UCRelaxedClockModel;
-import beast.math.distributions.IndexedPieceWiseLinearDistribution;
-import beast.math.distributions.OneParameterMeanOneDistribution;
-import beast.math.distributions.ParametricDistribution;
-import beast.util.Randomizer;
+import beast.base.core.Input;
+import beast.base.core.Input.Validate;
+import beast.base.inference.Operator;
+import beast.base.inference.parameter.IntegerParameter;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.core.Log;
+import beast.base.evolution.branchratemodel.UCRelaxedClockModel;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.util.Randomizer;
+import consoperators.distributions.IndexedPieceWiseLinearDistribution;
+import consoperators.distributions.OneParameterMeanOneDistribution;
 
 public class IndexChangeConstantRate extends Operator {
 
