@@ -1,14 +1,14 @@
 package consoperators;
 
-import beast.core.Citation;
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.parameter.RealParameter;
-import beast.evolution.branchratemodel.BranchRateModel;
-import beast.evolution.operators.TreeOperator;
-import beast.evolution.tree.Node;
-import beast.evolution.tree.Tree;
-import beast.util.Randomizer;
+import beast.base.core.Citation;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.evolution.branchratemodel.BranchRateModel;
+import beast.base.evolution.operator.TreeOperator;
+import beast.base.evolution.tree.Node;
+import beast.base.evolution.tree.Tree;
+import beast.base.util.Randomizer;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -43,7 +43,7 @@ public class BigPulley extends TreeOperator {
 
     @Override
     public double proposal() {
-        final Tree tree = treeInput.get(this);
+        final Tree tree = treeInput.get();
         branchCount = tree.getNodeCount() - 1; //the number of branches of the tree
 
         //the chosen node to work on

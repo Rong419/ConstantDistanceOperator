@@ -8,16 +8,16 @@ import org.apache.commons.math3.analysis.interpolation.*;
 import org.apache.commons.math3.util.FastMath;
 import org.junit.Test;
 
-import beast.core.parameter.RealParameter;
-import beast.evolution.alignment.Alignment;
-import beast.evolution.branchratemodel.UCRelaxedClockModel;
-import beast.evolution.tree.Node;
-import beast.evolution.tree.Tree;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.math.distributions.PiecewiseLinearDistribution;
-import beast.util.Randomizer;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.evolution.alignment.Alignment;
+import beast.base.evolution.branchratemodel.UCRelaxedClockModel;
+import beast.base.evolution.tree.Node;
+import beast.base.evolution.tree.Tree;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.util.Randomizer;
 import consoperators.InConstantDistanceOperator;
 import consoperators.RateAndTreeOperator;
+import consoperators.distributions.PiecewiseLinearDistribution;
 import junit.framework.TestCase;
 import test.beast.BEASTTestCase;
 

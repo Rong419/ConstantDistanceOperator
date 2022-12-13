@@ -3,17 +3,24 @@ package test.integration;
 // Requirements: the file analysis.xml must be in the directory
 // from where this script is run.
 
-import beast.evolution.substitutionmodel.*;
-import beast.evolution.tree.Tree;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.evolution.sitemodel.*;
-import beast.evolution.alignment.*;
-import beast.evolution.branchratemodel.UCRelaxedClockModel;
-import beast.util.*;
-import beast.app.seqgen.MergeDataWith;
-import beast.app.seqgen.SequenceSimulator;
-import beast.core.*;
-import beast.core.parameter.*;
+import beast.base.evolution.tree.Tree;
+import beast.base.inference.Logger;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.inference.parameter.IntegerParameter;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.parser.NexusParser;
+import beast.base.parser.XMLParserException;
+import beastfx.app.seqgen.MergeDataWith;
+import beastfx.app.seqgen.SequenceSimulator;
+import beastfx.app.tools.LogAnalyser;
+import beast.base.evolution.alignment.Alignment;
+import beast.base.evolution.alignment.Sequence;
+import beast.base.evolution.branchratemodel.UCRelaxedClockModel;
+import beast.base.evolution.sitemodel.SiteModel;
+import beast.base.evolution.substitutionmodel.Frequencies;
+import beast.base.evolution.substitutionmodel.HKY;
+import consoperators.distributions.IndexedPieceWiseLinearDistribution;
+import consoperators.distributions.OneParameterMeanOneDistribution;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +79,7 @@ public class Relaxed16TaxaQuant {
 				"sequence", K, "sequence", L, "sequence", M, "sequence", N, "sequence", O,
 				"sequence", P
 				);
-//		tree = new beast.util.TreeParser(newick="(((A:0.1,B:0.1),C:0.15):0.05,(D:0.1,E:0.1):0.1)", taxa=data, IsLabelledNewick=true);
+//		tree = new beast.base.evolution.tree.TreeParser(newick="(((A:0.1,B:0.1),C:0.15):0.05,(D:0.1,E:0.1):0.1)", taxa=data, IsLabelledNewick=true);
 		Tree tree = trees.get(i);
 
 
@@ -81,17 +88,17 @@ public class Relaxed16TaxaQuant {
 		Frequencies f = new Frequencies();
 		f.initByName("frequencies",freqs);
 		
-		HKY hky = new beast.evolution.substitutionmodel.HKY();
+		HKY hky = new beast.base.evolution.substitutionmodel.HKY();
 		hky.initByName("frequencies", f, 
 			"kappa", kappa[i]+""
 		);
-		LogNormalDistributionModel distr = new beast.math.distributions.LogNormalDistributionModel();
+		LogNormalDistributionModel distr = new beast.base.inference.distribution.LogNormalDistributionModel();
 		distr.initByName("S", s[i] + "", "meanInRealSpace", true, "M", "1.0");
 		
 		
-		RealParameter  rateQuantiles = new beast.core.parameter.RealParameter("0.5");
+		RealParameter  rateQuantiles = new beast.base.inference.parameter.RealParameter("0.5");
 		
-		UCRelaxedClockModel clockmodel = new beast.evolution.branchratemodel.UCRelaxedClockModel();
+		UCRelaxedClockModel clockmodel = new beast.base.evolution.branchratemodel.UCRelaxedClockModel();
 		clockmodel.initByName("distr", distr, "rateQuantiles", rateQuantiles, "tree", tree, "numberOfDiscreteRates", 100);
 
 		// set quantile values, randomly initialised by clockmodel, so need to be set after UCRelaxedClockModel is initialised
@@ -102,10 +109,10 @@ public class Relaxed16TaxaQuant {
 	    SiteModel sitemodel = new SiteModel();
 		sitemodel.initByName("gammaCategoryCount", 1, "substModel", hky, "shape", "1.0", "proportionInvariant", "0.0");
 		
-		MergeDataWith mergewith = new beast.app.seqgen.MergeDataWith();
+		MergeDataWith mergewith = new MergeDataWith();
 		mergewith.initByName("template", wdir + "/analysis16relaxedQLinear.xml", "output", dir + "/analysis-out" + i + ".xml");
 
-		SequenceSimulator sim = new beast.app.seqgen.SequenceSimulator();
+		SequenceSimulator sim = new SequenceSimulator();
 		sim.initByName("data", data, "tree", tree, "sequencelength", 1000, "outputFileName", 
 				"gammaShapeSequence.xml", "siteModel", sitemodel, "branchRateModel", clockmodel, 
 				"merge", mergewith);
@@ -122,14 +129,14 @@ public class Relaxed16TaxaQuant {
 
 			public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException, XMLParserException {
 		
-		Logger.FILE_MODE = beast.core.Logger.LogFileMode.overwrite;
+		Logger.FILE_MODE = beast.base.inference.Logger.LogFileMode.overwrite;
 
 		// set up flags for BEAGLE -- YMMV
 		long beagleFlags = BeagleFlag.VECTOR_SSE.getMask() | BeagleFlag.PROCESSOR_CPU.getMask();
 		System.setProperty("beagle.preferred.flags", Long.toString(beagleFlags));
 
 		
-		NexusParser parser = new beast.util.NexusParser();
+		NexusParser parser = new beast.base.parser.NexusParser();
 		File fin = new File(wdir + "/quant16.trees");
 		parser.parseFile(fin);
 		trees = parser.trees;

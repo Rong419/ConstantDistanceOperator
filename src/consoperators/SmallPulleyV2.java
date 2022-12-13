@@ -1,18 +1,18 @@
 package consoperators;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.Operator;
-import beast.core.parameter.RealParameter;
-import beast.evolution.branchratemodel.BranchRateModel;
-import beast.evolution.tree.Tree;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.math.distributions.ParametricDistribution;
-import beast.math.distributions.Uniform;
-import beast.util.Randomizer;
-import beast.evolution.tree.Node;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.inference.Operator;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.evolution.branchratemodel.BranchRateModel;
+import beast.base.evolution.tree.Tree;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.inference.distribution.Uniform;
+import beast.base.util.Randomizer;
+import beast.base.evolution.tree.Node;
 import org.apache.commons.math.MathException;
-import beast.evolution.operators.TreeOperator;
+import beast.base.evolution.operator.TreeOperator;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -46,7 +46,7 @@ public class SmallPulleyV2 extends TreeOperator {
 
     @Override
     public double proposal() {
-        final Tree tree = treeInput.get(this);
+        final Tree tree = treeInput.get();
 
         //original rates
         double r_i;

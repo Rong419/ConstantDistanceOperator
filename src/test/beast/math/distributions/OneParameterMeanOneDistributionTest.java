@@ -3,9 +3,9 @@ package test.beast.math.distributions;
 import org.apache.commons.math.MathException;
 import org.junit.Test;
 
-import beast.core.util.Log;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.math.distributions.OneParameterMeanOneDistribution;
+import beast.base.core.Log;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import consoperators.distributions.OneParameterMeanOneDistribution;
 import junit.framework.TestCase;
 
 public class OneParameterMeanOneDistributionTest extends TestCase {

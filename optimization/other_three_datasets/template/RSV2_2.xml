@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.alignment:beast.base.evolution.tree.coalescent:beast.base.util:beast.base.math:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="" version="2.6">
 
 
     <data
@@ -144,22 +144,22 @@ name="alignment">
 
 
     
-<map name="Uniform" >beast.math.distributions.Uniform</map>
-<map name="Exponential" >beast.math.distributions.Exponential</map>
-<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
-<map name="Normal" >beast.math.distributions.Normal</map>
-<map name="Beta" >beast.math.distributions.Beta</map>
-<map name="Gamma" >beast.math.distributions.Gamma</map>
-<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
-<map name="prior" >beast.math.distributions.Prior</map>
-<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
-<map name="OneOnX" >beast.math.distributions.OneOnX</map>
-<map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
+<map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+<map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+<map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+<map name="Normal" >beast.base.inference.distribution.Normal</map>
+<map name="Beta" >beast.base.inference.distribution.Beta</map>
+<map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+<map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+<map name="prior" >beast.base.inference.distribution.Prior</map>
+<map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+<map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
+<map name="Dirichlet" >beast.base.inference.distribution.Dirichlet</map>
 
 <run id="mcmc" spec="MCMC" chainLength="80000000">
     <state id="state" spec="State" storeEvery="5000">
-        <tree id="Tree.t:RSV2" spec="beast.evolution.tree.Tree" name="stateNode">
-            <trait id="dateTrait.t:RSV2" spec="beast.evolution.tree.TraitSet" traitname="date">
+        <tree id="Tree.t:RSV2" spec="beast.base.evolution.tree.Tree" name="stateNode">
+            <trait id="dateTrait.t:RSV2" spec="beast.base.evolution.tree.TraitSet" traitname="date">
                 BE8078s92=92,
 NYCH09s93=93,
 SE01s92=92,
@@ -305,14 +305,14 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <parameter id="freqParameter.s:RSV2" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
     </state>
 
-    <init id="RandomTree.t:RSV2" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:RSV2" taxa="@RSV2">
+    <init id="RandomTree.t:RSV2" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:RSV2" taxa="@RSV2">
         <populationModel id="ConstantPopulation0.t:RSV2" spec="ConstantPopulation">
             <parameter id="randomPopSize.t:RSV2" spec="parameter.RealParameter" name="popSize">1.0</parameter>
         </populationModel>
     </init>
 
-    <distribution id="posterior" spec="util.CompoundDistribution">
-        <distribution id="prior" spec="util.CompoundDistribution">
+    <distribution id="posterior" spec="beast.base.inference.CompoundDistribution">
+        <distribution id="prior" spec="beast.base.inference.CompoundDistribution">
             <distribution id="FBD.t:RSV2" spec="beast.evolution.speciation.SABirthDeathModel" conditionOnRhoSampling="true" diversificationRate="@diversificationRateFBD.t:RSV2" origin="@originFBD.t:RSV2" samplingProportion="@samplingProportionFBD.t:RSV2" tree="@Tree.t:RSV2" turnover="@turnoverFBD.t:RSV2">
                 <parameter id="rFBD.t:RSV2" spec="parameter.RealParameter" lower="0.0" name="removalProbability" upper="1.0">0.0</parameter>
                 <parameter id="rhoFBD.t:RSV2" spec="parameter.RealParameter" estimate="false" lower="0.0" name="rho" upper="1.0">1.0</parameter>
@@ -350,7 +350,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
                 </LogNormal>
             </prior>
         </distribution>
-        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+        <distribution id="likelihood" spec="beast.base.inference.CompoundDistribution" useThreads="true">
             <distribution id="treeLikelihood.RSV2" spec="ThreadedTreeLikelihood" data="@RSV2" tree="@Tree.t:RSV2">
                 <siteModel id="SiteModel.s:RSV2" spec="SiteModel">
                     <parameter id="mutationRate.s:RSV2" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
@@ -360,7 +360,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
                         <frequencies id="estimatedFreqs.s:RSV2" spec="Frequencies" frequencies="@freqParameter.s:RSV2"/>
                     </substModel>
                 </siteModel>
-                <branchRateModel id="RelaxedClock.c:RSV2" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@ucldMean.c:RSV2" rates="@fastRates.c:RSV2" tree="@Tree.t:RSV2">
+                <branchRateModel id="RelaxedClock.c:RSV2" spec="beast.base.evolution.branchratemodel.UCRelaxedClockModel" clock.rate="@ucldMean.c:RSV2" rates="@fastRates.c:RSV2" tree="@Tree.t:RSV2">
                     <LogNormal id="LogNormalDistributionModel.c:RSV2" S="@ucldStdev.c:RSV2" meanInRealSpace="true" name="distr">
                         <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" lower="0.0" name="M" upper="1.0">1.0</parameter>
                     </LogNormal>
@@ -407,19 +407,19 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
 
     <operator id="samplingPScalerFBD.t:RSV2" spec="ScaleOperator" parameter="@samplingProportionFBD.t:RSV2" scaleFactor="0.75" weight="20.0"/>
 
-    <operator id="LeafToSAFBD.t:RSV2" spec="LeafToSampledAncestorJump" tree="@Tree.t:RSV2" weight="10.0"/>
+    <operator id="LeafToSAFBD.t:RSV2" spec="sa.evolution.operators.LeafToSampledAncestorJump" tree="@Tree.t:RSV2" weight="10.0"/>
 
-    <operator id="SAWilsonBaldingFBD.t:RSV2" spec="SAWilsonBalding" tree="@Tree.t:RSV2" weight="10.0"/>
+    <operator id="SAWilsonBaldingFBD.t:RSV2" spec="sa.evolution.operators.SAWilsonBalding" tree="@Tree.t:RSV2" weight="10.0"/>
 
-    <operator id="SAWideFBD.t:RSV2" spec="SAExchange" isNarrow="false" tree="@Tree.t:RSV2" weight="10.0"/>
+    <operator id="SAWideFBD.t:RSV2" spec="sa.evolution.operators.SAExchange" isNarrow="false" tree="@Tree.t:RSV2" weight="10.0"/>
 
-    <operator id="SANarrowFBD.t:RSV2" spec="SAExchange" tree="@Tree.t:RSV2" weight="10.0"/>
+    <operator id="SANarrowFBD.t:RSV2" spec="sa.evolution.operators.SAExchange" tree="@Tree.t:RSV2" weight="10.0"/>
 
-    <operator id="SAUniformOperatorFBD.t:RSV2" spec="SAUniform" tree="@Tree.t:RSV2" weight="20.0"/>
+    <operator id="SAUniformOperatorFBD.t:RSV2" spec="sa.evolution.operators.SAUniform" tree="@Tree.t:RSV2" weight="20.0"/>
 
-    <operator id="SATreeRootScalerFBD.t:RSV2" spec="SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:RSV2" weight="1.0"/>
+    <operator id="SATreeRootScalerFBD.t:RSV2" spec="sa.evolution.operators.SAScaleOperator" rootOnly="true" scaleFactor="0.95" tree="@Tree.t:RSV2" weight="1.0"/>
 
-    <operator id="SATreeScalerFBD.t:RSV2" spec="SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:RSV2" weight="3.0"/>
+    <operator id="SATreeScalerFBD.t:RSV2" spec="sa.evolution.operators.SAScaleOperator" scaleFactor="0.95" tree="@Tree.t:RSV2" weight="3.0"/>
 
     <operator id="FrequenciesExchanger.s:RSV2" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
         <parameter idref="freqParameter.s:RSV2"/>
@@ -430,11 +430,11 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.RSV2"/>
-        <log id="TreeHeight.t:RSV2" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:RSV2"/>
+        <log id="TreeHeight.t:RSV2" spec="beast.base.evolution.tree.TreeHeightLogger" tree="@Tree.t:RSV2"/>
         <log idref="kappa.s:RSV2"/>
         <log idref="ucldMean.c:RSV2"/>
         <log idref="ucldStdev.c:RSV2"/>
-        <log id="rate.c:RSV2" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:RSV2" tree="@Tree.t:RSV2"/>
+        <log id="rate.c:RSV2" spec="beast.base.evolution.RateStatistic" branchratemodel="@RelaxedClock.c:RSV2" tree="@Tree.t:RSV2"/>
         <log idref="FBD.t:RSV2"/>
         <log idref="diversificationRateFBD.t:RSV2"/>
         <log idref="turnoverFBD.t:RSV2"/>
@@ -451,7 +451,7 @@ USALongs56=56                <taxa id="TaxonSet.RSV2" spec="TaxonSet">
     </logger>
 
     <logger id="treelog.t:RSV2" spec="Logger" fileName="$(tree)_FILE.trees" logEvery="8000" mode="tree">
-        <log id="TreeWithMetaDataLogger.t:RSV2" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:RSV2" tree="@Tree.t:RSV2"/>
+        <log id="TreeWithMetaDataLogger.t:RSV2" spec="beast.base.evolution.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:RSV2" tree="@Tree.t:RSV2"/>
     </logger>
 
 </run>

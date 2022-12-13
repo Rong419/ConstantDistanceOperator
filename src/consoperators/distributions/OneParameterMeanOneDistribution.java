@@ -1,4 +1,4 @@
-package beast.math.distributions;
+package consoperators.distributions;
 
 
 
@@ -9,10 +9,10 @@ import org.apache.commons.math.distribution.*;
 import org.apache.commons.math.special.Gamma;
 import org.apache.commons.math3.util.FastMath;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.parameter.RealParameter;
-import beast.math.distributions.ParametricDistribution;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.inference.distribution.ParametricDistribution;
 
 @Description("Distribution with mean one gouverned by a single variance parameter")
 public class OneParameterMeanOneDistribution extends ParametricDistribution {

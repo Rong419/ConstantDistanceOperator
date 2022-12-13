@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="BEAST v2.5.0" version="2.5">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="consoperators:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.alignment:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="BEAST v2.5.0" version="2.5">
 
     <!-- This xml uses continuous rates and include the ConstantDistance Operator  -->
     <!-- to sample the simulated sequences  -->
@@ -9,7 +9,7 @@
 	  outputFileName="simulated_alignment.xml">
 
 
-      <tree id='tree' spec='beast.util.TreeParser'
+      <tree id='tree' spec='beast.base.evolution.tree.TreeParser'
 	    newick="((((1:0.1324367376839707,(14:0.011537238858470716,20:0.011537238858470716):0.1208994988255):0.002610882789619323,(8:0.09808629430486554,11:0.09808629430486554):0.036961326168724495):0.29468011806306166,(((4:0.013429418034121395,16:0.013429418034121395):0.14472429735983813,19:0.15815371539395953):0.0016087450921132007,10:0.15976246048607273):0.26996527805057896):0.6836557321793754,((((((2:0.02305375318172475,9:0.02305375318172475):0.3863774281625608,5:0.4094311813442856):0.16167835258900398,(12:0.13185530680547244,15:0.13185530680547244):0.43925422712781714):0.22647100019340216,(13:0.2899757360538706,18:0.2899757360538706):0.5076047980728211):0.07519903609439982,6:0.8727795702210915):0.10777151206863722,((3:0.059986257005466455,17:0.059986257005466455):0.47871076998239115,7:0.5386970269878576):0.44185405530187116):0.1328323884262983):0.0;"
 	    IsLabelledNewick="true"/>
 
@@ -42,27 +42,27 @@
       <frequencies id='freqs' spec='Frequencies' frequencies="0.22380108927097 0.424050443184412 0.169749623568918 0.182398843975701"/>
       </substModel>
       </siteModel>
-      <branchRateModel id="UCRelaxedClock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
+      <branchRateModel id="UCRelaxedClock" spec="beast.base.evolution.branchratemodel.UCRelaxedClockModel" tree="@tree">
       <parameter id="ucldMean" estimate="false" name="clock.rate">1.0</parameter>
       <parameter id="branchrates" name="rateCategories" spec="parameter.IntegerParameter" dimension="38">1</parameter>
-      <distr id='lognormal' spec="beast.math.distributions.LogNormalDistributionModel" meanInRealSpace="true">
+      <distr id='lognormal' spec="beast.base.inference.distribution.LogNormalDistributionModel" meanInRealSpace="true">
       <parameter name='M' id='M' value="1.0"/>
       <parameter name='S' id='ucld.stdev' value="0.19309711180023"/>
       </distr>
       </branchRateModel>
     </data>
 
-    <map name="Uniform" >beast.math.distributions.Uniform</map>
-    <map name="Exponential" >beast.math.distributions.Exponential</map>
-    <map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
-    <map name="Normal" >beast.math.distributions.Normal</map>
-    <map name="Beta" >beast.math.distributions.Beta</map>
-    <map name="Gamma" >beast.math.distributions.Gamma</map>
-    <map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
-    <map name="prior" >beast.math.distributions.Prior</map>
-    <map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
-    <map name="OneOnX" >beast.math.distributions.OneOnX</map>
-    <map name="Dirichlet" >beast.math.distributions.Dirichlet</map>
+    <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+    <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+    <map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+    <map name="Normal" >beast.base.inference.distribution.Normal</map>
+    <map name="Beta" >beast.base.inference.distribution.Beta</map>
+    <map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+    <map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+    <map name="prior" >beast.base.inference.distribution.Prior</map>
+    <map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+    <map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
+    <map name="Dirichlet" >beast.base.inference.distribution.Dirichlet</map>
 
     <run id="mcmc" spec="MCMC" chainLength="10000000"  >
         <state id="state" storeEvery="5000">
@@ -78,15 +78,15 @@
         <parameter id="freqParameter.t:ratites" dimension="4" name="stateNode">0.25</parameter>
         </state>
 
-        <init id="RandomTree.t:dna" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:ratites" taxa="@ratites">
+        <init id="RandomTree.t:dna" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:ratites" taxa="@ratites">
             <populationModel id="ConstantPopulation0.t:ratites" spec="ConstantPopulation">
                 <parameter id="randomPopSize.t:ratites" name="popSize">1.0</parameter>
             </populationModel>
         </init>
 
-        <distribution id="posterior" spec="util.CompoundDistribution">
-            <distribution id="prior" spec="util.CompoundDistribution">
-            <distribution id="YuleModel.t:ratites" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
+        <distribution id="posterior" spec="beast.base.inference.CompoundDistribution">
+            <distribution id="prior" spec="beast.base.inference.CompoundDistribution">
+            <distribution id="YuleModel.t:ratites" spec="beast.base.evolution.speciation.YuleModel" birthDiffRate="@BirthRate.t:ratites" tree="@Tree.t:ratites"/>
             <prior id="BirthRatePrior.t:ratites" name="distribution" x="@BirthRate.t:ratites">
                 <LogNormal id="LogNormalDistribution1" S="0.2"  M="0.7" meanInRealSpace="false" name="distr">
                 </LogNormal>
@@ -109,7 +109,7 @@
             </prior>
             </distribution>
 
-            <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+            <distribution id="likelihood" spec="beast.base.inference.CompoundDistribution" useThreads="true">
                 <distribution id="treeLikelihood.ratites" spec="ThreadedTreeLikelihood" data="@ratites" tree="@Tree.t:ratites">
                     <siteModel id="SiteModel.t:ratites" spec="SiteModel">
                         <parameter id="mutationRate.t:ratites" estimate="false" name="mutationRate">1.0</parameter>
@@ -119,7 +119,7 @@
                             <frequencies id="estimatedFreqs.t:ratites" spec="Frequencies" frequencies="@freqParameter.t:ratites"/>
                         </substModel>
                     </siteModel>
-                    <branchRateModel id="RelaxedClock.c:ratites" spec="beast.evolution.branchratemodel.UCRelaxedClockModel"
+                    <branchRateModel id="RelaxedClock.c:ratites" spec="beast.base.evolution.branchratemodel.UCRelaxedClockModel"
                                      rates="@rates.c:ratites" tree="@Tree.t:ratites" distr="@LogNormalDistribution2">
                         <parameter id="ucldMean.c:ratites" estimate="false" name="clock.rate">1.0</parameter>
                     </branchRateModel>
@@ -174,8 +174,8 @@
             <log idref="likelihood"/>
             <log idref="prior"/>
             <log idref="treeLikelihood.ratites"/>
-            <log id="TreeLength.t:ratites" spec="beast.evolution.tree.TreeStatLogger" tree="@Tree.t:ratites"/>
-            <log id="rate.c:ratites" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
+            <log id="TreeLength.t:ratites" spec="beast.base.evolution.tree.TreeStatLogger" tree="@Tree.t:ratites"/>
+            <log id="rate.c:ratites" spec="beast.base.evolution.RateStatistic" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
             <log idref="kappa.t:ratites"/>
             <log idref="freqParameter.t:ratites"/>
             <log idref="ucldStdev.c:ratites"/>
@@ -190,7 +190,7 @@
         </logger>
 
         <logger id="treelog.t:ratites" fileName="$(tree).trees" logEvery="2000" mode="tree">
-            <log id="TreeWithMetaDataLogger.t:ratites" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
+            <log id="TreeWithMetaDataLogger.t:ratites" spec="beast.base.evolution.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:ratites" tree="@Tree.t:ratites"/>
         </logger>
 
     </run>

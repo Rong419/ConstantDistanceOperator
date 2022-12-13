@@ -1,15 +1,15 @@
-package beast.math.distributions;
+package consoperators.distributions;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ContinuousDistribution;
-import org.apache.commons.math.distribution.Distribution;
-
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.Input.Validate;
+import beast.base.inference.Distribution;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.core.Input.Validate;
 
 @Description("Caches parametric distribution for inverscumulative methods.")
 public class CachedDistribution extends ParametricDistribution {
@@ -35,7 +35,7 @@ public class CachedDistribution extends ParametricDistribution {
     }
 
     @Override
-    public Distribution getDistribution() {
+    public org.apache.commons.math.distribution.Distribution getDistribution() {
         refresh();
         return dist;
     }

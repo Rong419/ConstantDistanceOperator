@@ -1,13 +1,13 @@
 package consoperators;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.parameter.RealParameter;
-import beast.evolution.branchratemodel.BranchRateModel;
-import beast.evolution.operators.TreeOperator;
-import beast.evolution.tree.Tree;
-import beast.util.Randomizer;
-import beast.evolution.tree.Node;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.evolution.branchratemodel.BranchRateModel;
+import beast.base.evolution.operator.TreeOperator;
+import beast.base.evolution.tree.Tree;
+import beast.base.util.Randomizer;
+import beast.base.evolution.tree.Node;
 
 import java.text.DecimalFormat;
 
@@ -29,7 +29,7 @@ public class TwoNodeOperator extends TreeOperator {
         rates = rateInput.get();
         twindowSize = twindowSizeInput.get();
         branchRateModel = branchRateModelInput.get();
-        tree = treeInput.get(this);
+        tree = treeInput.get();
     }
 
     @Override

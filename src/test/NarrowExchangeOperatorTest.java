@@ -3,11 +3,11 @@ package test;
 import consoperators.NarrowExchangeOperator;
 import org.junit.Test;
 
-import beast.core.State;
-import beast.evolution.alignment.Alignment;
-import beast.evolution.alignment.Sequence;
-import beast.util.Randomizer;
-import beast.util.TreeParser;
+import beast.base.inference.State;
+import beast.base.evolution.alignment.Alignment;
+import beast.base.evolution.alignment.Sequence;
+import beast.base.util.Randomizer;
+import beast.base.evolution.tree.TreeParser;
 import junit.framework.TestCase;
 
 

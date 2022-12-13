@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" required="" version="2.6">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.alignment:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="" version="2.6">
 
 
     <data
@@ -50,21 +50,21 @@ name="alignment">
 
 
     
-<map name="Uniform" >beast.math.distributions.Uniform</map>
-<map name="Exponential" >beast.math.distributions.Exponential</map>
-<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
-<map name="Normal" >beast.math.distributions.Normal</map>
-<map name="Beta" >beast.math.distributions.Beta</map>
-<map name="Gamma" >beast.math.distributions.Gamma</map>
-<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
-<map name="prior" >beast.math.distributions.Prior</map>
-<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
-<map name="OneOnX" >beast.math.distributions.OneOnX</map>
+<map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+<map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+<map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+<map name="Normal" >beast.base.inference.distribution.Normal</map>
+<map name="Beta" >beast.base.inference.distribution.Beta</map>
+<map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+<map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+<map name="prior" >beast.base.inference.distribution.Prior</map>
+<map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+<map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
 
 
 <run id="mcmc" spec="MCMC" chainLength="2000000">
     <state id="state" spec="State" storeEvery="5000">
-        <tree id="Tree.t:xMCMC" spec="beast.evolution.tree.Tree" name="stateNode">
+        <tree id="Tree.t:xMCMC" spec="beast.base.evolution.tree.Tree" name="stateNode">
             <taxonset id="TaxonSet.xMCMC" spec="TaxonSet">
                 <alignment idref="xMCMC"/>
             </taxonset>
@@ -78,15 +78,15 @@ name="alignment">
         <parameter id="freqParameter.s:xMCMC" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
     </state>
 
-    <init id="RandomTree.t:xMCMC" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:xMCMC" taxa="@xMCMC">
+    <init id="RandomTree.t:xMCMC" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:xMCMC" taxa="@xMCMC">
         <populationModel id="ConstantPopulation0.t:xMCMC" spec="ConstantPopulation">
             <parameter id="randomPopSize.t:xMCMC" spec="parameter.RealParameter" name="popSize">1.0</parameter>
         </populationModel>
     </init>
 
-    <distribution id="posterior" spec="util.CompoundDistribution">
-        <distribution id="prior" spec="util.CompoundDistribution">
-            <distribution id="YuleModel.t:xMCMC" spec="beast.evolution.speciation.YuleModel" birthDiffRate="@birthRate.t:xMCMC" tree="@Tree.t:xMCMC"/>
+    <distribution id="posterior" spec="beast.base.inference.CompoundDistribution">
+        <distribution id="prior" spec="beast.base.inference.CompoundDistribution">
+            <distribution id="YuleModel.t:xMCMC" spec="beast.base.evolution.speciation.YuleModel" birthDiffRate="@birthRate.t:xMCMC" tree="@Tree.t:xMCMC"/>
             <prior id="YuleBirthRatePrior.t:xMCMC" name="distribution" x="@birthRate.t:xMCMC">
                 <Uniform id="Uniform.1" name="distr" upper="Infinity"/>
             </prior>
@@ -113,7 +113,7 @@ name="alignment">
                     <parameter id="RealParameter.46" spec="parameter.RealParameter" estimate="false" name="beta">0.3819</parameter>
                 </Gamma>
             </prior>
-            <distribution id="FelidCanid.prior" spec="beast.math.distributions.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
+            <distribution id="FelidCanid.prior" spec="beast.base.evolution.tree.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
                 <taxonset id="FelidCanid" spec="TaxonSet">
                     <taxon id="Felis_catus" spec="Taxon"/>
                     <taxon id="Canis_familiaris" spec="Taxon"/>
@@ -124,7 +124,7 @@ name="alignment">
                     <parameter id="RealParameter.19" spec="parameter.RealParameter" lower="0.0" name="sigma" upper="0.0">5.0</parameter>
                 </Normal>
             </distribution>
-            <distribution id="HorseRhino.prior" spec="beast.math.distributions.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
+            <distribution id="HorseRhino.prior" spec="beast.base.evolution.tree.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
                 <taxonset id="HorseRhino" spec="TaxonSet">
                     <taxon id="Rhinoceros_unicornis" spec="Taxon"/>
                     <taxon id="Equus_caballus" spec="Taxon"/>
@@ -134,7 +134,7 @@ name="alignment">
                     <parameter id="RealParameter.13" spec="parameter.RealParameter" lower="0.0" name="sigma" upper="0.0">2.0</parameter>
                 </Normal>
             </distribution>
-            <distribution id="HumanGorilla.prior" spec="beast.math.distributions.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
+            <distribution id="HumanGorilla.prior" spec="beast.base.evolution.tree.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
                 <taxonset id="HumanGorilla" spec="TaxonSet">
                     <taxon id="Homo_sapiens" spec="Taxon"/>
                     <taxon id="Gorilla_gorilla" spec="Taxon"/>
@@ -145,7 +145,7 @@ name="alignment">
                     <parameter id="RealParameter.9" spec="parameter.RealParameter" lower="0.0" name="sigma" upper="0.0">1.0</parameter>
                 </Normal>
             </distribution>
-            <distribution id="MonkeyApe.prior" spec="beast.math.distributions.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
+            <distribution id="MonkeyApe.prior" spec="beast.base.evolution.tree.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
                 <taxonset id="MonkeyApe" spec="TaxonSet">
                     <taxon idref="Homo_sapiens"/>
                     <taxon idref="Gorilla_gorilla"/>
@@ -158,7 +158,7 @@ name="alignment">
                     <parameter id="RealParameter.11" spec="parameter.RealParameter" lower="0.0" name="sigma" upper="0.0">1.5</parameter>
                 </Normal>
             </distribution>
-            <distribution id="Primates.prior" spec="beast.math.distributions.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
+            <distribution id="Primates.prior" spec="beast.base.evolution.tree.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
                 <taxonset id="Primates" spec="TaxonSet">
                     <taxon id="Callithrix_jacchus" spec="Taxon"/>
                     <taxon id="Cheirogaleus_medius" spec="Taxon"/>
@@ -192,7 +192,7 @@ name="alignment">
                     <parameter id="RealParameter.66" spec="parameter.RealParameter" estimate="false" name="sigma">7.0</parameter>
                 </Normal>
             </distribution>
-            <distribution id="WhaleHippo.prior" spec="beast.math.distributions.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
+            <distribution id="WhaleHippo.prior" spec="beast.base.evolution.tree.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
                 <taxonset id="WhaleHippo" spec="TaxonSet">
                     <taxon id="Physeter_macrocephalus" spec="Taxon"/>
                     <taxon id="Balaenoptera_physalus" spec="Taxon"/>
@@ -203,7 +203,7 @@ name="alignment">
                     <parameter id="RealParameter.17" spec="parameter.RealParameter" lower="0.0" name="sigma" upper="0.0">2.0</parameter>
                 </Normal>
             </distribution>
-            <distribution id="Whales.prior" spec="beast.math.distributions.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
+            <distribution id="Whales.prior" spec="beast.base.evolution.tree.MRCAPrior" monophyletic="true" tree="@Tree.t:xMCMC">
                 <taxonset id="Whales" spec="TaxonSet">
                     <taxon idref="Physeter_macrocephalus"/>
                     <taxon idref="Balaenoptera_physalus"/>
@@ -214,7 +214,7 @@ name="alignment">
                 </Normal>
             </distribution>
         </distribution>
-        <distribution id="likelihood" spec="util.CompoundDistribution" useThreads="true">
+        <distribution id="likelihood" spec="beast.base.inference.CompoundDistribution" useThreads="true">
             <distribution id="treeLikelihood.xMCMC" spec="ThreadedTreeLikelihood" data="@xMCMC" tree="@Tree.t:xMCMC">
                 <siteModel id="SiteModel.s:xMCMC" spec="SiteModel" gammaCategoryCount="4" shape="@gammaShape.s:xMCMC">
                     <parameter id="mutationRate.s:xMCMC" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
@@ -223,7 +223,7 @@ name="alignment">
                         <frequencies id="estimatedFreqs.s:xMCMC" spec="Frequencies" frequencies="@freqParameter.s:xMCMC"/>
                     </substModel>
                 </siteModel>
-                <branchRateModel id="RelaxedClock.c:xMCMC" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" 
+                <branchRateModel id="RelaxedClock.c:xMCMC" spec="beast.base.evolution.branchratemodel.UCRelaxedClockModel" 
                 	clock.rate="@ucldMean.c:xMCMC" 
                 	rateQuantiles="@rateQuantiles.c:xMCMC"
                 	tree="@Tree.t:xMCMC">
@@ -290,7 +290,7 @@ name="alignment">
         <log idref="likelihood"/>
         <log idref="prior"/>
         <log idref="treeLikelihood.xMCMC"/>
-        <log id="TreeHeight.t:xMCMC" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:xMCMC"/>
+        <log id="TreeHeight.t:xMCMC" spec="beast.base.evolution.tree.TreeHeightLogger" tree="@Tree.t:xMCMC"/>
         <log idref="YuleModel.t:xMCMC"/>
         <log idref="birthRate.t:xMCMC"/>
         <log idref="kappa.s:xMCMC"/>
@@ -308,7 +308,7 @@ name="alignment">
         <log idref="KappaPrior.s:xMCMC"/>
         <log idref="ucldMean.c:xMCMC"/>
         <log idref="ucldStdev.c:xMCMC"/>
-        <log id="rate.c:xMCMC" spec="beast.evolution.branchratemodel.RateStatistic" branchratemodel="@RelaxedClock.c:xMCMC" tree="@Tree.t:xMCMC"/>
+        <log id="rate.c:xMCMC" spec="beast.base.evolution.RateStatistic" branchratemodel="@RelaxedClock.c:xMCMC" tree="@Tree.t:xMCMC"/>
         <log idref="freqParameter.s:xMCMC"/>
     </logger>
 
@@ -319,7 +319,7 @@ name="alignment">
     </logger>
 
     <logger id="treelog.t:xMCMC" spec="Logger" fileName="yang-quant2.trees" logEvery="1000" mode="tree">
-        <log id="TreeWithMetaDataLogger.t:xMCMC" spec="beast.evolution.tree.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:xMCMC" tree="@Tree.t:xMCMC"/>
+        <log id="TreeWithMetaDataLogger.t:xMCMC" spec="beast.base.evolution.TreeWithMetaDataLogger" branchratemodel="@RelaxedClock.c:xMCMC" tree="@Tree.t:xMCMC"/>
     </logger>
 
 </run>

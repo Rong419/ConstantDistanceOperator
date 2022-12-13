@@ -1,17 +1,18 @@
 package consoperators;
 
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.parameter.CompoundRealParameter;
-import beast.core.parameter.RealParameter;
-import beast.evolution.operators.KernelDistribution;
-import beast.core.Operator;
-import beast.core.StateNode;
-import beast.math.distributions.CachedDistribution;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.math.distributions.ParametricDistribution;
-import beast.math.distributions.PiecewiseLinearDistribution;
-import beast.util.Randomizer;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.inference.parameter.CompoundRealParameter;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.inference.operator.kernel.KernelDistribution;
+import beast.base.inference.Operator;
+import beast.base.inference.StateNode;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.util.Randomizer;
+import consoperators.distributions.CachedDistribution;
+import consoperators.distributions.PiecewiseLinearDistribution;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math3.special.Erf;
 import org.apache.commons.math3.util.FastMath;

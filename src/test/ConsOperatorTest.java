@@ -1,33 +1,33 @@
 package test;
 
 
-import beast.core.MCMC;
-import beast.core.parameter.RealParameter;
-import beast.evolution.alignment.Alignment;
-import beast.evolution.alignment.Sequence;
-import beast.evolution.branchratemodel.RateStatistic;
-import beast.evolution.speciation.YuleModel;
-import beast.evolution.tree.RandomTree;
-import beast.evolution.tree.Tree;
-import beast.evolution.tree.TreeTraceAnalysis;
-import beast.evolution.tree.coalescent.ConstantPopulation;
-import beast.math.distributions.LogNormalDistributionModel;
-import beast.util.Randomizer;
+import beast.base.inference.MCMC;
+import beast.base.inference.parameter.RealParameter;
+import beast.base.evolution.alignment.Alignment;
+import beast.base.evolution.alignment.Sequence;
+import beast.base.evolution.RateStatistic;
+import beast.base.evolution.speciation.YuleModel;
+import beast.base.evolution.tree.coalescent.RandomTree;
+import beast.base.evolution.tree.Tree;
+import beast.base.evolution.tree.coalescent.ConstantPopulation;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.util.Randomizer;
 import consoperators.InConstantDistanceOperator;
-import beast.evolution.branchratemodel.UCRelaxedClockModel;
-import beast.util.TreeParser;
+import beast.base.evolution.branchratemodel.UCRelaxedClockModel;
+import beast.base.evolution.tree.TreeParser;
 import consoperators.IndependentOperator;
 import consoperators.SmallPulley;
-import consoperators.BigPulley;
-import org.junit.Test;
 import junit.framework.TestCase;
+import consoperators.BigPulley;
 
-import beast.evolution.tree.Node;
-import beast.core.State;
+import beast.base.evolution.tree.Node;
+import beast.base.inference.State;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Test;
 
 
 public class ConsOperatorTest extends TestCase {

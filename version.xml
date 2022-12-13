@@ -1,4 +1,34 @@
-<addon name='FastRelaxedClockLogNormal' version='1.1.1'>
-	<depends on='beast2' atleast='2.6.0'/>
-	<depends on='BEASTLabs' atleast='1.9.5'/>
+<addon name='FastRelaxedClockLogNormal' version='1.2.0'>
+	<depends on='BEAST.base' atleast='2.7.2'/>
+    <depends on='BEAST.app' atleast='2.7.2'/>
+
+
+ 	<service type="beast.base.core.BEASTInterface">
+        <provider classname="consoperators.BasicTwoNodeOperator"/>
+        <provider classname="consoperators.BigPulley"/>
+        <provider classname="consoperators.BranchOperator"/>
+        <provider classname="consoperators.ConsInternalNode"/>
+        <provider classname="consoperators.distributions.CachedDistribution"/>
+        <provider classname="consoperators.distributions.IndexedDistribution"/>
+        <provider classname="consoperators.distributions.IndexedPieceWiseLinearDistribution"/>
+        <provider classname="consoperators.distributions.MixedPieceWiseLinearDistribution"/>
+        <provider classname="consoperators.distributions.OneParameterMeanOneDistribution"/>
+        <provider classname="consoperators.distributions.PiecewiseLinearDistribution"/>
+        <provider classname="consoperators.InConstantDistanceOperator"/>
+        <provider classname="consoperators.IndependentOperator"/>
+        <provider classname="consoperators.IndexChangeConstantRate"/>
+        <provider classname="consoperators.NarrowExchangeOperator"/>
+        <provider classname="consoperators.SimpleDistance"/>
+        <provider classname="consoperators.SmallPulley"/>
+        <provider classname="consoperators.SmallPulleyV2"/>
+        <provider classname="consoperators.SpecialTwoNodeOperator"/>
+        <provider classname="consoperators.TwoNodeOperator"/>
+        <provider classname="consoperators.UcldScalerOperator"/>
+        <provider classname="consoperators.UniformOperatorChange"/>
+        <provider classname="consoperators.WideTwoNodeOperator"/>
+    </service>
+
+
+
 </addon>
+

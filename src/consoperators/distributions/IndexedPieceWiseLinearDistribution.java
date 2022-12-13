@@ -1,17 +1,18 @@
-package beast.math.distributions;
+package consoperators.distributions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math.distribution.ContinuousDistribution;
-import org.apache.commons.math.distribution.Distribution;
-
-import beast.core.Description;
-import beast.core.Input;
-import beast.core.Input.Validate;
-import beast.core.parameter.IntegerParameter;
-import beast.core.parameter.RealParameter;
+import beast.base.inference.Distribution;
+import beast.base.inference.distribution.LogNormalDistributionModel;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.core.Input.Validate;
+import beast.base.inference.parameter.IntegerParameter;
+import beast.base.inference.parameter.RealParameter;
 
 @Description("Selects a parametricdistribution from among its inputs based on index variable and "
 		+ "approximates distribution by piecewise linear approximation.")
@@ -41,7 +42,7 @@ public class IndexedPieceWiseLinearDistribution extends PiecewiseLinearDistribut
     	storedRates = new double[dim];
 
     	for (ParametricDistribution distribution : distrsInput.get()) {
-	    	Distribution d = distribution.getDistribution();
+    		org.apache.commons.math.distribution.Distribution d = distribution.getDistribution();
 	    	if (d instanceof ContinuousDistribution) {
 	    		underlyingDistr = (ContinuousDistribution) d;
 	    	} else {

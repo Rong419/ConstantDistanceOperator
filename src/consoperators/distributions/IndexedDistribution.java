@@ -1,12 +1,13 @@
-package beast.math.distributions;
+package consoperators.distributions;
 
 import java.util.*;
 
-import org.apache.commons.math.distribution.Distribution;
-
-import beast.core.*;
-import beast.core.Input.Validate;
-import beast.core.parameter.IntegerParameter;
+import beast.base.inference.Distribution;
+import beast.base.inference.distribution.ParametricDistribution;
+import beast.base.core.Description;
+import beast.base.core.Input;
+import beast.base.core.Input.Validate;
+import beast.base.inference.parameter.IntegerParameter;
 
 @Description("Selects a distribution from among its inputs based on index variable")
 public class IndexedDistribution extends ParametricDistribution {
@@ -30,7 +31,7 @@ public class IndexedDistribution extends ParametricDistribution {
 	}
 
 	@Override
-	public Distribution getDistribution() {
+	public org.apache.commons.math.distribution.Distribution getDistribution() {
 		return distrs.get(index.getValue()).getDistribution();
 	}
 
